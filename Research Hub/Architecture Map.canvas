@@ -1,0 +1,150 @@
+{
+  "nodes": [
+    {
+      "id": "algorithm",
+      "type": "file",
+      "file": "docs/GIDNEY_DAG_CONTRACT.md",
+      "x": -980,
+      "y": -90,
+      "width": 340,
+      "height": 240,
+      "color": "4"
+    },
+    {
+      "id": "memory",
+      "type": "text",
+      "text": "# Memory zone\nStores inactive logical data.\n\nMonth-1 missing model:\n- load/store\n- residency\n- bandwidth",
+      "x": -520,
+      "y": -260,
+      "width": 300,
+      "height": 220,
+      "color": "5"
+    },
+    {
+      "id": "bridge",
+      "type": "text",
+      "text": "# Bridge ancilla\nTemporary communication resource between zones or code blocks.\n\nNot the operation zone.",
+      "x": -100,
+      "y": -190,
+      "width": 280,
+      "height": 190,
+      "color": "3"
+    },
+    {
+      "id": "processor",
+      "type": "file",
+      "file": "docs/MITTEN_GIDNEY_LOWERING_CONTRACT.md",
+      "x": 300,
+      "y": -190,
+      "width": 360,
+      "height": 240,
+      "color": "6"
+    },
+    {
+      "id": "operation",
+      "type": "text",
+      "text": "# Operation / extractor resources\nWhere supported logical gates and PPMs consume time and ancillas.\n\nConstraints:\n- Pauli support\n- conflicts\n- concurrency",
+      "x": 800,
+      "y": -190,
+      "width": 330,
+      "height": 240,
+      "color": "2"
+    },
+    {
+      "id": "factory",
+      "type": "text",
+      "text": "# Factory / reservoir\nSupplies T or CCZ resource states.\n\nMonth 1: ideal supply; demand trace only.\nMonth 3: throughput, buffer, routing, spares, failure budget.",
+      "x": 800,
+      "y": 180,
+      "width": 330,
+      "height": 230,
+      "color": "1"
+    },
+    {
+      "id": "scheduler",
+      "type": "text",
+      "text": "# Resource-constrained scheduler\nCombines dependencies with capacity, operations, I/O, bridge, decoder, and factory constraints.\n\nOutput: runtime, occupancy, stalls, demand.",
+      "x": 300,
+      "y": 210,
+      "width": 360,
+      "height": 230,
+      "color": "4"
+    },
+    {
+      "id": "dashboard",
+      "type": "file",
+      "file": "Research Hub/Home.md",
+      "x": -120,
+      "y": 260,
+      "width": 320,
+      "height": 200,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-algorithm-memory",
+      "fromNode": "algorithm",
+      "fromSide": "right",
+      "toNode": "memory",
+      "toSide": "left",
+      "label": "logical states"
+    },
+    {
+      "id": "edge-memory-bridge",
+      "fromNode": "memory",
+      "fromSide": "right",
+      "toNode": "bridge",
+      "toSide": "left",
+      "label": "load / store"
+    },
+    {
+      "id": "edge-bridge-processor",
+      "fromNode": "bridge",
+      "fromSide": "right",
+      "toNode": "processor",
+      "toSide": "left",
+      "label": "teleport / cross-code PPM"
+    },
+    {
+      "id": "edge-processor-operation",
+      "fromNode": "processor",
+      "fromSide": "right",
+      "toNode": "operation",
+      "toSide": "left",
+      "label": "supported operation"
+    },
+    {
+      "id": "edge-factory-operation",
+      "fromNode": "factory",
+      "fromSide": "top",
+      "toNode": "operation",
+      "toSide": "bottom",
+      "label": "T / CCZ supply"
+    },
+    {
+      "id": "edge-operation-scheduler",
+      "fromNode": "operation",
+      "fromSide": "left",
+      "toNode": "scheduler",
+      "toSide": "right",
+      "label": "duration and resource use"
+    },
+    {
+      "id": "edge-processor-scheduler",
+      "fromNode": "processor",
+      "fromSide": "bottom",
+      "toNode": "scheduler",
+      "toSide": "top",
+      "label": "capacity and occupancy"
+    },
+    {
+      "id": "edge-scheduler-dashboard",
+      "fromNode": "scheduler",
+      "fromSide": "left",
+      "toNode": "dashboard",
+      "toSide": "right",
+      "label": "qualified results"
+    }
+  ]
+}

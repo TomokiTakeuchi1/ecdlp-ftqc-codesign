@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-15
+Last updated: 2026-08-15 (claude)
 Owner: human
 Phase: canonical baseline selection
 
@@ -13,6 +13,8 @@ Phase: canonical baseline selection
 - `RV-20260811-001` is `APPROVED` (Claude review, 2026-08-15). The recommendation itself does not close human-owned `T-BOOT-001`; the human decision recorded in `docs/CANONICAL_CIRCUIT_DECISION.md` is still required.
 - The local source corpus now indexes 14 verified PDFs, including Gidney ripple addition, Draper et al. QCLA, the Babbush et al. and Chevignard et al. ECDLP estimates, and Kim et al. depth-oriented ECDLP circuits. `RV-20260811-002` is `APPROVED` (Claude review, 2026-08-15), including 3-of-14 sources spot-verified directly against arXiv.
 - `T-20260815-001` implements a bounded Month-1 Gidney arithmetic prototype: pinned oracle schema v3 -> QEC-neutral DAG schema v1, explicit X-measurement/conditional-CZ feed-forward, widths 2--4 deterministic fixtures, and a width-256 structural regression. `RV-20260815-003` is `APPROVED` (Claude review, 2026-08-15; hand-traced width-2 fixture, reproduced 13/13 tests, ruff, and strict mypy). It does not close `T-BOOT-001` or project-wide `T-BOOT-002`. The review noted one non-blocking documentation suggestion for `docs/GIDNEY_DAG_CONTRACT.md` about erase-split memory/occupancy duplication, relevant when `T-BOOT-005` is implemented.
+- `T-20260815-002` adds a phase-exact Figure-3 Clifford+T trace, an audited `[[300,60,14]]` Mitten configuration, strict rejection of unresolved native lowering, and a deterministic provisional greedy scheduler. `RV-20260815-004` is `APPROVED` (Claude review, 2026-08-15); the reviewer independently confirmed the Figure-3 gate sequence is an exact, gate-for-gate match to the pinned source's own exhaustively-verified `_apply_figure3_compute`, so the `NUMERICAL` label on primitive counts is substantively earned rather than merely inherited. The generated width-59 sensitivity point is 15,270 syndrome rounds with zero high-rate hits under `CHECK` placeholder costs; it is not an executable-runtime claim. Width 60 is rejected because source-recorded occupancy is 61, but PBC ancilla may lower the eventual executable width boundary. The review noted one non-blocking documentation suggestion for `docs/MITTEN_GIDNEY_LOWERING_CONTRACT.md` to cite that cross-check explicitly.
+- `T-20260815-003` adds a plugin-free Obsidian Research Hub over the canonical project records. `RV-20260815-005` is `APPROVED` (Claude review, 2026-08-15); all navigation links, the Architecture Canvas, and evidence qualifiers were verified, and the reviewer synchronized four now-stale "in review" statuses to "reviewed" after approving `RV-20260815-004` earlier in the same session. The dashboard remains a manually curated presentation layer, not a replacement for `context/`, `coordination/`, or generated experiment records.
 
 ## Current milestone
 
@@ -25,8 +27,9 @@ Create a minimal reproducible pipeline:
 5. add parallel-operation, memory-I/O, and factory constraints one at a time.
 
 For the bounded Gidney arithmetic prototype, items 1 and 2 now have an
-implemented candidate and local regression evidence. Sequential PPM
-reproduction and QEC-native scheduling remain later tasks.
+implemented candidate and local regression evidence. A first conditional
+Mitten scheduler exists, but strict QEC-native scheduling still awaits an
+explicit Pauli-based compilation of intra-block CNOT/H/S/T operations.
 
 ## Active bottleneck
 

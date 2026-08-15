@@ -1,0 +1,31 @@
+experiment_id: E-20260815-001
+task_id: T-20260815-002
+description: Processor-resident Gidney adders on a conditional J300 Mitten backend
+git_commit: unborn repository
+input:
+  circuit: runtime_metadata_benchmark.gidney at 8c1638805e7246c30117a0251526661039df1369
+  trace: ecdlp-ftqc/phase-exact-logical-trace v1
+config:
+  algorithm: Gidney uncontrolled in-place ripple-carry adder widths 2, 3, 4, 16, 32, 59
+  architecture: one processor block; one operation zone; no Memory I/O or bridge
+  code: configs/codes/mitten_j300_k60_d14_v1.yaml
+  factory: ideal supply without stalls; T-state demand recorded
+assumption_ids:
+  - A-0004
+  - A-0006
+  - A-0007
+  - A-0008
+  - A-0009
+  - A-0010
+random_seed: null
+environment:
+  python: Python 3.14.3 in repository .venv
+  dependencies: uv.lock
+outputs:
+  directory: experiments/runs/T-20260815-002
+validation:
+  status: CHECK
+  tests:
+    - pytest
+    - ruff
+    - mypy src

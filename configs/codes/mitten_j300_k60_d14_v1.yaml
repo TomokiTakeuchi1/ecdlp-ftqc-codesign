@@ -1,0 +1,135 @@
+schema: ecdlp-ftqc/mitten-backend-config
+schema_version: 1
+configuration_id: code-mitten-j300-k60-d14-v1
+source: Bhardwaj et al., arXiv:2607.28795v1, Tables I-IV and Figure 2
+
+code:
+  data_physical_qubits: 300
+  syndrome_ancilla_qubits: 240
+  logical_qubits: 60
+  distance: 14
+
+resource_pools:
+  - name: processor_operation_zone
+    capacity: 1
+  - name: classical_controller
+    capacity: 1
+
+operation_costs:
+  - implementation: check_prepare_t
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Placeholder one-distance logical cycle; injection gadget and factory interface not fixed
+
+  - implementation: check_cnot_cqlu
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Placeholder for an intra-block Pauli-based CQLU compilation; not transversal CNOT
+
+  - implementation: check_t_gate
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Placeholder for distilled-state gate teleportation; routing and injection overhead unresolved
+
+  - implementation: check_h_cqlu
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Placeholder for a Pauli-based or frame-tracked Hadamard implementation
+
+  - implementation: check_s_cqlu
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Placeholder for a Pauli-based or frame-tracked phase-gate implementation
+
+  - implementation: seed_x_surgery
+    rounds: 11
+    gadget_data_ancilla_qubits: 43
+    gadget_check_ancilla_qubits: 44
+    exclusive_resource: processor_operation_zone
+    evidence_status: LITERATURE
+    source_note: Table II J300 S_X space; Figure 2 J300 single-X experiment uses R=11 merged-code rounds
+
+  - implementation: seed_y_surgery
+    rounds: 14
+    gadget_data_ancilla_qubits: 100
+    gadget_check_ancilla_qubits: 101
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Table II J300 S_Y space; duration not reported and set provisionally to distance
+
+  - implementation: seed_z_surgery
+    rounds: 14
+    gadget_data_ancilla_qubits: 43
+    gadget_check_ancilla_qubits: 44
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Table II J300 S_Z space; duration not reported and set provisionally to distance
+
+  - implementation: seed_xx_surgery
+    rounds: 13
+    gadget_data_ancilla_qubits: 100
+    gadget_check_ancilla_qubits: 101
+    exclusive_resource: processor_operation_zone
+    evidence_status: LITERATURE
+    source_note: Table II J300 S_XX space; Figure 2 J300 XX experiment uses R=13 merged-code rounds
+
+  - implementation: seed_zz_surgery
+    rounds: 14
+    gadget_data_ancilla_qubits: 100
+    gadget_check_ancilla_qubits: 101
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Table II J300 S_ZZ space; duration not reported and set provisionally to distance
+
+  - implementation: high_rate_xx_10
+    rounds: 13
+    gadget_data_ancilla_qubits: 601
+    gadget_check_ancilla_qubits: 611
+    exclusive_resource: processor_operation_zone
+    evidence_status: LITERATURE
+    source_note: Table III J300 ten-product XX gadget; Figure 2 high-rate x10 experiment uses R=13
+
+  - implementation: full_extractor
+    rounds: 14
+    gadget_data_ancilla_qubits: 780
+    gadget_check_ancilla_qubits: 754
+    exclusive_resource: processor_operation_zone
+    evidence_status: CHECK
+    source_note: Table IV J300 extractor space; duration not reported and set provisionally to distance
+
+  - implementation: check_conditional_cz_frame
+    rounds: 1
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: classical_controller
+    evidence_status: CHECK
+    source_note: One-round reaction placeholder; decoder tail latency and frame contract are unresolved
+
+  - implementation: check_release
+    rounds: 0
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: classical_controller
+    evidence_status: CHECK
+    source_note: Zero-round release placeholder after destructive measurement; reset and reload are excluded
+
+high_rate_batches:
+  - implementation: high_rate_xx_10
+    pauli_family: XX
+    batch_size: 10
+    disjoint_support_required: true

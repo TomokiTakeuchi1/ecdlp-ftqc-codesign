@@ -31,3 +31,19 @@
 - Decision: Expand each `temporary_and_erase` into an X-basis measurement node and a conditional-CZ/Clifford-frame-update node connected by an explicit classical-result edge.
 - Rationale: Measurement latency and feed-forward must remain visible to later QEC backends. Treating source-list adjacency as causality would also destroy valid circuit parallelism.
 - Consequences: The measured temporary may be released after measurement without waiting for the control-frame update, while later operations on either control depend on that update. QEC gadget, decoder, memory, and shared-resource constraints remain separate later-layer records.
+
+## D-0005: Keep phase-exact Clifford+T lowering separate from Mitten gadget selection
+
+- Status: ACCEPTED (`RV-20260815-004` approved 2026-08-15)
+- Date: 2026-08-15
+- Decision: Expand Gidney's temporary logical AND into the verified Figure 3 logical gate trace before selecting a PPM, surgery, extractor, or injection implementation.
+- Rationale: The earlier four-PPM accounting coefficient is not a Pauli-support list, and a logical CNOT inside one multi-logical-qubit Mitten block is not justified as a transversal inter-block CNOT.
+- Consequences: Strict scheduling rejects unresolved CNOT/H/S/T compilation. Provisional schedules remain explicitly `CHECK` and cannot establish wall-clock or physical-qubit feasibility.
+
+## D-0006: Restrict the first Mitten high-rate rule to the directly simulated ten-XX batch
+
+- Status: ACCEPTED (`RV-20260815-004` approved 2026-08-15)
+- Date: 2026-08-15
+- Decision: Configuration v1 selects high-rate surgery only for ten ready pairwise-disjoint XX measurements; other supported Pauli families fall back to reusable seed surgery, and general products fall back to the full extractor.
+- Rationale: The primary source directly simulates the ten-product J300 XX gadget, while the current Gidney trace exposes only single-X erase measurements.
+- Consequences: The current Gidney schedules have zero high-rate hits. A later PBC compiler may change the Pauli layers, but it must generate exact supports before this rule is generalized.

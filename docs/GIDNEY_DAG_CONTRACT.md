@@ -66,6 +66,11 @@ control-frame update. A later operation on either control remains ordered
 after that update. A backend may subsequently implement the correction
 physically or absorb it into a valid Clifford-frame contract.
 
+Both nodes produced by the erase split retain the source operation's control
+residency by design. This is one continuous residence interval, not evidence
+for two independent loads; a future memory-I/O backend must compare residency
+transitions under its replacement policy rather than sum per-node occupancy.
+
 ## Causal-edge construction
 
 Source-list adjacency is not treated as dependency. The adapter creates an
