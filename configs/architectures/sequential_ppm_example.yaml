@@ -1,0 +1,12 @@
+id: architecture-sequential-ppm-example-v1
+processor:
+  logical_capacity: 10
+  parallel_ppm_capacity: 1
+memory:
+  load_latency_logical_cycles: 1
+  store_latency_logical_cycles: 1
+  parallel_ports: 1
+controller:
+  reaction_latency_seconds: null
+  decoder_latency_seconds: null
+notes: "Template only; values are not a validated physical architecture."

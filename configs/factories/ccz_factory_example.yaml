@@ -1,0 +1,12 @@
+id: factory-ccz-example-v1
+resource_state: CCZ
+production:
+  batch_size: 1
+  period_seconds: null
+  startup_latency_seconds: null
+  success_probability: null
+buffer:
+  capacity: 0
+routing:
+  delivery_latency_seconds: null
+notes: "Template only; replace null values before use."

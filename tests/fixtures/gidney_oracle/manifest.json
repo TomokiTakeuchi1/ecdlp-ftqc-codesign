@@ -1,0 +1,27 @@
+{
+  "files": [
+    {
+      "bytes": 15861,
+      "name": "gidney_width2_oracle_v3.json",
+      "sha256": "658760284d381192ebd54e41c2c615f4bca6da81bec124ec1b76c6e30413dccf",
+      "width": 2
+    },
+    {
+      "bytes": 30033,
+      "name": "gidney_width3_oracle_v3.json",
+      "sha256": "e343aefb751153465e235e04b719f80ea560e534131b54754169a316f58e62d6",
+      "width": 3
+    },
+    {
+      "bytes": 44485,
+      "name": "gidney_width4_oracle_v3.json",
+      "sha256": "90aee3fac4bc569eed0626ea3c7b6bfca4edf90e483bce29dbf7ec9469e4277d",
+      "width": 4
+    }
+  ],
+  "generator": "runtime_metadata_benchmark.gidney",
+  "oracle_schema": "runtime-metadata-benchmark/oracle",
+  "oracle_schema_version": 3,
+  "source_commit": "8c1638805e7246c30117a0251526661039df1369",
+  "source_repository": "runtime-metadata-benchmark"
+}

@@ -1,0 +1,22 @@
+experiment_id: E-YYYYMMDD-NNN
+task_id: T-YYYYMMDD-NNN
+description: ""
+git_commit: ""
+input:
+  circuit: ""
+  trace: ""
+config:
+  algorithm: ""
+  architecture: ""
+  code: ""
+  factory: ""
+assumption_ids: []
+random_seed: null
+environment:
+  python: ""
+  dependencies: ""
+outputs:
+  directory: ""
+validation:
+  status: CHECK
+  tests: []
