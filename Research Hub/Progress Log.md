@@ -13,9 +13,28 @@ updated: 2026-08-15
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-08-15 — Adaptive PBC/CQLU lowering
+
+**Status:** Reviewed and approved (`T-20260815-004`, `RV-20260815-006`)
+
+What changed:
+
+- Replaced placeholder CNOT/H/S/T names with explicit state preparations, Pauli measurements, classical dependencies, and Pauli-frame updates.
+- Kept arithmetic outputs quantum rather than applying a final-classical-output PBC theorem outside its contract.
+- Checked every nonzero branch of the CNOT, H, S, T, and T-dagger gadgets on fixed and seeded small states.
+
+What we learned:
+
+- The maximum channel-check error was below `1e-15` (`NUMERICAL`).
+- The compiler needs one reusable scratch logical slot in a serialized operation zone.
+- Width 58 fits the J300 60-slot count exactly; width 59 now requires 61 slots.
+- Strict runtime is still blocked by state preparation, Z/ZZ/ZX durations, reaction time, conditional CZ, and adaptive scheduling.
+
+Canonical record: [[context/RESULT_LEDGER#R-20260815-003|Result R-20260815-003]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|PBC/CQLU contract]]
+
 ## 2026-08-15 — Obsidian Research Hub
 
-**Status:** In cross-review (`T-20260815-003`, `RV-20260815-005`)
+**Status:** Reviewed and approved (`T-20260815-003`, `RV-20260815-005`)
 
 - Added a plugin-free visual entry point for the project.
 - Separated reviewed work, work under review, human decisions, and provisional `CHECK` results.

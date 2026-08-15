@@ -12,5 +12,7 @@
 | A-0008 | LITERATURE | logical operations | Backend v1 selects high-rate surgery only for an exact batch of ten disjoint XX products | Bhardwaj et al. 2026 Figure 2 and Table III | T-20260815-002 | Yes, 10 and 9 products |
 | A-0009 | LITERATURE | logical operations | J300 single-X uses 11 merged-code rounds; XX seed and ten-product high-rate XX use 13 | Bhardwaj et al. 2026 Figure 2 | T-20260815-002 | No |
 | A-0010 | CHECK | controller | Conditional CZ frame reaction is one round and measured-temporary release is zero rounds in the provisional profile | Backend v1 sensitivity parameters | E-20260815-001 | No |
+| A-0011 | LITERATURE | compiler | CNOT uses Xu et al. Figure 11(c); T/T-dagger use Bravyi--Smith--Smolin Figure 4 plus one-bit Clifford teleportation so a live quantum output is retained with explicit Pauli corrections | arXiv:2407.18490v1; arXiv:1506.01396v1; `docs/PBC_CQLU_LOWERING_CONTRACT.md` | T-20260815-004, E-20260815-002 | Branchwise small-system channel tests |
+| A-0012 | CHECK | architecture | A single serialized operation zone reuses one compiler scratch carrier; parallel execution may require additional simultaneous scratch slots | `src/ecdlp_ftqc/compiler/pbc_lowering.py`; J300 one-operation-zone configuration | E-20260815-002 | Width 58/59 slot-count boundary |
 
 Every experiment manifest must reference the assumption IDs it uses.

@@ -24,10 +24,10 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
-| 0 | Phase-exact PBC/CQLU lowering is missing | Provisional CNOT/H/S/T times cannot establish an executable Mitten runtime. | Select one explicit compilation and record Pauli supports, ancillas, adaptive measurements, and frame reactions. |
-| 1 | Processor capacity excludes compiler ancillas | Width 59 currently saturates all 60 source slots. | Recompute occupancy after strict lowering. |
+| 0 | PBC native durations and adaptive scheduling are missing | Reviewed, exact Pauli supports now exist, but state preparation, Z/ZZ/ZX, reaction, and conditional-CZ costs remain `CHECK`. | Pin those J300 contracts and schedule the adaptive trace without placeholder durations. |
+| 1 | Parallel PBC scratch occupancy is unresolved | One serialized scratch makes width 58 fit and width 59 fail the 60-slot check; parallel gadgets may need more scratch. | Jointly schedule operation-zone and scratch-slot resources before enabling high-rate batches. |
 | 1 | Memory–Processor I/O is absent | A small processor may spend more time moving states than computing. | Implement load/store, bridge occupancy, and communication resources. |
-| 1 | Parallel-surgery legality is narrow | Circuit parallelism is not automatically executable high-rate surgery. | Generate exact Pauli supports and conflict/resource constraints. |
+| 1 | Parallel-surgery legality is narrow | Exact XX supports are now generated, but circuit parallelism is not automatically executable high-rate surgery. | Build ready-set/conflict/resource constraints and test exact-ten disjoint-XX eligibility. |
 
 ## Open research questions
 

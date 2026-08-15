@@ -1,0 +1,29 @@
+experiment_id: E-20260815-002
+task_id: T-20260815-004
+description: Quantum-output-preserving adaptive PBC/CQLU lowering of Gidney adders
+git_commit: unborn repository
+input:
+  circuit: runtime_metadata_benchmark.gidney at 8c1638805e7246c30117a0251526661039df1369
+  trace: ecdlp-ftqc/phase-exact-logical-trace v1
+config:
+  algorithm: Gidney uncontrolled in-place ripple-carry adder widths 2, 3, 4, 16, 32, 58, 59
+  architecture: one J300 processor block; serialized reusable compiler scratch slot
+  code: configs/codes/mitten_j300_k60_d14_v1.yaml
+  factory: ideal supply without stalls; T-state demand recorded
+assumption_ids:
+  - A-0004
+  - A-0006
+  - A-0011
+  - A-0012
+random_seed: 20260815
+environment:
+  python: Python 3.14.3 in repository .venv
+  dependencies: uv.lock
+outputs:
+  directory: experiments/runs/T-20260815-004
+validation:
+  status: NUMERICAL channel verification; runtime CHECK
+  tests:
+    - pytest tests/unit/test_pbc_lowering.py
+    - ruff check
+    - mypy src

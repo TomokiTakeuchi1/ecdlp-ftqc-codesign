@@ -1,0 +1,1823 @@
+                                                 Shor’s algorithm is possible with as few as 10,000 reconfigurable atomic qubits
+
+                                                          Madelyn Cain1,∗,† , Qian Xu1,2,∗,‡ , Robbie King1 , Lewis R. B. Picard1 , Harry Levine1,3 ,
+                                                             Manuel Endres1,2 , John Preskill1,2 , Hsin-Yuan Huang1,2 , Dolev Bluvstein1,2,§
+                                                                                    1
+                                                                                      Oratomic, Pasadena, California 91125, USA
+                                                                       2
+                                                                         California Institute of Technology, Pasadena, California 91125, USA
+                                                                 3
+                                                                   Department of Physics, University of California, Berkeley, California 94720, USA
+                                                                       †
+                                                                         mcain@oratomic.com, ‡ qxu@oratomic.com, § dbluvstein@oratomic.com
+                                                                                          ∗
+                                                                                            These authors contributed equally
+                                                                                               (Dated: March 31, 2026)
+                                                            Quantum computers have the potential to perform computational tasks beyond the reach of
+                                                         classical machines. A prominent example is Shor’s algorithm for integer factorization and dis-
+                                                         crete logarithms, which is of both fundamental importance and practical relevance to cryptography.
+                                                         However, due to the high overhead of quantum error correction, optimized resource estimates for
+arXiv:2603.28627v1 [quant-ph] 30 Mar 2026
+
+
+
+
+                                                         cryptographically relevant instances of Shor’s algorithm require millions of physical qubits. Here, by
+                                                         leveraging advances in high-rate quantum error-correcting codes, efficient logical instruction sets,
+                                                         and circuit design, we show that Shor’s algorithm can be executed at cryptographically relevant
+                                                         scales with as few as 10,000 reconfigurable atomic qubits. Increasing the number of physical qubits
+                                                         improves time efficiency by enabling greater parallelism; under plausible assumptions, the runtime
+                                                         for discrete logarithms on the P-256 elliptic curve could be just a few days for a system with 26,000
+                                                         physical qubits, while the runtime for factoring RSA–2048 integers is one to two orders of magnitude
+                                                         longer. Recent neutral-atom experiments have demonstrated universal fault-tolerant operations be-
+                                                         low the error-correction threshold, computation on arrays of hundreds of qubits, and trapping arrays
+                                                         with more than 6,000 highly coherent qubits. Although substantial engineering challenges remain,
+                                                         our theoretical analysis indicates that an appropriately designed neutral-atom architecture could
+                                                         support quantum computation at cryptographically relevant scales. More broadly, these results
+                                                         highlight the capability of neutral atoms for fault-tolerant quantum computing with wide-ranging
+                                                         scientific and technological applications.
+
+
+                                               Quantum computers are believed to be capable of solv-          algorithm—typically require on the order of millions of
+                                            ing certain problems that are intractable for classical ma-       physical qubits [18]. This scale is driven by the large
+                                            chines [1, 2]. A prominent example is Shor’s algorithm,           overhead of quantum error correction, which often ne-
+                                            which provides superpolynomial speedups over known                cessitates hundreds of physical qubits to encode a single
+                                            classical algorithms for integer factorization and discrete       logical qubit [19]. In contrast, today’s most advanced
+                                            logarithms [3, 4], problems that underpin widely used             quantum processors are limited to at most a few hun-
+                                            public-key cryptographic systems [5, 6]. Discovered in            dred physical qubits. Closing this gap between algorith-
+                                            1994, this result provided the first evidence that quan-          mic requirements and experimentally accessible hardware
+                                            tum computers could outperform classical computation              is therefore a central obstacle in quantum computing.
+                                            for problems of both fundamental and practical impor-                The past several decades have seen broad experimen-
+                                            tance.                                                            tal efforts to develop FTQCs across a variety of physical
+                                               The feasibility of large-scale quantum computation was         platforms [20–26]. Neutral-atom quantum computers [27]
+                                            initially questioned due to the fragility of quantum states,      in particular are rapidly emerging as a promising can-
+                                            but this concern was addressed by pioneering work on              didate for realizing a FTQC. The first digital quantum
+                                            quantum error correction in 1995 and 1996 [7–13], which           circuits were realized in 2022 [28, 29], leveraging parallel
+                                            showed that reliable quantum computation is possible              reconfigurability of atomic qubits, and shortly thereafter,
+                                            provided physical error rates remain below a thresh-              error-corrected quantum algorithms were performed us-
+                                            old value. These developments established the theoret-            ing up to hundreds of qubits [23, 25, 26, 30]. Despite this
+                                            ical foundations for fault-tolerant quantum computers             rapid progress, today’s devices lag far behind the pre-
+                                            (FTQCs) capable of executing arbitrarily deep quantum             dicted requirements for practically useful quantum com-
+                                            circuits. Shor’s algorithm has since served as a flagship         puters. Moreover, the comparatively slow clock speeds
+                                            benchmark for large-scale quantum computation. Apart              of neutral-atom systems are thought to potentially limit
+                                            from applications to cryptanalysis, FTQCs are expected            the practical implementation of deep circuits required for
+                                            to enable wide-ranging applications across physics, mate-         utility-scale processing.
+                                            rials science, quantum chemistry, machine learning, and              Here we propose and analyze architectures for FTQCs
+                                            beyond [14–17].                                                   based on reconfigurable neutral-atom systems. Our
+                                               Despite these theoretical advances, realizing a utility-       scheme is based on high-rate error-correcting codes [38–
+                                            scale FTQC remains a major challenge. Current re-                 44], which utilize nonlocal connectivity across a code
+                                            source estimates for large-scale quantum computations—            block to protect many logical qubits with minimal over-
+                                            including cryptographically relevant instances of Shor’s          head. By improving constructions for high-rate codes
+                                                                                                                                                          2
+
+ a                                                                              b
+                                                                                         Jones
+                                                                                         et al.     Fowler    O’Gorman &
+                                                                                                     et al.    Campbell
+                                                       Processor                                                             Gheorgiu
+                                                                                                                             & Mosca        Dallaire-
+                                                     (computation)                                                           Gheorgiu     Demers et al.
+                                                                                                                             & Mosca
+
+
+                                                                                                                         Gidney              Zhou
+                                        Operation
+ 660 μm
+
+
+
+
+                                                                                                                         & Ekerȧ             et al.*
+                Memory                  (Clifford)                                                                                             Webster
+                (storage)                                                                                                                       et al.*
+                                                                                                                                        Gidney
+                                                       Resource                                                                          Babbush
+                                                     (non-Clifford)                       RSA-2048 (1 μs cycle)                            et al.
+                                                                                          ECC-256 (1 μs cycle)                             Webster
+                                                                                                                                            et al.*
+                                                                                          RSA-2048 (1 ms cycle)
+                                                                                          ECC-256 (1 ms cycle)
+                                                                                       *assumes non-local connectivity                     This
+                                                                                                                                           work*
+
+
+                            Reservoir + reloading
+
+
+FIG. 1. Fault-tolerant computation with atomic qubits. a, Neutral atom processor with four functional zones: a memory
+zone for storing quantum information, a processor zone for computation, an operation zone for performing Clifford operations,
+and a resource zone for generating magic states. Also included is a zone for an atomic reservoir and reloading. Each dot
+represents an atomic data qubit. b, Estimated number of physical qubits to run Shor’s algorithm versus year of publication
+for prior resource estimates [18, 19, 31–37] and the current work.
+
+
+and decoders [45], we encode ≳ 1,000 logical qubits with              and scale system sizes to the required levels, our analysis
+≈ 30% encoding rates at algorithmically relevant logi-                indicates that appropriately designed neutral-atom archi-
+cal error rates. This enables qubit requirements to be                tectures could support cryptographically relevant imple-
+reduced by an order of magnitude compared to archi-                   mentations of Shor’s algorithm. This finding underscores
+tectures based on small, quasi-local codes with ∼ 4%                  the importance of ongoing efforts to transition widely-
+encoding rates [37, 46, 47], and two orders of magni-                 deployed cryptographic systems to post-quantum stan-
+tude compared to planar surface-code architectures [18].              dards designed to be secure against quantum attacks [65–
+Leveraging recent advances in logical operations with low             67]. More broadly, we anticipate that neutral atom pro-
+space overhead [48–52], we develop a verifiable compila-              cessors executing millions of gates on thousands of logical
+tion scheme and project further reductions in time over-              qubits will unlock a wide variety of applications with sig-
+head through parallel logical operations [52, 53].                    nificant scientific and economic value.
+   We explore a range of architectures with different num-
+bers of physical qubits and parallelism, and evaluate
+them using prior state-of-the-art circuits for Shor’s algo-
+                                                                                    Neutral-atom architecture
+rithm [18, 34, 54, 55], focusing on RSA with 2048-bit keys
+(RSA–2048) and elliptic-curve cryptography with 256-bit
+keys (ECC–256). For elliptic-curve discrete logarithms,                  Reconfigurable atom arrays offer unique advantages
+we explore architectures using approximately 10,000 to                for quantum error correction because qubits can be dy-
+26,000 physical qubits. Applying these architectures to               namically rearranged during a computation. In this ap-
+recently developed low-depth circuits [55], we find run-              proach, physical qubits are encoded in long-lived clock
+times varying by roughly two orders of magnitude, with                states and stored in optical tweezer arrays generated by
+the fastest constructions requiring as few as 10 days, as-            optical multiplexing devices [27, 68–72]. High-fidelity en-
+suming a 1 ms stabilizer measurement cycle time. For the              tangling operations are performed via excitation to Ry-
+RSA-2048 factoring problem, constructions using 11,000                dberg states [62, 64, 73]. Between gate operations, the
+to 14,000 qubits yield runtimes roughly two orders of                 qubits are dynamically reconfigured by moving the opti-
+magnitude longer due to higher circuit depths [18, 34],               cal tweezers, enabling massively parallel operation and
+while parallelized architectures with ≈ 102,000 qubits can            nonlocal connectivity [28, 74, 75]. Leveraging identi-
+potentially achieve runtimes of 97 days.                              cal qubits and global parallel control simplifies the im-
+   Existing neutral atom systems have demonstrated                    plementation of error correction protocols on redundant
+below-threshold operation, universal fault-tolerant pro-              qubits [30], and the parallel nonlocal connections enable
+cessing on up to 500 qubits [25], and trapping arrays                 both the use of transversal gates [30, 36, 76, 77] as well
+exceeding 6,000 qubits [56]. These advances are com-                  as high-rate encodings [26, 30, 44, 78].
+plemented by progress in continuous large-scale opera-                   Figure 1a presents a conceptual schematic of an atomic
+tion [57–60] and high-fidelity operation across a variety of          quantum computer capable of implementing Shor’s al-
+atomic species [61–64]. While substantial work is needed              gorithm with 11,961 qubits. The computer is divided
+to integrate these advances into a complete apparatus                 into four primary functional zones, along with a zone for
+                                                                                                                          3
+
+an atomic reservoir and reloading. The memory zone            Advances in logical codes, operations, and algorithms
+stores logical quantum information during the compu-          have reduced qubit requirements by five orders of mag-
+tation. The processor zone stores quantum informa-            nitude over two decades. Note the differences between
+tion undergoing active computation. The operation zone        RSA–2048, the historical benchmark for Shor’s algo-
+is comprised of ancillary qubits used to perform Clif-        rithm, and ECC–256. Elliptic curve cryptography is a
+ford logical Pauli product measurements (PPMs), used          more modern scheme which provides equivalent classical
+for reading, writing, and editing of quantum informa-         security, but with significantly smaller key sizes, resulting
+tion [49, 51, 52, 79, 80]. Finally, the resource zone gen-    in reduced quantum complexity. Current state-of-the-art
+erates magic states to elevate Clifford PPMs to universal     results for planar architectures estimate that RSA–2048
+quantum computation.                                          requires 1 million qubits and 1 week [82], whereas re-
+   Feasible methods exist for operating atomic systems at     cent work finds that ECC–256 requires only half a mil-
+the scales depicted in Fig. 1a and substantially beyond.      lion qubits and tens of minutes, assuming a 1 µs cycle
+Coherent arrays trapping up to 6,100 atomic qubits have       time [55]. Here, we explore several architectures with
+already been demonstrated [56] (without yet realizing         differing resource requirements. We plot two such archi-
+quantum computation). Laser power overheads can be            tectures for RSA–2048 with 13,255 qubits, and ECC–256
+greatly reduced by holding atoms in optical potentials        with 11,961 qubits (see the end of the resource estimates
+that are hundreds of times shallower except during imag-      section for a detailed discussion of our results and prior
+ing, cooling, and transport stages. Additionally, opti-       work).
+cal tweezer arrays with 360,000 traps have been demon-
+strated using metasurface phase masks (although without
+yet trapping atoms) [60].                                                  Codes, logic, and compilation
+   Furthermore, fault-tolerant architectures have been re-
+alized, incorporating simplified methods for removing            Reconfigurable atom arrays motivate architectures
+all relevant entropy sources on systems of hundreds of        based on high-rate quantum low-density parity check
+qubits [25], and including continuous replenishment of        (qLDPC) codes [83], which leverage nonlocality to
+lost qubits [57–59]. Operation at 2× below threshold          densely pack many logical qubits into a single code
+has also been demonstrated, with a path to 10× below          block [84]. Such codes can substantially reduce the over-
+threshold [25]. Although high-fidelity entangling opera-      head of error correction compared to the millions of
+tions require high laser intensity and have thus far been     qubits required for surface codes [38, 40, 43, 44]. The
+realized only on regions of a few hundred qubits [25, 61–     main challenge is that, unlike the surface code setting,
+64], increasing laser power could directly enable opera-      high-rate blocks make it harder to address individual
+tion on thousands of qubits. Further, the present ex-         logical qubits and to execute complex algorithms effi-
+perimental approach is limited by time-inefficient usage      ciently. Refs. [43, 44], for example, provide concrete
+of laser power, where a continuous-wave laser is actively     protocols for computation with high-rate qLDPC codes,
+used with only a 0.1% duty cycle (∼ 200 ns gate opera-        but due to their recent nature, they were not yet highly
+tions separated by idle periods of ≳ 200 µs). By rastering    optimized. Since then, key ingredients for architec-
+the beam dynamically to increase the active duty cycle,       tures leveraging high-rate codes have improved substan-
+the number of atoms that can be addressed and entan-          tially, particularly decoders [45, 85] and logical opera-
+gled at high fidelity could thus be directly increased by     tions [49, 51, 52, 79, 80, 86–90].
+three orders of magnitude. Although integrating these            Figure 2a plots the block error rates of high-
+capabilities at larger scales requires substantial develop-   rate codes we develop here, leveraging improved
+ment effort, they appear to be mutually compatible, such      quasi-cyclic lifted-product (LP) code [91] construc-
+that an appropriately designed architecture could realize     tions with encoding rates of approximately 30%.
+the functionality illustrated in Fig. 1a.                     We analyze three instances from this family with
+   Finally, demonstrated speeds with atomic processors        parameters [[2610, 744, ≤ 16]], [[4350, 1224, ≤ 20]], and
+are bottlenecked by speeds of readout and motion, which       [[5278, 1480, ≤ 24]], where [[n, k, d]] denotes a code with
+can be 100 µs to several ms depending on the specific im-     n physical qubits, k logical qubits, and distance d. We
+plementations [81]. Recent work, which did not optimize       denote these codes as lp3,7      3,7        3,7
+                                                                                        16 , lp20 , and lp24 , respectively,
+for speed, required several ms per stabilizer measurement     where the subscript and superscript correspond to the
+cycle [25], albeit in a smaller system than considered in     code distance and seed matrix dimensions respectively;
+this work. Here we assume a 1 ms stabilizer measurement       see Appendix A. We use a circuit-level noise model where
+cycle. Although realizing this in practice may require        entangling gates, state preparations, and measurements
+technological development, we anticipate that it can be       experience depolarizing noise with error rate p, and de-
+achieved by optimizing for speed and leveraging the sim-      code with a customized belief propagation and localized
+ple atomic motions inherited from the product structure       statistics decoder [45] (Appendix D). At p = 0.1%, the
+of the codes we study [25, 30, 44].                           lp3,7
+                                                                24 code achieves extrapolated per-cycle block failure
+   Figure 1b plots the resource estimates for cryptograph-    rates (i.e. the probability that any logical qubit fails) of
+ically relevant problem instances as a function of time.      ≈ 10−11 . Further, at low physical error rates, its block er-
+                                                                                                                                                                              4
+
+a                                                       b
+            Surface [[852480, 1480, 24]]
+                 3,7
+            lp   16
+                       [[2610, 744, ≤16]]
+              3,7
+            lp20  [[4350, 1224, ≤20]]                             Memory                     1. State
+                                                                                                                 Processor                                Resource
+              3,7
+                                                                                          teleportation
+            lp24  [[5278, 1480, ≤24]]
+                                                                                                                                                        Cultivation
+
+
+                                                                                                                                          2. Gate
+                                                                                        PPM (w. operation                              teleportation
+                                                                                          zone ancillas)                                               Surface [[49, 1, 7]]
+
+
+                                                                                                                                                        Distillation
+                                                                                             3. State
+                                              3,7
+                                                                                          teleportation
+                                            lp16  fit                                                                                   Mid-circuit
+                                              3,7                                                                                      measurement
+                                            lp20  fit
+                                                                                                            LP [[1122, 148, ≤20]] or
+                                              3,7
+                                            lp24  fit       LP [[5278, 1480, ≤24]] or                         BB [[248, 10, ≤18]]
+                                                             LP [[4350, 1224, ≤20]]                                                                    BB [[248, 10, ≤18]]
+
+
+
+
+FIG. 2. Logical code performance and architecture. a, Block error rates per cycle for several lifted product codes and
+surface codes. Least-squares power law fits (dashed lines) are used to extrapolate to lower physical error rates p which could not
+be numerically simulated. The blue fit is of the form y = axb , where a = 14.6 ± 0.7 and b = 7.1 ± 0.4 are fitted parameters using
+data from the three smallest physical error rates. Using this same procedure, the fitted values of b for lp3,7        3,7
+                                                                                                            20 and lp24 are larger
+                                                                                                              d/2
+than d/2, the theoretical maximum value as p → 0. To be conservative, we therefore fit the form y = ax            from the smallest
+physical error rate (red and purple). b, Layout and compilation procedure for the logical architecture. The memory block
+stores quantum information, which is then teleported to the processor for computation. Sequential PPMs execute mid-circuit
+measurements and gate teleportation of magic states. Finally, the logical information is teleported back into the memory. Here,
+P̄ denotes an arbitrary logical Pauli operator on the processor code.
+
+
+ror rates are comparable to surface codes with the same                             challenges. Such fault-tolerant surgeries can, in princi-
+distance and number of logical qubits, but with 161 ×                               ple, be implemented for any qLDPC code, with an ancilla
+fewer physical qubits. We note that a hardware-realistic                            overhead scaling with the block size [49, 87]. However,
+error model with > 50% of errors due to heralded atom                               their practical construction and optimization for large
+loss and biased Pauli noise could effectively lower p by a                          codes, while maintaining low qubit overhead and rig-
+factor of two [25, 92–99], further reducing the block error                         orously benchmarking performance, remain technically
+rates. We also anticipate that the current performance                              challenging and computationally demanding [108]. For
+is decoder-limited and that further error suppression can                           this reason, we study below an architecture based on
+be achieved using more advanced decoders [85, 100–102].                             verifiable code surgeries as a theoretically consistent ex-
+   With these high-rate codes, one can perform simple                               istence proof, which may not be optimal in terms of re-
+resource estimates for a general algorithm. Clifford op-                            source costs. This is achieved by performing computa-
+erations [103] can in principle be implemented directly                             tion on smaller high-rate “processor” codes, rather than
+                                                                                    directly on the large codes in Fig. 2a.
+on a large qLDPC block (e.g., lp3,7 24 ) using code-surgery
+techniques [48, 49, 87]. These methods use an ancil-                                   Figure 2b shows the resulting architecture where vari-
+lary system to fault-tolerantly measure an arbitrary log-                           ous qLDPC codes are used for memory, processing, and
+ical Pauli operator of a general qLDPC code. Magic                                  resource-state generation. An additional operation zone
+|T ⟩ states may be generated, for example, using surface-                           contains ancillary qubits for performing code surgeries.
+code cultivation [50], at an additional space cost of ≈ 500                         We use either the lp3,7             3,7
+                                                                                                           20 or the lp24 code for the mem-
+qubits. The algorithm can then be executed using Pauli-                             ory, depending on the number of logical qubits required
+based computation [103], in which Clifford gates are                                for a given algorithm. We consider two possible proces-
+propagated to the end of the circuit, transforming Pauli-                           sor codes: a [[248, 10, ≤ 18]] bivariate bicycle code [109],
+product measurements (PPMs) arising from T -gate tele-                              denoted bb18 , and a [[1122, 148, ≤ 20]] LP code, denoted
+portation [104] and mid-circuit Pauli measurements into                             lp3,5
+                                                                                      20 (Appendix A). We refer to architectures with these
+higher-weight logical PPMs, potentially acting on all log-                          two choices of the processor code as space-efficient and
+ical qubits in the code block. In this scheme, each PPM is                          balanced, respectively, as the bb18 code has reduced space
+sequentially implemented via a surgery gadget, such that                            cost and logical qubits (and therefore processing power)
+the total runtime is proportional to the Toffoli count of                           compared to the lp3,5 20 code.     Finally, because arith-
+the algorithm. Each Toffoli gate requires approximately                             metic circuits in cryptographic algorithms naturally use
+τToff. ≃ 4d stabilizer measurement cycles, corresponding                            non-Clifford Toffoli gates, we generate |CCZ⟩ resource
+to 4–7 |T ⟩-state teleportations per Toffoli gate [105–107].                        states to directly perform Toffoli gates. We use high-rate
+  Crucially, however, the complication in actually exe-                             8T -to-CCZ distillation [51, 110] to distill cultivated |T ⟩
+cuting logic on high-rate codes hides inside of the code                            states [50, 111] into many |CCZ⟩ states hosted in bb18
+surgery implementation, which can present substantial                               factory codes in parallel. Each resource state has logical
+                                                                                                                                 5
+
+error rate ≲ 10−10 at p = 0.1%, and is generated in time           thus taking 2d  3 (4mi + 4βi + γi ) cycles. As the runtime
+less than a single surgery cycle on average (Appendix C).          of this compilation strategy scales with the total Toffoli
+   Universal computation can be performed on this archi-           count, we compute the amortized time per Toffoli τToff.
+tecture using the following compilation strategy, detailed         of the circuit. τToff. is minimized when each Ci contains
+in Appendix E and illustrated in Fig. 2b. A circuit, com-          many Toffoli gates relative to mid-circuit measurements
+prised of Clifford and Toffoli gates, is first decomposed          and communication between the memory and processor
+                                                                                                   2d
+into sub-circuits {Ci } acting on mi qubits, where each            (βi ≳ mi , γi ), i.e. τToff. = 3β i
+                                                                                                       (4mi + 4βi + γi ) ≥ 8d3 . In
+sub-circuit fits inside the processor block and contains           practice, however, the exact cost depends on the con-
+βi Toffoli gates, γi mid-circuit Pauli measurements, and           crete logical circuit. For Shor’s algorithm we there-
+arbitrary Clifford gates. Each Ci is then executed se-             fore estimate τToff. based on the ripple-carry adder [53,
+quentially as follows:                                             107, 114] and unary lookup table [115], which we antici-
+                                                                   pate dominate the Toffoli counts in the circuits we con-
+   1. Teleport to processor. The mi logical qubits are
+                                                                   sider [18, 34, 54, 55, 116–120]. As shown in Appendix E,
+      teleported from the memory code to the proces-
+                                                                   for the balanced architecture we estimate τToff. ≈ 19 · 2d     3
+      sor code using 2mi PPMs: mi inter-zone measure-
+      ments between memory and processor, followed by              and τToff. ≈ 10 · 2d 3    cycles    for ECC–256      [55]   and
+      mi single-qubit measurements on the memory.                  RSA–2048 [18, 34], respectively. For the space-efficient
+                                                                   architecture, the reduced processor size increases the
+   2. Pauli-based computation on the processor. Clifford           time to τToff. ≈ 72 · 2d                       2d
+                                                                                            3 and τToff. ≈ 43 · 3 cycles for
+      gates are absorbed into high-weight PPMs when                ECC–256 [55] and RSA–2048 [18, 34], respectively.
+      teleporting in |CCZ⟩ states for Toffoli gates and               The space cost is computed by summing the number
+      when implementing mid-circuit measurements.                  of qubits in each zone. We count the data qubits as
+                                                                   well as one basis (X or Z) of ancilla qubits for measur-
+   3. Teleport to memory. The mi qubits are teleported             ing stabilizers by assuming that the X- and Z-stabilizers
+      back using another 2mi PPMs: mi inter-zone mea-              are measured sequentially. Using the lp3,7  20 memory code,
+      surements (now Clifford-transformed) followed by             the resulting qubit counts are 9,739 and 11,961 for the
+      mi measurements on the processor.                            space-efficient and balanced architectures, respectively,
+   As described in Appendix B, these PPMs can be imple-            whereas for lp3,7 24 memory code, the respective qubit
+mented using standard code surgery techniques [49, 86,             counts are 11,033 and 13,255.
+112] by reconfiguring operation zone ancillary qubits to
+measure the chosen logical operators. Importantly, the
+ancilla qubit count scales with the maximum physical                                   Resource estimates
+weight of the target logical operators. All PPMs in our
+scheme are of the form Z̄i P̄ or X̄j , where Z̄i (resp. X̄j ) is     We now determine the resources required to run Shor’s
+a single-qubit logical Z̄ (resp. X̄) operator on the mem-          algorithm, focusing on practically relevant benchmarks
+ory or factory code, and P̄ is an arbitrary logical operator       including Diffie-Hellman (DH), RSA, and ECC. Fig-
+on the processor code (Fig. 2b). Because the logical op-           ure 3a illustrates the required number of logical qubits
+erators in the memory and factory codes can be chosen              and Toffoli gate count for prior state-of-the-art cir-
+to have low physical weight [113], the ancilla cost there-         cuits [18, 54, 55]. We include both compilations for
+fore scales with the processor code size, rather than with         ECC–256 from Ref. [55], denoted (1) and (2), which offer
+the entire memory block, as would be required if complex           a tradeoff between logical qubit and Toffoli count. Also
+operations were performed directly on the memory code.             plotted are the number of Toffoli gates which can be im-
+We numerically construct the required surgery gadgets              plemented with 90% total success probability in the bal-
+for our architecture and estimate the corresponding an-            anced architecture, nToff. = log(0.9)/[τToff. log(1 − PL )],
+cilla costs, and hence the size of the operation zone, in          where τToff. = 19 · 2d
+                                                                                        3 , and PL is the extrapolated block
+Appendix B, finding it accounts for only 10%–20% of                error rate per cycle of the memory code. We consider
+the total qubit count in both the space-efficient and bal-         both the lp3,7          3,7
+                                                                               20 and lp24 memory blocks, which can im-
+anced architectures. Numerical simulations indicate that           plement circuits with ≤ 1224 and ≤ 1480 logical qubits,
+the logical error rates of the surgery gadgets are within          respectively. ECC–256 requires p = 0.093% with the lp3,724
+an order of magnitude of the processor and factory code,           memory (compilation (1) can also be implemented with
+comparable to the lp3,7           3,7
+                       20 and lp24 error rates in Fig. 2a.         p = 0.070% using the smaller lp3,7  20 memory), whereas
+Therefore, we take the memory zone error rate as an ap-            RSA–2048 and DH–2048 require slightly reduced physi-
+proximation for the total architecture error rate.                 cal error rates.
+   The time cost of this compilation strategy is as follows.         In Figure 3b-c, we plot the number of days required for
+Each PPM is implemented in a single surgery cycle con-             RSA–2048 and ECC–256, assuming 1 ms per cycle. The
+sisting of 2d/3 stabilizer measurement cycles, chosen to           time costs vary substantially depending on the logical
+minimize the total logical error rate (see Ref. [49] and           architectures, circuits, and algorithms. For example, the
+Appendix B for justification), where d is the processor            runtimes of RSA–2048 (Fig. 3b) and ECC–256 (Fig. 3c)
+code distance. Each Ci involves 4mi + 4βi + γi PPMs,               vary by nearly two orders of magnitude for the balanced
+                                                                                                                                                                      6
+
+a                                                          b                   RSA-2048                          c                  ECC-256
+                                                                      Ref. [18]:               Ref. [34]:                Ref. [55] (1):           Ref. [55] (2):
+                                                                 1,399 log. qubits,       ≈6,144 log. qubits,         1,200 log. qubits,       1,450 log. qubits,
+                                                                6.5 × 109 Toff. gates    5.3 × 109 Toff. gates       9.0 × 107 Toff. gates    7.0 × 107 Toff. gates
+                                              RSA-2048
+                                               Ref. [18]
+               Finite-field DH-2048
+                     Ref. [54]                                  4.3×104
+                                                                 days
+
+                                                                            1.0×104
+                                                                             days
+                                 RSA-1024
+                                  Ref. [18]
+                                                                                        8.7×102                      1.0×103
+                                                                                         days                         days
+                                                                                                                                  2.6×102
+                                                                                                                                   days
+          lp20
+            3,7
+                p = 0.048% ECC-256 (1)
+                                                                                                    9.7×101
+          lp20
+            3,7
+                p = 0.055%   Ref. [55]                                                                days                                   5.2×101
+                                       ECC-256 (2)                                                                                            days
+          lp20 p = 0.070%
+            3,7
+                                         Ref. [55]
+          lp24
+            3,7
+                p = 0.065%
+          lp24 p = 0.075%
+            3,7                                                                                                                                      1.0×101
+                                                                                                                                                      days
+          lp3,7 p = 0.093%                                      11,033       13,255                                   9,739        11,961
+            24                                                                          ≈68,000 ≈102,000                                     ≈19,000 ≈26,000
+                                                                qubits       qubits      qubits  qubits               qubits       qubits     qubits  qubits
+                                                               Space- Balanced P = 100 P = 1,160                     Space- Balanced P = 20 P = 130
+                                                               efficient       Time-efficient                        efficient       Time-efficient
+
+
+FIG. 3. Resources required for Shor’s algorithm. a, Number of Toffoli gates and logical qubits required in prior circuits
+for RSA–1024 and RSA–2048 [18], finite-field DH–2048 [54], and ECC–256 [55]. The colored boxes represent the total number of
+Toffoli gates that can be executed in the balanced architecture with 90% total success probability, using either the lp3,7     3,7
+                                                                                                                       20 or lp24
+memory. b, Runtimes required for RSA–2048 in different architectures (annotations have one significant figure). The space-
+efficient and balanced architectures use the lp3,7
+                                               24 memory and the circuit in Ref. [18], whereas the time-efficient architecture
+uses the circuit in Ref. [34]. We emphasize that the time-efficient runtimes are based on the assumption that up to P Toffoli
+gates are executed in parallel using high-rate surgery, as motivated by Ref. [52]. c, Runtimes required for solving ECC–256,
+using the compilations in Ref. [55]. The space-efficient and balanced architectures use the lp3,7
+                                                                                              20 memory.
+
+
+
+
+architecture, with the latter requiring ≈ 264 days. The                        To realize these time improvements, the number of
+runtimes for both the space-efficient and balanced archi-                   physical qubits must be increased to generate more
+tectures are limited by the fact that Toffoli gates and                     |CCZ⟩ states in parallel, and for ancillary logical qubits
+PPMs are executed sequentially. By changing the fault-                      used in the carry-lookahead adder [123]. We use codes
+tolerant schemes for implementing logic and compiling                       in upcoming work [125], which have 20%–30% encod-
+circuits to leverage parallelism, further runtime reduc-                    ing rates and maintain the required distance, for storing
+tions by nearly two orders of magnitude can potentially                     quantum information, computation, and generating high-
+be achieved with the time-efficient architecture plotted.                   rate magic. By assuming that the surgery system scales
+   Concretely, in the time-efficient architecture, we con-                  with the size of codes undergoing parallel operation, in
+sider parallelizing the Toffoli gates in core algorithmic                   line with prior work [52], we estimate that approximately
+subroutines assuming the use of parallel surgery opera-                     26,000 qubits are required for ECC–256 (P = 130) and
+tions [52, 121, 122]. Such surgery operations have previ-                   102,000 qubits are required for RSA–2048 (P = 1,160)
+ously been constructed for hundreds of parallel PPMs on                     (see Appendix F for discussion). We emphasize that
+related code families, and have demonstrated comparable                     these estimates are preliminary and can be optimized in
+performance to an idling code block in numerical bench-                     future work. Nonetheless, they indicate that the run-
+marks on ≈ 10 PPMs [52]. We estimate the potential                          time can be substantially reduced by optimizing the al-
+speedup by computing the time reduction from replacing                      gorithm, circuits, and fault-tolerant protocols.
+n-bit serial quantum ripple-carry adders [53, 107, 114],                       Finally, the advances in this work complement recent
+commonly used in prior circuits [18, 34], with paral-                       progress in the resource estimates plotted in Fig. 1b.
+lelized carry-lookahead adders [123] (here n is the key                     Advances in planar surface-code architectures and al-
+size). These adders have Toffoli depths (number of max-                     gorithmic optimizations have already reduced qubit re-
+imally parallelized layers of Toffoli gates) of ≈ 1n–2n and                 quirements to under one million qubits [55, 82]. Re-
+≈ 4 log(n), respectively, where the range corresponds to                    cent progress across hardware platforms has also moti-
+whether a particular addition is controlled or not. We                      vated architectures leveraging nonlocal connectivity to
+consider the ECC–256 and RSA–2048 compilations in                           reduce resource costs [36, 37, 46]. Zhou et al. [36] com-
+Refs. [34, 55]. As detailed in Appendix F, we generate                      pile RSA–2048 with 19 million qubits encoded in surface
+and consume |CCZ⟩ states in parallel batches of size P ,                    codes, and uses fast, nonlocal transversal operations to
+where the gate teleportation and CZ feedback are directly                   achieve a runtime of ≈ 1 week despite a slower 1 ms cycle
+implemented in three parallel surgery cycles [52, 124].                     time. Architectures based on high-rate codes encoding
+The estimated speedup increases with P , with projected                     small ≈ 10 logical qubits have also been proposed, achiev-
+runtimes of 10 days for ECC–256 (P = 130) and 97 days                       ing 10× qubit savings over planar architectures while
+for RSA–2048 (P = 1,160).                                                   maintaining fixed, quasi-local connectivity and enabling
+                                                                                                                          7
+
+parallel logical operations across blocks [37, 46]. For ex-      be leveraged to reduce computation time by factors of
+ample, Webster et al. [37] compile Shor’s algorithm for          up to 6–10 × [133, 134]. Raw qubit speeds can also be
+RSA–2048 with various resource tradeoffs; we plot two            improved substantially. Faster readout techniques can
+such compilations with 1.1 million qubits and 1 year (1 ms       reduce measurement times from ∼1 ms to ∼1 µs [81].
+cycle time), and 98,000 qubits and 1 month (1 µs cy-             Faster qubit motion can be achieved through architec-
+cle time). Our space-efficient and balanced architectures        tures that leverage atoms moving at constant velocity,
+further reduce qubit counts by one order of magnitude            thereby avoiding repeated starting and stopping and en-
+compared to small-block architectures by leveraging the          abling transport speeds that are potentially hundreds of
+long-range, reconfigurable connectivity of neutral-atom          times faster. These approaches require additional work
+systems. While we expect these architectures have near-          to incorporate into a complete architecture that removes
+optimal qubit counts, our findings indicate that runtimes        all forms of entropy [25]. Nevertheless, they indicate that
+can be reduced by orders of magnitude by leveraging par-         hardware-level speed improvements by several additional
+allelism [121, 123], suggesting that future efforts should       orders of magnitude can potentially be achieved, result-
+focus on architectural design and reducing algorithm run-        ing in runtimes on the scale of hours or even minutes.
+time.                                                               These findings have significant implications. Although
+                                                                 substantial expertise, experimental development effort,
+                                                                 and architectural design are required, our theoretical
+                 Conclusion and outlook                          analysis suggests that a neutral atom system capable
+                                                                 of implementing Shor’s algorithm could be constructed.
+                                                                 This conclusion underscores the importance of ongoing
+   In this work, we propose FTQC architectures based
+                                                                 efforts to transition widely-deployed cryptographic
+on reconfigurable atom arrays. By optimizing construc-
+                                                                 systems toward post-quantum standards designed to be
+tions for high-rate codes [38–44], decoders [45], and low-
+                                                                 secure against quantum attacks [65–67]. More broadly,
+overhead logical operations [48–52], we find that Shor’s
+                                                                 these results position neutral-atom systems as a leading
+algorithm can be implemented at cryptographically rele-
+                                                                 platform for utility-scale quantum computation, with
+vant scales using as few as 10,000 atomic qubits. Lever-
+                                                                 the capacity to drive innovation across science and
+aging improvements to quantum algorithms [55] and par-
+                                                                 industry.
+allel logical operations and circuits [121, 123], our most
+time-efficient architectures can potentially enable run-
+times of 10 days for ECC–256 with ≈ 26,000 qubits, and
+97 days for RSA–2048 with ≈ 102,000 qubits.
+   The space and time overheads for these problems
+are likely to further improve. The space overheads
+could potentially be reduced by a factor of two be-
+yond our most space-efficient architectures by utilizing
+higher-rate codes [125]. Substantially larger space re-
+ductions, however, would likely require algorithmic com-
+pression and improved physical fidelities that permit
+operation at lower code distances. In contrast, ad-
+vances in quantum error correction, circuits, and algo-
+rithms could potentially reduce runtimes by more than
+an order of magnitude beyond the time-efficient archi-
+tecture presented. Each parallel Toffoli layer can po-
+tentially be implemented in ≃ 1 cycle by using single-
+shot surgery [79, 90, 126, 127], single-shot code switch-
+ing [80, 128, 129], or transversal gates [51, 76, 77, 89, 130–
+132], which could remove the requirement for d ≃ 20
+cycles per operation. Computation can potentially be
+further parallelized using space-time tradeoffs [133–135],
+advanced compilation strategies [37, 136], and improve-
+ments to high-rate magic [80, 89]. While we emphasize
+that such schemes require further innovation and devel-
+opment, they open the possibility of reducing runtime by
+at least another order of magnitude.
+   The hardware itself can also be improved along several
+fronts to reduce runtime. Although systems of ≈ 10,000
+qubits are sufficient to address the relevant problem sizes,
+known techniques could potentially increase the available
+space to ∼ 100,000 qubits. Space-time tradeoffs can then
+                                                                                                                             8
+
+
+
+
+ [1] Deutsch, D. & Jozsa, R. Rapid solution of problems              strated with a neutral atom quantum processor (2024).
+     by quantum computation. Proc. R. Soc. Lond. A 439,              arXiv:2411.11822 [quant-ph].
+     553–558 (1992).                                            [24] Ryan-Anderson, C. et al. High-fidelity teleportation of a
+ [2] Simon, D. R. On the power of quantum computation.               logical qubit using transversal gates and lattice surgery.
+     SIAM J. Comput. 26, 1474–1483 (1997).                           Science 385, 1327–1331 (2024).
+ [3] Shor, P. W. Polynomial-time algorithms for prime fac-      [25] Bluvstein, D. et al. A fault-tolerant neutral-atom ar-
+     torization and discrete logarithms on a quantum com-            chitecture for universal quantum computation. Nature
+     puter. SIAM J. Comput. 26, 1484–1509 (1997).                    649, 39–46 (2026).
+ [4] Kitaev, A. Y.       Quantum measurements and the           [26] Reichardt, B. W. et al.             Fault-tolerant quan-
+     Abelian Stabilizer Problem. arXiv preprint arXiv:quant-         tum computation with a neutral atom processor
+     ph/9511026 (1995).                                              (2025).     URL https://arxiv.org/abs/2411.11822.
+ [5] Rivest, R. L., Shamir, A. & Adleman, L. A method for            arXiv:2411.11822 [quant-ph].
+     obtaining digital signatures and public-key cryptosys-     [27] Saffman, M., Walker, T. G. & Mølmer, K. Quantum
+     tems. Commun. ACM 21, 120–126 (1978).                           information with Rydberg atoms. Rev. Mod. Phys. 82,
+ [6] Koblitz, N. Elliptic curve cryptosystems. Mathematics           2313–2363 (2010).
+     of Computation 48, 203–209 (1987).                         [28] Bluvstein, D. et al. A quantum processor based on co-
+ [7] Shor, P. W. Scheme for reducing decoherence in quan-            herent transport of entangled atom arrays. Nature 604,
+     tum computer memory. Phys. Rev. A 52, R2493–R2496               451–456 (2022).
+     (1995).                                                    [29] Graham, T. M. et al. Multi-qubit entanglement and al-
+ [8] Calderbank, A. R. & Shor, P. W. Good quantum error-             gorithms on a neutral-atom quantum computer. Nature
+     correcting codes exist. Phys. Rev. A 54, 1098–1105              604, 457–462 (2022).
+     (1996).                                                    [30] Bluvstein, D. et al. Logical quantum processor based on
+ [9] Shor, P. W. Fault-tolerant quantum computation. In              reconfigurable atom arrays. Nature 626, 58–65 (2024).
+     Proceedings of 37th conference on foundations of com-      [31] Jones, N. C. et al. Layered architecture for quantum
+     puter science, 56–65 (IEEE, 1996).                              computing. Phys. Rev. X 2, 031007 (2012).
+[10] Steane, A. M. Error correcting codes in quantum theory.    [32] O’Gorman, J. & Campbell, E. T. Quantum computa-
+     Phys. Rev. Lett. 77, 793–797 (1996).                            tion with realistic magic-state factories. Phys. Rev. A
+[11] Steane, A. M. Simple quantum error-correcting codes.            95, 032338 (2017).
+     Phys. Rev. A 54, 4741–4751 (1996).                         [33] Gheorghiu, V. & Mosca, M. Benchmarking the quantum
+[12] Gottesman, D. Theory of fault-tolerant quantum com-             cryptanalysis of symmetric, public-key and hash-based
+     putation. Phys. Rev. A 57, 127–137 (1998).                      cryptographic schemes (2019). URL https://arxiv.
+[13] Kitaev, A. Y. Fault-tolerant quantum computation by             org/abs/1902.02332. arXiv:1902.02332 [quant-ph].
+     anyons. Ann. Phys. 303, 2–30 (2003).                       [34] Gidney, C. & Ekerå, M. How to factor 2048 bit RSA in-
+[14] Dalzell, A. M. et al. Quantum algorithms: A sur-                tegers in 8 hours using 20 million noisy qubits. Quantum
+     vey of applications and end-to-end complexities. arXiv          5, 1–31 (2019).
+     preprint arXiv:2310.03011 (2023).                          [35] Dallaire-Demers, P.-L., Doyle, W. & Foo, T. Brace
+[15] Huang, H.-Y., Choi, S., McClean, J. R. &                        for impact: ECDLP challenges for quantum cryptanaly-
+     Preskill, J. The vast world of quantum advantage                sis (2025). URL https://arxiv.org/abs/2508.14011.
+     (2025).    URL https://arxiv.org/abs/2508.05720.                arXiv:2508.14011 [quant-ph].
+     arXiv:2508.05720 [quant-ph].                               [36] Zhou, H. et al. Resource Analysis of Low-Overhead
+[16] Babbush, R. et al. The grand challenge of quantum               Transversal Architectures for Reconfigurable Atom Ar-
+     applications. arXiv preprint arXiv:2511.09124 (2025).           rays. In International Symposium on Computer Archi-
+[17] Eisert, J. & Preskill, J.       Mind the gaps: The              tecture (2025).
+     fraught road to quantum advantage. arXiv preprint          [37] Webster, P. et al. The Pinnacle Architecture: Re-
+     arXiv:2510.19928 (2025).                                        ducing the cost of breaking RSA-2048 to 100,000
+[18] Gidney, C. How to factor 2048 bit RSA integers with             physical qubits using quantum LDPC codes
+     less than a million noisy qubits (2025). URL https://           (2026).     URL https://arxiv.org/abs/2602.11457.
+     arxiv.org/abs/2505.15917. arXiv:2505.15917 [quant-              arXiv:2602.11457 [quant-ph].
+     ph].                                                       [38] Breuckmann, N. P. & Eberhardt, J. N. Quantum Low-
+[19] Fowler, A. G., Mariantoni, M., Martinis, J. M. & Cle-           Density Parity-Check Codes. PRX Quantum 2, 040101
+     land, A. N. Surface codes: Towards practical large-scale        (2021).
+     quantum computation. Phys. Rev. A 86, 032324 (2012).       [39] Panteleev, P. & Kalachev, G. Quantum LDPC codes
+[20] Postler, L. et al. Demonstration of fault-tolerant uni-         with almost linear minimum distance. IEEE Trans. Inf.
+     versal quantum gate operations. Nature 605, 675–680             Th. 68, 213–229 (2021).
+     (2022).                                                    [40] Panteleev, P. & Kalachev, G. Asymptotically good
+[21] Wang, Y. et al. Fault-tolerant one-bit addition with the        quantum and locally testable classical ldpc codes. In
+     smallest interesting color code. Sci. Adv. 10 (2024).           Proceedings of the 54th annual ACM SIGACT sympo-
+[22] Google Quantum AI and Collaborators. Quantum er-                sium on theory of computing, 375–388 (2022).
+     ror correction below the surface code threshold. Nature    [41] Leverrier, A. & Zémor, G. Quantum tanner codes
+     638, 920–926 (2025).                                            (2022).     URL https://arxiv.org/abs/2202.13641.
+[23] Reichardt, B. W. et al. Logical computation demon-              arXiv:2202.13641 [quant-ph].
+                                                                                                                               9
+
+[42] Dinur, I., Hsieh, M.-H. H., Lin, T.-C. C. & Vidick, T.            Architecture in Neutral Atom Arrays. Physical Review
+     Good Quantum LDPC Codes with Linear Time De-                      X 13 (2023).
+     coders. Proceedings of the Annual ACM Symposium on           [64] Tsai, R. B.-S., Sun, X., Shaw, A. L., Finkelstein, R. &
+     Theory of Computing 905–918 (2022).                               Endres, M. Benchmarking and Fidelity Response The-
+[43] Bravyi, S. et al. High-threshold and low-overhead fault-          ory of High-Fidelity Rydberg Entangling Gates. PRX
+     tolerant quantum memory. Nature 627, 778–782 (2024).              Quantum 6, 010331 (2025).
+[44] Xu, Q. et al. Constant-overhead fault-tolerant quan-         [65] National Institute of Standards and Technology.
+     tum computation with reconfigurable atom arrays. Nat.             Module-lattice-based key-encapsulation mechanism
+     Phys. 20, 1084–1090 (2024).                                       standard. Tech. Rep. Federal Information Processing
+[45] Hillmann, T. et al. Localized statistics decoding: A              Standards Publications (FIPS) 203, U.S. Department
+     parallel decoding algorithm for quantum low-density               of Commerce, Washington, D.C. (2024).
+     parity-check codes. arXiv:2406.18655 (2024).                 [66] National Institute of Standards and Technology.
+[46] Yoder, T. J. et al. Tour de gross: A modular quan-                Module-lattice-based digital signature standard. Tech.
+     tum computer based on bivariate bicycle codes. arXiv              Rep. Federal Information Processing Standards Pub-
+     preprint arXiv:2506.03094 (2025).                                 lications (FIPS) 204, U.S. Department of Commerce,
+[47] Yang, W., Chadwick, J., Teo, M. H., Viszlai, J. &                 Washington, D.C. (2024).
+     Chong, F. Rascql: Reaction-time-limited architec-            [67] National Institute of Standards and Technology. State-
+     ture for space-time-efficient complex qldpc logic. arXiv          less hash-based digital signature standard. Tech. Rep.
+     preprint arXiv:2602.14273 (2026).                                 Federal Information Processing Standards Publications
+[48] Cohen, L. Z., Kim, I. H., Bartlett, S. D. & Brown, B. J.          (FIPS) 205, U.S. Department of Commerce, Washing-
+     Low-overhead fault-tolerant quantum computing using               ton, D.C. (2024).
+     long-range connectivity. Sci. Adv. 8 (2022).                 [68] Barredo, D., De Léséleuc, S., Lienhard, V., Lahaye, T.
+[49] Cross, A., He, Z., Rall, P. & Yoder, T. Improved                  & Browaeys, A. An atom-by-atom assembler of defect-
+     QLDPC Surgery: Logical Measurements and Bridging                  free arbitrary two-dimensional atomic arrays. Science
+     Codes. arXiv:2407.18393 (2024).                                   354, 1021–1023 (2016).
+[50] Gidney, C., Shutty, N. & Jones, C. Magic state cultiva-      [69] Endres, M. et al. Atom-by-atom assembly of defect-free
+     tion: growing T states as cheap as CNOT gates (2024).             one-dimensional cold atom arrays. Science 354, 1024–
+     arXiv:2409.17595 [quant-ph].                                      1027 (2016).
+[51] Xu, Q. et al. Fast and parallelizable logical computa-       [70] Ma, S. et al. Universal gate operations on nuclear spin
+     tion with homological product codes. Phys. Rev. X 15,             qubits in an optical tweezer array of 171 Yb atoms. Phys.
+     021065 (2025).                                                    Rev. X 12, 021028 (2022).
+[52] Zheng, G., Jiang, L. & Xu, Q. High-rate surgery:             [71] Jenkins, A., Lis, J. W., Senoo, A., McGrew, W. F. &
+     towards constant-overhead logical operations. arXiv               Kaufman, A. M. Ytterbium nuclear-spin qubits in an
+     preprint arXiv:2510.08523 (2025).                                 optical tweezer array. Phys. Rev. X 12, 021027 (2022).
+[53] Cuccaro, S. A., Draper, T. G., Kutin, S. A. & Moulton,       [72] Finkelstein, R. et al. Universal quantum operations and
+     D. P. (2004). arXiv:quant-ph/0410184 [quant-ph].                  ancilla-based read-out for tweezer clocks. Nature 634,
+[54] Chevignard, C., Fouque, P.-A. & Schrottenloher, A. Re-            321–327 (2024).
+     ducing the number of qubits in quantum factoring. In         [73] Isenhower, L. et al. Demonstration of a Neutral Atom
+     Tauman Kalai, Y. & Kamara, S. F. (eds.) Advances in               Controlled-NOT Quantum Gate. Phys. Rev. Lett. 104,
+     Cryptology – CRYPTO 2025, 384–415 (Springer Nature                010503 (2010).
+     Switzerland, Cham, 2025).                                    [74] Beugnon, J. et al. Two-dimensional transport and trans-
+[55] Babbush, R. et al. Securing elliptic curve cryptocur-             fer of a single atomic qubit in optical tweezers. Nature
+     rencies against quantum vulnerabilities: Resource esti-           Physics 3, 696–699 (2007).
+     mates and mitigations (2026).                                [75] Schlosser, M., Tichelmann, S., Kruse, J. & Birkl, G.
+[56] Manetsch, H. J. et al. A tweezer array with 6,100 highly          Scalable architecture for quantum information process-
+     coherent atomic qubits. Nature 647, 60–67 (2025).                 ing with atoms in optical micro-structures. Quantum
+[57] Gyger, F. et al. Continuous operation of large-scale              Information Processing 10, 907–924 (2011).
+     atom arrays in optical lattices. Phys. Rev. Res. 6,          [76] Cain, M. et al. Correlated Decoding of Logical Algo-
+     033104 (2024).                                                    rithms with Transversal Gates. Phys. Rev. Lett. 133,
+[58] Norcia, M. A. et al. Iterative assembly of 171 Yb atom ar-        240602 (2024).
+     rays with cavity-enhanced optical lattices. PRX Quan-        [77] Zhou, H. et al. Algorithmic fault tolerance for fast quan-
+     tum 5, 030316 (2024).                                             tum computing (2024). arXiv:2406.17653 [quant-ph].
+[59] Chiu, N.-C. et al. Continuous operation of a coherent        [78] Zhang, B. et al.             Leveraging erasure errors
+     3,000-qubit system. Nature 646, 1075–1080 (2025).                 in logical qubits with metastable 171 yb atoms
+[60] Holman, A. et al. Trapping of single atoms in meta-               (2025).     URL https://arxiv.org/abs/2506.13724.
+     surface optical tweezer arrays. Nature 649, 859–865               arXiv:2506.13724 [quant-ph].
+     (2026).                                                      [79] Cowtan, A., He, Z., Williamson, D. J. & Yo-
+[61] Evered, S. J. et al. High-fidelity parallel entangling            der, T. J. Fast and fault-tolerant logical measure-
+     gates on a neutral-atom quantum computer. Nature                  ments: Auxiliary hypergraphs and transversal surgery
+     622, 268–272 (2023).                                              (2025).     URL https://arxiv.org/abs/2510.14895.
+[62] Ma, S. et al. High-fidelity gates and mid-circuit erasure         arXiv:2510.14895 [quant-ph].
+     conversion in an atomic qubit. Nature 622, 279–284           [80] Li, C., Preskill, J. & Xu, Q. Transversal dimension jump
+     (2023).                                                           for product qldpc codes (2025). URL https://arxiv.
+[63] Lis, J. W. et al. Midcircuit Operations Using the omg             org/abs/2510.07269. arXiv:2510.07269 [quant-ph].
+                                                                                                                               10
+
+ [81] Muzi Falconi, A. et al. Microsecond-scale high-survival     [102] Ataides, J. P. B., Gu, A., Yelin, S. F. & Lukin,
+      and number-resolved detection of ytterbium atom ar-               M. D. Neural decoders for universal quantum algo-
+      rays. Phys. Rev. Lett. 135, 203402 (2025).                        rithms (2025). URL https://arxiv.org/abs/2509.
+ [82] Gidney, C.       How to factor 2048 bit rsa integers              11370. arXiv:2509.11370 [quant-ph].
+      with less than a million noisy qubits. arXiv preprint       [103] Bravyi, S., Smith, G. & Smolin, J. A. Trading classical
+      arXiv:2505.15917 (2025).                                          and quantum computational resources. Physical Review
+ [83] Breuckmann, N. P. & Eberhardt, J. N. Quantum low-                 X 6, 021043 (2016).
+      density parity-check codes. PRX Quantum 2, 040101           [104] A T gate on the memory code can be implemented using
+      (2021).                                                           a two-qubit Z̄ Z̄ measurement between the memory and
+ [84] Bravyi, S., Poulin, D. & Terhal, B. Tradeoffs for Re-             the surface code hosting the |T ⟩ state [137].
+      liable Quantum Information Storage in 2D Systems.           [105] Jones, C. Low-overhead constructions for the fault-
+      Phys. Rev. Lett. 104, 050503 (2010).                              tolerant toffoli gate. Phys. Rev. A 87, 022328 (2013).
+ [85] Müller, T. et al. Improved belief propagation is suffi-    [106] Amy, M., Maslov, D., Mosca, M. & Roetteler, M.
+      cient for real-time decoding of quantum memory. arXiv             A meet-in-the-middle algorithm for fast synthesis of
+      preprint arXiv:2506.01779 (2025).                                 depth-optimal quantum circuits. Trans. Comp.-Aided
+ [86] Williamson, D. J. & Yoder, T. J. Low-overhead fault-              Des. Integ. Cir. Sys. 32, 818–830 (2013).
+      tolerant quantum computation by gauging logical oper-       [107] Gidney, C. Halving the cost of quantum addition. Quan-
+      ators. arXiv preprint arXiv:2410.02213 (2024).                    tum 2, 74 (2018).
+ [87] He, Z., Cowtan, A., Williamson, D. J. & Yoder, T. J.        [108] State-of-the-art, low-overhead constructions rely on ran-
+      Extractors: Qldpc architectures for efficient pauli-based         domized numerical subroutines that extensively esti-
+      computation. arXiv preprint arXiv:2503.10390 (2025).              mate the fault distance of the protocol [49, 52], a proce-
+ [88] Malcolm, A. J. et al. Computing efficiently in qldpc              dure that becomes computationally prohibitive for large
+      codes. arXiv preprint arXiv:2502.07150 (2025).                    code blocks.
+ [89] Menon, V. et al. Magic tricycles: Efficient magic           [109] Liang, Z., Liu, K., Song, H. & Chen, Y.-A. Generalized
+      state generation with finite block-length quantum ldpc            toric codes on twisted tori for quantum error correction.
+      codes (2025). URL https://arxiv.org/abs/2508.                     arXiv preprint arXiv:2503.03827 (2025).
+      10714. arXiv:2508.10714 [quant-ph].                         [110] Litinski, D. Magic State Distillation: Not as Costly as
+ [90] Xu, Q. et al. Batched high-rate logical operations for            You Think. Quantum 3, 205 (2019).
+      quantum ldpc codes. arXiv preprint arXiv:2510.06159         [111] Sahay, K. et al. Fold-transversal surface code cul-
+      (2025).                                                           tivation (2025). URL https://arxiv.org/abs/2509.
+ [91] Panteleev, P. & Kalachev, G. Degenerate Quantum                   05212. arXiv:2509.05212 [quant-ph].
+      LDPC Codes With Good Finite Length Performance.             [112] Swaroop, E., Jochym-O’Connor, T. & Yoder, T. J. Uni-
+      Quantum 5, 585 (2019).                                            versal adapters between quantum ldpc codes. arXiv
+ [92] Wu, Y., Kolkowitz, S., Puri, S. & Thompson, J. D. Era-            preprint arXiv:2410.03628 (2024).
+      sure conversion for fault-tolerant quantum computing in     [113] Zheng, H., Zheng, G., Jiang, L. & Xu, Q. In preparation
+      alkaline earth Rydberg atom arrays. Nat. Comm. 13,                (2026).
+      1–7 (2022).                                                 [114] Vedral, V., Barenco, A. & Ekert, A. Quantum networks
+ [93] Sahay, K., Jin, J., Claes, J., Thompson, J. D. & Puri,            for elementary arithmetic operations. Physical Review
+      S. High threshold codes for neutral atom qubits with              A 54, 147 (1996).
+      biased erasure errors. arXiv preprint arXiv:2302.03063      [115] Babbush, R. et al. Encoding electronic spectra in quan-
+      (2023).                                                           tum circuits with linear t complexity. Phys. Rev. X 8,
+ [94] Kubica, A. et al. Erasure qubits: Overcoming the T1               041015 (2018).
+      limit in superconducting circuits. Phys. Rev. X 13,         [116] Proos, J. & Zalka, C. Shor’s discrete logarithm quan-
+      041022 (2023).                                                    tum algorithm for elliptic curves. arXiv preprint quant-
+ [95] Yu, C.-C. et al. Processing and decoding Rydberg decay            ph/0301141 (2003).
+      error with MBQC (2025). arXiv:2411.04664 [quant-ph].        [117] Roetteler, M., Naehrig, M., Svore, K. M. & Lauter,
+ [96] Chang, K. et al. Surface Code with Imperfect Erasure              K. Quantum resource estimates for computing elliptic
+      Checks (2024). arXiv:2408.00842 [quant-ph].                       curve discrete logarithms. In International Conference
+ [97] Perrin, H., Jandura, S. & Pupillo, G. Quantum                     on the Theory and Application of Cryptology and Infor-
+      error correction resilient against atom loss (2025).              mation Security, 241–270 (Springer, 2017).
+      arXiv:2412.07841 [quant-ph].                                [118] Häner, T., Jaques, S., Naehrig, M., Roetteler, M. &
+ [98] Baranes, G. et al. Leveraging atom loss errors in fault           Soeken, M. Improved quantum circuits for elliptic curve
+      tolerant quantum algorithms (2025). arXiv:2502.20558              discrete logarithms. In International conference on post-
+      [quant-ph].                                                       quantum cryptography, 425–444 (Springer, 2020).
+ [99] Gu, S., Retzker, A. & Kubica, A. Fault-tolerant quan-       [119] Litinski, D. How to compute a 256-bit elliptic curve
+      tum architectures based on erasure qubits. Phys. Rev.             private key with only 50 million toffoli gates. arXiv
+      Res. 7, 013249 (2025).                                            preprint arXiv:2306.08585 (2023).
+[100] Senior, A. W. et al.             A scalable and real-       [120] Gouzien, E., Ruiz, D., Le Régent, F.-M., Guillaud, J.
+      time neural decoder for topological quantum codes                 & Sangouard, N. Performance analysis of a repetition
+      (2026).     URL https://arxiv.org/abs/2512.07737.                 cat code architecture: Computing 256-bit elliptic curve
+      arXiv:2512.07737 [quant-ph].                                      logarithm in 9 hours with 126 133 cat qubits. Phys. Rev.
+[101] Maan, A. S., Garcia Herrero, F. M., Paler, A. & Savin,            Lett. 131, 040602 (2023).
+      V. Decoding correlated errors in quantum ldpc codes.        [121] Zhang, G. & Li, Y. Time-efficient logical operations
+      Nature Communications (2026).                                     on quantum low-density parity check codes. Physical
+                                                                                                                            11
+
+      Review Letters 134, 070602 (2025).                         [142] Ide, B., Gowda, M. G., Nadkarni, P. J. & Dauphinais,
+[122] Cowtan, A., He, Z., Williamson, D. J. & Yoder,                   G. Fault-tolerant logical measurements via homological
+      T. J. Parallel logical measurements via quantum code             measurement. arXiv preprint arXiv:2410.02753 (2024).
+      surgery. arXiv preprint arXiv:2503.05003 (2025).           [143] Webster, P., Smith, S. C. & Cohen, L. Z. Explicit con-
+[123] Draper, T. G., Kutin, S. A., Rains, E. M. & Svore,               struction of low-overhead gadgets for gates on quantum
+      K. M. A logarithmic-depth quantum carry-lookahead                ldpc codes. arXiv preprint arXiv:2511.15989 (2025).
+      adder. Quantum Inf. Comput. 6, 351–369 (2004).             [144] Gu, B. et al. Qgpu: Parallel logic in quantum ldpc
+[124] Horsman, C., Fowler, A. G., Devitt, S. & Meter, R. V.            codes (2026). URL https://arxiv.org/abs/2603.
+      Surface code quantum computing by lattice surgery.               05398. arXiv:2603.05398 [quant-ph].
+      New Journal of Physics 14, 123011 (2012).                  [145] Pryadko, L. P., Shabashov, V. A. & Kozin, V. K.
+[125] Caltech & Oratomic. Atlas of atomic fault-tolerant               Qdistrnd: A gap package for computing the distance
+      quantum memory (2026). In preparation.                           of quantum error-correcting codes. arXiv preprint
+[126] Baspin, N., Berent, L. & Cohen, L. Z. Fast surgery for           arXiv:2308.15140 (2023).
+      quantum ldpc codes. arXiv preprint arXiv:2510.04521        [146] Huang, S., Jochym-O’Connor, T. & Yoder, T. J. Ho-
+      (2025).                                                          momorphic Logical Measurements. arXiv:2211.03625
+[127] Chang, K., He, Z., Yoder, T. J., Zhu, G. & Jochym-               (2022).
+      O’Connor, T. Constant-time surgery on 2d hypergraph        [147] Sayginel, H., Koutsioumpas, S., Webster, M., Rajput,
+      product codes with near-constant space overhead. arXiv           A. & Browne, D. E. Fault-tolerant logical clifford gates
+      preprint arXiv:2603.02157 (2026).                                from code automorphisms. PRX Quantum 6, 030343
+[128] Tan, S. J. S., Hong, Y., Lin, T.-C., Gullans, M. J. &            (2025).
+      Hsieh, M.-H. Single-shot universality in quantum ldpc      [148] Bravyi, S. & Kitaev, A. Universal quantum computa-
+      codes via code-switching (2025). URL https://arxiv.              tion with ideal Clifford gates and noisy ancillas. Phys.
+      org/abs/2510.08552. arXiv:2510.08552 [quant-ph].                 Rev. A 71, 022316 (2005).
+[129] Golowich, L., Chang, K. & Zhu, G. Constant-overhead        [149] Zhang, G., Zhu, Y., Yuan, X. & Li, Y. Constant-
+      addressable gates via single-shot code switching. arXiv          overhead magic state injection into qldpc codes
+      preprint arXiv:2510.06760 (2025).                                with error independence guarantees. arXiv preprint
+[130] Bombı́n, H. Gauge Color Codes: Optimal Transver-                 arXiv:2505.06981 (2025).
+      sal Gates and Gauge Fixing in Topological Stabilizer       [150] Note that one could also teleport auto-corrected surface
+      Codes. New Journal of Physics 17 (2013).                         code |T ⟩ states, which avoids the S corrections, at the
+[131] Brown, B. J., Nickerson, N. H. & Browne, D. E. Fault-            price of using more surface code patches [110].
+      tolerant error correction with the gauge color code. Na-   [151] Ismail, R. et al.        Transversal star architecture
+      ture Communications 7, 12302 (2016).                             for megaquop-scale quantum simulation with neutral
+[132] Jacob, A., McLauchlan, C. & Browne, D. E. Single-                atoms. arXiv preprint arXiv:2509.18294 (2025).
+      shot decoding and fault-tolerant gates with trivariate     [152] Vaknin, Y., Jacoby, S., Grimsmo, A. & Retzker, A.
+      tricycle codes (2026). URL https://arxiv.org/abs/                Efficient magic state cultivation on the surface code
+      2508.08191. arXiv:2508.08191 [quant-ph].                         (2025).     URL https://arxiv.org/abs/2502.01743.
+[133] Fowler, A. G. & Devitt, S. J. A bridge to lower overhead         arXiv:2502.01743 [quant-ph].
+      quantum computation. arXiv preprint arXiv:1209.0510        [153] Gidney, C. Stim: a fast stabilizer circuit simulator.
+      (2012).                                                          Quantum 5, 497 (2021).
+[134] Fowler, A. G. Time-optimal quantum computation.            [154] Tremblay, M. A., Delfosse, N. & Beverland, M. E.
+      arXiv preprint arXiv:1210.4626 (2012).                           Constant-Overhead Quantum Error Correction with
+[135] Xu, Q. et al. Fast and Parallelizable Logical Computa-           Thin Planar Connectivity. Physical Review Letters 129,
+      tion with Homological Product Codes. arXiv preprint              050504 (2022).
+      arXiv:2407.18490 (2024).                                   [155] Viszlai, J. et al. Matching generalized-bicycle codes to
+[136] Litinski, D. & Nickerson, N. Active volume: An ar-               neutral atoms for low-overhead fault-tolerance. In 2025
+      chitecture for efficient fault-tolerant quantum comput-          IEEE International Conference on Quantum Computing
+      ers with limited non-local connections. arXiv preprint           and Engineering (QCE), vol. 01, 688–699 (2025).
+      arXiv:2211.15465 (2022).                                   [156] Kang, M. et al. QUITS: A modular Qldpc code circUIT
+[137] Litinski, D. A Game of Surface Codes: Large-Scale                Simulator. Quantum 9, 1931 (2025).
+      Quantum Computing with Lattice Surgery. Quantum            [157] Roffe, J. LDPC: Python tools for low density parity
+      3, 128 (2019).                                                   check codes (2022). URL https://pypi.org/project/
+[138] Symons, B. C., Rajput, A. & Browne, D. E. Sequences              ldpc/.
+      of bivariate bicycle codes from covering graphs. arXiv     [158] Poulsen Nautrup, H., Friis, N. & Briegel, H. J. Fault-
+      preprint arXiv:2511.13560 (2025).                                tolerant interface between quantum memories and quan-
+[139] Smarandache, R. & Vontobel, P. O. Quasi-cyclic LDPC              tum processors. Nat. Comm. 8, 1321 (2017).
+      codes: Influence of proto-and Tanner-graph structure       [159] Zhu, S., Sundaram, A. & Low, G. H. Unified archi-
+      on minimum Hamming distance upper bounds. IEEE                   tecture for quantum lookup tables. Phys. Rev. Res. 7,
+      Trans. Inf. Th. 58, 585–607 (2012).                              043230 (2025).
+[140] Raveendran, N., Declercq, D. & Vasić, B. On the min-
+      imum distances of finite-length lifted product quantum
+      ldpc codes. arXiv preprint arXiv:2503.07567 (2025).
+[141] Roffe, J., White, D. R., Burton, S. & Campbell, E.
+      Decoding across the quantum low-density parity-check
+      code landscape. Phys. Rev. Res. 2, 043423 (2020).
+                                                                                                                           12
+
+                       METHODS                                   The resulting quantum code LP(A, A† ) has parameters
+                                                                           2
+                                                                   [[n = (rA + n2A ) ℓ,   k ≥ (nA − rA )2 ℓ,     d ]],   (A1)
+   Here we provide technical details on the codes, logic,
+and compilation schemes discussed in this work. In Ap-         with stabilizer weight rA +nA , where the distance satisfies
+pendix A, we describe and numerically benchmark the            the inequality [139, 140]
+codes used in this work, including the lifted product
+code constructions and bivariate bicycle code construc-                     d ≤ min((rA + 1)!,     (nA + 1)!).           (A2)
+tions. In Appendix B, we describe how code surgery
+is performed, including a general description, the con-        As notation, we refer to an LP code built from an
+crete constructions, and the associated resource costs and     rA × nA seed matrix A over a ring of order ℓ and achiev-
+opportunities for future improvement. Appendix C de-           ing quantum distance ≤ d as lprdA ,nA .
+scribes the high-rate distillation procedure and the as-           In this work, we study codes with rA × nA = 3 × 7 and
+sociated resource costs. Appendix D includes details of        3×5 seed matrices, corresponding to a distance of d ≤ 24
+the numerical simulations. In Appendix E, we describe          from Eq. (A2). Because the true distance can be lower
+the compilation procedure for the space-efficient and bal-     than this bound, we numerically obtain improved esti-
+anced architectures, and their application to ripple-carry     mates of the distance upper bound. We use a decoder-
+adders [53, 107] and table lookup [115] circuits. Finally,     based distance estimation [43] using the BP-OSD decoder
+Appendix F describes the time-efficient architecture and       [141] for both the distance of the Z-check matrix (dZ ) and
+the associated resource costs. Extended Data Table I           the X-check matrix (dX ). Concretely, for dZ (and sim-
+summarizes the notation for different quantities used in
+                                                               ilarly for dX ), let LX ∈ Fk×n 2   be a basis for the logical
+this work.
+                                                               X operators ker HX /im HZ⊤ . For each trial, we sample
+                                                               c ∼ {0, 1}k \ {0}, set e = c · LX (mod 2), and use BP-
+                                                               OSD to find a minimum-weight v satisfying HX v = 0 and
+                    Appendix A: Codes                          e · v = 1 (mod 2). Then dZ ≤ mint |vt |. For this method,
+                                                               we consider at least 25, 000 trials for both dZ and dX .
+   Here we describe the high-rate quantum error-               Below we describe the LP code instances studied in this
+correcting codes used in this work and their functional        work. The lp3,5    20 processor code and the memory codes
+roles. The codes are based on optimized constructions of       lp3,7
+                                                                  16 , lp3,7
+                                                                         20  , lp3,7
+                                                                                 24 are new to this work and are obtained
+lifted-product (LP) codes [44, 91] and prior constructions     using an LLM-assisted heuristic computer search [125].
+of bivariate bicycle (BB) codes [39, 138]. As summarized
+in Extended Data Table II, these codes offer different         lp3,5
+                                                                 20 processor code. The LP processor code for the
+tradeoffs between block size, encoding rate, distance, and     balanced architecture is built from a 3 × 5 seed matrix A
+stabilizer weight. Here, the weight of a Pauli operator        over the ring R = F2 [x]/(x33 + 1), so that ℓ = 33. The
+refers to the number of qubits for which it has nonzero        seed matrix is
+support. These parameters are relevant to their practical                                              
+performance, as the code distance bounds the logical er-                           1 1      1    1    1
+ror scaling with decreasing physical error rates [19], and                  A = 1 x14 x19 x11 x26  ,
+                                                                                                       
+                                                                                                                    (A3)
+the stabilizer weight is related to how many entangling
+                                                                                   1 x13 x2 x15 x21
+gates are needed for stabilizer measurements.
+                                                               where we have written x0 = 1. The LP construction in
+                                                               Eq. (A1) and numerical distance estimation yields a code
+               1.    Lifted-product codes                      with parameters
+
+   The LP code family [91] is obtained by taking the                       [[n = 1122,    k ≥ 132,    d ≤ 20 ]].         (A4)
+product of two classical codes with check matrices
+A ∈ RrA ×nA and B ∈ RrB ×nB , where R := F2 [x]/(xℓ +1)        We find that the code has k = 148, exceeding the lower
+is the univariate polynomial ring of order ℓ. Each entry       bound. The code has rate k/n ≈ 0.132 and stabilizer
+of A is an element of R, which can be identified with a        weight 3 + 5 = 8. The smaller block size and lower stabi-
+polynomial of degree at most ℓ − 1 over F2 , or equiva-        lizer weight make this code well-suited for use as a proces-
+lently, with an ℓ × ℓ circulant permutation matrix. In         sor, where the overhead of performing logical gates scales
+this work, we always choose B = A† , where A† denotes          with the code size (Appendix B). As shown in Extended
+the transpose of A with each polynomial entry p(x) re-         Data Fig. 1a, lp3,5
+                                                                                20 achieves an extrapolated block error
+placed by p(x−1 ) mod (xℓ + 1). As the circulant per-          rate (per code cycle) of ≲ 10−11 at a physical error rate
+mutation matrix corresponds to a cyclic shift in a line of     of p = 0.1%.
+atoms, this family of codes is readily implementable on
+reconfigurable atom arrays; see Ref. [44] for their detailed   lp3,7
+                                                                 16 memory code. The first memory code is built from
+description and proposed implementation.                       a 3 × 7 seed matrix A over the ring R = F2 [x]/(x45 + 1),
+                                                                                                                            13
+
+
+                        Extended Data Table I. Notation summary. Summary of notation used in this work.
+
+      Notation                  Description
+  [[nm , km , dm ]]             Memory code parameters for the space-efficient and balanced architectures.
+    [[np , kp , dp ]]           Processor code parameters for the space-efficient and balanced architectures.
+   [[nf , kf , df ]]            Factory code parameters used in high-rate 8T -to-CCZ distillation.
+    [[ns , ks , ds ]]           Surface code parameters used in magic state cultivation.
+          Ni                    Size of a code indexed by i, including the data qubits and one basis (X or Z) of stabilizers,
+                                approximated by Ni ≃ ni + ⌊(ni − ki )/2⌋.
+         Nm                     Size of the memory code.
+         Np                     Size of the processor code.
+         Nf                     Size of the factory codes.
+         Ns                     Size of the cultivated surface codes.
+         NA                     Size of the operation zone ancilla system.
+         Am                     Ancilla system for the memory code.
+         Ap                     Ancilla system for the processor code.
+         Af                     Ancilla system for the factory codes.
+          τs                    Number of stabilizer measurement cycles during surgery PPMs, equal to 23 dp .
+        τscult.                 Number of stabilizer measurement cycles to teleport cultivated states during high-rate
+                                distillation, equal to 32 ds .
+        lp3,7
+          16                    Small LP memory code with parameters [[2610, 744, ≤ 16]].
+        lp3,7
+          20                    Medium LP memory code with parameters [[4350, 1224, ≤ 20]].
+        lp3,7
+          24                    Large LP memory code with parameters [[5278, 1480, ≤ 24]].
+        lp3,5
+          20                    LP processor code for the balanced architecture with parameters [[1122, 148, ≤ 20]].
+        bb18                    BB factory code and processor code for the space-efficient architecture with parameters
+                                [[248, 10, ≤ 18]].
+
+
+so that ℓ = 45. The seed matrix is                                 estimation yields a code with parameters
+                                       
+            x29 x21 x31 x15 x37 x25 x27                                        [[n = 4350,   k ≥ 1200,    d ≤ 20 ]].      (A8)
+     A = x13 x25 x19 x26 x11 x18 x29  .                 (A5)
+                                       
+                                                                   We find that the code achieves k = 1224, slightly ex-
+            x31 x2 x27 x32 x41 x41 x18
+                                                                   ceeding the lower bound guaranteed by the construction.
+                                                                   The code has rate k/n ≈ 0.281 and stabilizer weight
+The LP construction in Eq. (A1) and numerical distance
+estimation yields a code with parameters                           3 + 7 = 10. As shown in Fig. 2a, lp3,7
+                                                                                                       20 achieves an extrap-
+                                                                   olated block error rate per cycle of ≲ 10−10 at p = 0.1%.
+                [[n = 2610,    k ≥ 720,   d ≤ 16 ]].      (A6)
+                                                                   lp3,7
+                                                                     24  memory code.          The third memory code is
+We find that the code achieves k = 744, slightly ex-               built from a 3 × 7 seed matrix A over the ring
+ceeding the lower bound guaranteed by the construction.            R = F2 [x]/(x91 + 1), so ℓ = 91. The seed matrix is
+The code has rate k/n ≈ 0.285 and stabilizer weight
+3 + 7 = 10. As shown in Fig. 2a, lp3,7
+                                                                                                              
+                                   16 achieves an extrap-                      x57 x75 x42 x80 x7 x67 x27
+olated block error rate per cycle of ≈ 10−7 at p = 0.1%.                 A = x57 x73 x34 x12 x27 x50 x87  .
+                                                                                                              
+                                                                                                                       (A9)
+                                                                                21   53   70   18   1   3   18
+lp3,7                                                                          x x x x             x x x
+  20 memory code.          The second memory code is
+built from a 3 × 7 seed matrix A over the ring
+R = F2 [x]/(x75 + 1), so ℓ = 75. The seed matrix is                The LP construction in Eq. (A1) and numerical distance
+                                                                   estimation yields a code with parameters
+                                          
+             x0 x71 x73 x68 x33 x50 x47
+                                                                            [[n = 5278,   k ≥ 1456,    d ≤ 24 ]].        (A10)
+      A = x38 x39 x60 x26 x18 x1 x23  .           (A7)
+                                          
+            x73 x6 x5 x42 x20 x22 x73                              We find that the code achieves k = 1480 logical qubits,
+                                                                   again exceeding the lower bound. The code has rate
+The LP construction in Eq. (A1) and numerical distance             k/n ≈ 0.280 and stabilizer weight 3 + 7 = 10. As shown
+                                                                                                                             14
+
+                                                                  142].
+Extended Data Table II. Code parameters. Details of
+                                                                    Here we adapt these existing techniques to our archi-
+the codes used in this work, including the code parameters
+[[n, k, d]], the stabilizer weight, and the encoding rate k/n.    tecture, analyze their concrete resource costs, and dis-
+                                                                  cuss their limitations and possibilities for further im-
+  Code       n          k        d         Weight        Rate     provement. We refer readers to Sec. 3 of Ref. [87] for a
+  bb18      248         10      ≤ 18         6           0.04     comprehensive review of general code-surgery techniques,
+                                                                  and provide a brief summary for completeness below.
+  lp3,5
+    20     1122        148      ≤ 20         8           0.13
+  lp3,7
+    16     2610        744      ≤ 16        10           0.29
+  lp3,7
+    20     4350       1224      ≤ 20        10           0.29                          1.   Description
+  lp3,7
+    24     5278       1480      ≤ 24        10           0.28
+                                                                     Given a qLDPC code Q, a surgery gadget measures
+                                                                  a collection of logical Pauli operators L = {P̄ ∈ P̄k },
+in Fig. 2a, lp3,7                                                 where P̄k denotes the logical Pauli group acting on the
+              24 achieves an extrapolated block error rate
+per cycle of ≲ 10−11 at p = 0.1%.                                 k encoded qubits. This is achieved by coupling Q to an
+                                                                  ancilla system A such that the eigenvalues of the logical
+                                                                  operators in L are extracted non-destructively via mea-
+               2.    Bivariate bicycle codes                      surements on A [48, 49, 86].
+                                                                     Here we briefly describe the procedure for measuring
+                                                                  X-type logical operators. The procedures for other types
+  The BB code family [43] can be viewed as a special              of logical operators can be adapted analogously [87, 122].
+subfamily of LP codes. A BB code LP(a, b) is defined by           For the data code Q(Q, SX , SZ ), we denote by Q the
+two elements a, b ∈ F2 [x, y]/(xl + 1, y m + 1) in the bivari-    set of qubits, and by SX and SZ the sets of X- and
+ate polynomial ring with periods l and m. The resulting           Z-checks, respectively. We construct an ancilla system
+code acts on n = 2lm physical qubits with stabilizer gen-         A(Q′ , SX′                                        ′
+                                                                             , SZ′ ) with qubits Q′ and check sets SX and SZ′ .
+erators determined by the polynomials a and b. The BB                                                ′      ′
+                                                                  The checks SX and SZ (resp. SX and SZ ) act on Q (resp.
+code used in this work functions as both a processor and          Q′ ) according to the parity-check matrices HX and HZ
+factory code.                                                     (resp. HX   ′
+                                                                                  and HZ′ ). We then perform the following
+bb18 processor and factory code. We use a BB code                 surgery procedure to measure L:
+from Ref. [138] with parameters [[248, 10, ≤ 18]], defined
+                                                                     1. Initialize Q′ in |0⟩ states.
+by the polynomials
+                                                                                                               ′
+                                                                     2. Measure τs cycles of checks SX ∪ SX      ∪ SZ ∪ SZ′
+    a = 1 + x6 y + x27 ,     b = y 2 + x15 y 3 + x24 ,    (A11)         that are now deformed to support on the merged
+                                                                        code with qubits Q ∪ Q′ : in addition to the original
+with l = 31 and m = 4. We refer to this code as bb18 .                                 ′
+                                                                        connection, SX    is also connected to Q and SZ is
+The code has rate k/n = 10/248 ≈ 0.04 and stabilizer
+                                                                        also connected to Q′ according to matrices fX  ′
+                                                                                                                         and
+weight 6. As shown in Extended Data Fig. 1a, bb18
+                                                                        fZ , respectively, depending on the target logicals
+achieves an extrapolated block error rate (per code cy-
+                                                                        to measure.
+cle) ≲ 10−11 at p = 0.1%. Compared to the LP processor
+code lp3,5
+       20 , this code has a significantly smaller block size         3. Detach Q′ from Q by measuring Q′ in the Z basis,
+and comparable distance, but encodes far fewer logical                  followed by adaptive Pauli corrections on Q.
+qubits per block. The choice between these two processor
+codes therefore introduces a tradeoff between per-block              The key step is measuring the checks of the merged
+resource cost and the number of logical qubits per block.         code for τs cycles (step 2). We denote the merged code
+                                                                  Q̃(Q̃, S̃X , S̃Z ) with check matrices
+                                                                                            !                   !
+                    Appendix B: Surgery                                            HX 0                  HZ f Z
+                                                                      H̃X =          ′    ′
+                                                                                               , H̃Z =            . (B1)
+                                                                                    fX  HX                0 HZ′
+   Universal computation on general qLDPC codes can
+be performed with logical Pauli product measurements              During this merging step, the information of L is ex-
+(PPMs), which implement Clifford gates, and non-                  tracted through measurements of the merged X-checks
+                                                                    ′
+Clifford magic resource states. Code surgery [48, 49,             SX  . Concretely, each P̄ ∈ L becomes an X-check in
+                                                                                                                 ′T        ′T
+86, 142] is a method for implementing addressable PPMs            the row span of H̃X . This requires ⟨L⟩ = fX      ker(HX    ),
+on general qLDPC codes. First introduced in Ref. [48],            meaning that the ancilla system is designed such that the
+                                                                             ′T
+it generalizes lattice surgery for topological codes [124]        kernel of HX  maps exactly to the target logical operators
+                                                                                                                        ′T
+to general qLDPC codes. It has since been actively de-            of the data code. We focus on protocols in which fX      has
+veloped as a practical and flexible framework for fault-          the structure that a subset of qubits in Q is connected
+                                                                                                             ′
+tolerant logical operations [49, 52, 86, 87, 112, 121, 122,       one-to-one with a subset of X-checks in SX   . In this case,
+                                                                                                                               15
+
+           a                                                            b
+                          3,5
+                        lp20 fit                                                      Idling bb18
+                        bb18 fit                                                      Surgery bb18
+                          3,5
+                        lp20 [[1122, 148, ≤20]]
+                        bb18 [[248, 10, ≤18]]
+
+
+
+
+Extended Data Fig. 1. Processor code and surgery performance. a, Block error rate per cycle as a function of physical
+error rate for the lp3,5                                                                            3,5
+                     20 (pink) and bb18 (blue) codes. A least-square fit to both the bb18 and lp20 data yields a slope greater
+than d/2, the theoretical maximum value in the limit that the physical error rate p → 0. We therefore fit the data point at the
+smallest physical error rate of lp3,5                                        10
+                                  20 (pink dashed line) the form y = ax , where we find a = 18.5. Using the same procedure
+for bb18 (blue dashed line) to fit a line of the form y = ax9 , we find a = 15.65. b, Block error rates per cycle versus physical
+error rate for the bb18 code, either idling for 9 cycles (solid line) or performing a surgery measurement of a high-weight logical
+operator (Table III) with τs = 15 cycles (dashed line). Surgery failure rates are averaged over X- and Z-basis initialization and
+measurement experiments.
+
+
+the logical operators to be measured are fully specified by        ancilla system for measuring different logical operators
+                                      ′T
+the kernel of the classical code HX      . Depending on the        have also been developed. For example, the extractor
+                      ′T
+dimension of ker(HX      ), we classify surgery gadgets into       construction [87] enables such a modular design at the
+either low-rate surgery or high-rate surgery, described be-        cost of a larger ancilla overhead of O(n log3 n). An-
+low. The fault-tolerance of the surgery gadget is ensured          other approach leverages codes with rich automorphism
+if the following conditions hold [49, 52, 87]: (i) the merged      groups [49, 143], which reduces the task to measuring
+code Q̃ has distance d˜ = Θ(d), (ii) the merged code re-           lower-weight “seed” logical operators, potentially leading
+mains qLDPC, and (iii) τs = Θ(d). We discuss how these             to lower overhead.
+criteria can be satisfied below. Note that the merged code
+                                                                                                     ′T
+can be a subsystem code with additional gauge qubits                  High-rate surgery: dim ker HX     = t > 1. This gad-
+arising from the ancilla system A [48, 52, 142], and in            get measures up to t logical operators in parallel. Note
+general we are referring to the distance of the subsystem          that this entails that the ancilla system A is either a
+code when we refer to the distance of the merged code d.    ˜      graph with multiple connected components (i.e. a union
+                                                                   of disjoint, graph-based ancilla systems) or a hypergraph.
+                                ′T
+    Low-rate surgery: dim ker HX    = 1. In this case, we          Ref. [122], improving upon Ref. [121], introduces a gen-
+always measure one logical operator P̄ per gadget. The             eral scheme that can measure an arbitrary set of logical
+representative constructions [49, 86, 87] use a connected          operators (including Y -operators and a mixture of X̄-
+graph G(V, E), with a set of vertices V representing               type and Z̄-type operators) of an [[n, k, d]] qLDPC code
+  ′
+SX    and edges E representing Q′ , for the ancilla sys-           with logically disjoint support with a provable bound
+                                               ′T
+tem. This naturally guarantees dim ker HX         = 1 since        on the ancilla size Õ(kω), where ω is the maximum
+       ′T
+ker HX    is simply the number of connected components             physical weight of any logical Pauli being measured;
+of G. SZ′ is chosen to be a cycle basis of G. The dis-             Refs. [52, 79, 127, 144] present techniques for measuring
+tance of the merged code is guaranteed to be d˜ ≥ d if the         certain restricted patterns of Z̄-type and X̄-type logicals
+boundary Cheeger constant of the graph G is ≥ 1 [112];             with an ancilla size O(n), i.e. bounded by the code block
+the merged code can also be made qLDPC using graph-                size, for t = O(k). More generally, Ref. [52] also presents
+theoretical techniques such as cellulation and deconges-           a randomized algorithm that can measure a more flexible
+tion [49]. These conditions can be satisfied using an an-          set of Z̄-type or X̄-type logicals with low overhead and
+cillary graph of size |A| = O(|P | log3 |P |), where |P | de-      numerically observes that it can measure up to t ∼ k
+notes the physical Hamming weight of P̄ . Such a graph-            logicals for a variety of codes with an ancilla size compa-
+based gadget can also be used to measure P̄ of any type,           rable to the original code size. Here, with a slight abuse
+i.e. a product of single-qubit logical Pauli X̄, Y , and Z̄        of definitions, we refer to any scheme that can measure
+operators. A typical approach [49, 86], which we adopt             multiple logicals in parallel using an ancilla whose size is
+in this work, constructs the ancilla system A dynamically          bounded by that of the data code, i.e. |A| = Õ(n), as a
+depending on the target logical operator P̄ to be mea-             high-rate surgery gadget. Note that, although we do not
+sured. More modular alternatives that employ a fixed               know such a construction yet that can measure an arbi-
+                                                                                                                             16
+
+trary set of logically non-overlapping logicals (including         nected to the data codes, significantly increasing the re-
+Y - and XZ-type) for any code with a guaranteed low                quired hardware footprint. In contrast, by leveraging
+overhead, we expect that more advanced schemes based               the reconfigurable connectivity of atom arrays, it suf-
+on Refs. [52, 113, 127, 144] can approach this goal, at            fices to reserve an operation zone with enough qubits to
+least for certain structured codes.                                accommodate the largest ancilla configuration, namely
+   So far, we have focused on surgery gadgets for a sin-           maxAm ,Ap ,Af (|Am | + |Ap | + |Af |) (note that here we do
+gle code block. We now briefly discuss how to perform              not include ancilla qubits for the bridge systems, which
+logical PPMs across multiple code blocks. In principle,            are subleading in size). The ancilla systems can then be
+one may treat several code blocks as a single combined             dynamically reconfigured within this region as needed.
+code by taking their union and then apply the standard             We note that this space saving comes at the cost of in-
+techniques described above. Alternatively, to measure a            creased overhead in classical processing and control, as
+Pauli operator of the form P̄ P̄ ′ , where P̄ and P̄ ′ are sup-    one must construct the distinct surgery gadgets in real-
+ported on different code blocks (possibly of different code        time and adaptively program the corresponding ancilla
+families), one can construct two independent ancilla sys-          configurations. We discuss possible approaches to re-
+tems A and A′ for measuring P̄ and P̄ ′ , respectively, and        ducing these classical overheads and further improving
+then connect them through a bridge system B [49, 112]              resource efficiency in Appendix 3.
+to measure their product. Using the construction algo-                As summarized in Extended Data Table III, we con-
+rithm of Ref. [112], the bridge system requires as few as d        struct and benchmark representative instances of the an-
+qubits and d−1 checks, where d is the minimum distance             cilla systems described above. The first and last rows
+of the two codes involved. When either A or A′ is much             present Am and Af , used to measure a single-qubit log-
+larger than d, the additional qubit overhead of the bridge         ical X operator on the lp3,7         3,7
+                                                                                             20 and lp24 memory codes and
+system is negligible compared to the size of the original          the bb18 factory code, respectively. Minimizing the size
+ancilla systems.                                                   of these ancilla systems requires selecting a logical basis
+                                                                   composed of conjugate pairs of single-qubit logical oper-
+                                                                   ators with low physical weight. For the bb18 code, we
+   2.   Concrete construction and benchmarking                     numerically identify such a basis in which nine logical
+                                                                   qubits have weight-18 logical operators, while one has a
+   Using the general procedure described in the previous           weight-20 logical operator. Finding a comparable basis
+section, we present concrete constructions of surgery gad-         for the larger memory LP codes is more challenging nu-
+gets for the space-efficient and balanced architecture in          merically. Upcoming work [113] provides an algebraic
+this section. Recall that these architectures consist of           construction of a low-weight basis for LP codes, in which
+a [[nm , km , dm ]] memory code, a [[np , kp , dp ]] processor     the 1,220 (resp. 1,476) logical qubits in lp3,7          3,7
+                                                                                                                20 (resp. lp24 )
+code, and several [[nf , kf , df ]] factory codes (see Fig. 2b     have physical weight at most 200 (resp. 224). Further-
+and Extended Data Table I). As discussed in Appendix E,            more, by exploiting code automorphisms, measuring any
+the logical PPMs required for computation have the fol-            of the above low-weight single-qubit logical X̄ operators
+lowing forms: Z̄i P̄ or P̄ , where Z̄i is a single-qubit logical   of lp3,7          3,7
+                                                                        20 (resp. lp24 ) requires only 112 (resp. 144) dis-
+Pauli Z̄ operator acting on either the memory or a fac-            tinct surgery gadgets [113]. We report, in the first and
+tory code, and P̄ is an arbitrary kp -qubit logical Pauli          last rows of Extended Data Table III, the gadgets that
+operator on the processor code; or X̄j , a single-qubit log-       measure the maximum-physical-weight single-qubit log-
+ical Pauli X̄ operator acting on either the memory or a            ical X̄ operators for lp3,7     3,7
+                                                                                            20 , lp24 and bb18 , respectively.
+factory code.                                                      The middle rows present instances of Ap used to measure
+   Accordingly, we introduce three ancilla systems Am ,            high-weight logical X̄ operators on the bb18 and lp3,5
+                                                                                                                        20 pro-
+Ap , and Af for measuring logical Pauli operators on the           cessor codes. Each operator is selected as the maximum-
+memory, processor, and factory codes, respectively. In             physical-weight example among 105 randomly sampled
+addition, two bridge systems are used to connect Am                logical multi-qubit X̄ operators, with logical (resp. phys-
+and Ap , and Ap and Af , respectively. These PPMs are              ical) weights 11 (resp. 104) for bb18 , and 69 (resp. 460)
+implemented using low-rate surgery techniques (see the             for lp3,5
+                                                                         20 .
+previous section) such that one logical operator of the               All ancilla systems are constructed using standard
+above form is measured at a time using a single surgery            graph-based surgery techniques [49, 86], which will be
+gadget.                                                            further detailed in Ref. [113]. The distances of the
+   Using standard surgery constructions [49, 52, 86],              surgery gadgets are estimated using the QDistRnd pack-
+which dynamically generate ancilla systems depending               age [145] with at least 100,000 trials. Extended Data
+on the target logical operator, the number of distinct             Figure 1b shows the logical error rates of the surgery
+ancilla systems scales as O(km ), O(kf ), and O(exp(kp ))          gadget listed in Extended Data Table III that measures
+in the worst case for Am , Af , and Ap , respectively.             a high-weight logical operator on the bb18 code, corre-
+In architectures with fixed connectivity, such as su-              sponding to Ap in the space-efficient architecture. With
+perconducting circuits [46], each distinct ancilla sys-            τs = 15 ≈ 2d/3, the surgery error rates are within an or-
+tem would need to be physically constructed and con-               der of magnitude of the bb18 block failure rate at idling,
+                                                                                                                                                17
+
+                                                                a
+demonstrating fault tolerance of the surgery construc-                       Layer 1            Layer 2
+tion. We expect similar behavior for the larger gadgets
+in Extended Data Table III, and leave detailed simula-                                                                 ...
+tions to future work.
+                                                                                                                                            X
+   Although Extended Data Table III benchmarks ancilla
+systems for measuring X̄-type logical operators, the same
+                                                                b            Cultivated
+constructions readily extend to other logical types (e.g.,                                    Parallel injection       S corrections
+                                                                           surface codes
+Y ) by modifying how the ancilla systems couple to the
+                                                                                                            MZ                     MZ
+                                                                                                                   X                    X
+data codes [87]. Accordingly, we estimate the space cost
+
+
+
+
+                                                                                ...
+of the ancilla systems in our architecture (i.e., the size of                                               MZ                     MZ
+                                                                                                                   X                    X
+                                                           
+the operation zone), maxAm ,Ap ,Af |Am | + |Ap | + |Af | ,                   Processor
+                                                                                                   ...                       ...
+based on the examples in Extended Data Table III.                              block
+
+
+
+
+                                                                                                  ...
+    3.   Resource costs and future improvements
+                                                                Extended Data Fig. 2. Parallel magic state distillation.
+   We now summarize the time and space costs of the             We distill kf |CCZ⟩ states using five copies of [[nf , kf , df ]] fac-
+surgery instructions used in this architecture. Based on        tory codes. Low-error cultivated surface-code |T ⟩ states are
+the examples in Extended Data Table III as well as the          loaded into one processor code using parallel surgery [149].
+analysis in the previous sections, we estimate that the an-     Transversal CNOT gates between this code and the four re-
+cillary systems required to perform all relevant surgery        maining processor codes are used to perform the PPMs in
+operations in our architecture occupy NA = 894 and              8T -to-CCZ distillation [110], outputting three blocks of high-
+NA = 1,874 (resp. NA = 924 and NA = 1,904) qubits               fidelity |CCZ⟩ states.
+for the space-efficient and balanced architectures, respec-
+tively, when using the lp3,7             3,7
+                            20 (resp. lp24 ) memory code                                 ⊗3
+(see also Extended Data Table IV). We assume that each          |CCZ⟩ = CCZ |+⟩ ) and performing gate teleportation
+surgery gadget is implemented in τs ≈ 2d/3 code cycles,         with conditional Clifford feedforward gates [148]. In
+where d denotes the distance of the processor code. This        this work, we implement Toffoli gates by distilling high-
+choice balances the space-like and time-like logical error      fidelity |CCZ⟩ states and teleporting them into the com-
+rates of the gadget, thereby approximately minimizing           putation using logical PPMs [110, 136].
+the overall logical error rate. See Sec. 2 for numerical           Historically, generating magic resource states has been
+justification of this choice.                                   among the most resource-demanding subroutines for
+   There are several avenues to reduce the classical over-      implementing large-scale logical algorithms for planar
+head associated with constructing and implementing              surface-code architectures [34, 110]. Recent techniques
+surgery gadgets, as well as further lowering the over-          such as magic state cultivation [50] substantially re-
+all resource costs. First, the number of distinct surgery       duce the cost of generating magic states in planar ar-
+gadgets could be reduced using extractor-style construc-        chitectures. However, cultivation uses surface codes with
+tions [87], or more modular approaches that rely on a           low encoding rates, and cultivation alone cannot always
+small set of fixed gadgets and bridge systems by ex-            achieve the logical error rates required for large-scale al-
+ploiting symmetries of the data code, particularly au-          gorithms [18]. Here, we describe a protocol that gener-
+tomorphisms [37, 49, 143]. For codes with sufficiently          ates many magic states in parallel with low overhead and
+rich symmetries, the latter approach may enable a fixed         logical error rates by combining surface-code cultivation
+ancilla system that is even smaller than the data block         with high-rate codes.
+while still supporting measurements of arbitrary logi-
+cal operators [143]. In addition, alternative techniques
+beyond code surgery may further reduce overhead, in-                                       1.     Description
+cluding homomorphic measurements [47, 51, 146] and
+in-block transversal gates [47, 88, 147]. Some of these            As illustrated in Extended Data Fig. 2, the high-rate
+directions will be explored in upcoming work [113] for          magic state distillation procedure distills cultivated |T ⟩
+the lifted-product code family.                                 states on small surface codes into high-fidelity |CCZ⟩
+                                                                states hosted in three high-rate factory code blocks with
+                                                                parameters [[nf , kf , df ]], using the 8T -to-CCZ distilla-
+                   Appendix C: Magic                            tion circuit in Ref. [110]. The distillation circuit has eight
+                                                                layers of gates, each with a similar structure. For a given
+  Universal quantum computation requires non-Clifford           layer, we use an ancillary factory code block, denoted as
+gates in addition to Clifford gates; typically, T or CCZ        the T block, to implement parallel logical Pauli product
+gates are used. Non-Clifford gates can be executed by           rotations on the remaining four processor code blocks (see
+generating magic resource states (e.g., |T ⟩ = T |+⟩ and        Fig. 16 of Ref. [110] for the concrete circuit). This is done
+                                                                                                                                      18
+
+
+Extended Data Table III. Surgery systems. Ancilla systems for measuring the relevant PPMs on different zones and codes.
+For each ancilla system, we report the target logical operators it measures and their logical weights, the number of ancillary
+qubits, X stabilizers, and Z stabilizers, as well as the resulting degree and the distance upper bound of the merged code.
+     Zone                     Codes                      PPMs          (Qubits, X-checks, Z-checks)           Degree       Distance
+                   [[4350, 1224, ≤ 20]]-lp3,7
+                                            20        P̄ , |P̄ | = 1          (342, 200, 143)                   12          ≤ 20
+   Memory
+                   [[5278, 1480, ≤ 24]]-lp3,7
+                                            24        P̄ , |P̄ | = 1          (364, 208, 157)                   12          ≤ 22
+                      [[248, 10, ≤ 18]]-bb18          P̄ , |P̄ | = 9           (189, 104, 86)                    9          ≤ 18
+  Processor
+                    [[1122, 148, ≤ 20]]-lp3,5
+                                           20        P̄ , |P̄ | = 69          (813, 460, 357)                   10          ≤ 20
+   Resource           [[248, 10, ≤ 18]]-bb18          P̄ , |P̄ | = 1            (39, 20, 20)                     7          ≤ 18
+
+
+using up to four transversal CNOT gates between the T                  distillation across blocks effectively involves kf parallel
+block and the remaining processor code blocks, followed                distillation factories.
+by a transversal faulty T measurement [110].                              As such, we are only concerned about the marginal er-
+   As shown in Extended Data Figure 2b, the transversal                ror rate of each T gate in a T factory code block. For
+faulty T measurements on the T block are implemented                   this, it is sufficient to use surgery ancillas of size Õ(kf ds )
+by parallel teleportation of kf cultivated |T ⟩ states, each           and τscult. = O(ds ) code cycles, which exponentially sup-
+hosted in a small [[ns , ks , ds ]] = [[d2s , 1, ds ]] surface-code    presses the extra (possibly correlated) errors during the
+patch. For the parallel teleportation we use parallel code             surgery process by ds . We assume that each layer of
+surgeries [149] (Appendix B), followed by local S correc-              surgery takes τscult. = 2ds /3 code cycles, which often
+tions via teleportation of |Y ⟩ states. The |Y ⟩ states can            minimizes the total logical error rates [49], and the final
+be prepared using a subset of the patches used for culti-              marginal error rate for the T gate is approximately 2pT ,
+vation, for example using fold-transversal gates in depth              where pT is the error rate of the cultivated surface code
+one [150]. Finally, we perform transversal X-basis mea-                |T ⟩ states. We then estimate that the logical error rate of
+surements on the T block, followed by Pauli feedback on                each output |CCZ⟩ state is pL                     2
+                                                                                                        CCZ ≈ 28(2pT ) [110]. The
+the other four factory blocks. This procedure is repeated              success probability of the protocol scales linearly with pT .
+eight times, once for each layer of logical Pauli-product              Since we typically have pT ≪ 1, the success probability
+rotations in Fig. 16 of Ref. [110]. The resulting circuit              that the entire block succeeds is very close to 1.
+generates kf |CCZ⟩ states uniformly distributed among                     The total time cost is approximately 8 × (τT + 2τscult. ),
+                                          ⊗kf                          where τT denotes the time to cultivate each surface code
+three factory code blocks, i.e. |CCZ⟩  . The correctness               |T ⟩ state. As for space cost, the surgery ancilla is typi-
+of the generated magic states is heralded by the fourth                cally much smaller than the ancilla required for perform-
+                                                ⊗k
+factory block being measured successfully in |+⟩ f in a                ing fully fault-tolerant logic for other modules of our ar-
+transversal X-basis measurement.                                       chitecture, e.g. the processor code or the memory code,
+   Using factory codes with a sufficiently large dis-                  so we neglect it here and do not include it into the space
+tance df ≫ ds , noise on the Clifford operations such as               cost of the operation zone. This can also be justified if
+transversal CNOT gates can be neglected to good ap-                    we can pipeline the surgery operations across the full ar-
+proximation [110], and the main faulty operations in the               chitecture such that a subset of the ancillary qubits in
+circuit are the T gates on the T block via teleporting the             the operation zone can be reconfigured for executing the
+surface code |T ⟩ states. As such, the logical error rates of          surgeries in the factory. As such, and based on the anal-
+the output |CCZ⟩ states depend primarily on the error                  ysis above, we estimate that the space cost of the entire
+rates of these noisy T gates, which depend on the fi-                  factory is 5Nf + kf Ns .
+delity of the cultivated |T ⟩ states. In addition, there are
+also extra errors introduced to the T factory code block
+when performing the parallel surgeries between the high-                                   2.   Resource costs
+distance factory code and the low-distance surface codes.
+For example, in order to avoid introducing logically cor-                 Here we compute the concrete resource costs for the
+related errors on the factory code due to low weight phys-             magic factory described in the main text for the space ef-
+ical faults during the surgery, the protocol in Ref. [149]             ficient and balanced architectures. For the factory code,
+requires a surgery ancilla system with size Õ(kf df ) and             we select the bb18 code (Extended Data Table II) with
+O(df ) code cycles, which exponentially suppresses the                 Nf = 367. We choose the distance of the surface code to
+correlated error by df , where Õ(·) indicates scaling up to           be ds = 7 so that it has logical error rate ≲ 10−6 [151].
+logarithmic factors. However, because we are performing                We consider the scheme in Ref. [111] for cultivating |T ⟩
+transversal distillation across different high-rate blocks             states with pT ≈ 10−6 at physical error rates of 0.1%.
+rather than within a high-rate code block, we can allow                This approach involves injecting a noisy |T ⟩ state with
+for correlated errors within the T block. This is because              fault distance 1 into a small d = 3 rotated surface code,
+                                                                                                                           19
+
+then measuring the fold-transversal Hadamard operator                 by a single-qubit depolarizing channel with error
+twice (each measurement followed by a stabilizer mea-                 rate p.
+surement cycle). Finally, the code is grown from d = 3
+                                                                   Syndrome extraction circuit. For each code, we con-
+to d = 5 using a unitary growth procedure, then to d = 7
+                                                                struct a syndrome extraction circuit that measures the
+using stabilizer measurements. Postselection is applied
+                                                                X-type and Z-type stabilizers separately. For each stabi-
+between the measurement and growth stages, then after
+                                                                lizer type, we determine the gate scheduling, specifically
+the growth stage. For physically motivated noise mod-
+                                                                the ordering of CNOT gates at each time step, using the
+els (see Fig. 3 of Ref. [111]), in expectation fewer than
+                                                                coloration scheduling method [154]. This approach per-
+two total attempts are required for the cultivated state to
+                                                                forms an edge coloring of the bipartite Tanner graph asso-
+pass all postselection tests to reach error rates of ≲ 10−6 .
+                                                                ciated with the check matrix, ensuring that no data qubit
+Note that our choice of final code distance ds = 7 is likely
+                                                                participates in more than one gate per time step. As a re-
+conservative because ≳ 50% of errors are atomic loss in
+                                                                sult, the circuit requires ∆X + ∆Z layers of CNOT gates
+realistic settings, and such heralded errors both improve
+                                                                for a code whose X and Z-check matrices have degrees
+the threshold by a factor of ≈ 2× and enable better post-
+                                                                ∆X and ∆Z , respectively. We use this generic schedul-
+selection [152].
+                                                                ing throughout both the memory experiments and the
+   Because the injection and cultivation stages occur at a      surgery experiments described below whenever stabiliz-
+smaller code size, extra surface code blocks can be pre-        ers of a (possibly deformed) quantum code need to be
+pared in parallel such that the success probability of this     measured. We adopt this generic coloration scheduling
+stage is close to one, without exceeding the maximum            primarily for ease of simulation. In practice, more struc-
+space cost after growth. The total depth, from injection        tured approaches could be used, such as the “product-
+to growth, is approximately four cycles: one cycle for          coloration” scheduling for LP codes [44], translationally
+injection, one for cultivation, and two for growth. The         invariant scheduling for BB codes [43, 155] that is di-
+full process requires fewer than two attempts, ≈ 1.25, in       rectly compatible with current neutral-atom devices, or
+expectation. As such, we estimate that cultivating each         shorter-depth schedules that interleave the measurements
+|T ⟩ state takes τT ≈ 5 code cycles, and each surgery layer     of X and Z-checks [44, 156].
+takes τscult. ≈ 2ds /3 ≈ 5 stabilizer measurement cycles.          Here we give a detailed step-by-step of the implemen-
+With these choices, our factory produces kf = 10 |CCZ⟩          tation of the circuit [44, 153, 154]. First, the X-type
+                                            −10
+states, each with an error rate pLCCZ ≈ 10      , using 2,565   ancillas are initialized in the |+⟩ state via a Hadamard
+total qubits in 8×(5+2·5) ≈ 120 = 6dp cycles, for dp = 20       gate, followed by preparation noise. A sequence of CNOT
+(see also Extended Data Table IV). Note that the time           gates is then applied between each X-ancilla (as control)
+cost per |CCZ⟩ state is 120/kf = 12 < dp . As such,             and its supported data qubits (as targets), with the gate
+in our space-efficient or balanced architecture, where we       schedule determined by the edge coloring. Next, the Z-
+consume these |CCZ⟩ states sequentially, we will neglect        type ancillas are initialized in the |0⟩ state, followed by
+the time cost for producing each |CCZ⟩ state.                   preparation noise, and CNOT gates are applied with each
+                                                                data qubit as control and the corresponding Z-ancilla as
+                                                                target. Finally, all ancillas are measured and reset.
+         Appendix D: Numerical simulations
+                                                                   Memory experiment. We simulate a quantum mem-
+                                                                ory experiment consisting of d/2 stabilizer measurement
+   We numerically assess the performance of our fault-          cycles, where d is the code distance. The logical qubits
+tolerant architecture under circuit-level noise using                                      ⊗k
+                                                                are initialized in the |+⟩ state via transversal X-basis
+Stim [153]. We focus on simulating the performance of           preparation of all data qubits. In the first cycle, detec-
+the codes used in our architecture under repeated stabi-        tors are defined by the raw X-syndrome outcomes. In
+lizer measurements, as well as the surgery gadgets pre-         subsequent cycles, detectors are defined by the difference
+sented in Appendix B.                                           between consecutive X-syndrome outcomes, which flags
+   Noise model. We use a circuit-level depolarizing noise       any change due to errors occurring between cycles. Af-
+model parameterized by a single physical error rate p,          ter the final cycle, all data qubits are measured in the
+consistent with prior work [44, 80, 89]. The noise chan-        X basis with measurement noise applied. The final-cycle
+nels are applied as follows.                                    detectors compare the data qubit measurement outcomes
+                                                                against the last cycle by reconstructing the X-stabilizer
+   • Two-qubit gate noise. Each CNOT gate is followed
+                                                                values from the data. Logical observables are defined by
+     by a two-qubit depolarizing channel with error rate
+                                                                the logical X̄ operators of the code.
+     p, which applies each of the 15 nontrivial two-qubit
+                                                                   Surgery experiment.       We simulate a surgery gadget
+     Pauli operators with equal probability p/15.
+                                                                that measures a set of t logical X̄ operators L = {P̄i }ti=1 ,
+   • State preparation noise. Each state preparation            following the general three-step protocol described in
+     (|0⟩ or |+⟩) is followed by a single-qubit depolar-        Sec. B. Recall that a surgery gadget consists of a k-
+     izing channel with error rate p.                           logical-qubit data code with physical qubits Q together
+                                                                with an ancilla system with physical qubits Q′ . During
+   • Measurement noise. Each measurement is preceded            the protocol, the stabilizer checks of the merged code are
+                                                                                                                             20
+
+measured for τs cycles. For each gadget we perform two                Appendix E: Space-efficient and balanced
+experiments. In both experiments the ancilla qubits Q′                            architectures
+are initialized and measured in the Z basis, while the
+data qubits Q are initialized and measured in either the          In this section, we present a general compilation
+X or the Z basis.                                               scheme for implementing any Clifford + Toffoli circuit on
+                                                                our space-efficient and balanced architectures based on
+   In the X-basis experiment, we define k + t logical ob-       the logical instructions in Appendices B and C. We then
+servables: the final logical X̄ operators of the data code,     apply this general compilation strategy to two algorith-
+obtained from the parities of the final single-qubit X          mic subroutines—ripple-carry adders [53, 107, 114] and
+measurements on Q, together with the outcomes of the            unary lookup tables [115]—which are the key elementary
+target logical operators L, extracted from the parities         building blocks of the cryptographic applications consid-
+of the merged-code X-checks in the first stabilizer mea-        ered in this work, and estimate their time costs. Finally,
+surement cycle. Failures of these observables characterize      we estimate the runtimes for RSA–2048 and ECC–256
+space-like logical Z̄ errors (determined by the Z distance      using our space-efficient and balanced architectures.
+of the merged code) as well as time-like logical errors cor-      Our space-efficient or balanced architectures consist of:
+responding to incorrect measurement of the target logical          • A [[nm , km , dm ]] memory code, where km is larger
+operators. In the Z-basis experiment, we define k − t log-           than the logical footprint of the entire algorithm.
+ical observables corresponding to the logical Z̄ operators
+of the data code that commute with L. Failures of these            • A [[np , kp , dp ]] processor code.
+observables characterize space-like logical X̄ errors, de-
+termined by the X distance of the merged code.                     • Three [[nf , kf , df ]] factory codes hosting kf copies
+                                                                     of logical |CCZ⟩ states distilled using ancillary fac-
+                                                                     tory code blocks, where each |CCZ⟩ state is encoded
+   Decoding. Decoding is performed using an ensemble                 across codes.
+of belief propagation with localized statistics decoders
+(BP-LSD) [45], implemented via the ldpc package [157].             • Additional ancillary codes for high-rate distillation,
+Each decoder instance uses min-sum belief propagation                including two [[nf , kf , df ]] factory codes and kf
+with serial scheduling for 100 iterations, using the default         [[ns , 1, ds ]] surface codes for cultivation.
+annealing schedule for the min-sum scaling factor pro-
+vided by the ldpc package (ms scaling factor = 0.0).                Given a general Clifford + Toffoli circuit on km qubits,
+The LSD is performed using an exhaustive search of or-          we serialize it into sub-circuits {Ci }, where each Ci is a
+der 5 (lsd method = lsd e, lsd order = 5). To im-               mi -qubit circuit containing βi Toffoli gates, γi mid-circuit
+prove decoding performance, we run an ensemble of five          Pauli measurements, and arbitrary Clifford gates. We
+decoder instances per syndrome, each operating under a          require that each sub-circuit can fit inside the processor
+different channel probability model: (i) the nominal error      code block, i.e. mi ≤ kp for all Ci . We use P̄ , P̄ ′ , and
+probabilities p⃗, (ii) a randomized serial schedule with the    P̄ ′′ to indicate a logical Pauli operator of the memory
+nominal probabilities, (iii) optimistic probabilities 0.8 p⃗,   code, the processor code, and the factory code, respec-
+(iv) pessimistic probabilities 1.2 p⃗, and (v) thermally per-   tively. Then, as illustrated in Extended Data Figure 3,
+turbed probabilities p⃗ ◦ (1 + ⃗η ), where ηi ∼ N (0, 0.04)     we implement each Ci with the following steps:
+independently for each error mechanism. For each syn-              1. Teleport the mi logical qubits in the memory code
+drome, all five decoders produce a candidate error vector.            to the processor code by sequentially measuring
+Candidates that satisfy the syndrome are retained, and                {Z̄Ij Z̄j′ }j∈[mi ] and then {X̄Ij }j∈[mi ] . Here, Ij de-
+the one with the lowest log-likelihood ratio weighted cost            notes the index of the j-th qubit among the mi
+                                                                      qubits in the memory code that Ci is supported
+                          X         1 − pi                            on.
+                C(⃗e) =       log          · ei        (D1)
+                          i
+                                      pi
+                                                                   2. Perform a mi -qubit Pauli-based computation on
+is selected, where pi is the prior error probability of the           the processor code, where Cliffords are pushed to
+i-th error mechanism and ei ∈ {0, 1} indicates whether                the end and each Toffoli gate is implemented by
+that mechanism is included in the correction. If no candi-            three P̄ ′ Z̄ ′′ measurements between the processor
+date satisfies the syndrome, a logical failure is recorded.           code and one of the factory codes, where P̄ ′ is a
+The decoder is designed by an LLM-assisted heuristic                  mi -qubit Pauli operator. In addition, each mid-
+computer search [125].                                                circuit Pauli measurement will be transformed to a
+                                                                      high-weight PPM and also executed sequentially.
+   Logical error rate. We report the block logical error           3. Teleport the mi qubits back into the memory code
+rate: a failure is recorded whenever the selected correc-             by sequentially performing Z̄Ij P̄j′ between the pro-
+tion, composed with the true error, acts nontrivially on              cessor and the memory code, followed by mi mi -
+any logical observable.                                               qubit measurements on the processor code.
+                                                                                                                                        21
+
+                                                                      a
+The above protocol extensively utilizes two key subrou-
+tines:
+   1. Measurement-based teleportation: logical qubit i is                                      ...
+      teleported to logical qubit j (potentially across dif-
+      ferent codes) by preparing |+⟩j , performing a Z̄i Z̄j
+      PPM followed by a X̄i PPM, and applying the cor-                             Read from             CCZ               Write into
+      responding logical Pauli corrections (see Fig. 3 of             b             memory           teleportation         memory
+
+      Ref. [158]).                                                    Memory
+
+
+   2. |CCZ⟩ teleportation: given a |CCZ⟩ resource state
+      on logical qubits a, b, and c, a CCZ gate can be
+      implemented on logical qubits a′ , b′ , and c′ by
+      performing three PPMs {Z̄a Z̄a′ , Z̄b Z̄b′ , Z̄c Z̄c′ }, fol-
+                                                                      Processor
+      lowed by three PPMs {X̄a , X̄b , X̄c } and the corre-
+      sponding CZ corrections (see Fig. 15 of Ref. [136]).
+When incorporated into the above compilation scheme,
+Clifford circuits generally transform the processor-code                                                             ...
+                                                                       Factory
+logical operators appearing in these PPMs into higher-
+
+
+
+
+                                                                                    ...
+weight logical operators, eventually yielding the circuit
+
+
+
+
+                                                                                    ...
+form illustrated in Extended Data Fig. 3.
+
+
+
+
+                                                                                    ...
+   We refer to the above execution of each Ci as a com-
+putation unit. Each computation unit involving a sub-                                                 Repeat
+circuit Ci thus takes time (in units of code cycles)
+                                                                      Extended Data Fig. 3. Compilation strategy. a, A general
+                τ (Ci ) = (4mi + 4βi + γi )τs ,              (E1)     Clifford+Toffoli circuit is divided into mi -qubit subcircuits
+                                                                      Ci containing βi Toffoli gates, γi mid-circuit Pauli measure-
+where τs again denotes a surgery cycle consisting of τs ≈             ments, and arbitrary Clifford gates. b, Each sub-circuit is im-
+2dp /3 code cycles (see Sec. B).                                      plemented by first teleporting the mi qubits from the memory
+   In the above, we assumed that for each Ci the involved             code to the processor code. Each Toffoli gate via |CCZ⟩ tele-
+mi qubits are read from the memory at the beginning and               portation and each mid-circuit Pauli measurement is imple-
+written back to the memory at the end. In other words,                mented through sequential Clifford-transformed PPMs. Fi-
+the processor code is initialized and measured transver-              nally, the m qubits are teleported back to the memory code,
+sally in the X basis for each computation unit. In prac-              again via Clifford-transformed PPMs. The PPMs can involve
+                                                                      high-weight logical Pauli operators on the processor code,
+tice, for instance, when two consecutive sub-circuits have
+                                                                      which we denote as P for simplicity.
+overlapping qubit support, one could instead read only
+  (in)
+mi < mi qubits from the memory and write back only
+  (out)
+mi      < mi qubits, leaving some logical qubits initial-             their key parameters such as bit size. These subrou-
+ized or stored in the processor code across computation               tines form the core of Shor’s algorithm both for ECC
+units. In this case, a similar compilation strategy ap-               and RSA [18, 19, 31–37, 54, 55, 116–120].
+plies, except that the Clifford frames must be tracked
+more carefully across different computation units. Im-
+portantly, since the I/O entangling operations between                                         1.    Space cost
+the memory and the processor are executed explicitly,
+the Clifford frame on the processor code remains unen-                   The space cost can be computed by summing the num-
+tangled from that of the memory, analogous to the situ-               ber of physical qubits in each of the four zones. We define
+ation in Ref. [37]. Consequently, the PPMs involve the                the qubit footprint for a [[n, k, d]] code to include data
+large memory code (with single-qubit logical Z̄ opera-                qubits as well as one basis (X or Z) of ancilla qubits
+tors) only during the I/O operations. The time cost for               for measuring stabilizers, i.e. N ≃ n + ⌊(n − k)/2⌋ (Ta-
+such a computation unit with “partial” I/O operations is              ble I). Note that in reconfigurable systems, code stabi-
+                       (in)     (out)
+given by τ (Ci ) = (2mi + 2mi         + 4βi + γi )τs . Equiva-        lizers can be measured in smaller batches, reducing the
+lently, one may still use Eq. E1 by replacing mi with the             qubit overhead but increasing idling times. Recall that
+                                           (in)       (out)
+amortized input–output qubit count (mi + mi                 )/2.      the resource zone space cost includes five bb18 factory
+   In the following section, we compute the space cost for            blocks with parameters [[nf , kf , df ]] = [[248, 10, ≤ 18]],
+this architecture using the concrete code instances dis-              and kf = 10 [[ns , ks , ds ]] = [[49, 1, 7]] cultivated surface
+cussed in Appendix A. Then, based on Eqs. (E1), we                    codes. The operation zone costs are derived from Ex-
+provide a concrete estimate for the runtime of ripple-                tended Data Table III, using only one basis of ancilla
+carry adders and unary lookup tables, parameterized by                qubits. The resulting qubit counts are listed in Extended
+                                                                                                                            22
+
+
+Extended Data Table IV. Space costs. Breakdown of the physical qubit counts in the space-efficient and balanced architectures
+in different functional zones.
+     Zone                  Space-efficient,            Space-efficient,              Balanced                   Balanced
+                            lp3,7
+                              20 memory                 lp3,7
+                                                          24 memory                lp3,7
+                                                                                     20 memory                lp3,7
+                                                                                                                24 memory
+   Memory                       5,913                        7,177                     5,913                      7,177
+  Processor                       367                         367                       1,609                     1,609
+  Resource                      2,565                        2,565                      2,565                     2,565
+  Operation                       894                         924                       1,874                     1,904
+    Total                       9,739                       11,033                     11,961                     13,255
+
+
+Data Table IV.                                                   qubits but only need to write 2kadd qubits back into mem-
+                                                                 ory, since the carry register is reset to zero. This gives an
+                                                                 amortized input-output qubit count of mi = 2.5kadd . For
+                2.   Time cost for adders                        the downward pass, each unit involves βi = kadd Toffolis
+                                                                 and γi = 0 mid-circuit measurements, whilst for the up-
+   Here we estimate the time costs of performing addi-           ward pass βi = 0 and γi = kadd . This leads to an overall
+tion in the space-efficient and balanced architectures. An       cost of
+adder has action                                                              qA                                        
+                                                                   τadder =        (10kadd + 4kadd ) + (10kadd + kadd ) τs
+                                                                             kadd
+                     |a⟩ |b⟩ → |a⟩ |a + b⟩              (E2)
+                                                                          = 25qA τs .                                    (E3)
+on     two       n-bit   numbers     |a⟩ = |a1 . . . an ⟩ and
+|b⟩ = |b1 . . . bn ⟩, where |a + b⟩ denotes integer addi-          Controlled adders require an additional qA Toffolis and
+tion modulo 2n [53, 107].                                        qA mid-circuit measurements on the upwards pass [107],
+   Because the space-efficient and balanced architectures        so an analogous calculation yields an overall cost of
+use a small processor code block, they are best-suited for                          q
+                                                                                       A
+an adder circuit which operates only on a small number               τctrl−adder =        (10kadd + 4kadd )
+of logical qubits at a time. As a result, we analyze the                             kadd
+                                                                                       qA                           
+Gidney variant [107] of the ripple-carry adder [53, 114].                          +       (10kadd + 4kadd + 2kadd ) τs
+Shown in Extended Data Fig. 4a, the circuit acts on three                             kadd
+qubit registers a, b, c, where a are the offset qubits, b are                    = 30qA τs .                           (E4)
+the target qubits, and c are ancilla carry qubits. The
+circuit consists of two stages, which we refer to as the            If 3qA ≤ kp then the entire adder fits inside the proces-
+downwards pass and the upwards pass respectively. In             sor block. This is the case for the RSA circuit from [18]
+the downwards pass, the circuit propagates the carries           in the balanced architecture, since the maximum size of
+down from the least significant bit to the most signif-          adder used is 33 bits whilst the processor has 148 qubits.
+icant bit, using Toffoli gates. In the upwards pass, the         In this case, we can simply teleport the entire a and b
+circuit uncomputes the carries using mid-circuit measure-        registers into the processor once at the beginning, and
+ments, propagating from the most significant bit to the          teleport them back once at the end. The total cost of the
+least significant bit. To perform qA -bit addition, the cir-     adder in this case is reduced to:
+cuit uses 3qA qubits, qA Toffoli gates, and qA mid-circuit
+measurements.                                                             τadder = (8qA + 4qA + qA )τs = 13qA τs .       (E5)
+   Since in general the addition circuit will have too many
+logical qubits to fit inside the processor block (kp < 3qA ),
+we divide the adder into smaller sub-circuits as shown
+in Extended Data Fig. 4. We use qA /kadd computation
+units for the downward and upward passes respectively,                      3.   Time cost for lookup tables
+where we set kadd = ⌊(kp − 1)/3⌋. During each unit, we
+hold kadd input qubits, kadd output qubits, and kadd + 1
+carry qubits in the processor. For each computation unit           Next we estimate the resource costs of performing
+of the downward pass, we only need to read 2kadd qubits          lookups in the space-efficient and balanced architectures.
+from the memory, while writing 3kadd qubits back into            A lookup has action
+memory, since the carry register is initialized to zero                                        qw
+                                                                                                     (ℓ)
+                                                                                                         !
+                                                                                                    Ti
+                                                                                              O
+which can be done in the processor block. Similarly, for                       |ℓ⟩|ψ⟩ → |ℓ⟩       Xi       |ψ⟩        (E6)
+each computation unit of the upward pass, we read 3kadd                                        i=1
+                                                                                                                              23
+
+a                         Ripple-carry adder                    b                                Unary lookup
+
+
+
+
+Extended Data Fig. 4. Circuits for the ripple-carry adder and unary lookup. a, We implement the ripple-carry adder
+using repeated small computation units (for example the blue boxes) so that each computation unit fits inside the processor
+codeblock. b, The diagram shows an example lookup circuit on 3 address qubits and 6 word qubits. The words of the lookup
+table were generated randomly. Highlighted in red are three qubits: the least significant address qubit, and the two least
+significant ancilla AND qubits. At least half of the Toffolis and CNOTs acting on the address and ancilla AND qubits occur
+on these three registers, which means that at most half of the address and ancilla AND operations require I/O in our space
+efficient architecture.
+
+                qa
+where {T⃗ (ℓ) }2ℓ=0−1 is a classically-known lookup table           lookups.
+with word length qw [115].
+  We use the unary lookup circuits introduced in [115].
+Shown in Extended Data Fig. 4, the circuit iterates                   For the space-efficient architecture, the processor does
+through the address bitstrings 0, . . . , 2qa − 1 one-by-one.       not even have enough space to hold all of the address
+For each address bitstring, the circuit uses Toffolis to de-        qubits, since kp < 2qa . In this case, we designate 3 pro-
+                                               T
+                                                   (ℓ)              cessor qubits to hold three address qubits that control the
+tect the identity of ℓ, before applying the Xi i operators          CNOTs acting on the word qubits, as shown in Extended
+using CNOTs. The complete circuit uses 2qa +qw qubits,              Data Fig. 4b. The remaining kp − 3 processor qubits are
+2qa Toffolis, and 2qa mid-circuit measurements [115].               used to store word qubits on which   the CNOTs   act. In
+  If 2qa + qw ≤ kp , then the entire lookup fits inside the         this way, the lookup is split into qw /(kp − 3) smaller
+processor, and the cost is simply                                   lookups, each requiring 2qa Toffolis and 2qa mid-circuit
+                                                                    measurements.
+    τlookup = (4(2qa + qw ) + 4 · 2qa + 2qa )τs
+            ≈ (4qw /2qa + 5)2qa τs           (qw ≫ qa ). (E7)
+                                                                      In this space-efficient compilation, many gates on the
+   For the balanced architecture, we assume that 2qa < kp           address qubits require I/O between processor and mem-
+so that the processor can store the 2qa qubits needed for           ory. In the complete unary iteration circuit, there are 2qa
+the unary iteration with some space to spare to apply               Toffolis, 2qa mid-circuit measurements, and 2qa CNOTs
+the word
+         operators. In this case, we will split the lookup        acting on the address qubits [115]. However, if we can
+into qw /(kp − 2qa ) smaller lookups each involving all             hold 3 address qubits at any one time, then the struc-
+the address bits but a subset of at most kp − 2qa word              ture of the unary iteration circuit implies that only half
+bits. We then implement each of the smaller lookups                 of the Toffolis, mid-circuit measurements, and CNOTs
+using an I/O step, 2qa Toffolis, and 2qa mid-circuit mea-           actually incur I/O cost—see Fig. 4. Moreover, each sub-
+surements. We only need I/O between the memory and                  sequent Toffoli or CNOT in the unary iteration circuit
+the processor after each small lookup to teleport the com-          always overlaps with the previous one by at least one
+pleted word qubits back into the memory, since the word             qubit, which means that the I/O cost is at most 2 qubits
+qubits are always initialized to zero, which can be done            per Toffoli or mid-circuit measurement and at most 1
+in the processor without I/O. As such, the whole lookup             qubit per CNOT.
+takes time
+            l q        m                              
+                   w
+  τlookup =                2(kp − 2qa ) + 4 · 2qa + 2qa τs            Overall, the cost of a lookup in the space-efficient ar-
+               kp − 2qa                                             chitecture is:
+               5qw
+          ≈          2qa τs               (2qa ≫ kp ). (E8)                     l q
+                                                                                      w
+                                                                                          m                              1
+            kp − 2qa                                                 τlookup =              2(kp − 1) + 4 · (2 + 2 + 1) · · 2qa
+                                                                                   kp − 1                                2
+It should be noted that this compilation increases                                              
+                                                                               + 4 · 2qa + 2qa τs
+                                                                                              
+the
+                 count of the lookup by a factor of
+      total Toffoli
+  qw /(kp − 2qa ) , since the Toffolison the addressqubits                        15qw qa
+                                                                               ≈          2 τs                  (2qa ≫ kp ). (E9)
+must be repeated for each of the qw /(kp − 2qa ) small                             kp − 3
+                                                                                                                            24
+
+     4.     Time cost for RSA–2048 and ECC–256                        In the balanced architecture with kp = 148, the adders
+                                                                    and controlled adders again have time-per-Toffoli 25τs
+   Shor’s algorithm for RSA–2048 and ECC–256 primar-                and 15τs respectively, but now the time-per-Toffoli for
+ily uses adders and lookups as the dominant algorithmic             lookups is (5qw /(kp − 2qa ))τs ≈ 11τs . Overall, for
+subroutines [18, 19, 31–37, 54, 55, 116–120]. Based on              ECC–256 in the balanced architecture we get:
+the adder and lookup compilations developed in Sections
+2 and 3, we now summarize and estimate the runtime of                 τTof ≈ 0.4 · 25τs + 0.5 · 15τs + 0.1 · 11τs ≈ 19τs (E13)
+Shor’s algorithm for RSA–2048 and ECC–256. We re-
+port the amortized time per Toffoli gate τToff. for each
+algorithm and each architecture in terms of the surgery
+time τs ; simply multiplying by the total Toffoli count will
+then yield the total runtime in terms of τs .                              Appendix F: Time-efficient architecture
+
+                             RSA–2048        ECC–256
+                                                                       Here we describe the time-efficient architecture and its
+          Space-efficient   τToff. ≈ 43τs   τToff. ≈ 72τs
+                                                                    associated resource costs for RSA–2048 and ECC–256.
+            Balanced        τToff. ≈ 10τs   τToff. ≈ 19τs
+                                                                    This architecture parallelizes Toffoli gates in core algo-
+Extended Data Table V. Amortized time-per-Toffoli for the           rithmic subroutines, which can reduce time costs com-
+RSA–2048 and ECC–256 algorithms in the space-efficient and          pared to the serial space-efficient and balanced archi-
+balanced architectures, all in terms of the time τs of a single     tectures (Appendix E). As a proxy for the time reduc-
+surgery operation.                                                  tion relative to these serial architectures, we consider
+                                                                    replacing linear-depth ripple-carry addition [53] used in
+  For the RSA–2048 circuit in Ref. [18], approximately              prior resource estimate circuits [18, 34, 54, 116–120]
+50% of the Toffolis arise from lookups on roughly 6 ad-             with logarithmic-depth quantum carry-lookahead addi-
+dress bits with word-size at most 33, and the remaining             tion [123]. Similar linear-to-logarithmic-depth reductions
+50% of Toffolis arise from adders on at most 33 bits [18].          are also possible in lookup tables [159], which together
+In the space-efficient architecture with kp = 10, the time-         with adders comprise the dominant Toffoli counts in prior
+per-Toffoli for adders and lookups is approximately 25τs            circuits for Shor’s algorithm [18, 19, 31–37, 54, 116–
+and (15qw /(kp − 3))τs ≈ 71τs respectively. Overall this            120] (see Appendix E). As a result, we expect that the
+yields:                                                             speedup between the ripple-carry and carry-lookahead
+                                                                    adder is a reasonable proxy for the speedup of the full
+          τToff. ≈ 0.5 · 25τs + 0.5 · 71τs ≈ 43τs           (E10)   circuit.
+                                                                      To leverage these lower-depth primitives, we gener-
+for RSA–2048 in the space-efficient architecture.
+                                                                    ate and consume magic |CCZ⟩ states in parallel us-
+  In the balanced architecture with kp = 148, the small
+                                                                    ing the high-rate 8T -to-CCZ distillation protocol (Ap-
+adders and lookups used in RSA–2048 fit inside the pro-
+                                                                    pendix C), extended to larger factory codes encoding
+cessor, so the time-per-Toffoli for adders and lookups is
+                                                                    more logical qubits. In addition, we assume logical gad-
+only 13τs and (4qw /2qa + 5)τs ≈ 7τs respectively. This
+                                                                    gets capable of measuring many logically disjoint PPMs
+yields:
+                                                                    on high-rate codes in parallel. Such capabilities have
+          τToff. ≈ 0.5 · 13τs + 0.5 · 7τs ≈ 10τs            (E11)   been demonstrated using, e.g. high-rate surgery tech-
+                                                                    niques [52, 121, 122] (see also Appendix B), achieving
+for RSA–2048 in the balanced architecture.                          parallel measurements of up to hundreds of logical op-
+  For the ECC–256 algorithm, based on compilations                  erators on distance-∼ 10 codes with ancilla overhead on
+in [116–120] we assume the following split in the Toffoli           the order of 1–2× the code size [121]. Ongoing work fur-
+count between controlled-adders, adders and lookups:                ther develops these constructions for LP codes [113]. We
+                                                                    characterize variants of the time-efficient architecture by
+    • 40% 256-bit adders,                                           the parallelism P , defined as the number of |CCZ⟩ states
+    • 50% 256-bit controlled-adders,                                distilled and consumed simultaneously.
+                                                                       Our goal is not to specify concrete circuits or instruc-
+    • 10% lookups with 16 address bits and word size                tion sets, but to provide an approximate resource esti-
+      256.                                                          mate for architectures supporting highly parallel Toffoli
+In the space-efficient architecture with kp = 10, the time-         gates. The schemes outlined below rely on continued
+per-Toffoli for adders and controlled-adders is 25τs and            improvements in such parallel logical gadgets, which we
+15τs respectively, and the time-per-Toffoli for lookups be-         expect to arise from further optimized high-rate surgery
+comes (15qw /(kp − 3))τs ≈ 550τs . Overall, for ECC–256             techniques [52, 79, 113, 127] or alternative approaches
+in the space-efficient architecture we get:                         such as homomorphic measurements [51, 146]. With this
+                                                                    goal in mind, we first outline the architecture at a high
+ τToff. ≈ 0.4 · 25τs + 0.5 · 15τs + 0.1 · 550τs ≈ 72τs (E12)        level and then estimate its resource costs.
+                                                                                                                        25
+
+                     1.   Description                                              2.   Resource costs
+
+                                                                   We now estimate the space and time costs of this pro-
+   In our time-efficient architecture, we perform logical       cedure for ECC–256 and RSA–2048 at different levels of
+operations directly on code blocks used for processing,         parallelism. The space cost is estimated from the sum
+thereby avoiding costly communication overhead with             of three quantities: the processor size, the resource zone
+the memory blocks. Upcoming work finds codes at suf-            size, and the operation zone size. As with the other ar-
+ficiently high distance hosting ≳ 100 logical qubits with       chitectures, our total qubit count includes data qubits
+20% encoding rates, and ≳ 600 logical qubits with 30%           and stabilizers in one basis (X or Z); see Extended Data
+encoding rates [125], which we leverage for processing          Table I. To estimate the processor size, we first com-
+and as factory code blocks. We generate P magic |CCZ⟩           pute the total number of logical qubits which need to be
+states at a time using high-rate distillation with five fac-    stored, given by the sum of the number of logical qubits
+tory code blocks and cultivated surface codes. As de-           from the original compilation [34, 55] and the number of
+scribed later, we use different codes for processing and        ancilla logical qubits required for carry-lookahead addi-
+magic depending on the chosen value of P .                      tion, n − 2 log(n), where n is the number of bits in the
+                                                                adder [123]. We then divide by the encoding rate r for
+   Using the carry-lookahead adder described in
+                                                                the chosen P to estimate the corresponding number of
+Ref. [123], we consider both controlled and uncon-
+                                                                processor data qubits, from which we compute the to-
+trolled adders, which can each appear in crypto-
+                                                                tal qubit count. For P < 600 (P ≥ 600), we assume
+graphic algorithms, depending on the particular
+                                                                processor encoding rates of r = 20% (r = 30%) based
+circuit [18, 34, 54, 116–120]. In both cases, the circuits
+                                                                on upcoming work [125]. Note that because we do not
+are comprised of ≈ 4 log(n) parallel layers of Toffoli
+                                                                specify the concrete block size, these numbers are cor-
+gates, each acting on a potentially different subset of
+                                                                rect up to rounding errors of one block, which are small
+logical qubits. This can be contrasted with ripple-carry
+                                                                compared to the total qubit count.
+addition, which requires ≈ 1n and ≈ 2n Toffoli layers
+for uncontrolled and controlled addition respectively.             For the resource zone, we require five factory blocks
+The Clifford cost for the carry-lookahead adder is              each encoding P logical qubits which can be transver-
+minimal—at most six layers of CNOTs in the entire               sally coupled (note that each factory block can be as-
+adder—and therefore we neglect it in our estimates.             sembled from smaller, independent code blocks). We as-
+                                                                sume these codes have the same rate as the processor,
+   The carry-lookahead circuit [123] proceeds by first gen-     with the exception of P < 100, where we assume a lower
+erating a group of P magic states using the high-rate dis-      encoding rate of 4% to allow for transversal coupling of
+tillation described in Appendix C. At large P , the space       smaller block sizes (e.g., the bb18 code). We also require
+cost from surface codes can become large, so we allow the       P/nbatch surface codes for |T ⟩ cultivation. Finally, we
+surface codes to be injected into the T block in a variable     estimate the operation zone size by noting that at most
+number of batches nbatch , resulting in a time cost per dis-    6P logical qubits are operated on in parallel at once (cor-
+tillation of 8 × 15nbatch (see Appendix C). The resulting       responding to three blocks for the |CCZ⟩ states, and 3P
+magic states are teleported into the computation using          processor logical qubits).
+a single layer of parallel ZZ PPMs between the factory             We estimate the required ancilla size as γ(6P/r), where
+codes and the processor codes. Subsequent CZ fix-ups            γ is the ratio between the ancilla size for measuring a
+on the processor codes are performed using two layers of        layer of parallel PPMs and the size of the corresponding
+parallel ZZ or ZX measurements with the assistance of           codes. For reference, γ ≈ 1–2 for d ∼ 10 codes with X-
+up to 3P ancilla logical qubits [124], which could come         or Z-type measurements using high-rate surgery [52]. To
+from e.g. the factory codes that are freed after the |CCZ⟩      account for larger codes and more complex PPMs, we
+teleportation. Assuming each layer of parallel two-body         consider γ = 1–3 and plot results with γ = 2 in Fig. 3.
+PPMs can be implemented in parallel using, e.g. high-           We further assume that the ancilla cost for injecting |T ⟩
+rate surgery, the total time cost of gate teleportation and     states during distillation does not exceed this bound. Be-
+fixups is therefore 3τs = 2d, where d is taken to be 20         cause some physical qubits are freed up after the distilla-
+and τs denotes the surgery cycle time. To reduce time           tion factory terminates (including all of the surface code
+costs, for layers involving fewer than five Toffoli gates, we   qubits and two factory blocks), these extra qubits are re-
+delay the fixups until the next layer involving more than       purposed for the operation zone for teleportations and
+five Toffoli gates, at which point they are performed at        fixups, further reducing its total size. We re-emphasize
+negligible increase to the surgery system size. At each         that the operation zone size is an estimate, and future
+step, the maximum possible number of Toffolis are im-           work can benchmark and optimize logical gadgets for
+plemented, corresponding to either P (consuming a full          measuring parallel PPMs.
+factory) or the number of remaining Toffoli gates in the           Now we estimate the space and time costs for a par-
+current Toffoli layer, whichever quantity is smaller. As        allelism level P . For RSA–2048 we consider P = 100
+soon as the produced |CCZ⟩ states are fully consumed,           and P = 1,160 for which we choose nbatch = 2. For
+another batch is produced and the computation proceeds.         ECC–256 we consider P = 20 and P = 130, for which
+                                                                                                                   26
+
+we choose nbatch = 1. In the main text, we assume            Acknowledgments M.E. and J.P. acknowledge support
+γ = 2. We estimate the range in space costs due to           from the Institute for Quantum Information and Matter,
+surgery system size fluctuations by considering γ = 1 and    an NSF Physics Frontiers Center (PHY-2317110). M.E.
+γ = 3. This corresponds to approximate uncertainties of      acknowledges support from the NSF QLCI program
+       +4,000
+67,000−3,000  qubits (P = 100) and 102,000+28,000
+                                             −4,000 qubits   (2016245). Q.X. acknowledges funding by the Walter
+                                          +3,000             Burke Institute for Theoretical Physics at Caltech.
+(P = 1,160) for RSA–2048, and 19,000−2,000 (P = 20)
+and 26,000+5,000
+              0    qubits (P = 130) for ECC–256. (The
+lower bound for the final estimate is zero because the
+space is dominated by the factory rather than code           Competing interests The authors are shareholders
+surgery.) We compute the factor speedup compared             of Oratomic, Inc., which is developing fault-tolerant
+to the balanced architecture by comparing to the time        quantum computers.         M.C., Q.X, R.K., L.R.B.P,
+cost of the ripple-carry adder, given by 2d  3 · 25n and     H-Y.H, and D.B. are full-time employees, and H.L.,
+2d
+ 3 · 2 · 15n for non-controlled and controlled addition,     M.E., and J.P. are part-time employees, of Oratomic, Inc.
+respectively. We take the ratio of these time estimates
+with the depth of the carry-lookahead adder, and take
+the average of the speedups for both controlled and non-
+controlled adders. The associated space and time costs       Correspondence and requests for materials should
+are plotted in Fig. 3b-c in the main text.                   be addressed to M.C., Q.X, and D.B.
+

@@ -32,6 +32,19 @@ Each temporary logical-AND compute is expanded in the exact order
 4. `CNOT(a,x)`, `CNOT(a,y)`;
 5. `H(a)`, `S(a)`.
 
+This exact gate sequence and phase convention (`ω = exp(iπ/4)` on the
+controls' `T_dagger` and the ancilla's `T`, `1j` on the final `S`) is not an
+independent transcription of the paper alone: `RV-20260815-004` and
+`RV-20260815-006` cross-checked it gate-for-gate against
+`runtime_metadata_benchmark.gidney.coherent._apply_figure3_compute`, the
+function `verify_coherent_adder` exhaustively regression-tests (all branches,
+all computational-basis inputs, common-Kraus-scale phase check) to produce
+the `exhaustive_small_width_coherent_regression` status this contract's
+`NUMERICAL` widths 2-4 rely on. The two implementations matched exactly, so
+the `NUMERICAL` label on this section's primitive counts is backed by that
+verified source function, not merely inherited by convention from the parent
+DAG node's evidence status.
+
 The temporary is initially prepared in `|T>`. Its later erase remains an
 X-basis measurement followed by the measurement-conditioned CZ frame update
 already exposed in the source DAG. For width `n`, the resulting trace has:
@@ -130,14 +143,21 @@ the 60-logical block; width 60 requires 61 and is `INFEASIBLE` under that
 check. This is not yet an executable CQLU capacity result: any additional
 logical ancilla required by the PBC compilation can reduce the maximum width.
 
+`T-20260815-004` has now realized that warning for one explicit compilation:
+the quantum-output-preserving adaptive PBC trace needs one reusable compiler
+scratch, so width 58 passes the serialized 60-slot check and width 59 does
+not. See `docs/PBC_CQLU_LOWERING_CONTRACT.md`. The provisional round counts
+above remain historical sensitivity results and are not updated into strict
+runtimes.
+
 The known physical-qubit lower bound is 627 during single-X surgery:
 540 configured base qubits plus 87 added gadget/check ancillas. It excludes
 unknown CQLU gadget space and all out-of-scope architecture zones.
 
 ## Next scientific action
 
-Select and verify one explicit Pauli-based compilation of the phase-exact
-CNOT/H/S/T trace. It must state logical ancilla use, adaptive measurements,
-Pauli/Clifford-frame transformations, and generated Pauli supports. Only then
-can the strict schedule, actual processor-capacity boundary, high-rate hit
-rate, and physical-qubit total be reported.
+Use the explicit adaptive PBC trace from `T-20260815-004` to source and encode
+the remaining J300 Z/ZZ/ZX, state-preparation, reaction, and conditional-CZ
+costs. Then implement resource-constrained scheduling and reassess high-rate
+XX batching. Until those costs are pinned, no strict runtime or complete
+physical-qubit total can be reported.

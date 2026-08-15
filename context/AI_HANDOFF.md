@@ -6,7 +6,7 @@ To: human and codex
 
 ## Current objective
 
-All five Codex submissions to date (`T-20260811-001`, `T-20260811-002`, `T-20260815-001`, `T-20260815-002`, `T-20260815-003`) are now Claude-reviewed and `APPROVED`. `T-20260815-002` remains intentionally a conditional single-processor prototype and does not close the human-owned canonical ECDLP decision or the Month-1 Memory--Processor scope. `T-20260815-003`'s Obsidian Research Hub is a manually curated presentation layer; canonical project records remain authoritative and the Hub was resynchronized to the post-review state as part of `RV-20260815-005`.
+All six Codex submissions to date are now Claude-reviewed and `APPROVED`, including `T-20260815-004` (`RV-20260815-006`): a quantum-output-preserving adaptive PBC trace that replaces the logical CNOT/H/S/T placeholders, verified on all tested nonzero gadget branches, accounting for one reusable compiler scratch. Width 58 passes the serialized J300 60-slot check and width 59 does not. Strict runtime remains unavailable because native state-preparation, Z/ZZ/ZX, reaction, conditional-CZ, and adaptive scheduling contracts are still `CHECK`.
 
 ## Read first
 
@@ -25,14 +25,17 @@ All five Codex submissions to date (`T-20260811-001`, `T-20260811-002`, `T-20260
 - `docs/MITTEN_GIDNEY_LOWERING_CONTRACT.md`
 - `coordination/reviews/T-20260815-002.md`
 - `experiments/runs/T-20260815-002/summary.json`
+- `docs/PBC_CQLU_LOWERING_CONTRACT.md`
+- `experiments/runs/T-20260815-004/summary.json`
+- `coordination/reviews/T-20260815-004.md`
 
 ## Next concrete action
 
 1. Human records the `T-BOOT-001` full-ECDLP choice; this is the only remaining human-owned blocker before `T-BOOT-002` (project-wide trace schema) can be claimed.
-2. Select and phase-verify one explicit Pauli-based CQLU compilation for intra-block CNOT/H/S/T, including its logical ancilla, adaptive-measurement, and Pauli/Clifford-frame contract. This is the blocker for a strict Mitten runtime. `coordination/reviews/T-20260815-002.md` records a confirmed-correct reference point: the phase-exact Figure-3 AND-compute trace already matches the pinned source's exhaustively verified circuit gate-for-gate, so the CQLU compilation only needs to cover CNOT/H/S/T/T-dagger/measurement-frame primitives, not re-derive the AND gadget itself.
-3. Recompute the capacity boundary after CQLU ancillas are included; width 59 currently saturates all 60 source-residency slots and may not remain executable.
-4. Non-blocking documentation follow-up: cite `runtime_metadata_benchmark.gidney.coherent._apply_figure3_compute`/`verify_coherent_adder` in `docs/MITTEN_GIDNEY_LOWERING_CONTRACT.md` as the specific cross-checked source of the Figure-3 gate sequence (currently only cited at the paper level).
-5. Controlled-adder, unary-lookup, and carry-lookahead contracts are pinned before project-wide schema generalization.
+2. Pin J300 implementations and durations for logical stabilizer/magic preparation, Z/ZZ/ZX measurements, reaction, and conditional CZ; then resource-schedule the adaptive PBC trace and reassess exact-ten-XX high-rate batching. Width 58/59 is currently only a serialized one-scratch slot-count result, not a scheduled runtime.
+3. Controlled-adder, unary-lookup, and carry-lookahead contracts are pinned before project-wide schema generalization.
+
+The documentation follow-up repeated across `RV-20260815-004` and `RV-20260815-006` (citing `runtime_metadata_benchmark.gidney.coherent._apply_figure3_compute`/`verify_coherent_adder` in `docs/MITTEN_GIDNEY_LOWERING_CONTRACT.md`) is now done; Claude applied it directly after the second review, since it was a pure documentation addition with no implementation or scope change.
 
 ## Known risks
 
@@ -42,8 +45,8 @@ All five Codex submissions to date (`T-20260811-001`, `T-20260811-002`, `T-20260
 - Neither artifact's local tests completed within the bounded verification window, so no published count is marked reproduced.
 - The newly registered qLDPC/qLTC papers are only abstract-triaged; finite-size code, gadget, decoder, hardware, and factory assumptions are not yet normalized.
 - Gidney now has a reviewer-reproduced width-256 structural DAG regression, but no QEC-native lowering, processor partition, or runtime result. QCLA remains a source-level candidate; Kim et al. 2026/106 is only abstract-triaged.
-- The new J300 schedule is a `CHECK` sensitivity result, not a QEC-native runtime: CNOT/H/S/T use provisional 14-round placeholders with unknown gadget space, and setup/readout/reconfiguration are not included.
-- Direct Gidney erase measurements are single-X, whereas backend v1 only recognizes the directly simulated ten-disjoint-XX high-rate gadget; the measured high-rate hit count is therefore zero until a verified PBC compiler exposes different supports.
+- The old J300 schedule is a `CHECK` sensitivity result, not a QEC-native runtime. The now-approved adaptive PBC trace removes the semantic CNOT/H/S/T blocker (verified correct via independent formula re-derivation and gadget-level Clifford-conjugation checks) but still lacks native preparation, Z/ZZ/ZX, reaction, conditional-CZ, setup/readout, and reconfiguration costs.
+- The adaptive trace exposes many XX measurements, but no high-rate hit count is reported yet: exact-ten batching must be recomputed under readiness, scratch, operation-zone, and Pauli-support conflicts.
 - Logical parallelism may be overestimated if conflicts and routing are omitted.
 - Average factory rate may hide burst-induced stalls.
 - The Obsidian dashboard is manually curated and can drift unless canonical records are updated first and the linked maintenance checklist is followed; four spots drifted one review-cycle behind within this same session and were resynchronized during `RV-20260815-005`.
@@ -51,4 +54,4 @@ All five Codex submissions to date (`T-20260811-001`, `T-20260811-002`, `T-20260
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; all reviewed tasks' locks are now `RELEASED`.
+Check `coordination/WORK_LOCKS.md`; all tasks' locks are now `RELEASED`.

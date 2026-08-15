@@ -27,8 +27,8 @@ updated: 2026-08-15
 
 ### Active
 
-- [ ] Replace provisional Clifford+T durations with a phase-exact PBC/CQLU compilation.
-- [ ] Recompute processor capacity after compiler ancillas are included.
+- [ ] Complete cross-review of the adaptive PBC/CQLU trace and its width-58/59 slot-count result (`RV-20260815-006`).
+- [ ] Pin native preparation/Z/ZZ/ZX/reaction/conditional-CZ costs and produce an adaptive resource-constrained schedule.
 
 ### Still required for the full Month-1 goal
 
