@@ -4,7 +4,7 @@
 - Source: <https://arxiv.org/abs/2607.28795v1>
 - Version: arXiv:2607.28795v1, submitted 2026-07-30
 - Local PDF: `literature/papers/2607.28795v1.pdf`
-- Reading status: Tables I--V, X--XI and Appendices C--E/I audited for `T-20260815-002`
+- Reading status: Tables I--V, X--XI, Figures 2/6, and Appendices C--E/I audited through `T-20260815-005`
 
 ## Source-reported claims
 
@@ -18,6 +18,10 @@
 - **LITERATURE:** Table IV reports 780 gadget qubits plus 382 X-check and 372 Z-check additions for the J300 full extractor, but not its operation duration.
 - **LITERATURE:** Table X reports a 678 microsecond average memory-decoder latency for J300 under a 1 ms assumed syndrome cycle; this is not a worst-case feed-forward bound and is not used as the v1 reaction time.
 - **LITERATURE:** Table XI estimates J300 neutral-atom syndrome-cycle times of 10.98 ms with two crossed-AOD pairs, 7.22 ms with four pairs, and 3.47 ms with an idealized fast SLM.
+- **LITERATURE:** The basic instruction set contains single logical X/Y/Z measurements, weight-two XX/ZZ PPMs, and noisy T-state injection. The high-throughput set adds parallel PPMs and parallel injection, while the fixed full extractor supports an arbitrary software-selected Pauli product, including mixed products.
+- **LITERATURE:** Table III gives the J300 ten-XX construction as 601 gadget data qubits, 318 new X checks, and 293 new Z checks. The scheduler therefore records 1,212 added physical qubits rather than conflating gadget data with check ancillas.
+- **LITERATURE:** Table IV gives the J300 full extractor as 780 gadget data qubits, 382 new X checks, and 372 new Z checks, or 1,534 added physical qubits under one-ancilla-per-check accounting.
+- **LITERATURE:** Figure 6 injects all 60 logical magic ports using two parallel switches. Table V reports 3,900/7,020/11,100/16,140 physical qubits for repetition distances 5/7/9/11. These are full 60-port injection resources, not a single logical T-preparation cost.
 
 ## Derived project relevance
 
@@ -26,6 +30,8 @@
 - **CHECK:** Model measurement concurrency, seed-gadget/extractor occupancy, decoder throughput distribution, and routing rather than using the 20% code rate alone.
 - **CHECK:** The source proves universality through PPMs and injection but does not supply the application-specific PBC trace for Gidney's CNOT/H/S/T sequence. Do not label an intra-block CNOT as transversal.
 - **CHECK:** `R` counts merged-code syndrome rounds; separately account for gadget preparation/readout, decoder reaction, and hardware reconfiguration before converting a schedule to seconds.
+- **CHECK:** The source reports J300 R values for X, XX, and ten-product XX, but not J300 Z, ZZ, Y, or full-extractor duration. Do not copy the J500 Z result to J300 or infer `R=d` as a literature result.
+- **CHECK:** A 678 microsecond average memory-decoder latency is neither a worst-case reaction deadline nor a J300 surgery-decoder measurement. Tail latency and the controller contract remain open.
 
 ## Open interpretation questions
 

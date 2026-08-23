@@ -68,7 +68,7 @@ def test_dashboard_preserves_evidence_qualifiers() -> None:
 
     assert "T-BOOT-001" in home
     assert "RV-20260815-004" in home
-    assert "15,270 syndrome rounds" in home
+    assert "31,176 syndrome rounds" in home
     assert "CHECK" in home
     assert "not" in home.lower() and "runtime" in home.lower()
 

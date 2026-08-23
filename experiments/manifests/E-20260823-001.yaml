@@ -1,0 +1,27 @@
+experiment_id: E-20260823-001
+task_id: T-20260823-001
+title: Replayable memory-I/O integration for the reviewed Gidney trace
+source:
+  repository: ../runtime-metadata-benchmark
+  commit: 75a6e83d5acde37f0987ab867352ee8b2c6afd10
+  gidney_frontend_unchanged_since: 8c1638805e7246c30117a0251526661039df1369
+inputs:
+  widths:
+    exact_partition_reference: [2, 3, 4]
+    adaptive_pbc_io_sensitivity: [2, 4, 16, 32]
+  pbc_backend: configs/codes/mitten_j300_pbc_v2.yaml
+  memory_io_backend: configs/architectures/j300_memory_io_v1.yaml
+  legacy_reference: tests/fixtures/memory_io/legacy_partition_reference.json
+assumptions:
+  ids: [A-0004, A-0013, A-0014, A-0016, A-0017, A-0018]
+  event_order: reviewed adaptive-PBC greedy order is fixed before I/O placement
+  transfer_semantics: one usable logical-state location at a time
+  overlap: no prefetch and no transfer/compute overlap
+  factory: ideal supply inherited from T-20260815-005
+  random_seed: null
+outputs:
+  - experiments/runs/T-20260823-001/summary.json
+evidence:
+  transfer_counts: NUMERICAL
+  one_round_transfer_timing: CHECK
+  wall_clock_runtime: OPEN

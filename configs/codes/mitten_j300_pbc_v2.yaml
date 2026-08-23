@@ -1,0 +1,138 @@
+schema: ecdlp-ftqc/pbc-mitten-backend-config
+schema_version: 2
+configuration_id: code-mitten-j300-adaptive-pbc-v2-sensitivity
+source: Bhardwaj et al., arXiv:2607.28795v1, Figure 2 and Tables II-IV
+
+code:
+  data_physical_qubits: 300
+  syndrome_ancilla_qubits: 240
+  logical_qubits: 60
+  distance: 14
+
+default_scratch_slots: 1
+
+classical_reaction:
+  rounds: 1
+  evidence_status: CHECK
+
+resource_pools:
+  - name: processor_operation_zone
+    capacity: 1
+  - name: classical_controller
+    capacity: 1
+
+operation_costs:
+  - implementation: stabilizer_preparation
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: CHECK
+    space_evidence_status: CHECK
+    source_note: Sensitivity placeholder; the source does not report state-specific preparation time or added space
+
+  - implementation: magic_t_preparation
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: CHECK
+    space_evidence_status: CHECK
+    source_note: Sensitivity placeholder; Figure 6 injects all 60 states and does not specify a single-state cost
+
+  - implementation: seed_x
+    rounds: 11
+    gadget_data_ancilla_qubits: 43
+    gadget_check_ancilla_qubits: 44
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: LITERATURE
+    space_evidence_status: LITERATURE
+    source_note: Figure 2 reports J300 X at R=11; Table II gives 43 data ancillas and 22+22 new checks
+
+  - implementation: seed_y
+    rounds: 14
+    gadget_data_ancilla_qubits: 100
+    gadget_check_ancilla_qubits: 101
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: CHECK
+    space_evidence_status: LITERATURE
+    source_note: Table II gives J300 Y space; one-distance timing is a sensitivity value, not a source result
+
+  - implementation: seed_z
+    rounds: 14
+    gadget_data_ancilla_qubits: 43
+    gadget_check_ancilla_qubits: 44
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: CHECK
+    space_evidence_status: LITERATURE
+    source_note: Table II gives J300 Z space; the reported R=15 Z experiment is J500, not J300
+
+  - implementation: seed_xx
+    rounds: 13
+    gadget_data_ancilla_qubits: 100
+    gadget_check_ancilla_qubits: 101
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: LITERATURE
+    space_evidence_status: LITERATURE
+    source_note: Figure 2 reports J300 XX at R=13; Table II gives 100 data ancillas and 44+57 new checks
+
+  - implementation: seed_zz
+    rounds: 14
+    gadget_data_ancilla_qubits: 100
+    gadget_check_ancilla_qubits: 101
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: CHECK
+    space_evidence_status: LITERATURE
+    source_note: Table II gives J300 ZZ space; the source does not report a J300 ZZ duration
+
+  - implementation: high_rate_xx_10
+    rounds: 13
+    gadget_data_ancilla_qubits: 601
+    gadget_check_ancilla_qubits: 611
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: LITERATURE
+    space_evidence_status: LITERATURE
+    source_note: Figure 2 reports ten J300 XX products at R=13; Table III gives 601 data ancillas and 318+293 new checks
+
+  - implementation: full_extractor
+    rounds: 14
+    gadget_data_ancilla_qubits: 780
+    gadget_check_ancilla_qubits: 754
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: CHECK
+    space_evidence_status: LITERATURE
+    source_note: Table IV gives J300 full-extractor space and arbitrary Pauli support; duration is not reported
+
+  - implementation: pauli_frame_update
+    rounds: 0
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: classical_controller
+    timing_evidence_status: PROVED
+    space_evidence_status: PROVED
+    source_note: Bookkeeping is zero quantum rounds; reaction latency is represented on classical dependency edges
+
+  - implementation: conditional_cz
+    rounds: 14
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: processor_operation_zone
+    timing_evidence_status: CHECK
+    space_evidence_status: CHECK
+    source_note: Sensitivity placeholder; the native adaptive Clifford implementation and extra space are unresolved
+
+  - implementation: bookkeeping
+    rounds: 0
+    gadget_data_ancilla_qubits: 0
+    gadget_check_ancilla_qubits: 0
+    exclusive_resource: classical_controller
+    timing_evidence_status: PROVED
+    space_evidence_status: PROVED
+    source_note: Compiler release and logical-value rebinding only; reset and memory reload are outside this cycle
+
+high_rate_batches:
+  - implementation: high_rate_xx_10
+    pauli_family: XX
+    batch_size: 10
+    disjoint_logical_support_required: true
+    distinct_scratch_slots_required: true

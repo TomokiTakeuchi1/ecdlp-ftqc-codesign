@@ -24,10 +24,10 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
-| 0 | PBC native durations and adaptive scheduling are missing | Reviewed, exact Pauli supports now exist, but state preparation, Z/ZZ/ZX, reaction, and conditional-CZ costs remain `CHECK`. | Pin those J300 contracts and schedule the adaptive trace without placeholder durations. |
-| 1 | Parallel PBC scratch occupancy is unresolved | One serialized scratch makes width 58 fit and width 59 fail the 60-slot check; parallel gadgets may need more scratch. | Jointly schedule operation-zone and scratch-slot resources before enabling high-rate batches. |
+| 0 | Several PBC native durations remain unresolved | Adaptive resource scheduling now exists, but state preparation, Z/ZZ/ZX/full-extractor time, reaction, and conditional-CZ costs remain `CHECK`. | Pin or validate those J300 contracts; strict mode already rejects placeholders. |
+| 1 | High-rate batches are absent from the current adder trace | Ten scratch slots are modeled, but widths 2/4/16/32 never expose ten eligible XX operations simultaneously. | Explore circuit rewrites/native gates or a global scheduler without claiming the greedy zero-hit result is an impossibility proof. |
 | 1 | Memory–Processor I/O is absent | A small processor may spend more time moving states than computing. | Implement load/store, bridge occupancy, and communication resources. |
-| 1 | Parallel-surgery legality is narrow | Exact XX supports are now generated, but circuit parallelism is not automatically executable high-rate surgery. | Build ready-set/conflict/resource constraints and test exact-ten disjoint-XX eligibility. |
+| 1 | Parallel-surgery legality is narrow | Exact-ten disjoint-XX readiness, scratch, carrier, and operation-zone constraints are implemented, but only this source-supported family is enabled. | Audit other source-supported families before expanding the native high-rate gate set. |
 
 ## Open research questions
 

@@ -1,0 +1,23 @@
+{
+  "evidence_status": "NUMERICAL",
+  "policy_identity": "exact_small_width_partition_reference_v1",
+  "qualification": "Source-pinned regression values; not a runtime-seconds result",
+  "source_commit": "75a6e83d5acde37f0987ab867352ee8b2c6afd10",
+  "source_module_sha256": "EB7E7CBAB44C0E012DD8479595202E56BAC57F8B658349FBD86ADE7C933FF2AA",
+  "widths": {
+    "2": [
+      {"capacity": 5, "loads": 4, "partitions": 1, "stores": 4},
+      {"capacity": 3, "loads": 6, "partitions": 3, "stores": 6}
+    ],
+    "3": [
+      {"capacity": 8, "loads": 6, "partitions": 1, "stores": 6},
+      {"capacity": 6, "loads": 8, "partitions": 3, "stores": 8},
+      {"capacity": 4, "loads": 10, "partitions": 5, "stores": 10}
+    ],
+    "4": [
+      {"capacity": 11, "loads": 8, "partitions": 1, "stores": 8},
+      {"capacity": 8, "loads": 11, "partitions": 3, "stores": 11},
+      {"capacity": 5, "loads": 14, "partitions": 7, "stores": 14}
+    ]
+  }
+}

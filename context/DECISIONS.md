@@ -55,3 +55,19 @@
 - Decision: Compile CNOT to the Xu et al. measurement circuit and compile H/S/T/T-dagger through one-bit teleportation. Follow the Bravyi--Smith--Smolin T gadget with an adaptive I/S or I/S-dagger teleport so no unpropagated S frame is returned to the arithmetic trace.
 - Rationale: The standard PBC compression theorem targets final classical output. Arithmetic subcircuits return live quantum values, so compiler ancillas, adaptive measurements, logical-carrier moves, and the remaining frame must stay explicit.
 - Consequences: One reusable scratch slot lowers the serialized J300 slot-count boundary from source-only width 59 to width 58. Exact Pauli supports now exist, but strict runtime remains blocked by state-preparation, Z/ZZ/ZX, reaction, conditional-CZ, and scheduler evidence.
+
+## D-0008: Keep J300 strict evidence separate from schedule sensitivity
+
+- Status: ACCEPTED (`RV-20260815-007` approved 2026-08-15)
+- Date: 2026-08-15
+- Decision: Store timing and added-space evidence independently, reject every used `CHECK` entry in strict mode, and permit high-rate J300 surgery only for the source-supported exact ten-XX batch with pairwise-disjoint supports and ten distinct live scratch slots.
+- Rationale: Tables II--IV report more finite-size space constructions than operation durations, and average decoder latency is not a deterministic feed-forward bound. A precise schedule under substituted times must not be mistaken for an executable runtime.
+- Consequences: `E-20260815-003` is a `CHECK` sensitivity schedule. Its zero high-rate hits for Gidney widths 2/4/16/32 and 2,074 known-component physical-qubit peak are reproducible but do not establish wall-clock time or total machine size.
+
+## D-0009: Add memory I/O as a source-pinned overlay and preserve transfer semantics
+
+- Status: ACCEPTED (`RV-20260823-001` approved 2026-08-23)
+- Date: 2026-08-23
+- Decision: Adapt the reviewed `runtime-metadata-benchmark` memory-I/O contracts at commit `75a6e83d5acde37f0987ab867352ee8b2c6afd10` into a separate overlay referencing QEC-neutral DAG source operations. Keep memory--processor teleportation moves distinct from future Bell carry teleportation. Apply scalable Belady placement only after the adaptive-PBC event order is selected in this bounded cycle.
+- Rationale: The existing DAG already preserves circuit causality, while the old implementation supplies reviewed value-origin, memory/occupancy, partition, and replay semantics. A separate overlay avoids changing DAG schema v1 and prevents a fixed-order I/O policy from being mistaken for a parallel-DAG optimizer.
+- Consequences: Widths 2--4 admit an exact partition reference; larger PBC traces receive a deterministic fixed-order heuristic upper bound. One-round transfer timing and no-overlap assumptions remain `CHECK`, strict mode rejects them, and later teleportation-ripple/QCLA work must introduce separate communication events and joint scheduling if required.

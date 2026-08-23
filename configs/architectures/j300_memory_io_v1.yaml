@@ -1,0 +1,13 @@
+schema: ecdlp-ftqc/memory-io-timing-config
+schema_version: 1
+configuration_id: architecture-j300-memory-io-v1-sensitivity
+logical_qubits: 60
+transfer_lanes: 1
+load_rounds: 1
+store_rounds: 1
+timing_evidence_status: CHECK
+overlap_policy: no_prefetch_no_compute_overlap_v1
+source_note: >-
+  One-round load and store durations are sensitivity placeholders. The reviewed
+  J300 source does not pin memory-processor teleportation duration, bridge
+  preparation, routing, setup/readout, or reaction-tail latency.

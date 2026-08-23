@@ -15,7 +15,7 @@ updated: 2026-08-15
 
 **Status: ACTIVE**
 
-<progress max="14" value="5"></progress> 5 of 14 listed Month-1 milestones are complete; 2 more are active.
+<progress max="15" value="6"></progress> 6 of 15 listed Month-1 milestones are complete; 1 more is in review.
 
 ### Completed or reviewed
 
@@ -24,11 +24,11 @@ updated: 2026-08-15
 - [x] Preserve erase measurements and classical feed-forward explicitly.
 - [x] Add a conditional Mitten lowering and deterministic greedy scheduler.
 - [x] Complete cross-review of the Mitten scheduler (`RV-20260815-004`).
+- [x] Complete cross-review of the adaptive PBC/CQLU trace (`RV-20260815-006`).
 
 ### Active
 
-- [ ] Complete cross-review of the adaptive PBC/CQLU trace and its width-58/59 slot-count result (`RV-20260815-006`).
-- [ ] Pin native preparation/Z/ZZ/ZX/reaction/conditional-CZ costs and produce an adaptive resource-constrained schedule.
+- [ ] Complete cross-review of the adaptive J300 resource scheduler (`RV-20260815-007`).
 
 ### Still required for the full Month-1 goal
 
@@ -39,6 +39,7 @@ updated: 2026-08-15
 - [ ] Memory load/store, teleportation, inter-block PPM, and bridge model.
 - [ ] Canonical LP backend and LP-memory/Mitten-processor hybrid schedule.
 - [ ] Comparable runtime, physical-qubit, communication, and T/CCZ-demand outputs.
+- [ ] Replace `CHECK` J300 preparation/Z/ZZ/ZX/reaction/conditional-CZ sensitivity times with source-pinned or explicitly validated contracts.
 
 ## Month 2 — Full ECDLP-256 Shor estimate
 

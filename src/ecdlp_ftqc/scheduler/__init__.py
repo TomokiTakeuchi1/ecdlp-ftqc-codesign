@@ -1,5 +1,13 @@
 """Architecture-aware schedulers."""
 
+from ecdlp_ftqc.scheduler.adaptive_pbc import (
+    AdaptivePbcProcessorCapacityError,
+    AdaptivePbcSchedule,
+    AdaptivePbcScheduledEvent,
+    UnsupportedAdaptivePbcScheduleError,
+    adaptive_pbc_schedule_to_data,
+    schedule_adaptive_pbc_greedy,
+)
 from ecdlp_ftqc.scheduler.greedy_surgery import (
     MittenSchedule,
     ProcessorCapacityError,
@@ -8,12 +16,46 @@ from ecdlp_ftqc.scheduler.greedy_surgery import (
     schedule_mitten_greedy,
     schedule_to_data,
 )
+from ecdlp_ftqc.scheduler.io_aware_pbc import (
+    MEMORY_IO_TIMING_SCHEMA,
+    MEMORY_IO_TIMING_SCHEMA_VERSION,
+    NO_PREFETCH_OVERLAP_POLICY,
+    IoAwareAdaptivePbcSchedule,
+    IoAwareComputeEvent,
+    MemoryIoTimingConfig,
+    ScheduledMemoryTransfer,
+    UnsupportedMemoryIoTimingError,
+    dumps_io_aware_schedule,
+    io_aware_schedule_to_data,
+    load_memory_io_timing_config,
+    schedule_io_aware_adaptive_pbc,
+    validate_io_aware_adaptive_pbc,
+)
 
 __all__ = [
+    "MEMORY_IO_TIMING_SCHEMA",
+    "MEMORY_IO_TIMING_SCHEMA_VERSION",
+    "NO_PREFETCH_OVERLAP_POLICY",
+    "AdaptivePbcProcessorCapacityError",
+    "AdaptivePbcSchedule",
+    "AdaptivePbcScheduledEvent",
+    "IoAwareAdaptivePbcSchedule",
+    "IoAwareComputeEvent",
+    "MemoryIoTimingConfig",
     "MittenSchedule",
     "ProcessorCapacityError",
     "ScheduledEvent",
+    "ScheduledMemoryTransfer",
+    "UnsupportedAdaptivePbcScheduleError",
+    "UnsupportedMemoryIoTimingError",
     "UnsupportedMittenLoweringError",
+    "adaptive_pbc_schedule_to_data",
+    "dumps_io_aware_schedule",
+    "io_aware_schedule_to_data",
+    "load_memory_io_timing_config",
+    "schedule_adaptive_pbc_greedy",
+    "schedule_io_aware_adaptive_pbc",
     "schedule_mitten_greedy",
     "schedule_to_data",
+    "validate_io_aware_adaptive_pbc",
 ]

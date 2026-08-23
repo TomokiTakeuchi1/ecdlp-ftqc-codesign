@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-08-15
+updated: 2026-08-23
 ---
 
 # Research Progress Log
@@ -12,6 +12,47 @@ updated: 2026-08-15
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-08-23 — Memory–processor I/O overlay
+
+**Status:** Reviewed and approved (`T-20260823-001`, `RV-20260823-001`)
+
+What changed:
+
+- Ported the reviewed `runtime-metadata-benchmark` memory-I/O semantics (value origin, fixed-order Belady retention, maximal-prefix partitioning, and independent replay) as a source-pinned overlay on the existing Gidney DAG, without changing the DAG schema itself.
+- Connected the overlay to the reviewed adaptive-PBC event order: memory transfers are scheduled around a fixed compute order rather than jointly optimized with it.
+- Added an independent replay engine that recomputes every load/store decision from scratch and rejects duplicate loads, stores of non-resident values, or any leftover processor occupancy at the end.
+
+What we learned:
+
+- All admitted legacy width-2--4 exact partition reference cells reproduce exactly (e.g. width 2 needs 4 loads/4 stores at generous capacity, or 6/6 at tighter capacity).
+- Under a one-lane, one-round-per-transfer sensitivity profile with no prefetch, the reviewed width-32 J300 schedule grows from 31,176 to 31,376 rounds, using 100 loads and 100 stores.
+- Zero-duration transfers preserve every reviewed compute event's start and end exactly, confirming the overlay does not silently change the already-approved schedule when I/O is idealized away.
+
+> [!warning] Interpretation
+> Memory-transfer duration and the fixed-order/no-prefetch policy are `CHECK` sensitivity choices, not literature-backed executable architecture. The 100-load/100-store width-32 figure is a policy/order observation, not a placement lower bound.
+
+Canonical record: [[context/RESULT_LEDGER#R-20260823-001|Result R-20260823-001]] · [[context/RESULT_LEDGER#R-20260823-002|Result R-20260823-002]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O contract]]
+
+## 2026-08-15 — J300 adaptive-PBC scheduling
+
+**Status:** Reviewed and approved (`T-20260815-005`, `RV-20260815-007`)
+
+What changed:
+
+- Connected the reviewed adaptive Pauli trace to explicit J300 operation-zone, scratch-slot, carrier, and classical-reaction resources.
+- Separated source-supported operation size from source-supported operation time.
+- Made strict mode reject every unresolved time or space entry instead of silently using a placeholder.
+- Tested the exact-ten-disjoint-XX high-rate rule with one and ten compiler scratch slots.
+
+What we learned:
+
+- Gidney widths 2, 4, 16, and 32 expose zero eligible ten-XX batches under the current trace and greedy resource rules.
+- A synthetic ten-independent-CNOT trace does produce one batch, changing the sensitivity schedule from 550 to 433 rounds (`NUMERICAL`).
+- The width-32 sensitivity schedule is 31,176 syndrome rounds, but unresolved J300 timings make this `CHECK`, not an executable runtime.
+- The 2,074 physical-qubit figure is only the known J300-plus-full-extractor component peak; it excludes several unresolved components.
+
+Canonical record: [[context/RESULT_LEDGER#R-20260815-004|Result R-20260815-004]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling contract]]
 
 ## 2026-08-15 — Adaptive PBC/CQLU lowering
 

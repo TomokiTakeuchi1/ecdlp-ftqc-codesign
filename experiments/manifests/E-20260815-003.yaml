@@ -1,0 +1,35 @@
+experiment_id: E-20260815-003
+task_id: T-20260815-005
+description: Evidence-qualified adaptive-PBC scheduling on a finite J300 Mitten processor
+git_commit: unborn repository
+input:
+  circuit: runtime_metadata_benchmark.gidney at 8c1638805e7246c30117a0251526661039df1369
+  trace: ecdlp-ftqc/adaptive-pauli-measurement-trace v1
+config:
+  algorithm: Gidney uncontrolled in-place ripple-carry adder widths 2, 4, 16, 32
+  architecture: one J300 processor operation zone with one or ten compiler scratch slots
+  code: configs/codes/mitten_j300_pbc_v2.yaml
+  factory: ideal supply without stalls; T-state demand recorded
+assumption_ids:
+  - A-0004
+  - A-0006
+  - A-0008
+  - A-0009
+  - A-0011
+  - A-0012
+  - A-0013
+  - A-0014
+  - A-0015
+random_seed: null
+environment:
+  python: Python 3.14.3 in repository .venv
+  dependencies: uv.lock
+outputs:
+  directory: experiments/runs/T-20260815-005
+validation:
+  status: NUMERICAL scheduler validation; runtime CHECK
+  tests:
+    - pytest tests/unit/test_adaptive_pbc_scheduler.py
+    - pytest
+    - ruff check
+    - mypy src
