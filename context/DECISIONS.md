@@ -71,3 +71,11 @@
 - Decision: Adapt the reviewed `runtime-metadata-benchmark` memory-I/O contracts at commit `75a6e83d5acde37f0987ab867352ee8b2c6afd10` into a separate overlay referencing QEC-neutral DAG source operations. Keep memory--processor teleportation moves distinct from future Bell carry teleportation. Apply scalable Belady placement only after the adaptive-PBC event order is selected in this bounded cycle.
 - Rationale: The existing DAG already preserves circuit causality, while the old implementation supplies reviewed value-origin, memory/occupancy, partition, and replay semantics. A separate overlay avoids changing DAG schema v1 and prevents a fixed-order I/O policy from being mistaken for a parallel-DAG optimizer.
 - Consequences: Widths 2--4 admit an exact partition reference; larger PBC traces receive a deterministic fixed-order heuristic upper bound. One-round transfer timing and no-overlap assumptions remain `CHECK`, strict mode rejects them, and later teleportation-ripple/QCLA work must introduce separate communication events and joint scheduling if required.
+
+## D-0010: Represent Bell carry teleportation as a separate acyclic lifecycle
+
+- Status: ACCEPTED (`RV-20260824-001` approved 2026-08-24)
+- Date: 2026-08-24
+- Decision: Record each adjacent carry bridge as Bell-pair preparation, speculative receiver use, split `XX`/`ZZ` Bell components, carrier rebind, and classical reaction. Keep these carriers and resources separate from processor-memory load/store semantics. Permit exact-ten-disjoint-`XX` batching only in a normalized `CHECK` sensitivity adapter, with strict execution rejected.
+- Rationale: The source's “back in time” description is a teleportation construction, not an acausal dependency. Separating the lifecycle exposes carrier ownership, Bell-measurement throughput, and demand bursts without importing incompatible HGP, active-volume, J300, or memory-I/O timing.
+- Consequences: `E-20260824-001` can compare dependency depth with finite lane sensitivity and independently replay bridge ownership. It cannot establish a QEC-native runtime, physical-qubit count, full Figure-6 phase equivalence, or memory/bridge joint schedule.

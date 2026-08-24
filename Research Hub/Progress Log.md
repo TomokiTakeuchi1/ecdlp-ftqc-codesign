@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-08-23
+updated: 2026-08-24
 ---
 
 # Research Progress Log
@@ -12,6 +12,39 @@ updated: 2026-08-23
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-08-24 — Bell-bridge teleportation ripple adder
+
+**Status:** Reviewed and approved (`T-20260824-001`, `RV-20260824-001`)
+
+What changed:
+
+- Pinned Xu et al. Figure 6 and the Active Volume bridge/adder figures by PDF
+  hash, then represented the carry links as acyclic prepare, use, Bell-measure,
+  rebind, and reaction events.
+- Kept Bell carry carriers separate from memory load/store ownership and added
+  an independent lifecycle replay that rejects premature use or rebind.
+- Added exhaustive width-2--4 classical-basis addition checks and a branchwise
+  arbitrary-state check for the generic Bell bridge.
+- Added a normalized lane sweep with optional exact-ten-disjoint-`XX` batches,
+  strict rejection of unresolved timing, and time-stamped resource-state
+  demand.
+
+What we learned:
+
+- Width 32 changes from 64 to 37 normalized steps on one Bell-measurement lane
+  when three ten-`XX` batches are admitted.
+- With two or more Bell-measurement lanes, both policies take 34 steps, so the
+  reaction/dependency chain becomes the bottleneck in this model.
+- The width-256 structural trace has 255 bridges, 1,532 events, and a peak of
+  765 provisional bridge carriers; this is not a physical-qubit count.
+
+> [!warning] Interpretation
+> The complete Xu Figure-6 phase channel has not been independently
+> reconstructed. All finite times are `CHECK` normalized steps, not HGP/J300
+> cycles or wall-clock time, and ideal supply does not model factory stalls.
+
+Canonical record: [[context/RESULT_LEDGER#R-20260824-001|Result R-20260824-001]] · [[context/RESULT_LEDGER#R-20260824-002|Result R-20260824-002]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge contract]]
 
 ## 2026-08-23 — Memory–processor I/O overlay
 

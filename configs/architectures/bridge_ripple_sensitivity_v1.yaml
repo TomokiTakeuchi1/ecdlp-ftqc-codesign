@@ -1,0 +1,24 @@
+schema: ecdlp-ftqc/bridge-ripple-timing-config
+schema_version: 1
+configuration_id: bridge-ripple-normalized-v1
+time_unit: normalized_sensitivity_step
+policy: deterministic_reserved_exact_ten_xx_v1
+lanes:
+  bell_pair: 64
+  segment: 64
+  bell_measurement: 1
+  reactive_measurement: 1
+durations:
+  bell_pair_prepare: 1
+  segment_compute: 1
+  bell_component: 1
+  reactive_measurement: 1
+high_rate_xx:
+  batch_size: 10
+  batch_steps: 1
+timing_evidence_status: CHECK
+source_note: >-
+  Unitless sensitivity configuration only. Xu et al. Figure 6 gives circuit
+  structure and asymptotic HGP scaling but not finite HGP/J300 operation
+  durations. Active-volume blocks, HGP logical cycles, and J300 syndrome rounds
+  are deliberately not equated.

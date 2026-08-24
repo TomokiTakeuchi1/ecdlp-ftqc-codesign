@@ -1,7 +1,7 @@
 # Local paper index
 
 - Task: `T-20260811-002`
-- Retrieved: initial corpus on 2026-08-11 from arXiv; additions on 2026-08-15 from arXiv and the IACR ePrint Archive
+- Retrieved: initial corpus on 2026-08-11 from arXiv; additions on 2026-08-15 from arXiv and the IACR ePrint Archive; Active Volume v1 added on 2026-08-24 from arXiv
 - Storage policy: PDF files are local and ignored by Git; this index is versioned.
 - Integrity check: every file begins with `%PDF-`; hashes are SHA-256.
 
@@ -12,6 +12,7 @@
 | [1905.06903v3](https://arxiv.org/abs/1905.06903v3) | `1905.06903v3.pdf` | 1,498,450 | `C1B8AA5D0B975E1AE642C8E9836D9712155DD78E37DF5A4573E6EDCB53851F77` |
 | [2607.28795v1](https://arxiv.org/abs/2607.28795v1) | `2607.28795v1.pdf` | 2,196,825 | `4AC964874E5C49E8D02A284B6A877F590927E61523FE7F086D7B5F8BFF2B7D2E` |
 | [2407.18490v1](https://arxiv.org/abs/2407.18490v1) | `2407.18490v1.pdf` | 4,921,890 | `F50363822EE43C0DD0BCB4D0ACB502AA11207FC37B5175E60EADEBF892D38C05` |
+| [2211.15465v1](https://arxiv.org/abs/2211.15465v1) | `2211.15465v1.pdf` | 6,165,657 | `BF305E578AEFC986F4E74110EF55155E7C9711401B7D4E18BCB63BE304D2BC45` |
 | [2411.03632v2](https://arxiv.org/abs/2411.03632v2) | `2411.03632v2.pdf` | 3,776,346 | `270743A31A21CB8E841F6847B5EB4073B12673873834F49D0A8FB6C37CC7A588` |
 | [2604.16209v2](https://arxiv.org/abs/2604.16209v2) | `2604.16209v2.pdf` | 5,074,248 | `FEA0F72A398891D26D3D8A74D71DE7B4A88576F27F0BD10647E689C1228766C2` |
 | [2505.15907v1](https://arxiv.org/abs/2505.15907v1) | `2505.15907v1.pdf` | 8,416,894 | `C3AF4B93D73489E51C97B742F46589D1B50506009099E201780C492B95FC7B79` |

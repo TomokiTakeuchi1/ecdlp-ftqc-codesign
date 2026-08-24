@@ -1,0 +1,27 @@
+experiment_id: E-20260824-001
+task_id: T-20260824-001
+description: >-
+  Source-pinned Bell-bridge Gidney ripple workload, independent carrier replay,
+  and exact-ten-XX normalized scheduling sensitivity.
+inputs:
+  sources:
+    - literature/papers/2407.18490v1.pdf
+    - literature/papers/2211.15465v1.pdf
+  configuration: configs/architectures/bridge_ripple_sensitivity_v1.yaml
+  semantic_widths: [2, 3, 4]
+  scheduled_widths: [4, 8, 11, 16, 32]
+  structural_width: 256
+  bell_measurement_lanes: [1, 2, 4, 8, 10]
+  high_rate_xx_batch_size: 10
+assumptions:
+  ids: [A-0008, A-0019, A-0020, A-0021]
+  evidence_labels: [LITERATURE, NUMERICAL, CHECK]
+  factory_supply: ideal_but_time_stamped
+  finite_timing: normalized_CHECK_sensitivity_only
+  memory_io: excluded_and_not_conflated_with_carry_bridge
+  routing_decoding_failure_budget_wall_clock: excluded
+outputs:
+  - experiments/runs/T-20260824-001/summary.json
+  - experiments/runs/T-20260824-001/bridge_width4_trace.json
+  - experiments/runs/T-20260824-001/bridge_width32_lane1_schedule.json
+  - experiments/runs/T-20260824-001/width32_resource_state_demand.json

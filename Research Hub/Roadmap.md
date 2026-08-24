@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - roadmap
-updated: 2026-08-15
+updated: 2026-08-24
 ---
 
 # Research Roadmap
@@ -15,7 +15,7 @@ updated: 2026-08-15
 
 **Status: ACTIVE**
 
-<progress max="15" value="6"></progress> 6 of 15 listed Month-1 milestones are complete; 1 more is in review.
+<progress max="16" value="9"></progress> 9 of 16 listed Month-1 milestones are complete; 1 more is active.
 
 ### Completed or reviewed
 
@@ -25,10 +25,13 @@ updated: 2026-08-15
 - [x] Add a conditional Mitten lowering and deterministic greedy scheduler.
 - [x] Complete cross-review of the Mitten scheduler (`RV-20260815-004`).
 - [x] Complete cross-review of the adaptive PBC/CQLU trace (`RV-20260815-006`).
+- [x] Complete cross-review of the adaptive J300 resource scheduler (`RV-20260815-007`).
+- [x] Add and review a replayable processor-memory I/O overlay (`RV-20260823-001`).
+- [x] Add and review a Bell-bridge teleportation ripple cycle (`RV-20260824-001`).
 
 ### Active
 
-- [ ] Complete cross-review of the adaptive J300 resource scheduler (`RV-20260815-007`).
+- [ ] Source-pin a QCLA event/dependency contract before selecting a backend.
 
 ### Still required for the full Month-1 goal
 
@@ -36,7 +39,7 @@ updated: 2026-08-15
 - [ ] Carry-lookahead and controlled carry-lookahead adders with prefix-tree parallelism preserved.
 - [ ] Unary lookup.
 - [ ] Processor-capacity partitioner.
-- [ ] Memory load/store, teleportation, inter-block PPM, and bridge model.
+- [ ] Integrate memory load/store with bridge, routing, and inter-block PPM resources in one scheduler.
 - [ ] Canonical LP backend and LP-memory/Mitten-processor hybrid schedule.
 - [ ] Comparable runtime, physical-qubit, communication, and T/CCZ-demand outputs.
 - [ ] Replace `CHECK` J300 preparation/Z/ZZ/ZX/reaction/conditional-CZ sensitivity times with source-pinned or explicitly validated contracts.

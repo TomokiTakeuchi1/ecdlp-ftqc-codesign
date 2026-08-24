@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - decisions
-updated: 2026-08-15
+updated: 2026-08-24
 ---
 
 # Decisions and Blockers
@@ -25,8 +25,8 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
 | 0 | Several PBC native durations remain unresolved | Adaptive resource scheduling now exists, but state preparation, Z/ZZ/ZX/full-extractor time, reaction, and conditional-CZ costs remain `CHECK`. | Pin or validate those J300 contracts; strict mode already rejects placeholders. |
-| 1 | High-rate batches are absent from the current adder trace | Ten scratch slots are modeled, but widths 2/4/16/32 never expose ten eligible XX operations simultaneously. | Explore circuit rewrites/native gates or a global scheduler without claiming the greedy zero-hit result is an impossibility proof. |
-| 1 | Memory–Processor I/O is absent | A small processor may spend more time moving states than computing. | Implement load/store, bridge occupancy, and communication resources. |
+| 1 | High-rate batches depend on the arithmetic representation | The reviewed sequential adaptive-PBC adder has zero hits, while the new Bell-bridge workload exposes exact-ten `XX` groups under an abstract sensitivity adapter. Neither result proves executable benefit on a compatible code layout. | Cross-review the bridge mapping, then encode finite HGP/J300 carrier, scratch, routing, and timing constraints. |
+| 1 | Memory and Bell-bridge schedules are separate | Memory I/O and carry teleportation now have distinct replayable contracts, but their shared occupancy, routing, and timing have not been jointly scheduled. | Add an explicit architecture adapter only after finite bridge timing and routing evidence are pinned. |
 | 1 | Parallel-surgery legality is narrow | Exact-ten disjoint-XX readiness, scratch, carrier, and operation-zone constraints are implemented, but only this source-supported family is enabled. | Audit other source-supported families before expanding the native high-rate gate set. |
 
 ## Open research questions
