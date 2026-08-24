@@ -13,6 +13,37 @@ updated: 2026-08-24
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-08-24 — Source-pinned carry-lookahead DAG
+
+**Status:** Reviewed and approved (`T-20260824-003`, `RV-20260824-003`)
+
+What changed:
+
+- Audited the exact in-place, modulo-`2^n`, no-carry-in variant directly from
+  Draper et al. and reconstructed its ten reversible steps.
+- Preserved the `P/G/C/P^-1` prefix rounds and their bounded-fan-out overlaps,
+  while deriving DAG edges from actual wire use rather than source-list order.
+- Added explicit carry/prefix-ancilla lifetimes, including two scratch-reuse
+  epochs, and an independent X/CNOT/Toffoli basis replay.
+- Generated a fail-closed, deterministic width-256 structure and layerwise
+  Toffoli-demand artifact.
+
+What we learned:
+
+- All 5,456 basis-input pairs across widths 2--6 pass with `A` preserved,
+  `B=A+B mod 2^n`, and every ancilla cleaned.
+- Width 256 uses 2,458 Toffolis, 1,019 CNOTs, 510 NOTs, and 495 source
+  ancillas. Its source schedule and dependency critical path are both 40.
+- Peak demand is 255 Toffolis in one source layer, making burst service and
+  processor capacity central questions for the next lowering cycle.
+
+> [!warning] Interpretation
+> The 40 layers are not QEC cycles, and 495 logical circuit ancillas are not a
+> physical-qubit total. No high-rate-surgery legality, memory traffic, factory
+> supply, routing, decoding, or failure budget is included yet.
+
+Canonical record: [[context/RESULT_LEDGER#R-20260824-004|Result R-20260824-004]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG contract]]
+
 ## 2026-08-24 — Bell-bridge teleportation ripple adder
 
 **Status:** Reviewed and approved (`T-20260824-001`, `RV-20260824-001`)

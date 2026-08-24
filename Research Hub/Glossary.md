@@ -15,6 +15,8 @@ updated: 2026-08-15
 |---|---|
 | Hierarchical DAG | A dependency graph that keeps adders, modular arithmetic, point addition, and Full Shor as nested subcircuits instead of flattening everything into one enormous gate list. |
 | Algorithmic critical path | The shortest possible dependency-limited execution time before architecture resource conflicts are imposed. |
+| QCLA | Quantum carry-lookahead adder. It uses a prefix network of propagate and generate values to reduce source circuit depth at the cost of extra workspace and bursty parallel demand. |
+| Source algorithmic layer | One conflict-free time slice in the admitted source circuit. It is not a QEC cycle until a backend supplies executable operations, capacities, and durations. |
 | Resource-constrained schedule | A realizable ordering after processor capacity, supported operations, ancillas, communication, decoder reaction, and factory supply are enforced. |
 | CQLU | The logical compute unit used to compile a subcircuit into code-supported measurements, gates, and ancilla operations. |
 | PPM | Pauli-product measurement: a joint measurement of a specified logical Pauli product such as $X_1X_2$. Its exact support matters. |

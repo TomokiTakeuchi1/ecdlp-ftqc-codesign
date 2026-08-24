@@ -79,3 +79,11 @@
 - Decision: Record each adjacent carry bridge as Bell-pair preparation, speculative receiver use, split `XX`/`ZZ` Bell components, carrier rebind, and classical reaction. Keep these carriers and resources separate from processor-memory load/store semantics. Permit exact-ten-disjoint-`XX` batching only in a normalized `CHECK` sensitivity adapter, with strict execution rejected.
 - Rationale: The source's “back in time” description is a teleportation construction, not an acausal dependency. Separating the lifecycle exposes carrier ownership, Bell-measurement throughput, and demand bursts without importing incompatible HGP, active-volume, J300, or memory-I/O timing.
 - Consequences: `E-20260824-001` can compare dependency depth with finite lane sensitivity and independently replay bridge ownership. It cannot establish a QEC-native runtime, physical-qubit count, full Figure-6 phase equivalence, or memory/bridge joint schedule.
+
+## D-0011: Preserve QCLA prefix structure before backend lowering
+
+- Status: ACCEPTED (`RV-20260824-003` approved 2026-08-24)
+- Date: 2026-08-24
+- Decision: Admit Draper et al.'s in-place, no-carry-in addition modulo `2^n` as a separate architecture-neutral trace. Retain its `P/G/C/P^-1` source rounds, bounded-fan-out layer overlaps, exact logical supports, and reusable prefix-ancilla epochs before selecting PBC, surgery, memory, or factory implementations.
+- Rationale: A scalar logarithmic-depth formula hides the width and burst structure that determines whether an FTQC backend can realize the algorithmic parallelism. The selected register contract also matches the existing uncontrolled modular-addition comparison without silently importing another QCLA variant.
+- Consequences: `E-20260824-003` reports gate-DAG and source-layer demand only. The 40-layer width-256 result and 255-Toffoli peak are not QEC cycles or service capacity; a later adapter must lower exact supports and jointly enforce processor, memory, routing, factory, reaction, and failure constraints.

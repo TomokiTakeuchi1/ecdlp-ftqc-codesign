@@ -1,0 +1,37 @@
+configuration_id: circuit-qcla-inplace-mod2n-v1
+schema_version: 1
+source:
+  source_id: quant-ph/0406142v1
+  pdf: literature/papers/quant-ph-0406142v1.pdf
+  pdf_sha256: 30B68CC62C73E5AA6E4D59A6C3CF3C582FB62420F8BDE420DE142506A2BB11D6
+  sections: ["3", "4.2", "5.1"]
+  figures: ["Figure 4", "Figure 5"]
+  tables: ["Table 1", "Table 2"]
+arithmetic:
+  family: draper_qcla
+  variant: in_place_modulo_2n
+  register_contract: "(A,B)->(A,A+B mod 2^n)"
+  incoming_carry: false
+  exported_overflow: false
+instruction_set: [x, cnot, toffoli]
+layer_semantics:
+  unit: source_algorithmic_time_slice
+  backend_duration: unresolved
+  preserve_source_overlaps:
+    - prefix_propagate_next_with_prefix_generate
+    - prefix_carry_with_prefix_uncompute_next
+verification:
+  exhaustive_widths: [2, 3, 4, 5, 6]
+  seeded_widths: [7, 8, 9, 15, 16, 17]
+  seeded_samples_per_width: 128
+  seed: 20260824
+  structural_widths: [32, 255, 256, 257]
+excluded:
+  - pbc_lowering
+  - high_rate_surgery_selection
+  - memory_io
+  - routing
+  - factory_supply_and_buffering
+  - decoding_and_classical_reaction
+  - logical_failure_budget
+  - qec_cycles_and_wall_clock

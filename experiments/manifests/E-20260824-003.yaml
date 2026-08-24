@@ -1,0 +1,26 @@
+experiment_id: E-20260824-003
+task_id: T-20260824-003
+description: >-
+  Source-pinned in-place modulo-2^n QCLA reversible DAG, computational-basis
+  replay, source-formula reproduction, and width-256 layerwise Toffoli demand.
+inputs:
+  source: literature/papers/quant-ph-0406142v1.pdf
+  configuration: configs/circuits/qcla_inplace_mod2n_v1.yaml
+  exhaustive_widths: [2, 3, 4, 5, 6]
+  seeded_widths: [7, 8, 9, 15, 16, 17]
+  structural_widths: [32, 255, 256, 257]
+  seed: 20260824
+assumptions:
+  ids: [A-0022]
+  evidence_labels: [LITERATURE, NUMERICAL]
+  backend_timing: excluded
+  factory_supply_and_buffering: excluded
+  high_rate_surgery: excluded
+  memory_io: excluded
+  routing_decoding_failure_budget_wall_clock: excluded
+outputs:
+  - experiments/runs/T-20260824-003/summary.json
+  - experiments/runs/T-20260824-003/qcla_width8_trace.json
+  - experiments/runs/T-20260824-003/qcla_width256_structure.json
+  - experiments/runs/T-20260824-003/qcla_width256_toffoli_demand.json
+  - experiments/runs/T-20260824-003/reproducibility.json

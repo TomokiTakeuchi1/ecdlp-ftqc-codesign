@@ -15,7 +15,7 @@ updated: 2026-08-24
 
 **Status: ACTIVE**
 
-<progress max="16" value="9"></progress> 9 of 16 listed Month-1 milestones are complete; 1 more is active.
+<progress max="16" value="10"></progress> 10 of 16 listed Month-1 milestones are complete; 1 more is active.
 
 ### Completed or reviewed
 
@@ -28,15 +28,16 @@ updated: 2026-08-24
 - [x] Complete cross-review of the adaptive J300 resource scheduler (`RV-20260815-007`).
 - [x] Add and review a replayable processor-memory I/O overlay (`RV-20260823-001`).
 - [x] Add and review a Bell-bridge teleportation ripple cycle (`RV-20260824-001`).
+- [x] Source-pin and review a QCLA event/dependency contract (`RV-20260824-003`).
 
 ### Active
 
-- [ ] Source-pin a QCLA event/dependency contract before selecting a backend.
+- [ ] Lower one source-pinned QCLA prefix/Toffoli primitive to exact Pauli/resource-state supports and compare against executable high-rate eligibility.
 
 ### Still required for the full Month-1 goal
 
 - [ ] Controlled ripple-carry adder.
-- [ ] Carry-lookahead and controlled carry-lookahead adders with prefix-tree parallelism preserved.
+- [ ] Controlled carry-lookahead addition and backend lowering of the reviewed uncontrolled prefix DAG.
 - [ ] Unary lookup.
 - [ ] Processor-capacity partitioner.
 - [ ] Integrate memory load/store with bridge, routing, and inter-block PPM resources in one scheduler.
