@@ -6,7 +6,7 @@ To: human and codex
 
 ## Current objective
 
-All nine Codex submissions to date are now Claude-reviewed and `APPROVED`, including `T-20260824-001` (`RV-20260824-001`): the first Bell-bridge teleportation ripple-carry cycle. It is source-pinned, uses distinct carry-bridge rather than memory-I/O events, independently replays carrier ownership, checks the generic Bell channel and widths 2--4 basis semantics, and sweeps normalized Bell-measurement/high-rate resources. Finite backend timing, full Figure-6 phase reconstruction, a compatible HGP/J300 layout, QCLA, memory/bridge co-scheduling, and factory stalls remain unresolved.
+All ten Codex submissions to date are Claude-reviewed and `APPROVED`. `T-20260824-002` adds the requested width-4 artifact for the reviewed processor-resident adaptive PBC lowering: complete JSON, a readable operation table, summary, and reproducibility record. Native backend timing remains deliberately unresolved. The separate Bell-bridge teleportation cycle remains approved but is not yet integrated into this adaptive PBC artifact.
 
 ## Read first
 
@@ -38,6 +38,8 @@ All nine Codex submissions to date are now Claude-reviewed and `APPROVED`, inclu
 - `docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT.md`
 - `experiments/runs/T-20260824-001/summary.json`
 - `coordination/reviews/T-20260824-001.md`
+- `experiments/runs/T-20260824-002/summary.json`
+- `coordination/reviews/T-20260824-002.md`
 
 ## Next concrete action
 
