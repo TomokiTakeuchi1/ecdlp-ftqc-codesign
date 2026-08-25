@@ -1,0 +1,38 @@
+schema: ecdlp-ftqc/qcla-pbc-cycle-config
+schema_version: 1
+configuration_id: qcla-j300-resident-pbc-v1-sensitivity
+qcla:
+  circuit_config: configs/circuits/qcla_inplace_mod2n_v1.yaml
+  arithmetic_contract: "(A,B)->(A,A+B mod 2^n)"
+ccx_lowering:
+  decomposition_id: selinger-2013-circuit-1-exact-7t
+  source_id: arXiv:1210.0974v2
+  source_pdf: literature/papers/1210.0974.pdf
+  source_pdf_sha256: 5C1FBC4571B48F6E6893A8D15045509A08AB5C6764276B44BA1AC69C528129E2
+  source_location: circuit (1), page 1
+  primitive_counts:
+    cnot: 6
+    h: 2
+    s: 1
+    t: 3
+    t_dagger: 4
+  direct_ccz_factory_comparator: OPEN
+adaptive_pbc:
+  backend_config: configs/codes/mitten_j300_pbc_v2.yaml
+  resident_only: true
+  allow_check_assumptions: true
+  factory_mode: ideal_supply_no_stalls
+  scratch_scenarios:
+    serial: 1
+    high_rate_xx_10: 10
+experiments:
+  scheduled_widths: [2, 4, 8, 11, 14]
+  capacity_boundary_widths: [14, 15, 16, 17, 256]
+  structural_width: 256
+exclusions:
+  - memory_partitioning_and_io
+  - routing
+  - magic_state_factory_supply_burst_and_buffering
+  - decoding
+  - logical_failure_budget
+  - qec_cycle_duration_and_wall_clock

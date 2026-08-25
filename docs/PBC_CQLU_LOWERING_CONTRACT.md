@@ -19,6 +19,11 @@ the result supports operation counting, Pauli-support inspection, ancilla
 accounting, and a necessary processor-slot check, but not a strict Mitten
 runtime.
 
+For `T-20260825-001`, version 1 frame records gain a backward-compatible
+optional affine constant. Existing measurement-parity updates have constant
+zero; a deterministic source Pauli uses constant one with an empty parity.
+This extension does not add a quantum operation or classical dependency.
+
 ## Source-pinned identities
 
 - **LITERATURE:** Xu et al., arXiv:2407.18490v1, Figure 11(c), implements a

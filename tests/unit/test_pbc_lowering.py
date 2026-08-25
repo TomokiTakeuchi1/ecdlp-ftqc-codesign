@@ -50,6 +50,23 @@ def _primitive(
     )
 
 
+def test_source_x_is_an_unconditional_zero_round_pauli_frame_update() -> None:
+    trace = lower_to_adaptive_pauli_measurements(
+        _single_primitive_trace(_primitive(LogicalPrimitiveKind.X, ("q",)))
+    )
+
+    assert len(trace.operations) == 1
+    operation = trace.operations[0]
+    assert operation.kind is PbcOperationKind.PAULI_FRAME_UPDATE
+    assert operation.classical_inputs == ()
+    assert len(operation.frame_updates) == 1
+    update = operation.frame_updates[0]
+    assert update.carrier_id == "carrier:source:q"
+    assert update.pauli == "X"
+    assert update.parity_tokens == ()
+    assert update.constant == 1
+
+
 def test_cnot_exposes_exact_three_measurements_and_pauli_corrections() -> None:
     trace = lower_to_adaptive_pauli_measurements(
         _single_primitive_trace(_primitive(LogicalPrimitiveKind.CNOT, ("c", "t")))

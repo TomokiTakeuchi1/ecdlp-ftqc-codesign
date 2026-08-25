@@ -16,6 +16,7 @@ class LogicalPrimitiveKind(str, Enum):
     """Logical actions whose phase semantics are fixed before QEC compilation."""
 
     PREPARE_T = "prepare_t"
+    X = "x"
     CNOT = "cnot"
     T = "t"
     T_DAGGER = "t_dagger"
@@ -35,6 +36,7 @@ class PrimitiveDependencyKind(str, Enum):
     """Origin of a dependency in the phase-exact trace."""
 
     FIGURE_3_SEQUENCE = "figure_3_sequence"
+    SOURCE_GATE_DECOMPOSITION = "source_gate_decomposition"
     SOURCE_DAG = "source_dag"
 
 

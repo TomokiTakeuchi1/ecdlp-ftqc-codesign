@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - roadmap
-updated: 2026-08-24
+updated: 2026-08-25
 ---
 
 # Research Roadmap
@@ -15,7 +15,7 @@ updated: 2026-08-24
 
 **Status: ACTIVE**
 
-<progress max="16" value="10"></progress> 10 of 16 listed Month-1 milestones are complete; 1 more is active.
+<progress max="16" value="11"></progress> 11 of 16 listed Month-1 milestones are complete; 1 more is active.
 
 ### Completed or reviewed
 
@@ -29,10 +29,11 @@ updated: 2026-08-24
 - [x] Add and review a replayable processor-memory I/O overlay (`RV-20260823-001`).
 - [x] Add and review a Bell-bridge teleportation ripple cycle (`RV-20260824-001`).
 - [x] Source-pin and review a QCLA event/dependency contract (`RV-20260824-003`).
+- [x] Lower and review the QCLA/Toffoli adaptive-PBC baseline and resident high-rate boundary (`RV-20260825-001`).
 
 ### Active
 
-- [ ] Lower one source-pinned QCLA prefix/Toffoli primitive to exact Pauli/resource-state supports and compare against executable high-rate eligibility.
+- [ ] Add a replayable width-256 QCLA memory partition and jointly schedule I/O, PBC scratch, high-rate surgery, and factory demand.
 
 ### Still required for the full Month-1 goal
 

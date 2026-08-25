@@ -1,0 +1,32 @@
+experiment_id: E-20260825-001
+task_id: T-20260825-001
+description: >-
+  Source-pinned 7T CCX lowering of the in-place QCLA through reviewed adaptive
+  PBC gadgets, with fully resident J300 capacity and ten-XX high-rate sensitivity.
+inputs:
+  qcla_configuration: configs/circuits/qcla_inplace_mod2n_v1.yaml
+  cycle_configuration: configs/codes/qcla_j300_pbc_sensitivity_v1.yaml
+  ccx_source: literature/papers/1210.0974.pdf
+  backend_configuration: configs/codes/mitten_j300_pbc_v2.yaml
+  scheduled_widths: [2, 4, 8, 11, 14]
+  capacity_boundary_widths: [14, 15, 16, 17, 256]
+  random_seed: not_applicable_deterministic
+assumptions:
+  ids: [A-0011, A-0013, A-0014, A-0015, A-0022, A-0023, A-0024]
+  evidence_labels: [PROVED, NUMERICAL, LITERATURE, CHECK, OPEN]
+  resident_only: true
+  allow_check_timing_and_space: true
+  factory_mode: ideal_supply_no_stalls
+  direct_ccz_factory_comparator: OPEN
+excluded:
+  - memory_partitioning_and_io
+  - routing
+  - factory_supply_burst_and_buffering
+  - decoding
+  - logical_failure_budget
+  - qec_cycle_duration_and_wall_clock
+outputs:
+  - experiments/runs/T-20260825-001/summary.json
+  - experiments/runs/T-20260825-001/capacity_boundaries.json
+  - experiments/runs/T-20260825-001/qcla_width256_logical_structure.json
+  - experiments/runs/T-20260825-001/reproducibility.json

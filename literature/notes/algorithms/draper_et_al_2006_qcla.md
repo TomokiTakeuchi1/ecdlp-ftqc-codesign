@@ -1,6 +1,6 @@
 # Draper et al. 2006: logarithmic-depth quantum carry-lookahead addition
 
-- Tasks: `T-20260811-002`, `T-20260824-003`
+- Tasks: `T-20260811-002`, `T-20260824-003`, `T-20260825-001`
 - Source: <https://arxiv.org/abs/quant-ph/0406142v1>
 - Version: arXiv:quant-ph/0406142v1, submitted 2004-06-20; journal publication 2006
 - Local PDF: `literature/papers/quant-ph-0406142v1.pdf`
@@ -65,12 +65,27 @@ Let `w(x)` be Hamming weight and `floorlog(x)=floor(log2(x))`.
   surgery, processor capacity, memory I/O, routing, factories, decoding,
   reaction, and logical failure are intentionally absent.
 
+## Adaptive-PBC follow-up
+
+- **LITERATURE:** `T-20260825-001` selects Selinger circuit (1) as an exact,
+  ancilla-free seven-T-family implementation of every source Toffoli.
+- **NUMERICAL:** Width 256 expands to 40,857 logical primitives and 17,206
+  T-state demands. A fully resident realization needs 1,008 J300 logical slots
+  even with only one reusable compiler scratch, so the 60-slot backend rejects
+  it before adaptive-PBC scheduling.
+- **NUMERICAL:** Widths 11 and 14 expose respectively seven and nine eligible
+  exact-ten-XX batches under the ten-scratch greedy sensitivity schedule.
+- **CHECK:** Those schedules still assume unresolved J300 operation times and
+  ideal factory supply. Memory partitioning, routing, and burst service remain
+  outside the result.
+
 ## Open interpretation questions
 
-- **OPEN:** Which prefix Toffolis can be compiled into source-supported
-  high-rate Pauli-product families without losing the QCLA layer structure?
-- **OPEN:** How much of the 255-Toffoli initial burst survives processor
-  capacity, carrier/scratch, routing, operation-zone, and factory constraints?
+- **NUMERICAL:** The selected exact-Toffoli/PBC route preserves expanded
+  nearest-wire structure and exposes some exact-ten-XX eligibility at resident
+  widths; it does not preserve the 255-Toffoli burst as one backend batch.
+- **OPEN:** How much of the width-256 burst survives after memory partitioning,
+  carrier/scratch, routing, operation-zone, and factory constraints?
 - **OPEN:** Does QCLA's extra workspace increase memory traffic enough to erase
   its source-depth advantage over the reviewed ripple alternatives?
 - **OPEN:** What controlled-QCLA construction should be admitted for elliptic-

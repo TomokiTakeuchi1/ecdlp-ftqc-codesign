@@ -87,3 +87,11 @@
 - Decision: Admit Draper et al.'s in-place, no-carry-in addition modulo `2^n` as a separate architecture-neutral trace. Retain its `P/G/C/P^-1` source rounds, bounded-fan-out layer overlaps, exact logical supports, and reusable prefix-ancilla epochs before selecting PBC, surgery, memory, or factory implementations.
 - Rationale: A scalar logarithmic-depth formula hides the width and burst structure that determines whether an FTQC backend can realize the algorithmic parallelism. The selected register contract also matches the existing uncontrolled modular-addition comparison without silently importing another QCLA variant.
 - Consequences: `E-20260824-003` reports gate-DAG and source-layer demand only. The 40-layer width-256 result and 255-Toffoli peak are not QEC cycles or service capacity; a later adapter must lower exact supports and jointly enforce processor, memory, routing, factory, reaction, and failure constraints.
+
+## D-0012: Use an exact seven-T CCX as the first QCLA PBC baseline
+
+- Status: ACCEPTED (`RV-20260825-001` approved 2026-08-25)
+- Date: 2026-08-25
+- Decision: Expand each source QCLA Toffoli with Selinger circuit (1), preserve its exact wire order and source provenance, and compile the resulting X/CNOT/H/S/T/T-dagger primitives through the reviewed quantum-output-preserving adaptive-PBC layer. Keep direct CCZ injection as an `OPEN` comparator.
+- Rationale: A source-pinned exact decomposition gives auditable Pauli supports and resource-state demand without assuming a direct CCZ factory or treating source-layer depth as backend execution time. The ancilla-free form avoids silently changing the resident-capacity comparison.
+- Consequences: Width 256 has a reproducible 17,206-T-state structural demand but fails the fully resident J300 slot inequality before scheduling. Smaller widths can test real ten-XX readiness, while all finite schedule rounds remain `CHECK` until native timing, memory, routing, and factory contracts are supplied.

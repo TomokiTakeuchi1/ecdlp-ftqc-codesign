@@ -83,20 +83,28 @@ class PreparedStateChoice:
 
 @dataclass(frozen=True, slots=True)
 class FrameUpdate:
-    """A Pauli-frame update controlled by a parity and optional branch."""
+    """A Pauli-frame update controlled by a parity polynomial and branch.
+
+    ``constant`` is the affine term in ``constant XOR parity(parity_tokens)``.
+    It permits a source Pauli to be represented as deterministic bookkeeping
+    instead of being expanded into artificial quantum operations.
+    """
 
     carrier_id: str
     pauli: str
     parity_tokens: tuple[str, ...]
     condition: tuple[ClassicalLiteral, ...] = ()
+    constant: int = 0
 
     def __post_init__(self) -> None:
         if not self.carrier_id:
             raise ValueError("frame-update carrier cannot be empty")
         if self.pauli not in {"X", "Y", "Z"}:
             raise ValueError("a Pauli-frame update must be X, Y, or Z")
-        if not self.parity_tokens:
-            raise ValueError("a frame update requires a nonempty parity")
+        if self.constant not in (0, 1):
+            raise ValueError("a frame-update affine constant must be zero or one")
+        if not self.parity_tokens and self.constant == 0:
+            raise ValueError("a frame update cannot be an empty zero expression")
         if len(self.parity_tokens) != len(set(self.parity_tokens)):
             raise ValueError("frame-update parity cannot repeat a token")
         condition_tokens = tuple(literal.token for literal in self.condition)
@@ -880,6 +888,21 @@ def _lower_primitive(
 ) -> tuple[_GadgetBuilder, dict[str, str]]:
     for value in primitive.logical_support:
         carriers.setdefault(value, _source_carrier(value))
+    if primitive.kind is LogicalPrimitiveKind.X:
+        if len(primitive.logical_support) != 1:
+            raise ValueError("logical X requires one target")
+        target = primitive.logical_support[0]
+        carrier = carriers[target]
+        builder = _GadgetBuilder(primitive, [], [], [])
+        _frame(
+            builder,
+            "deterministic_source_x",
+            (target,),
+            (carrier,),
+            (FrameUpdate(carrier, "X", (), constant=1),),
+            note="Source X is absorbed into the Pauli frame",
+        )
+        return builder, carriers
     if primitive.kind is LogicalPrimitiveKind.CNOT:
         return _lower_cnot(primitive, carriers)
     if primitive.kind in {LogicalPrimitiveKind.T, LogicalPrimitiveKind.T_DAGGER}:
@@ -892,7 +915,7 @@ def _lower_primitive(
 
 
 def lower_to_adaptive_pauli_measurements(trace: LogicalTrace) -> PbcTrace:
-    """Lower a phase-exact Gidney trace while preserving its quantum output.
+    """Lower a supported phase-exact logical trace while preserving its output.
 
     CNOT uses the three-measurement circuit in Xu et al. Figure 11(c).  T and
     T-dagger use the Bravyi-Smith-Smolin Figure 4 injection followed by an
@@ -902,8 +925,6 @@ def lower_to_adaptive_pauli_measurements(trace: LogicalTrace) -> PbcTrace:
     gadgets share a serialized operation zone.
     """
 
-    if not trace.source_circuit_id.startswith("gidney-ripple-adder-width-"):
-        raise ValueError("adaptive PBC lowering received a different circuit")
     primitive_by_id = {
         primitive.primitive_id: primitive for primitive in trace.primitives
     }
@@ -1015,6 +1036,7 @@ def pbc_trace_to_data(trace: PbcTrace) -> dict[str, Any]:
                 "frame_updates": [
                     {
                         "carrier_id": update.carrier_id,
+                        "constant": update.constant,
                         "condition": [literal_data(value) for value in update.condition],
                         "parity_tokens": list(update.parity_tokens),
                         "pauli": update.pauli,

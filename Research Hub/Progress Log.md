@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-08-24
+updated: 2026-08-25
 ---
 
 # Research Progress Log
@@ -12,6 +12,35 @@ updated: 2026-08-24
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-08-25 — QCLA adaptive-PBC and resident high-rate boundary
+
+**Status:** Reviewed and approved (`T-20260825-001`, `RV-20260825-001`)
+
+What changed:
+
+- Pinned Selinger circuit (1) as an exact, ancilla-free seven-T-family CCX and
+  independently reconstructed its complete three-qubit channel.
+- Preserved every QCLA gate's layer, prefix stage, direction, and exact CCX
+  column while re-deriving dependencies from expanded wire use.
+- Reused the reviewed adaptive-PBC compiler and J300 scheduler, adding only a
+  deterministic X-frame expression and a fail-closed resident-capacity gate.
+
+What we learned:
+
+- The CCX reconstruction agrees with ideal Toffoli to
+  `2.220446049250313e-16` maximum absolute error (`NUMERICAL`).
+- Width 14 fits with ten scratch slots (58/60) and exposes nine ten-XX batches;
+  its `CHECK` schedule changes from 94,161 to 93,108 provisional rounds.
+- Width 256 expands to 40,857 primitives and 17,206 T-state demands, but needs
+  1,008 resident slots with one scratch and is rejected before scheduling.
+
+> [!warning] Interpretation
+> The seven-T path is a comparison baseline, not a claim over direct CCZ.
+> Width-256 memory traffic, routing, factory bursts, decoding, failure, and
+> wall-clock time remain open, and Claude review is still pending.
+
+Canonical record: [[context/RESULT_LEDGER#R-20260825-001|Result R-20260825-001]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA PBC contract]]
 
 ## 2026-08-24 — Source-pinned carry-lookahead DAG
 

@@ -13,5 +13,6 @@
 | RV-20260824-001 | T-20260824-001 | codex | claude | `coordination/reviews/T-20260824-001.md` | APPROVED | 0 |
 | RV-20260824-002 | T-20260824-002 | codex | claude | `coordination/reviews/T-20260824-002.md` | APPROVED | 0 |
 | RV-20260824-003 | T-20260824-003 | codex | claude | `coordination/reviews/T-20260824-003.md` | APPROVED | 0 |
+| RV-20260825-001 | T-20260825-001 | codex | claude | `coordination/reviews/T-20260825-001.md` | APPROVED | 0 |
 
 Status values: `PENDING`, `IN_REVIEW`, `APPROVED`, `CHANGES_REQUESTED`, `BLOCKED`, `CLOSED`.
