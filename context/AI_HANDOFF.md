@@ -1,20 +1,21 @@
 # AI handoff
 
-Last updated: 2026-08-25
+Last updated: 2026-08-26
 From: claude
 To: human and codex
 
 ## Current objective
 
-All twelve Codex submissions to date are Claude-reviewed and `APPROVED`,
-including `T-20260825-001` (`RV-20260825-001`): it lowers the reviewed Draper
-QCLA through a pinned exact seven-T CCX and the reviewed adaptive-PBC/J300
-sensitivity layers.
+All thirteen Codex submissions to date are Claude-reviewed and `APPROVED`,
+including `T-20260825-002` (`RV-20260825-002`). It converts the reviewed
+width-256 QCLA adaptive-PBC trace from a resident-capacity rejection into an
+independently replayed, fixed-order 60-slot J300 memory schedule.
 
-Width 256 expands to 40,857 logical primitives and 17,206 T-state demands but
-needs 1,008 logical slots with one compiler scratch, so k=60 J300 rejects the
-fully resident model before scheduling. Resident widths 11 and 14 expose seven
-and nine exact-ten-XX batches, but their finite rounds remain `CHECK`.
+The width-256 ten-scratch high-rate policy selects 1,576 exact-ten-XX batches.
+Under the explicitly `CHECK` one-lane/one-round/no-overlap profile it takes
+2,420,527 rounds, 169,260 (6.54%) below one-scratch serial despite 7,433 more
+reloads. This is not executable time. The complete shifted T-demand trace sums
+to 17,206 but has no factory service, buffer, routing, or stalls.
 
 ## Read first
 
@@ -23,54 +24,41 @@ and nine exact-ten-XX batches, but their finite rounds remain `CHECK`.
 - `context/STATUS.md`
 - `context/TASKS.md`
 - `coordination/PROTOCOL.md`
-- `coordination/reviews/T-20260824-003.md`
-- `coordination/reviews/T-20260825-001.md`
-- `docs/QCLA_DAG_CONTRACT.md`
+- `coordination/reviews/T-20260825-002.md`
+- `docs/QCLA_MEMORY_IO_CONTRACT.md`
 - `docs/QCLA_PBC_LOWERING_CONTRACT.md`
-- `experiments/runs/T-20260825-001/summary.json`
-- `experiments/runs/T-20260825-001/capacity_boundaries.json`
-- `literature/notes/algorithms/draper_et_al_2006_qcla.md`
-- `configs/circuits/qcla_inplace_mod2n_v1.yaml`
-- `experiments/runs/T-20260824-003/summary.json`
-- `experiments/runs/T-20260824-003/qcla_width256_toffoli_demand.json`
-- `docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT.md`
-- `docs/MEMORY_IO_EXECUTION_CONTRACT.md`
-- `docs/PBC_CQLU_LOWERING_CONTRACT.md`
-- `docs/J300_PBC_SCHEDULING_CONTRACT.md`
+- `configs/architectures/qcla_j300_memory_io_v1.yaml`
+- `experiments/runs/T-20260825-002/summary.json`
+- `experiments/runs/T-20260825-002/qcla_width256_t_state_demand.json`
+- `context/RESULT_LEDGER.md`
 
 ## Next concrete action
 
-1. Claim a memory-partition cycle for width-256 QCLA and jointly schedule
-   I/O, PBC scratch, high-rate surgery, and factory demand; continue pinning
-   native J300/HGP operation, routing, reaction, and transfer contracts.
-2. Human records the `T-BOOT-001` full-ECDLP choice. This remains the human-
-   owned blocker before project-wide `T-BOOT-002` is claimed.
-3. Investigate the direct-CCZ-injection comparator left `OPEN` in `D-0012`,
-   since it may dominate the seven-T route in space or time.
+1. Add factory service, finite buffer, routing, and backlog to the emitted
+   width-256 T-demand series; report stalls separately from the current ideal-
+   supply timeline.
+2. Investigate the direct-CCZ comparator left `OPEN` in `D-0012`, then extend
+   the preferred arithmetic to a controlled adder.
+3. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
+   `T-BOOT-002` is claimed.
 
 ## Known risks
 
-- The QCLA cycle covers only uncontrolled in-place addition modulo `2^n`, with
-  no carry-in or overflow. Controlled QCLA remains unresolved for scalar
+- The clean QCLA source-ancilla allocation/release boundaries are validated
+  from source reuse epochs, but their physical preparation/reset/routing time
+  remains `CHECK` and adds no separate duration in this cycle.
+- The capacity-relaxed adaptive-PBC pass selects an order only. The second pass
+  enforces 60 slots, but the order and Belady retention are heuristic and are
+  neither optimal nor lower bounds.
+- Transfer prefetch/overlap, finite memory capacity, routing, bridge occupancy,
+  decoder throughput, logical failure, and wall-clock conversion are absent.
+- The QCLA is uncontrolled in-place addition modulo `2^n`, without carry-in or
+  overflow; it is not yet the controlled arithmetic needed by scalar
   multiplication.
-- The width-256 255-Toffoli burst may be sharply serialized by operation-zone,
-  scratch/carrier, routing, memory, or factory constraints.
-- The 495 QCLA ancillas are source-level logical values. Processor residency
-  and resulting load/store traffic have not been optimized or replayed.
-- Small-width exhaustive basis replay is strong for the phase-free reversible
-  instruction set but remains finite numerical evidence, not a general proof.
-- High-rate eligibility is now derived for the selected PBC supports at
-  resident widths only; no result claims that an entire Toffoli layer maps to
-  one supported surgery batch or that width 256 is executable.
-- Average factory rate can hide the source demand bursts; retry, buffer,
-  routing, and backlog are all absent.
-- The older Gidney integration suite still has two known checkout-pin failures:
-  expected sibling HEAD `8c16388`, observed `75a6e83`. Relevant source paths
-  were previously reviewed as identical (re-confirmed via a direct empty
-  `git diff` in review); the QCLA task does not use that checkout.
-- Strict J300 duration evidence remains incomplete for preparation,
-  Z/ZZ/ZX/full extraction, reaction, conditional CZ, and memory transfer.
-- The Obsidian dashboard is manually curated and must follow canonical records.
+- Direct CCZ injection may dominate the seven-T baseline in space or time.
+- The older Gidney integration suite retains two known checkout-pin failures:
+  expected sibling HEAD `8c16388`, observed `75a6e83`. The relevant source
+  paths were reviewed as identical; this QCLA task does not use that checkout.
 
 ## Files currently safe to modify
 

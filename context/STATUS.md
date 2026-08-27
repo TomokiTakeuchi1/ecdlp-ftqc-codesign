@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-08-25 (claude)
+Last updated: 2026-08-26 (claude)
 Owner: human
 Phase: canonical baseline selection
 
@@ -22,6 +22,7 @@ Phase: canonical baseline selection
 - `T-20260824-002` emits the complete reviewed processor-resident width-4 adaptive PBC trace from the pinned, exhaustively phase-checked fixture. The artifact contains 321 semantic operations, including 150 Pauli measurements (`X`: 27, `XX`: 33, `Z`: 33, `ZX`: 3, `ZZ`: 54), 57 compiler-ancilla lifetimes, and 12 T-state demands. The full machine-readable JSON and a generated readable operation table are available under `experiments/runs/T-20260824-002/`; native durations and strict runtime remain `CHECK`. `RV-20260824-002` is `APPROVED` (Claude review, 2026-08-24); the reviewer independently reproduced byte-identical artifacts, re-derived all four generated-identity formulas from the already-verified `RV-20260815-006` derivation, and spot-checked the readable circuit table's frame-update rendering against the raw JSON for faithfulness.
 - `T-20260824-003` reconstructs Draper et al.'s in-place modulo-`2^n` QCLA as a source-pinned X/CNOT/Toffoli DAG with exact `P/G/C/P^-1` rounds, bounded-fan-out overlaps, nearest-wire dependencies, prefix-scratch reuse epochs, and independent basis replay. Widths 2--6 pass every input pair; boundary widths reproduce the source formulas. Width 256 has 2,458 Toffolis, 1,019 CNOTs, 510 NOTs, 495 source ancillas, 40 source layers, and a peak demand of 255 Toffolis in one layer. These are architecture-neutral circuit quantities, not QEC cycles, factory service, or runtime. `RV-20260824-003` is `APPROVED` (Claude review, 2026-08-24); the reviewer independently hand-derived the width-2 circuit by symbolic Boolean algebra (confirming the ancilla-cleanup "complement trick" cancels exactly), cross-checked the Toffoli/ancilla formulas against the paper's own separately-stated carry-circuit sub-formulas, and ran an independent script (not reusing the repository's tests) that exhaustively replayed width 7 and randomly sampled five widths never covered by the existing test suite, all passing.
 - `T-20260825-001` pins Selinger circuit (1) as an ancilla-free exact seven-T-family CCX baseline, preserves QCLA source provenance through 40,857 width-256 logical primitives, and emits reviewed adaptive-PBC supports at resident widths. Independent 8-by-8 reconstruction gives maximum CCX error `2.220446049250313e-16` (`NUMERICAL`). Widths 11/14 expose 7/9 exact-ten-XX batches under the ten-scratch `CHECK` schedule; width 256 has 17,206 T-state demand but needs 1,008 resident slots with one scratch and is rejected before scheduling. Memory partitioning, routing, factory burst service, failure, direct CCZ comparison, and strict runtime remain open. `RV-20260825-001` is `APPROVED` (Claude review, 2026-08-25); the reviewer independently reconstructed the full 8-by-8 CCX unitary from scratch (no code reuse) and found it matches ideal CCX with zero global-phase correction needed, independently re-derived all eight width-256 primitive counts and all five resident-capacity table rows from already-verified QCLA formulas, and confirmed the fail-closed capacity gate genuinely prevents constructing the width-256 PBC trace before rejection.
+- `T-20260825-002` implements an epoch-aware, independently replayed QCLA memory overlay and a fixed-order 60-slot J300 realization. At width 256, one-scratch serial uses 46,355 loads/stores, while ten-scratch serial uses 53,514; both include 512 compulsory input loads/final output returns. Ten-scratch high-rate selects 1,576 exact-ten-XX batches, uses 53,788 loads/stores, and changes the one-round/one-lane `CHECK` sensitivity from 2,589,787 one-scratch serial rounds to 2,420,527 (6.54% shorter despite 7,433 more reloads). All policies conserve total time-stamped T demand 17,206. This is a fixed-order sensitivity upper bound without routing, factory service/buffering/stalls, decoding, failure, or wall-clock conversion. `RV-20260825-002` is `APPROVED` (Claude review, 2026-08-26); the reviewer gave the highest-risk item -- a refactor of the already-approved adaptive-PBC scheduler to a heap-based structure -- a full manual control-flow audit, confirmed zero changes to and 6/6 passes of the pre-existing scheduler test file against the refactored code, and independently regenerated the entire width-256 artifact set (a long-running computation) with all four output hashes matching byte-for-byte.
 
 ## Current milestone
 
@@ -51,12 +52,13 @@ and time-stamped resource-state demand. Its finite timings remain `CHECK`; a
 compatible code layout, memory/bridge joint schedule, and factory stalls are
 not yet modeled.
 
-The pending QCLA-PBC cycle now supplies an exact seven-T lowering, concrete
-adaptive Pauli supports, resident-capacity boundaries, and observed ten-XX
-eligibility at widths 11 and 14. Width 256 fails the fully resident J300 model;
-processor-memory partitioning, joint I/O/surgery scheduling, routing, and
-factory service remain separate, so neither the 40 source layers nor the
-provisional scheduled rounds are executable runtime.
+The QCLA pipeline now supplies an exact seven-T lowering, concrete adaptive
+Pauli supports, epoch-aware processor-memory placement, fixed-order high-rate
+surgery, and a time-stamped width-256 T-demand trace. The placement enforces 60
+logical slots and independently replays ownership, but transfer/native/clean-
+lifecycle timing remains `CHECK`. Routing and factory service, buffers, and
+stalls remain separate, so neither the 40 source layers nor the provisional
+scheduled rounds are executable runtime.
 
 ## Active bottleneck
 

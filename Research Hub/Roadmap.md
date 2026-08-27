@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - roadmap
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # Research Roadmap
@@ -15,7 +15,7 @@ updated: 2026-08-25
 
 **Status: ACTIVE**
 
-<progress max="16" value="11"></progress> 11 of 16 listed Month-1 milestones are complete; 1 more is active.
+<progress max="21" value="13"></progress> 13 of 21 listed Month-1 milestones are complete; 8 more are required.
 
 ### Completed or reviewed
 
@@ -30,10 +30,11 @@ updated: 2026-08-25
 - [x] Add and review a Bell-bridge teleportation ripple cycle (`RV-20260824-001`).
 - [x] Source-pin and review a QCLA event/dependency contract (`RV-20260824-003`).
 - [x] Lower and review the QCLA/Toffoli adaptive-PBC baseline and resident high-rate boundary (`RV-20260825-001`).
+- [x] Implement and review a replayable width-256 QCLA memory partition with I/O, PBC scratch, high-rate surgery, and time-stamped demand (`RV-20260825-002`).
 
 ### Active
 
-- [ ] Add a replayable width-256 QCLA memory partition and jointly schedule I/O, PBC scratch, high-rate surgery, and factory demand.
+- [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
 
 ### Still required for the full Month-1 goal
 

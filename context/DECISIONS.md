@@ -95,3 +95,11 @@
 - Decision: Expand each source QCLA Toffoli with Selinger circuit (1), preserve its exact wire order and source provenance, and compile the resulting X/CNOT/H/S/T/T-dagger primitives through the reviewed quantum-output-preserving adaptive-PBC layer. Keep direct CCZ injection as an `OPEN` comparator.
 - Rationale: A source-pinned exact decomposition gives auditable Pauli supports and resource-state demand without assuming a direct CCZ factory or treating source-layer depth as backend execution time. The ancilla-free form avoids silently changing the resident-capacity comparison.
 - Consequences: Width 256 has a reproducible 17,206-T-state structural demand but fails the fully resident J300 slot inequality before scheduling. Smaller widths can test real ten-XX readiness, while all finite schedule rounds remain `CHECK` until native timing, memory, routing, and factory contracts are supplied.
+
+## D-0013: Separate QCLA clean epochs from memory input/output values
+
+- Status: ACCEPTED (`RV-20260825-002` approved 2026-08-26)
+- Date: 2026-08-26
+- Decision: Treat `A/B` data as memory input/inout values, split every QCLA source ancilla by its reviewed clean reuse epoch, and permit live epochs to spill without extending the Gidney generated-temporary contract. Select a deterministic adaptive-PBC order with relaxed capacity, then call only the independently replayed 60-slot placement/timing overlay executable under the stated sensitivity assumptions.
+- Rationale: QCLA clean workspace is neither a strict memory input nor a Gidney temporary that must remain processor-resident for its full lifetime. An explicit epoch origin prevents free copies and stale-state carryover while allowing width 256 to be evaluated without pretending its 1,007 source values are simultaneously resident.
+- Consequences: `E-20260825-002` is a fixed-order realizable upper bound, not a placement optimum. Clean allocation/release, native operations, and transfer durations remain `CHECK`; the emitted T-demand timeline has no factory service, buffer, routing, or stalls.

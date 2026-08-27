@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import heapq
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Any
@@ -153,9 +154,7 @@ def _implementation(operation: PbcOperation) -> PbcMittenImplementationKind:
     raise AssertionError(f"unhandled PBC operation kind {operation.kind.value}")
 
 
-def _cost(
-    operation: PbcOperation, config: PbcMittenBackendConfig
-) -> PbcMittenOperationCost:
+def _cost(operation: PbcOperation, config: PbcMittenBackendConfig) -> PbcMittenOperationCost:
     return config.cost(_implementation(operation))
 
 
@@ -173,9 +172,7 @@ def _dependency_maps(
     return predecessors, classical_edges
 
 
-def _dependency_critical_path(
-    trace: PbcTrace, config: PbcMittenBackendConfig
-) -> int:
+def _dependency_critical_path(trace: PbcTrace, config: PbcMittenBackendConfig) -> int:
     operations = {operation.operation_id: operation for operation in trace.operations}
     predecessors, classical_edges = _dependency_maps(trace)
     finish: dict[str, int] = {}
@@ -193,9 +190,7 @@ def _dependency_critical_path(
     return max(finish.values(), default=0)
 
 
-def _strictly_validate(
-    trace: PbcTrace, config: PbcMittenBackendConfig
-) -> None:
+def _strictly_validate(trace: PbcTrace, config: PbcMittenBackendConfig) -> None:
     unresolved: set[str] = set()
     for operation in trace.operations:
         cost = _cost(operation, config)
@@ -223,19 +218,14 @@ def _find_high_rate_batch(
     config: PbcMittenBackendConfig,
 ) -> tuple[PbcOperation, ...] | None:
     specs = sorted(
-        (
-            spec
-            for spec in config.high_rate_batches
-            if spec.pauli_family == "XX"
-        ),
+        (spec for spec in config.high_rate_batches if spec.pauli_family == "XX"),
         key=lambda spec: spec.batch_size,
         reverse=True,
     )
     candidates = [
         operation
         for operation in ready
-        if operation.kind is PbcOperationKind.MEASURE_PAULI
-        and _pauli_family(operation) == "XX"
+        if operation.kind is PbcOperationKind.MEASURE_PAULI and _pauli_family(operation) == "XX"
     ]
     for spec in specs:
         selected: list[PbcOperation] = []
@@ -279,9 +269,7 @@ def schedule_adaptive_pbc_greedy(
     """
 
     requested_scratch = (
-        config.default_scratch_slots
-        if scratch_slot_count is None
-        else scratch_slot_count
+        config.default_scratch_slots if scratch_slot_count is None else scratch_slot_count
     )
     if requested_scratch < trace.minimum_reusable_compiler_scratch_slots:
         raise AdaptivePbcProcessorCapacityError(
@@ -314,18 +302,52 @@ def schedule_adaptive_pbc_greedy(
         for predecessor in operation_predecessors:
             successors[predecessor].add(successor)
     pending = set(order)
-    ready_ids: set[str] = {
+    initial_ready_ids = tuple(
         operation_id for operation_id in order if not predecessors[operation_id]
-    }
+    )
+    ready_ids: set[str] = set()
     finish: dict[str, int] = {}
     carrier_available: dict[str, int] = defaultdict(int)
-    resource_available = {
-        pool.name: [0] * pool.capacity for pool in config.resource_pools
-    }
+    resource_available = {pool.name: [0] * pool.capacity for pool in config.resource_pools}
     scratch_available = [0] * requested_scratch
     scratch_owners: list[str | None] = [None] * requested_scratch
     active_scratch_slots: dict[str, int] = {}
     events: list[AdaptivePbcScheduledEvent] = []
+    ready_regular_non_xx: list[tuple[int, str]] = []
+    ready_allocation_non_xx: list[tuple[int, str]] = []
+    ready_xx: list[tuple[int, str]] = []
+    ready_batch_xx: set[str] = set()
+
+    def is_xx(operation: PbcOperation) -> bool:
+        return operation.kind is PbcOperationKind.MEASURE_PAULI and _pauli_family(operation) == "XX"
+
+    def add_ready(operation_id: str) -> None:
+        if operation_id in ready_ids:
+            return
+        ready_ids.add(operation_id)
+        operation = operations[operation_id]
+        item = (position[operation_id], operation_id)
+        if is_xx(operation):
+            heapq.heappush(ready_xx, item)
+            operation_slots = {
+                active_scratch_slots[carrier]
+                for carrier in operation.carrier_support
+                if carrier in active_scratch_slots
+            }
+            if len(operation_slots) == 1:
+                ready_batch_xx.add(operation_id)
+        elif operation_id in allocation_lifetimes:
+            heapq.heappush(ready_allocation_non_xx, item)
+        else:
+            heapq.heappush(ready_regular_non_xx, item)
+
+    def heap_candidate(heap: list[tuple[int, str]]) -> PbcOperation | None:
+        while heap and heap[0][1] not in ready_ids:
+            heapq.heappop(heap)
+        return operations[heap[0][1]] if heap else None
+
+    for operation_id in initial_ready_ids:
+        add_ready(operation_id)
 
     def readiness(operation: PbcOperation) -> tuple[int, int, int, int]:
         dependency_round = max(
@@ -357,9 +379,7 @@ def schedule_adaptive_pbc_greedy(
             default=0,
         )
         if operation.operation_id in allocation_lifetimes:
-            free_slots = [
-                index for index, owner in enumerate(scratch_owners) if owner is None
-            ]
+            free_slots = [index for index, owner in enumerate(scratch_owners) if owner is None]
             if not free_slots:
                 return dependency_round, classical_round, 10**30, carrier_round
             scratch_round = min(scratch_available[index] for index in free_slots)
@@ -374,22 +394,18 @@ def schedule_adaptive_pbc_greedy(
             )
         return dependency_round, classical_round, scratch_round, carrier_round
 
+    completed: set[str] = set()
     while pending:
-        dependency_ready = [
-            operations[operation_id]
-            for operation_id in sorted(ready_ids, key=position.__getitem__)
-        ]
-        ready = [
-            operation
-            for operation in dependency_ready
-            if readiness(operation)[2] < 10**30
-        ]
-        if not ready:
-            raise ValueError("adaptive-PBC scheduler reached a scratch or dependency deadlock")
-
-        ready.sort(key=lambda operation: position[operation.operation_id])
         batch = (
-            _find_high_rate_batch(ready, active_scratch_slots, config)
+            _find_high_rate_batch(
+                [
+                    operations[operation_id]
+                    for operation_id in sorted(ready_batch_xx, key=position.__getitem__)
+                    if operation_id in ready_ids
+                ],
+                active_scratch_slots,
+                config,
+            )
             if enable_high_rate
             else None
         )
@@ -401,19 +417,26 @@ def schedule_adaptive_pbc_greedy(
                 "on ten distinct live scratch slots"
             )
         else:
-            non_xx = [
-                operation
-                for operation in ready
-                if not (
-                    operation.kind is PbcOperationKind.MEASURE_PAULI
-                    and _pauli_family(operation) == "XX"
-                )
+            non_xx_candidates = [heap_candidate(ready_regular_non_xx)]
+            if any(owner is None for owner in scratch_owners):
+                non_xx_candidates.append(heap_candidate(ready_allocation_non_xx))
+            feasible_non_xx = [
+                operation for operation in non_xx_candidates if operation is not None
             ]
-            selected = (non_xx[0] if non_xx else ready[0],)
+            fallback: PbcOperation | None
+            if feasible_non_xx:
+                fallback = min(
+                    feasible_non_xx,
+                    key=lambda operation: position[operation.operation_id],
+                )
+            else:
+                fallback = heap_candidate(ready_xx)
+            if fallback is None:
+                raise ValueError("adaptive-PBC scheduler reached a scratch or dependency deadlock")
+            selected = (fallback,)
             cost = _cost(selected[0], config)
             selection_reason = (
-                "Greedy single-operation fallback; no supported exact high-rate "
-                "batch was ready"
+                "Greedy single-operation fallback; no supported exact high-rate batch was ready"
             )
 
         selected_readiness = [readiness(operation) for operation in selected]
@@ -439,11 +462,7 @@ def schedule_adaptive_pbc_greedy(
             allocation_lifetime = allocation_lifetimes.get(operation.operation_id)
             if allocation_lifetime is not None:
                 slot = min(
-                    (
-                        index
-                        for index, owner in enumerate(scratch_owners)
-                        if owner is None
-                    ),
+                    (index for index, owner in enumerate(scratch_owners) if owner is None),
                     key=lambda index: (max(scratch_available[index], start_round), index),
                 )
                 scratch_owners[slot] = allocation_lifetime.carrier_id
@@ -474,13 +493,7 @@ def schedule_adaptive_pbc_greedy(
             )
         )
         logical_support = tuple(
-            sorted(
-                {
-                    value
-                    for operation in selected
-                    for value in operation.logical_support
-                }
-            )
+            sorted({value for operation in selected for value in operation.logical_support})
         )
         event = AdaptivePbcScheduledEvent(
             event_id=f"event:{len(events):06d}",
@@ -503,9 +516,7 @@ def schedule_adaptive_pbc_greedy(
             resource_ready_round=resource_round,
             gadget_data_ancilla_qubits=cost.gadget_data_ancilla_qubits,
             gadget_check_ancilla_qubits=cost.gadget_check_ancilla_qubits,
-            resource_state_demand=sum(
-                operation.resource_state_demand for operation in selected
-            ),
+            resource_state_demand=sum(operation.resource_state_demand for operation in selected),
             timing_evidence_status=cost.timing_evidence_status,
             space_evidence_status=cost.space_evidence_status,
             selection_reason=selection_reason,
@@ -518,11 +529,13 @@ def schedule_adaptive_pbc_greedy(
             for carrier in operation.carrier_support:
                 carrier_available[carrier] = end_round
             finish[operation.operation_id] = end_round
+            completed.add(operation.operation_id)
             pending.remove(operation.operation_id)
             ready_ids.remove(operation.operation_id)
+            ready_batch_xx.discard(operation.operation_id)
             for successor in successors[operation.operation_id]:
-                if successor in pending and predecessors[successor].issubset(finish):
-                    ready_ids.add(successor)
+                if successor in pending and predecessors[successor].issubset(completed):
+                    add_ready(successor)
             for lifetime in release_lifetimes.get(operation.operation_id, []):
                 slot = active_scratch_slots.pop(lifetime.carrier_id)
                 scratch_owners[slot] = None
@@ -539,12 +552,8 @@ def schedule_adaptive_pbc_greedy(
             key=lambda implementation: implementation.value,
         )
     )
-    ordered_events = tuple(
-        sorted(events, key=lambda event: (event.start_round, event.event_id))
-    )
-    peak_added = max(
-        (event.added_physical_qubits for event in ordered_events), default=0
-    )
+    ordered_events = tuple(sorted(events, key=lambda event: (event.start_round, event.event_id)))
+    peak_added = max((event.added_physical_qubits for event in ordered_events), default=0)
     return AdaptivePbcSchedule(
         trace_id=trace.trace_id,
         configuration_id=config.configuration_id,
@@ -559,16 +568,12 @@ def schedule_adaptive_pbc_greedy(
         ),
         dependency_only_critical_path_rounds=_dependency_critical_path(trace, config),
         scheduled_rounds=max((event.end_round for event in ordered_events), default=0),
-        known_peak_physical_qubits_lower_bound=(
-            config.known_base_physical_qubits + peak_added
-        ),
+        known_peak_physical_qubits_lower_bound=(config.known_base_physical_qubits + peak_added),
         physical_qubit_total_complete=False,
         total_resource_state_demand=trace.resource_state_demand,
         unresolved_implementations=unresolved,
         classical_reaction_evidence_status=(
-            config.classical_reaction_evidence_status
-            if classical_edges
-            else EvidenceStatus.PROVED
+            config.classical_reaction_evidence_status if classical_edges else EvidenceStatus.PROVED
         ),
         events=ordered_events,
     )
@@ -579,13 +584,9 @@ def adaptive_pbc_schedule_to_data(schedule: AdaptivePbcSchedule) -> dict[str, An
 
     return {
         "allow_check_assumptions": schedule.allow_check_assumptions,
-        "classical_reaction_evidence_status": (
-            schedule.classical_reaction_evidence_status.value
-        ),
+        "classical_reaction_evidence_status": (schedule.classical_reaction_evidence_status.value),
         "configuration_id": schedule.configuration_id,
-        "dependency_only_critical_path_rounds": (
-            schedule.dependency_only_critical_path_rounds
-        ),
+        "dependency_only_critical_path_rounds": (schedule.dependency_only_critical_path_rounds),
         "events": [
             {
                 "added_physical_qubits": event.added_physical_qubits,
@@ -625,9 +626,7 @@ def adaptive_pbc_schedule_to_data(schedule: AdaptivePbcSchedule) -> dict[str, An
                 schedule.implementation_counts.items(), key=lambda item: item[0].value
             )
         },
-        "known_peak_physical_qubits_lower_bound": (
-            schedule.known_peak_physical_qubits_lower_bound
-        ),
+        "known_peak_physical_qubits_lower_bound": (schedule.known_peak_physical_qubits_lower_bound),
         "peak_source_processor_occupancy": schedule.peak_source_processor_occupancy,
         "peak_total_logical_occupancy": schedule.peak_total_logical_occupancy,
         "physical_qubit_total_complete": schedule.physical_qubit_total_complete,

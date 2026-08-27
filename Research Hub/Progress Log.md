@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # Research Progress Log
@@ -12,6 +12,38 @@ updated: 2026-08-25
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-08-26 — Width-256 QCLA memory and high-rate schedule
+
+**Status:** Reviewed and approved (`T-20260825-002`, `RV-20260825-002`)
+
+What changed:
+
+- Split QCLA clean workspace into reviewed reuse epochs while keeping `A/B`
+  inputs and outputs as strict memory values.
+- Added deterministic farthest-next-use placement and an independent replay
+  that rejects free copies, use before origin, invalid returns, or occupancy
+  above the 60-slot J300 budget.
+- Compared one-scratch serial, ten-scratch serial, and ten-scratch high-rate
+  schedules and emitted the complete shifted width-256 T-demand timeline.
+
+What we learned:
+
+- One-scratch serial uses 46,355 loads/stores; ten-scratch serial uses 53,514,
+  exposing the traffic cost of shrinking source payload from 59 to 50 slots.
+- Ten-scratch high-rate selects 1,576 exact-ten-XX batches. Its provisional
+  schedule is 2,420,527 rounds, 169,260 (6.54%) below one-scratch serial even
+  though it performs 7,433 more reloads.
+- All three policies conserve total T-state demand 17,206, but the emitted
+  timeline assumes ideal supply and contains no factory service or stalls.
+
+> [!warning] Interpretation
+> Placement/action invariants are exact under the contract, while the generated
+> counts are `NUMERICAL` and the transfer/native/clean-lifecycle timing is
+> `CHECK`. This fixed order is neither optimal nor a lower bound, and it excludes
+> routing, decoding, failure, factory buffering, and wall-clock conversion.
+
+Canonical record: [[context/RESULT_LEDGER#R-20260825-002|Placement result]] · [[context/RESULT_LEDGER#R-20260825-003|Timing sensitivity]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory-I/O contract]]
 
 ## 2026-08-25 — QCLA adaptive-PBC and resident high-rate boundary
 
@@ -37,8 +69,8 @@ What we learned:
 
 > [!warning] Interpretation
 > The seven-T path is a comparison baseline, not a claim over direct CCZ.
-> Width-256 memory traffic, routing, factory bursts, decoding, failure, and
-> wall-clock time remain open, and Claude review is still pending.
+> Width-256 memory traffic is handled by the following cycle; routing, factory
+> service, decoding, failure, and wall-clock time remain open.
 
 Canonical record: [[context/RESULT_LEDGER#R-20260825-001|Result R-20260825-001]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA PBC contract]]
 

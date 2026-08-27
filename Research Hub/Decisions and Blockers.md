@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - decisions
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # Decisions and Blockers
@@ -25,8 +25,8 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
 | 0 | Several PBC native durations remain unresolved | Adaptive resource scheduling now exists, but state preparation, Z/ZZ/ZX/full-extractor time, reaction, and conditional-CZ costs remain `CHECK`. | Pin or validate those J300 contracts; strict mode already rejects placeholders. |
-| 1 | High-rate batches depend on the arithmetic representation | The reviewed sequential adaptive-PBC adder has zero hits; the reviewed QCLA-PBC cycle exposes seven/nine exact-ten-XX batches at resident widths 11/14. This does not prove width-256 benefit with memory, routing, or factories. | Jointly schedule memory partitioning, scratch, routing, and factory service for QCLA. |
-| 1 | QCLA source depth is not backend depth | Width 256 has 40 source layers but expands to 40,857 logical primitives, 17,206 T-state demands, and 1,008 required resident slots with one scratch. J300 therefore rejects it before scheduling. | Build and independently replay a processor-memory partition; report memory-constrained scheduled depth separately. |
+| 1 | Factory service is absent from QCLA demand | The in-review width-256 overlay conserves 17,206 time-stamped T demands, but assumes ideal no-stall supply; average rate cannot establish burst feasibility. | Add explicit factory output, buffer, backlog, routing, and stall events to the emitted demand timeline. |
+| 1 | QCLA memory/high-rate timing remains provisional | Width 256 now fits an independently replayed 60-slot fixed order and exposes 1,576 ten-XX batches, but transfer/native/clean-lifecycle times remain `CHECK` and the order is not optimal. | Cross-review the ownership/capacity result, then pin timing/routing contracts and compare placement orders. |
 | 1 | Memory and Bell-bridge schedules are separate | Memory I/O and carry teleportation now have distinct replayable contracts, but their shared occupancy, routing, and timing have not been jointly scheduled. | Add an explicit architecture adapter only after finite bridge timing and routing evidence are pinned. |
 | 1 | Parallel-surgery legality is narrow | Exact-ten disjoint-XX readiness, scratch, carrier, and operation-zone constraints are implemented, but only this source-supported family is enabled. | Audit other source-supported families before expanding the native high-rate gate set. |
 

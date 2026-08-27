@@ -5,14 +5,14 @@ cssclasses:
   - research-dashboard
 tags:
   - dashboard
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # ECDLP-256 FTQC Research Hub
 
-> [!abstract] Current snapshot — 2026-08-25
+> [!abstract] Current snapshot — 2026-08-26
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** Partition width-256 QCLA across processor and memory without assuming free I/O, then jointly schedule I/O, scratch, high-rate surgery, and factory demand.
+> **Current focus:** Add finite factory service, buffers, routing, and stalls to the width-256 QCLA T-demand trace, and investigate the direct-CCZ comparator.
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
@@ -31,6 +31,7 @@ updated: 2026-08-25
 | Bell-bridge ripple adder | ✅ Reviewed | Claude approved the source-pinned workload (`RV-20260824-001`); it separates carry teleportation from memory I/O, replays bridge ownership, and exposes exact-ten-XX sensitivity, but finite timing and full phase reconstruction remain open. |
 | Carry-lookahead adder | ✅ Reviewed | Claude approved the source-pinned Draper QCLA (`RV-20260824-003`); it preserves prefix rounds and ancilla reuse, passes exhaustive widths 2--6, and exposes a width-256 Toffoli-demand trace, but no backend timing has been assigned. |
 | QCLA adaptive PBC | ✅ Reviewed | Claude approved the exact seven-T CCX lowering (`RV-20260825-001`); resident width 14 exposes nine ten-XX batches, while width 256 fails the 60-slot check before scheduling. |
+| QCLA memory/high-rate schedule | ✅ Reviewed | Claude approved the epoch-aware memory overlay (`RV-20260825-002`); it independently replays width 256 within 60 logical slots and exposes 1,576 ten-XX batches, but its one-round transfer/native timing and ideal factory remain `CHECK`. |
 | Full Shor estimate | ⚪ Not started | Month 2 begins after the arithmetic and architecture contracts are stable. |
 | Factory validation | ⚪ Not started | Month 3 will turn the T/CCZ demand trace into an explicit factory design. |
 
@@ -48,8 +49,8 @@ updated: 2026-08-25
 > [!warning] QCLA source parallelism — `NUMERICAL`, not runtime
 > The width-256 Draper trace has **40 source layers**, **495 logical circuit ancillas**, and a peak of **255 Toffolis in one layer**. This is the demand a backend must serve, not evidence that 255 operations can execute simultaneously or that the adder completes in 40 QEC cycles.
 
-> [!warning] QCLA adaptive-PBC sensitivity — `NUMERICAL` structure / `CHECK` time
-> The selected exact CCX route expands width 256 to **40,857 logical primitives** and **17,206 T-state demands**, but fully resident execution needs **1,008 logical slots** with one scratch and is rejected on k=60 J300. At resident width 14, ten scratch slots expose **9 exact-ten-XX batches** and change the provisional schedule from **94,161 to 93,108 rounds**. Memory, routing, and factory stalls are excluded.
+> [!warning] QCLA memory/high-rate sensitivity — `NUMERICAL` placement / `CHECK` time
+> The fixed-order width-256 overlay now enforces **60 logical slots** and independently replays all value moves. One-scratch serial uses **46,355 loads and 46,355 stores**; ten-scratch high-rate uses **53,788 of each**, selects **1,576 exact-ten-XX batches**, and changes the provisional one-round/one-lane schedule from **2,589,787 to 2,420,527 rounds** (6.54% shorter). This is not a placement optimum or executable runtime; routing, factory service/buffering/stalls, decoding, failure, and wall-clock conversion are excluded.
 
 > [!danger] Strict-runtime blocker
 > The adaptive trace is now reviewed, resource-constrained scheduled, and memory-I/O aware, but strict J300 durations for state preparation, Z/ZZ/ZX/full extraction, reaction, conditional CZ, and memory transfer are still missing. Strict mode rejects the resulting schedule.
@@ -58,14 +59,14 @@ updated: 2026-08-25
 
 1. **Human:** close `T-BOOT-001` by choosing the canonical ECDLP circuit contract in [[docs/CANONICAL_CIRCUIT_DECISION|Canonical Circuit Decision]].
 2. **Backend:** pin J300 preparation, Z/ZZ/ZX/full-extractor, reaction, conditional-CZ, and memory-transfer duration contracts.
-3. **Next cycle:** partition width-256 QCLA across processor and memory, then jointly schedule I/O, scratch, high-rate surgery, and factory demand; separately investigate whether direct CCZ injection dominates the seven-T route.
+3. **Next cycle:** apply finite factory service/buffering and routing to the width-256 T-demand trace; separately investigate whether direct CCZ injection dominates the seven-T route.
 
 ## Quick access to canonical records
 
 - Project truth: [[context/STATUS|Project Status]] · [[context/TASKS|Task Board]] · [[context/AI_HANDOFF|AI Handoff]]
 - Scientific records: [[context/DECISIONS|Decisions]] · [[context/RESULT_LEDGER|Result Ledger]] · [[context/ASSUMPTIONS|Assumptions]]
 - Review state: [[coordination/REVIEW_QUEUE|Review Queue]]
-- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]]
+- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory/high rate]]
 - Source corpus: [[literature/papers/INDEX|Paper Index]] · [[literature/READING_QUEUE|Reading Queue]]
 
 > [!info] Status language

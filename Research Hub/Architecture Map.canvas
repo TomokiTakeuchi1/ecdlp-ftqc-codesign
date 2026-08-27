@@ -13,7 +13,7 @@
     {
       "id": "memory",
       "type": "text",
-      "text": "# Memory zone\nStores inactive logical data.\n\nMonth-1 missing model:\n- load/store\n- residency\n- bandwidth",
+      "text": "# Memory zone\nStores inactive logical data.\n\nImplemented:\n- move ownership\n- residency replay\n- fixed-order load/store\n\nOpen: routing, finite capacity, shared bandwidth",
       "x": -520,
       "y": -260,
       "width": 300,

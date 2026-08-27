@@ -1,0 +1,42 @@
+schema: ecdlp-ftqc/qcla-memory-io-cycle-config
+schema_version: 1
+configuration_id: qcla-j300-memory-io-v1-sensitivity
+backend_config: configs/codes/mitten_j300_pbc_v2.yaml
+memory_io_config: configs/architectures/j300_memory_io_v1.yaml
+
+placement:
+  policy: qcla_epoch_aware_fixed_order_belady_v1
+  transfer_semantics: memory_processor_teleportation_move
+  clean_ancilla_allocation_timing_evidence_status: CHECK
+  clean_ancilla_release_timing_evidence_status: CHECK
+
+policies:
+  serial_one_scratch:
+    scratch_slot_count: 1
+    high_rate_enabled: false
+  serial_ten_scratch:
+    scratch_slot_count: 10
+    high_rate_enabled: false
+  high_rate_ten_scratch:
+    scratch_slot_count: 10
+    high_rate_enabled: true
+
+experiments:
+  widths: [14, 15, 16, 17, 32, 64, 128, 256]
+  demand_trace_width: 256
+  zero_round_regression_width: 4
+  strict_rejection_width: 4
+
+factory:
+  mode: ideal_supply_no_stalls_demand_trace_only
+  service_model_included: false
+  buffer_model_included: false
+
+exclusions:
+  - placement-order co-optimization or an optimality claim
+  - factory service, buffering, stalls, routing, and injection failures
+  - transfer prefetch or overlap with quantum compute
+  - bridge preparation, decoder throughput, and classical network contention
+  - logical failure budgeting and physical-error sensitivity
+  - controlled QCLA, modular reduction, and complete ECDLP integration
+  - conversion of sensitivity rounds to wall-clock time

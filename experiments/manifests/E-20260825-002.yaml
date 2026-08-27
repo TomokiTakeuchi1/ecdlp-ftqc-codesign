@@ -1,0 +1,33 @@
+experiment_id: E-20260825-002
+task_id: T-20260825-002
+title: Memory-partitioned QCLA adaptive-PBC scheduling on finite J300
+configuration: configs/architectures/qcla_j300_memory_io_v1.yaml
+entrypoint: scripts/run_qcla_memory_io_cycle.py
+command: uv --native-tls run python scripts/run_qcla_memory_io_cycle.py
+assumptions:
+  - A-0013
+  - A-0014
+  - A-0015
+  - A-0016
+  - A-0017
+  - A-0018
+  - A-0022
+  - A-0023
+  - A-0024
+  - A-0025
+  - A-0026
+outputs:
+  - experiments/runs/T-20260825-002/summary.json
+  - experiments/runs/T-20260825-002/scaling.json
+  - experiments/runs/T-20260825-002/qcla_width256_t_state_demand.json
+  - experiments/runs/T-20260825-002/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic
+  fixed_order: adaptive-PBC greedy order followed by epoch-aware Belady placement
+validation:
+  - independent logical-location replay
+  - total logical occupancy never exceeds 60
+  - timed transfer counts equal logical actions
+  - time-stamped T-state demand is conserved
+  - zero-round transfer regression preserves base event starts
+  - strict mode rejects CHECK transfer timing
