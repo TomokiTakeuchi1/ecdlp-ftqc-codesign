@@ -1,19 +1,28 @@
 # AI handoff
 
 Last updated: 2026-08-31
-From: codex
-To: claude and human
+From: claude
+To: codex and human
 
 ## Current objective
 
-`T-20260831-003` implementation commit `75effd5` awaits `RV-20260831-003`.
-Litinski--Nickerson Figure 14(a) now supplies the exact
-single-event conditional-CZ/post-H Pauli map under the explicit measurement
-convention `0 -> +1`, `1 -> -1`. A verifier that imports neither the capability
-nor compiler reconstructs the six-qubit projector channel and finds all 64
-branches nonzero at probability `1/64`, with maximum probability error
-`2.2551405187698492e-17` and zero operator Frobenius residual at floating-point
-precision. The real capability therefore admits isolated event lowering.
+`T-20260831-003` implementation commit `75effd5` is `RV-20260831-003`
+`APPROVED` (Claude review, 2026-08-31). Litinski--Nickerson Figure 14(a) now
+supplies the exact single-event conditional-CZ/post-H Pauli map under the
+explicit measurement convention `0 -> +1`, `1 -> -1`. A verifier that imports
+neither the capability nor compiler reconstructs the six-qubit projector
+channel and finds all 64 branches nonzero at probability `1/64`, with maximum
+probability error `2.2551405187698492e-17` and zero operator Frobenius
+residual at floating-point precision. The real capability therefore admits
+isolated event lowering. The reviewer independently confirmed this by
+rendering the primary source PDF page to a 600 DPI image and directly
+pixel-verifying every wire assignment, conditional-CZ pairing, and final
+Pauli-correction formula in Figure 14(a) against the machine-encoded map
+(zero discrepancies), and by writing a separate from-scratch numpy channel
+reconstruction from the contract's prose alone (before reading the
+repository's own verifier), which independently reproduced all 64 nonzero
+branches at matching precision; see `coordination/reviews/T-20260831-003.md`
+for the complete finding list.
 
 The width-256 clean OOP-QCLA lowers to 1,229 direct-CCZ injection events,
 7,374 PPM/outcome records, 3,955 preserved source dependencies, and 766
@@ -81,12 +90,11 @@ no factory service, buffer, routing, or stalls.
 
 ## Next concrete action
 
-1. Claude cross-reviews `T-20260831-003`, independently checking the Figure 14(a) convention/map, all-branch reconstruction, event substitution/dependencies, fail-closed admission split, tests, and deterministic artifacts.
-2. After approval, pin one finite high-rate backend covering reaction, decoder, ports, capacity, routing, delivery, buffer, storage, and logical error before constructing conservative or frame-tracked schedules.
-3. Add factory service, finite buffer, routing, and backlog to the width-256
+1. Pin one finite high-rate backend covering reaction, decoder, ports, capacity, routing, delivery, buffer, storage, and logical error before constructing conservative or frame-tracked schedules.
+2. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
-4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
+3. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
 ## Known risks
@@ -114,5 +122,4 @@ no factory service, buffer, routing, or stalls.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; `T-20260831-003` holds a `REVIEW` lock on
-the listed files until Claude completes `RV-20260831-003`.
+Check `coordination/WORK_LOCKS.md`; `T-20260831-003` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.

@@ -15,7 +15,7 @@ This page explains the research in plain language. Evidence, assumptions, and ex
 
 ## 2026-08-31 — Exact single-event direct-CCZ channel
 
-**Status:** In review (`T-20260831-003`, `RV-20260831-003` pending)
+**Status:** Reviewed and approved (`T-20260831-003`, `RV-20260831-003`)
 
 What changed:
 
@@ -38,8 +38,17 @@ What we learned:
   storage remain `OPEN`.
 
 > [!warning] Interpretation
-> This is a `NUMERICAL` single-event semantic result awaiting cross-review. It
-> is not a finite schedule, physical-qubit estimate, failure result, or runtime.
+> This is a `NUMERICAL` single-event semantic result, cross-reviewed and
+> approved. It is not a finite schedule, physical-qubit estimate, failure
+> result, or runtime.
+
+> [!success] Review note
+> Claude's review additionally rendered the primary source PDF page to a 600
+> DPI image and directly pixel-verified every wire assignment and correction
+> formula in Figure 14(a) against the machine-encoded map, and independently
+> wrote a from-scratch numpy channel reconstruction (before reading the
+> repository's own verifier) that reproduced all 64 measurement branches at
+> matching precision. See `coordination/reviews/T-20260831-003.md`.
 
 Canonical record: [[docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT|Single-event contract]] · [[context/RESULT_LEDGER#R-20260831-004|Channel/event result]] · [[context/RESULT_LEDGER#R-20260831-005|High-rate gap]]
 

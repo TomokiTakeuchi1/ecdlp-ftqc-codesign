@@ -122,7 +122,7 @@
 
 ## D-0016: Admit exact direct-CCZ single events without admitting high-rate service
 
-- Status: PROPOSED (pending `RV-20260831-003`)
+- Status: ACCEPTED (`RV-20260831-003` approved 2026-08-31)
 - Date: 2026-08-31
 - Decision: Admit one typed direct-CCZ injection event only when the capability uses the canonical Litinski--Nickerson Figure 14(a) outcome-to-CZ/Pauli map, the explicit convention `0 -> +1` and `1 -> -1`, and an independent all-64-branch operator verification. Preserve source-gate dependencies in event-trace schema v2. Continue to reject finite high-rate scheduling unless the separate timing, error, decoder, reaction, port, capacity, routing, delivery, buffer, and storage contract closes.
 - Rationale: The primary circuit diagram and an implementation-independent six-qubit projector reconstruction now agree on every measurement branch, so the single-event semantic blocker can close without inventing an architecture. A correct isolated channel does not determine whether many events can be routed, decoded, supplied, or reacted to concurrently.
