@@ -1,11 +1,12 @@
 # Project status
 
-Last updated: 2026-08-26 (claude)
+Last updated: 2026-08-31 (claude)
 Owner: human
 Phase: canonical baseline selection
 
 ## Current state
 
+- `T-20260831-001` records the human-directed direct-CCZ high-rate QCLA cycle. It starts with clean out-of-place \(n=256\) QCLA to isolate prefix parallelism; native injection/reaction semantics, factory-buffer dynamics, physical scheduling, and only then in-place/modular arithmetic follow. This is a research-plan record, not an executable-resource result. `RV-20260831-001` is `APPROVED` (Claude review, 2026-08-31); the reviewer independently re-derived all six new workload-ladder numbers (974/1,229/240/1,008 for the carry-status network and clean OOP QCLA) from the same closed-form Draper formulas used in prior reviews, confirming the OOP CCX-count formula recorded in `A-0029` algebraically matches an independent derivation exactly, and confirmed the plan makes no runtime, physical-qubit, or high-rate-capability claim beyond what the cited literature supports.
 - Research scope has been defined at a high level.
 - The first implementation target is a cross-layer trace and scheduler framework.
 - No full ECDLP or QEC-backend baseline has yet been declared reproduced in this repository.

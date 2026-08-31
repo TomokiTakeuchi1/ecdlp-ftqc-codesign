@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-08-26
+updated: 2026-08-31
 ---
 
 # Research Progress Log
@@ -12,6 +12,19 @@ updated: 2026-08-26
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-08-31 — Direct-CCZ high-rate QCLA research plan
+
+**Status:** Reviewed and approved (`T-20260831-001`, `RV-20260831-001`)
+
+Human-directed planning record, not an implementation. It selects clean out-of-place modulo-\(2^{256}\) QCLA as the first workload for studying direct \(|CCZ\rangle\) injection (as opposed to the already-reviewed seven-\(T\) route), and requires a pinned native injection/reaction/factory/routing/failure contract before any runtime is reported.
+
+What we learned:
+
+- At \(n=256\), the isolated carry-status prefix network needs 974 CCXs; the clean out-of-place adder needs 1,229 (974 plus 255 initial-generate gates); the already-reviewed in-place adder needs 2,458. All three numbers were independently re-derived from the Draper formulas during review and matched exactly.
+- Direct CCZ injection capability and parallel high-rate batching beyond the demonstrated ten-XX case remain `OPEN` -- no runtime, physical-qubit, or success-probability claim is made.
+
+Canonical record: [[docs/HIGH_RATE_QCLA_DIRECT_CCZ_RESEARCH_CYCLE|Direct-CCZ research cycle]] · [[context/DECISIONS#D-0014|Decision D-0014]]
 
 ## 2026-08-26 — Width-256 QCLA memory and high-rate schedule
 
