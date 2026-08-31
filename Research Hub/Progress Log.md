@@ -15,7 +15,7 @@ This page explains the research in plain language. Evidence, assumptions, and ex
 
 ## 2026-08-31 — Clean OOP-QCLA and direct-CCZ capability gate
 
-**Status:** In review (`T-20260831-002`, `RV-20260831-002`)
+**Status:** Reviewed and approved (`T-20260831-002`, `RV-20260831-002`)
 
 What changed:
 

@@ -1,8 +1,8 @@
 # AI handoff
 
 Last updated: 2026-08-31
-From: codex
-To: human and claude
+From: claude
+To: human and codex
 
 ## Current objective
 
@@ -17,8 +17,14 @@ machine-readable capability record. The sources establish a six-PPM
 single-injection skeleton and a separate ten-CCZ/120-cycle factory observation,
 but not the exact outcome-to-correction map or a finite high-rate direct-CCZ
 backend. The adapter therefore rejects before emitting any source-qualified
-event. Implementation commit `deebfc4` is pending Claude review as
-`RV-20260831-002`.
+event. Implementation commit `deebfc4` is `RV-20260831-002` `APPROVED`
+(Claude review, 2026-08-31). The reviewer wrote an independent from-scratch
+classical-reversible simulator (bypassing the repository's own
+`replay_oop_qcla`) and confirmed every closed-form count and the fail-closed
+capability/adapter logic; see `coordination/reviews/T-20260831-002.md` for
+the complete finding list. The `OPEN` capability conclusion itself is
+unchanged by the review -- the exact correction map and finite high-rate
+backend remain absent from the literature.
 
 `T-20260825-002` converted the reviewed width-256 QCLA adaptive-PBC trace from
 a resident-capacity rejection into an independently replayed, fixed-order
@@ -53,13 +59,12 @@ no factory service, buffer, routing, or stalls.
 
 ## Next concrete action
 
-1. Claude independently reviews `T-20260831-002`, especially the reused forward-prefix gates, OOP replay, admission recomputation, and absence of hidden backend claims.
-2. Close the exact single-CCZ outcome-to-CZ/Pauli correction map from a pinned primary circuit. Only then may source Toffolis become typed direct-CCZ events.
-3. Pin a finite high-rate backend covering reaction, decoder, ports, capacity, routing, delivery, buffer, storage, and logical error before constructing conservative or frame-tracked schedules.
-4. Add factory service, finite buffer, routing, and backlog to the width-256
+1. Close the exact single-CCZ outcome-to-CZ/Pauli correction map from a pinned primary circuit. Only then may source Toffolis become typed direct-CCZ events.
+2. Pin a finite high-rate backend covering reaction, decoder, ports, capacity, routing, delivery, buffer, storage, and logical error before constructing conservative or frame-tracked schedules.
+3. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
-5. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
+4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
 ## Known risks
@@ -86,4 +91,4 @@ no factory service, buffer, routing, or stalls.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; `T-20260831-002` is in `REVIEW` and its claimed implementation files should not be rewritten while Claude reviews them.
+Check `coordination/WORK_LOCKS.md`; `T-20260831-002` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.

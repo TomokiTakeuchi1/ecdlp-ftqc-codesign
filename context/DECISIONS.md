@@ -114,7 +114,7 @@
 
 ## D-0015: Fail closed at the direct-CCZ capability boundary
 
-- Status: PROPOSED (implementation `deebfc4`; cross-review pending as `RV-20260831-002`)
+- Status: ACCEPTED (`RV-20260831-002` approved 2026-08-31)
 - Date: 2026-08-31
 - Decision: Keep the clean out-of-place QCLA as an architecture-neutral X/CNOT/Toffoli trace and lower a source Toffoli to a typed direct-CCZ event only when the capability record contains an exact outcome-to-correction map with admissible evidence. Admit a finite high-rate schedule only under the strictly larger set of explicit timing, error, decoder, reaction, port, capacity, routing, delivery, buffer, and storage fields.
 - Rationale: The audited sources establish a single-CCZ PPM skeleton, one concrete factory production estimate, and approximate parallelism assumptions, but not one closed finite high-rate backend. Separating event admission from batch-schedule admission prevents an XX- or T-injection construction, an average factory rate, or source-layer parallelism from silently becoming a direct-CCZ runtime claim.
