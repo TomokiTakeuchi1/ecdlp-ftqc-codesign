@@ -1,0 +1,104 @@
+schema: ecdlp-ftqc/direct-ccz-high-rate-capability
+schema_version: 1
+capability_id: architecture-direct-ccz-single-event-figure14-v1
+
+sources:
+  - source_id: Litinski and Nickerson, arXiv:2211.15465v1 Figure 14(a)
+    local_pdf: literature/papers/2211.15465v1.pdf
+    pdf_sha256: BF305E578AEFC986F4E74110EF55155E7C9711401B7D4E18BCB63BE304D2BC45
+    pages: [19, 20]
+    establishes:
+      - Figure 14(a) defines Toffoli execution from CCZ state consumption using three data-resource ZZ measurements, three conditional CZ gates, three resource X measurements, and three final Pauli corrections.
+      - The three ZZ outcomes a, b, c control CZ(data_1,data_2), CZ(data_0,data_2), and CZ(data_0,data_1), respectively.
+      - After the target Hadamard, the Pauli labels are x_0 XOR (b AND c), x_1 XOR (a AND c), and x_2 XOR (a AND b) on Z(data_0), Z(data_1), and X(data_2).
+    evidence_status: LITERATURE
+  - source_id: Cain et al., arXiv:2603.28627v1 Appendix E
+    local_pdf: literature/papers/2603.28627v1.pdf
+    pdf_sha256: 9E38A056179ED432E34642744DE74521E91B14E45A1A6F860014221F90A39180
+    pages: [18, 19, 21, 24, 25]
+    establishes:
+      - Three resource-data ZZ PPMs followed by three resource X PPMs implement CCZ teleportation with corresponding CZ corrections.
+      - A concrete kf=10 factory estimate reports 10 CCZ states in 120 processor-code cycles with approximate per-state error 1e-10.
+      - The time-efficient P-way direct-CCZ construction is explicitly an approximate estimate rather than a concrete circuit or instruction set.
+    evidence_status: LITERATURE
+
+injection:
+  resource_state: CCZ
+  data_qubits: 3
+  resource_qubits: 3
+  resource_consumed: true
+  evidence_status: LITERATURE
+  measurements:
+    - measurement_id: zz_0
+      layer: 1
+      pauli_terms: [Z, Z]
+      operand_roles: [resource_0, data_0]
+      evidence_status: LITERATURE
+    - measurement_id: zz_1
+      layer: 1
+      pauli_terms: [Z, Z]
+      operand_roles: [resource_1, data_1]
+      evidence_status: LITERATURE
+    - measurement_id: zz_2
+      layer: 1
+      pauli_terms: [Z, Z]
+      operand_roles: [resource_2, data_2]
+      evidence_status: LITERATURE
+    - measurement_id: x_0
+      layer: 2
+      pauli_terms: [X]
+      operand_roles: [resource_0]
+      evidence_status: LITERATURE
+    - measurement_id: x_1
+      layer: 2
+      pauli_terms: [X]
+      operand_roles: [resource_1]
+      evidence_status: LITERATURE
+    - measurement_id: x_2
+      layer: 2
+      pauli_terms: [X]
+      operand_roles: [resource_2]
+      evidence_status: LITERATURE
+  correction:
+    family: Litinski-Nickerson Figure 14(a) conditional CZ and post-H Pauli corrections
+    outcome_bit_convention: 0 denotes +1 eigenvalue; 1 denotes -1 eigenvalue
+    exact_boolean_map:
+      - "CZ(data_1,data_2)^{zz_0}"
+      - "CZ(data_0,data_2)^{zz_1}"
+      - "CZ(data_0,data_1)^{zz_2}"
+      - "Z(data_0)^({x_0} XOR ({zz_1} AND {zz_2}))"
+      - "Z(data_1)^({x_1} XOR ({zz_0} AND {zz_2}))"
+      - "X(data_2)^({x_2} XOR ({zz_0} AND {zz_1}))"
+    source_reference: Litinski and Nickerson arXiv:2211.15465v1 Figure 14(a), PDF page 20
+    verification_reference: experiments/runs/T-20260831-003/direct_ccz_injection_channel_verification.json
+    evidence_status: NUMERICAL
+
+factory:
+  resource_state: CCZ
+  batch_size: 10
+  production_cycles: 120
+  output_error_probability: 1.0e-10
+  delivery_latency_cycles: null
+  buffer_capacity: null
+  storage_error_per_cycle: null
+  evidence_status: LITERATURE
+  source_note: Cain Appendix C concrete bb18 kf=10 estimate; delivery, buffering, and storage are not specified.
+
+high_rate:
+  admitted_batch_sizes: []
+  admitted_parallel_ppm_layers: null
+  admitted_duration_rounds: null
+  logical_error_per_batch: null
+  decoder_measurements_per_second: null
+  classical_reaction_latency_seconds: null
+  injection_port_capacity: null
+  processor_logical_capacity: null
+  routing_model: null
+  assumed_parallel_ppm_layers: 3
+  assumed_duration_surgery_cycles: 3
+  evidence_status: OPEN
+  source_note: Cain Appendix F assumes P-way direct-CCZ consumption and three parallel PPM/fixup layers for an approximate estimate; no concrete finite instruction set is supplied.
+
+admission:
+  event_lowering_admitted: true
+  high_rate_schedule_admitted: false

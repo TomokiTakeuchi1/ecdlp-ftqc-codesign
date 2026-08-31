@@ -19,8 +19,8 @@
   skeleton: a |CCZ⟩ state on logicals `a,b,c` is coupled to data
   `a',b',c'` by three `ZZ` PPMs, followed by three resource-qubit `X` PPMs
   and conditional `CZ` corrections. The appendix points to Active Volume for
-  the detailed correction circuit; this project has not yet encoded the exact
-  Boolean outcome-to-CZ/Pauli map.
+  the detailed correction circuit rather than printing the Boolean map locally;
+  `T-20260831-003` therefore pins that map to Litinski--Nickerson Figure 14(a).
 - **LITERATURE:** Appendix C's concrete `bb18` example estimates a batch of ten
   |CCZ⟩ states in 120 processor-code cycles using 2,565 qubits, with
   approximate per-state error `1e-10`. Delivery, storage, routing, and a finite

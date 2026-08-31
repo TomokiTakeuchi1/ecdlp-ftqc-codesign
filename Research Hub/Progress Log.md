@@ -13,6 +13,36 @@ updated: 2026-08-31
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-08-31 — Exact single-event direct-CCZ channel
+
+**Status:** In review (`T-20260831-003`, `RV-20260831-003` pending)
+
+What changed:
+
+- Read the full-resolution correction labels in Litinski--Nickerson Figure
+  14(a) and pinned the measurement-bit convention plus all six conditional
+  correction expressions.
+- Added an independent six-qubit projector reconstruction that imports neither
+  the capability loader nor the event compiler.
+- Split isolated-event admission from finite high-rate service and preserved
+  the complete source dependency graph in direct-CCZ event-trace schema v2.
+
+What we learned:
+
+- All 64 measurement branches are nonzero, have probability `1/64`, and match
+  ideal CCX with zero operator Frobenius residual at floating-point precision.
+- Width 256 emits 1,229 typed injection events, 7,374 PPM/outcome records,
+  3,955 source dependencies, and 766 pass-through CNOTs.
+- The exact event channel is now admitted, but high-rate timing, logical error,
+  decoder/reaction capacity, ports, routing, factory delivery, buffering, and
+  storage remain `OPEN`.
+
+> [!warning] Interpretation
+> This is a `NUMERICAL` single-event semantic result awaiting cross-review. It
+> is not a finite schedule, physical-qubit estimate, failure result, or runtime.
+
+Canonical record: [[docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT|Single-event contract]] · [[context/RESULT_LEDGER#R-20260831-004|Channel/event result]] · [[context/RESULT_LEDGER#R-20260831-005|High-rate gap]]
+
 ## 2026-08-31 — Clean OOP-QCLA and direct-CCZ capability gate
 
 **Status:** Reviewed and approved (`T-20260831-002`, `RV-20260831-002`)

@@ -12,7 +12,7 @@ updated: 2026-08-31
 
 > [!abstract] Current snapshot — 2026-08-31
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** Review the clean OOP-QCLA/direct-CCZ capability gate, then close the exact correction map and finite high-rate backend before scheduling.
+> **Current focus:** Cross-review the exact single-event direct-CCZ channel, then close one finite high-rate backend before scheduling.
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
@@ -32,7 +32,7 @@ updated: 2026-08-31
 | Carry-lookahead adder | ✅ Reviewed | Claude approved the source-pinned Draper QCLA (`RV-20260824-003`); it preserves prefix rounds and ancilla reuse, passes exhaustive widths 2--6, and exposes a width-256 Toffoli-demand trace, but no backend timing has been assigned. |
 | QCLA adaptive PBC | ✅ Reviewed | Claude approved the exact seven-T CCX lowering (`RV-20260825-001`); resident width 14 exposes nine ten-XX batches, while width 256 fails the 60-slot check before scheduling. |
 | QCLA memory/high-rate schedule | ✅ Reviewed | Claude approved the epoch-aware memory overlay (`RV-20260825-002`); it independently replays width 256 within 60 logical slots and exposes 1,576 ten-XX batches, but its one-round transfer/native timing and ideal factory remain `CHECK`. |
-| Direct-CCZ clean OOP-QCLA | ✅ Reviewed | Claude approved the OOP trace and fail-closed capability gate (`RV-20260831-002`); the source trace reproduces 1,229 width-256 Toffolis, but exact corrections and finite high-rate service remain `OPEN`. |
+| Direct-CCZ single-event semantics | 🟡 In review | Figure 14(a)'s exact corrections pass an independent 64-branch channel reconstruction, and width 256 emits 1,229 typed events; `RV-20260831-003` is pending and finite high-rate service remains `OPEN`. |
 | Full Shor estimate | ⚪ Not started | Month 2 begins after the arithmetic and architecture contracts are stable. |
 | Factory validation | ⚪ Not started | Month 3 will turn the T/CCZ demand trace into an explicit factory design. |
 
@@ -56,21 +56,21 @@ updated: 2026-08-31
 > [!danger] Strict-runtime blocker
 > The adaptive trace is now reviewed, resource-constrained scheduled, and memory-I/O aware, but strict J300 durations for state preparation, Z/ZZ/ZX/full extraction, reaction, conditional CZ, and memory transfer are still missing. Strict mode rejects the resulting schedule.
 
-> [!warning] Direct-CCZ capability gate — `OPEN`, reviewed `RV-20260831-002`
-> The clean OOP-QCLA width-256 trace contains **1,229 Toffolis**, **20 source layers**, and a peak **255 Toffolis** in its initial-generate layer. The audited sources do not yet supply the exact Boolean correction map or a finite direct-CCZ high-rate backend, so the typed adapter emits no events and no runtime. This is the intended first-cycle result, not a failed computation.
+> [!warning] Direct-CCZ single-event channel — `NUMERICAL`, in review
+> Under the explicit outcome convention `0 -> +1`, `1 -> -1`, all **64** Figure 14(a) measurement branches match ideal CCX with probability **1/64** and zero operator residual at floating-point precision. Width 256 now emits **1,229** typed injections and preserves **3,955** source dependencies. This is semantic demand only: high-rate service, QEC timing, routing, factory buffering, physical qubits, and runtime remain absent.
 
 ## Next three decisions/actions
 
 1. **Human:** close `T-BOOT-001` by choosing the canonical ECDLP circuit contract in [[docs/CANONICAL_CIRCUIT_DECISION|Canonical Circuit Decision]].
 2. **Backend:** pin J300 preparation, Z/ZZ/ZX/full-extractor, reaction, conditional-CZ, and memory-transfer duration contracts.
-3. **Next cycle:** source-pin the exact direct-CCZ correction map and finite service/port/routing contract before comparing direct CCZ with the seven-T route.
+3. **Next cycle:** after `RV-20260831-003`, source-pin one finite direct-CCZ service/port/routing/decoder/factory contract before comparing direct CCZ with the seven-T route.
 
 ## Quick access to canonical records
 
 - Project truth: [[context/STATUS|Project Status]] · [[context/TASKS|Task Board]] · [[context/AI_HANDOFF|AI Handoff]]
 - Scientific records: [[context/DECISIONS|Decisions]] · [[context/RESULT_LEDGER|Result Ledger]] · [[context/ASSUMPTIONS|Assumptions]]
 - Review state: [[coordination/REVIEW_QUEUE|Review Queue]]
-- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory/high rate]] · [[docs/HIGH_RATE_QCLA_DIRECT_CCZ_RESEARCH_CYCLE|Direct-CCZ research plan]] · [[docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT|Direct-CCZ capability/OOP trace]]
+- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory/high rate]] · [[docs/HIGH_RATE_QCLA_DIRECT_CCZ_RESEARCH_CYCLE|Direct-CCZ research plan]] · [[docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT|Direct-CCZ capability/OOP trace]] · [[docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT|Direct-CCZ single event]]
 - Source corpus: [[literature/papers/INDEX|Paper Index]] · [[literature/READING_QUEUE|Reading Queue]]
 
 > [!info] Status language

@@ -1,0 +1,38 @@
+experiment_id: E-20260831-003
+task_id: T-20260831-003
+title: Exact single-event direct-CCZ correction and OOP-QCLA event trace cycle
+configuration: configs/architectures/direct_ccz_single_event_capability_v1.yaml
+entrypoint: scripts/run_direct_ccz_single_event_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_single_event_cycle.py
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+outputs:
+  - experiments/runs/T-20260831-003/summary.json
+  - experiments/runs/T-20260831-003/direct_ccz_injection_channel_verification.json
+  - experiments/runs/T-20260831-003/direct_ccz_correction_truth_table.json
+  - experiments/runs/T-20260831-003/qcla_oop_width256_direct_ccz_events.json
+  - experiments/runs/T-20260831-003/direct_ccz_single_event_capability.json
+  - experiments/runs/T-20260831-003/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_operator_check
+  branch_order: lexicographic zz_0, zz_1, zz_2, x_0, x_1, x_2
+validation:
+  - all 64 measurement branches compared as 8-by-8 operators with ideal CCX
+  - every branch probability checked against 1/64
+  - exact Figure 14(a) Boolean map and outcome convention checked fail-closed
+  - width-256 source Toffoli count conserved as 1,229 direct-CCZ events
+  - six PPMs and six reaction outcome tokens conserved per event
+  - all architecture-neutral source dependencies preserved in event-trace schema v2
+  - source PDF SHA-256 and implementation binding verification
+exclusions:
+  - executable QEC runtime
+  - physical qubit total
+  - finite high-rate direct-CCZ batch schedule
+  - factory delivery, buffer, and storage trajectory
+  - routing and memory I/O
+  - decoder and failure budget

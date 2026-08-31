@@ -12,7 +12,7 @@ from ecdlp_ftqc.circuits.qcla_oop import OopQclaGate, OopQclaTrace
 from ecdlp_ftqc.metadata import EvidenceStatus
 
 DIRECT_CCZ_EVENT_SCHEMA = "ecdlp-ftqc/direct-ccz-injection-event-trace"
-DIRECT_CCZ_EVENT_SCHEMA_VERSION = 1
+DIRECT_CCZ_EVENT_SCHEMA_VERSION = 2
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,6 +33,30 @@ class DirectCczPpmEvent:
             raise DirectCczCapabilityError("PPM support must align with Pauli terms")
         if len(self.logical_support) != len(set(self.logical_support)):
             raise DirectCczCapabilityError("PPM support must be unique")
+
+
+@dataclass(frozen=True, slots=True)
+class DirectCczSourceDependency:
+    """One preserved architecture-neutral dependency between source gates."""
+
+    predecessor_source_gate_id: str
+    successor_source_gate_id: str
+    logical_values: tuple[str, ...]
+    reason: str
+
+    def __post_init__(self) -> None:
+        if (
+            not self.predecessor_source_gate_id
+            or not self.successor_source_gate_id
+            or self.predecessor_source_gate_id == self.successor_source_gate_id
+        ):
+            raise DirectCczCapabilityError("source dependency endpoints are invalid")
+        if not self.logical_values or len(self.logical_values) != len(
+            set(self.logical_values)
+        ):
+            raise DirectCczCapabilityError("source dependency values must be unique")
+        if self.reason != "wire_order":
+            raise DirectCczCapabilityError("unsupported source dependency reason")
 
 
 @dataclass(frozen=True, slots=True)
@@ -83,6 +107,7 @@ class DirectCczEventTrace:
     capability_id: str
     injection_events: tuple[DirectCczInjectionEvent, ...]
     passthrough_clifford_gate_ids: tuple[str, ...]
+    source_dependencies: tuple[DirectCczSourceDependency, ...]
     complete_native_schedule: bool = False
     schema: str = DIRECT_CCZ_EVENT_SCHEMA
     schema_version: int = DIRECT_CCZ_EVENT_SCHEMA_VERSION
@@ -100,6 +125,22 @@ class DirectCczEventTrace:
             raise DirectCczCapabilityError("direct-CCZ event and source IDs must be unique")
         if len(self.passthrough_clifford_gate_ids) != len(set(self.passthrough_clifford_gate_ids)):
             raise DirectCczCapabilityError("passthrough Clifford IDs must be unique")
+        source_gate_ids = {*source_ids, *self.passthrough_clifford_gate_ids}
+        dependency_pairs: set[tuple[str, str]] = set()
+        for dependency in self.source_dependencies:
+            endpoints = {
+                dependency.predecessor_source_gate_id,
+                dependency.successor_source_gate_id,
+            }
+            if not endpoints <= source_gate_ids:
+                raise DirectCczCapabilityError("source dependency names an unknown gate")
+            pair = (
+                dependency.predecessor_source_gate_id,
+                dependency.successor_source_gate_id,
+            )
+            if pair in dependency_pairs:
+                raise DirectCczCapabilityError("source dependency endpoints must be unique")
+            dependency_pairs.add(pair)
         if self.complete_native_schedule:
             raise DirectCczCapabilityError("this adapter does not create a native schedule")
 
@@ -165,8 +206,14 @@ def lower_oop_toffoli_to_direct_ccz_event(
     corrections = []
     for expression in exact_map:
         mapped = expression
+        for index, logical in enumerate(data):
+            mapped = mapped.replace(f"data_{index}", logical)
         for measurement_id, token in outcome_by_measurement.items():
             mapped = mapped.replace(f"{{{measurement_id}}}", token)
+        if "{" in mapped or "}" in mapped:
+            raise DirectCczCapabilityError(
+                "exact correction map contains an unresolved placeholder"
+            )
         corrections.append(mapped)
     evidence = min(
         (
@@ -223,12 +270,21 @@ def lower_oop_qcla_to_direct_ccz_events(
         for ordinal, gate in enumerate(toffolis)
     )
     return DirectCczEventTrace(
-        trace_id=f"{trace.trace_id}:direct-ccz-events-v1",
+        trace_id=f"{trace.trace_id}:direct-ccz-events-v2",
         source_trace_id=trace.trace_id,
         source_trace_schema_version=trace.schema_version,
         capability_id=capability.capability_id,
         injection_events=events,
         passthrough_clifford_gate_ids=cliffords,
+        source_dependencies=tuple(
+            DirectCczSourceDependency(
+                predecessor_source_gate_id=dependency.predecessor,
+                successor_source_gate_id=dependency.successor,
+                logical_values=dependency.values,
+                reason=dependency.reason,
+            )
+            for dependency in trace.dependencies
+        ),
     )
 
 
@@ -270,6 +326,17 @@ def direct_ccz_event_trace_to_data(trace: DirectCczEventTrace) -> dict[str, Any]
         "schema_version": trace.schema_version,
         "source_trace_id": trace.source_trace_id,
         "source_trace_schema_version": trace.source_trace_schema_version,
+        "source_dependencies": [
+            {
+                "logical_values": list(dependency.logical_values),
+                "predecessor_source_gate_id": (
+                    dependency.predecessor_source_gate_id
+                ),
+                "reason": dependency.reason,
+                "successor_source_gate_id": dependency.successor_source_gate_id,
+            }
+            for dependency in trace.source_dependencies
+        ],
         "trace_id": trace.trace_id,
     }
 

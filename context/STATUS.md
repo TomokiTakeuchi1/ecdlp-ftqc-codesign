@@ -6,6 +6,7 @@ Phase: canonical baseline selection
 
 ## Current state
 
+- `T-20260831-003` has completed its implementation pass and is pending `RV-20260831-003`. The exact Litinski--Nickerson Figure 14(a) correction map is pinned under the explicit `0 -> +1`, `1 -> -1` outcome convention and independently reconstructed as a six-qubit channel: all 64 nonzero branches have probability `1/64`, maximum probability error `2.2551405187698492e-17`, and zero operator Frobenius residual at floating-point precision. The real capability now admits isolated typed events, and width-256 OOP-QCLA emits 1,229 direct-CCZ injections, 7,374 PPM/outcome records, and 3,955 preserved source dependencies. The finite high-rate gate remains false because timing, error, decoder, reaction, port, capacity, routing, delivery, buffer, and storage fields remain `OPEN`. No schedule, runtime, physical-qubit total, or failure result is claimed.
 - `T-20260831-002` completed its first bounded implementation pass. A deterministic clean OOP-QCLA trace reproduces the width-256 1,229-Toffoli, 766-CNOT, 20-source-layer, 240-prefix-scratch workload and passes exhaustive basis replay through width 6. The primary-source capability audit preserves the six-PPM single-CCZ skeleton but leaves the exact correction map and finite high-rate backend `OPEN`; the source-qualified adapter rejects before emitting any event. Implementation commit `deebfc4` is `RV-20260831-002` `APPROVED` (Claude review, 2026-08-31); the reviewer independently re-implemented a from-scratch classical-reversible simulator (not reusing the repository's own replay code) and reproduced every closed-form count at exhaustive width 7 and random-sampled widths through 256, independently confirmed the peak-255-Toffoli/layer-1 attribution, confirmed the capability/adapter classes are genuinely fail-closed against forged admission flags, re-hashed all five pinned source PDFs, and reran the artifact script to an independently confirmed byte-identical result. No runtime or physical-qubit result is claimed.
 - `T-20260831-001` records the human-directed direct-CCZ high-rate QCLA cycle. It starts with clean out-of-place \(n=256\) QCLA to isolate prefix parallelism; native injection/reaction semantics, factory-buffer dynamics, physical scheduling, and only then in-place/modular arithmetic follow. This is a research-plan record, not an executable-resource result. `RV-20260831-001` is `APPROVED` (Claude review, 2026-08-31); the reviewer independently re-derived all six new workload-ladder numbers (974/1,229/240/1,008 for the carry-status network and clean OOP QCLA) from the same closed-form Draper formulas used in prior reviews, confirming the OOP CCX-count formula recorded in `A-0029` algebraically matches an independent derivation exactly, and confirmed the plan makes no runtime, physical-qubit, or high-rate-capability claim beyond what the cited literature supports.
 - Research scope has been defined at a high level.
@@ -62,11 +63,13 @@ lifecycle timing remains `CHECK`. Routing and factory service, buffers, and
 stalls remain separate, so neither the 40 source layers nor the provisional
 scheduled rounds are executable runtime.
 
-The direct-CCZ comparison track now also has a clean OOP-QCLA frontend and a
-machine-readable capability gate. Its first cycle deliberately ends in an
-evidence-backed rejection: the exact correction map and finite high-rate
-backend are absent. The resulting source-layer CCZ-candidate series is ready
-for later scheduling only after those fields are closed.
+The direct-CCZ comparison track now has a clean OOP-QCLA frontend, a
+machine-readable capability gate, an exact source-pinned single-event
+correction map, and an independent all-branch operator reconstruction. The
+width-256 semantic event trace is now available, but the finite high-rate
+backend is still absent. Scheduling remains blocked until its timing, error,
+decoder, reaction, port, capacity, routing, delivery, buffer, and storage
+fields close.
 
 ## Active bottleneck
 

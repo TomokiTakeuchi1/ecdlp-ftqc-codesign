@@ -13,6 +13,17 @@ from ecdlp_ftqc.metadata import EvidenceStatus
 
 DIRECT_CCZ_CAPABILITY_SCHEMA = "ecdlp-ftqc/direct-ccz-high-rate-capability"
 DIRECT_CCZ_CAPABILITY_SCHEMA_VERSION = 1
+DIRECT_CCZ_OUTCOME_BIT_CONVENTION = (
+    "0 denotes +1 eigenvalue; 1 denotes -1 eigenvalue"
+)
+DIRECT_CCZ_FIGURE14_CORRECTION_MAP = (
+    "CZ(data_1,data_2)^{zz_0}",
+    "CZ(data_0,data_2)^{zz_1}",
+    "CZ(data_0,data_1)^{zz_2}",
+    "Z(data_0)^({x_0} XOR ({zz_1} AND {zz_2}))",
+    "Z(data_1)^({x_1} XOR ({zz_0} AND {zz_2}))",
+    "X(data_2)^({x_2} XOR ({zz_0} AND {zz_1}))",
+)
 
 
 class DirectCczCapabilityError(ValueError):
@@ -74,6 +85,9 @@ class DirectCczCorrectionSpec:
 
     family: str
     exact_boolean_map: tuple[str, ...] | None
+    outcome_bit_convention: str | None
+    source_reference: str | None
+    verification_reference: str | None
     evidence_status: EvidenceStatus
 
     def __post_init__(self) -> None:
@@ -225,8 +239,21 @@ class DirectCczCapability:
         }
         if measurement_roles != expected:
             missing.append("injection.measurements.exact_six_ppm_sequence")
-        if self.injection.correction.exact_boolean_map is None:
+        exact_map = self.injection.correction.exact_boolean_map
+        if exact_map is None:
             missing.append("injection.correction.exact_boolean_map")
+        else:
+            if exact_map != DIRECT_CCZ_FIGURE14_CORRECTION_MAP:
+                missing.append("injection.correction.figure14_boolean_map")
+            if (
+                self.injection.correction.outcome_bit_convention
+                != DIRECT_CCZ_OUTCOME_BIT_CONVENTION
+            ):
+                missing.append("injection.correction.outcome_bit_convention")
+            if self.injection.correction.source_reference is None:
+                missing.append("injection.correction.source_reference")
+            if self.injection.correction.verification_reference is None:
+                missing.append("injection.correction.verification_reference")
         if self.injection.correction.evidence_status in {
             EvidenceStatus.OPEN,
             EvidenceStatus.CHECK,
@@ -294,6 +321,9 @@ class DirectCczCapability:
         correction = replace(
             self.injection.correction,
             exact_boolean_map=exact_boolean_map,
+            outcome_bit_convention=DIRECT_CCZ_OUTCOME_BIT_CONVENTION,
+            source_reference="synthetic test fixture",
+            verification_reference="synthetic test fixture",
             evidence_status=evidence_status,
         )
         provisional = replace(
@@ -480,6 +510,18 @@ def load_direct_ccz_capability(path: Path) -> DirectCczCapability:
                     _required(correction, "exact_boolean_map", "$.injection.correction"),
                     "$.injection.correction.exact_boolean_map",
                 ),
+                outcome_bit_convention=_optional_string(
+                    correction.get("outcome_bit_convention"),
+                    "$.injection.correction.outcome_bit_convention",
+                ),
+                source_reference=_optional_string(
+                    correction.get("source_reference"),
+                    "$.injection.correction.source_reference",
+                ),
+                verification_reference=_optional_string(
+                    correction.get("verification_reference"),
+                    "$.injection.correction.verification_reference",
+                ),
                 evidence_status=EvidenceStatus(
                     _string(
                         _required(correction, "evidence_status", "$.injection.correction"),
@@ -658,6 +700,13 @@ def direct_ccz_capability_to_data(capability: DirectCczCapability) -> dict[str, 
                     else None
                 ),
                 "family": capability.injection.correction.family,
+                "outcome_bit_convention": (
+                    capability.injection.correction.outcome_bit_convention
+                ),
+                "source_reference": capability.injection.correction.source_reference,
+                "verification_reference": (
+                    capability.injection.correction.verification_reference
+                ),
             },
             "data_qubits": capability.injection.data_qubits,
             "evidence_status": capability.injection.evidence_status.value,

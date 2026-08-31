@@ -3,6 +3,8 @@
 from ecdlp_ftqc.architectures.direct_ccz import (
     DIRECT_CCZ_CAPABILITY_SCHEMA,
     DIRECT_CCZ_CAPABILITY_SCHEMA_VERSION,
+    DIRECT_CCZ_FIGURE14_CORRECTION_MAP,
+    DIRECT_CCZ_OUTCOME_BIT_CONVENTION,
     DirectCczCapability,
     DirectCczCapabilityError,
     DirectCczCorrectionSpec,
@@ -18,6 +20,8 @@ from ecdlp_ftqc.architectures.direct_ccz import (
 __all__ = [
     "DIRECT_CCZ_CAPABILITY_SCHEMA",
     "DIRECT_CCZ_CAPABILITY_SCHEMA_VERSION",
+    "DIRECT_CCZ_FIGURE14_CORRECTION_MAP",
+    "DIRECT_CCZ_OUTCOME_BIT_CONVENTION",
     "DirectCczCapability",
     "DirectCczCapabilityError",
     "DirectCczCorrectionSpec",

@@ -6,7 +6,8 @@
 - Local PDF: `literature/papers/2211.15465v1.pdf`
 - SHA-256: `BF305E578AEFC986F4E74110EF55155E7C9711401B7D4E18BCB63BE304D2BC45`
 - Reading status: Figures 10, 14--16, and 24 plus the bridge-qubit and
-  Gidney-adder discussion audited for `T-20260824-001`
+  Gidney-adder discussion audited for `T-20260824-001`; Figure 14(a) correction
+  labels re-audited at high resolution for `T-20260831-003`
 
 ## Source-reported claims
 
@@ -30,11 +31,19 @@
   corrections, while those outcomes together with the resource single-qubit
   measurement outcomes determine Pauli corrections. The figure supplies a
   circuit-level semantic reference but not a finite qLDPC high-rate schedule.
+- **LITERATURE:** In Figure 14(a), the three data-resource `ZZ` outcomes
+  `a,b,c` control `CZ(c2,t)`, `CZ(c1,t)`, and `CZ(c1,c2)`. The resource `X`
+  outcomes combine with the displayed `b AND c`, `a AND c`, and `a AND b`
+  labels to control `Z(c1)`, `Z(c2)`, and (after the target Hadamard) `X(t)`.
 
 ## Derived project relevance
 
 - **NUMERICAL:** `T-20260824-001` uses the generic bridge lifecycle as an
   independently replayed carrier-ownership contract.
+- **NUMERICAL:** `T-20260831-003` reconstructs Figure 14(a) directly from
+  six-qubit projectors under the explicit convention `0 -> +1`, `1 -> -1`.
+  All 64 branches have probability `1/64` and match ideal CCX as 8-by-8 branch
+  operators with maximum Frobenius residual `0.0` at floating-point precision.
 - **CHECK:** Active-volume blocks and reaction depth are not J300 syndrome
   rounds or HGP logical cycles. They are not imported as executable durations.
 - **CHECK:** A split XX/ZZ sensitivity schedule is an architecture adapter, not
@@ -47,3 +56,6 @@
   apply to the exact code family selected for an ECDLP-scale implementation?
 - **OPEN:** How should bridge routing range and quickswap constraints be mapped
   to a memory--processor qLDPC architecture without double-counting I/O?
+- **OPEN:** What finite qLDPC gadget realizes these exact six measurements and
+  corrections with admitted timing, ports, routing, decoder throughput, and
+  logical error?

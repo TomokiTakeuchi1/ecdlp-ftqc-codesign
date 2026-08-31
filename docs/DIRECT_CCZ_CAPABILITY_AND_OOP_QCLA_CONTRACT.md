@@ -135,3 +135,12 @@ This cycle succeeds when the OOP trace reproduces its bounded validation suite
 and the incomplete physical capability is rejected with an explicit gap list.
 It does not require the scientific answer to the high-rate admission question
 to be positive.
+
+## Follow-on single-event result
+
+`T-20260831-003` closes only the exact single-event correction semantics. It
+pins Litinski--Nickerson Figure 14(a), declares the measurement-bit convention,
+independently checks all 64 branch operators, and emits a typed width-256 event
+trace. See `docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT.md`. Finite high-rate timing,
+ports, routing, decoder, delivery, buffering, storage, and logical error remain
+`OPEN`, so this follow-on does not create an executable schedule.
