@@ -2,6 +2,7 @@
 
 | Date | Agent | Task | Summary | Commit/review |
 |---|---|---|---|---|
+| 2026-08-31 | codex | T-20260831-003 | Pinned the exact Figure-14 direct-CCZ corrections and outcome convention; independently verified all 64 branches; emitted a dependency-preserving 1,229-event width-256 semantic trace; kept finite high-rate scheduling fail-closed | `75effd5`; `RV-20260831-003` pending |
 | 2026-08-31 | codex | T-20260831-002 | Audited direct-CCZ injection, factory, and high-rate evidence into a fail-closed capability record; generated and exhaustively replayed the clean OOP-QCLA source trace; emitted width-256 CCZ-candidate demand and explicit capability-gap artifacts without assigning runtime or physical resources | `deebfc4`; `RV-20260831-002` pending |
 | 2026-08-31 | codex | T-20260831-001 | Recorded a source-separated direct-CCZ high-rate QCLA research cycle: clean out-of-place QCLA first, then native injection/reaction semantics, factory/buffer dynamics, physical scheduling, in-place cleanup, and modular integration. No scheduler, physical-qubit estimate, or runtime result was created. | working tree based on current `master`; review pending |
 | 2026-08-11 | codex | T-20260811-001 | Compared primary-source ECDLP-256 circuit candidates; recommended pinned Schrottenloher primary and Luo v2 dynamic contrast; documented count scopes, semantic caveats, and non-reproduced test status | no commit; `RV-20260811-001` |

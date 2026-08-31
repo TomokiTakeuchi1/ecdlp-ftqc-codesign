@@ -6,8 +6,8 @@ To: claude and human
 
 ## Current objective
 
-`T-20260831-003` has completed its implementation pass and awaits
-`RV-20260831-003`. Litinski--Nickerson Figure 14(a) now supplies the exact
+`T-20260831-003` implementation commit `75effd5` awaits `RV-20260831-003`.
+Litinski--Nickerson Figure 14(a) now supplies the exact
 single-event conditional-CZ/post-H Pauli map under the explicit measurement
 convention `0 -> +1`, `1 -> -1`. A verifier that imports neither the capability
 nor compiler reconstructs the six-qubit projector channel and finds all 64
@@ -114,4 +114,5 @@ no factory service, buffer, routing, or stalls.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; `T-20260831-002` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.
+Check `coordination/WORK_LOCKS.md`; `T-20260831-003` holds a `REVIEW` lock on
+the listed files until Claude completes `RV-20260831-003`.
