@@ -1,5 +1,16 @@
 """Compilation layers between circuit semantics and QEC-native schedules."""
 
+from ecdlp_ftqc.compiler.direct_ccz import (
+    DIRECT_CCZ_EVENT_SCHEMA,
+    DIRECT_CCZ_EVENT_SCHEMA_VERSION,
+    DirectCczEventTrace,
+    DirectCczInjectionEvent,
+    DirectCczPpmEvent,
+    direct_ccz_event_trace_to_data,
+    dumps_direct_ccz_event_trace,
+    lower_oop_qcla_to_direct_ccz_events,
+    lower_oop_toffoli_to_direct_ccz_event,
+)
 from ecdlp_ftqc.compiler.native_lowering import (
     LOGICAL_TRACE_SCHEMA,
     LOGICAL_TRACE_SCHEMA_VERSION,
@@ -47,6 +58,8 @@ from ecdlp_ftqc.compiler.qcla_pbc import (
 )
 
 __all__ = [
+    "DIRECT_CCZ_EVENT_SCHEMA",
+    "DIRECT_CCZ_EVENT_SCHEMA_VERSION",
     "LOGICAL_TRACE_SCHEMA",
     "LOGICAL_TRACE_SCHEMA_VERSION",
     "PBC_TRACE_SCHEMA",
@@ -58,6 +71,9 @@ __all__ = [
     "CcxChannelVerification",
     "ClassicalLiteral",
     "CompilerAncillaLifetime",
+    "DirectCczEventTrace",
+    "DirectCczInjectionEvent",
+    "DirectCczPpmEvent",
     "FrameUpdate",
     "GadgetChannelVerification",
     "LogicalPrimitive",
@@ -74,9 +90,13 @@ __all__ = [
     "QclaAdaptivePbcLowering",
     "QclaLogicalLowering",
     "QclaPrimitiveProvenance",
+    "direct_ccz_event_trace_to_data",
+    "dumps_direct_ccz_event_trace",
     "dumps_pbc_trace",
     "gadget_verification_to_data",
     "lower_gidney_phase_exact",
+    "lower_oop_qcla_to_direct_ccz_events",
+    "lower_oop_toffoli_to_direct_ccz_event",
     "lower_qcla_phase_exact",
     "lower_qcla_to_adaptive_pbc",
     "lower_to_adaptive_pauli_measurements",

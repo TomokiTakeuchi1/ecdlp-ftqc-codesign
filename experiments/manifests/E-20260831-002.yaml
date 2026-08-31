@@ -1,0 +1,34 @@
+experiment_id: E-20260831-002
+task_id: T-20260831-002
+title: Capability-gated direct-CCZ clean out-of-place QCLA trace cycle
+configuration: configs/architectures/direct_ccz_high_rate_capability_v1.yaml
+entrypoint: scripts/run_direct_ccz_oop_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_oop_cycle.py
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+outputs:
+  - experiments/runs/T-20260831-002/summary.json
+  - experiments/runs/T-20260831-002/direct_ccz_capability_gap.json
+  - experiments/runs/T-20260831-002/qcla_oop_width256_trace.json
+  - experiments/runs/T-20260831-002/qcla_oop_width256_ccz_candidates.json
+  - experiments/runs/T-20260831-002/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic
+  source_order: Draper source layers with reviewed forward-prefix gate order
+validation:
+  - exhaustive computational-basis replay at widths 2 through 6
+  - source formula and depth checks at widths 5, 8, 16, 17, 32, and 256
+  - exact nearest-wire dependency validation and clean prefix-scratch release
+  - source PDF SHA-256 verification
+  - strict rejection of incomplete direct-CCZ event and high-rate capability
+exclusions:
+  - executable QEC runtime
+  - physical qubit total
+  - finite direct-CCZ batch schedule
+  - factory delivery, buffer, and storage trajectory
+  - routing and memory I/O
+  - decoder and failure budget

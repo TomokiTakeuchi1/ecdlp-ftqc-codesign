@@ -22,6 +22,10 @@
 - **LITERATURE:** Table III gives the J300 ten-XX construction as 601 gadget data qubits, 318 new X checks, and 293 new Z checks. The scheduler therefore records 1,212 added physical qubits rather than conflating gadget data with check ancillas.
 - **LITERATURE:** Table IV gives the J300 full extractor as 780 gadget data qubits, 382 new X checks, and 372 new Z checks, or 1,534 added physical qubits under one-ancilla-per-check accounting.
 - **LITERATURE:** Figure 6 injects all 60 logical magic ports using two parallel switches. Table V reports 3,900/7,020/11,100/16,140 physical qubits for repetition distances 5/7/9/11. These are full 60-port injection resources, not a single logical T-preparation cost.
+- **LITERATURE:** Appendix E and Figure 6 explicitly inject logical
+  |T⟩ states from a surface-code stack through a magic-port code using
+  parallel `ZZ` then `XX` switching measurements. This finite construction is
+  not a direct-|CCZ⟩ injection or batched CCZ-consumption contract.
 
 ## Derived project relevance
 

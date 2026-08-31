@@ -4,7 +4,9 @@
 - Source: <https://arxiv.org/abs/2603.28627v1>
 - Version: arXiv:2603.28627v1, submitted 2026-03-30
 - Local PDF: `literature/papers/2603.28627v1.pdf`
-- Reading status: initial full-paper triage; resource tables and circuit mapping not yet independently reconstructed
+- Reading status: initial full-paper triage plus Appendix C pages 17--19,
+  Appendix E page 21, and Appendix F pages 24--25 audited directly for
+  `T-20260831-002`; the full system estimate is not independently reconstructed
 
 ## Source-reported claims
 
@@ -13,6 +15,16 @@
 - **LITERATURE:** The sequential baseline decomposes a Clifford+Toffoli circuit into processor-sized subcircuits and charges memory--processor communication, PPMs, mid-circuit measurements, and CCZ-state use.
 - **LITERATURE:** The time-efficient study replaces linear-depth ripple-carry addition with a logarithmic-depth carry-lookahead proxy, batches up to `P` parallel CCZ states, and assumes parallel logical PPM layers.
 - **LITERATURE:** The paper reports approximately 26,000 physical qubits and 10 days for its fastest ECC-256 case at a 1 ms stabilizer-cycle time. This project has not reproduced that estimate.
+- **LITERATURE:** Appendix E specifies the single-resource-state injection
+  skeleton: a |CCZ⟩ state on logicals `a,b,c` is coupled to data
+  `a',b',c'` by three `ZZ` PPMs, followed by three resource-qubit `X` PPMs
+  and conditional `CZ` corrections. The appendix points to Active Volume for
+  the detailed correction circuit; this project has not yet encoded the exact
+  Boolean outcome-to-CZ/Pauli map.
+- **LITERATURE:** Appendix C's concrete `bb18` example estimates a batch of ten
+  |CCZ⟩ states in 120 processor-code cycles using 2,565 qubits, with
+  approximate per-state error `1e-10`. Delivery, storage, routing, and a finite
+  consumer-port contract are not included in that factory figure.
 
 ## Derived project relevance
 
@@ -24,6 +36,11 @@
 ## Important evidence limits
 
 - **CHECK:** The time-efficient section states that it is an approximate estimate rather than a concrete circuit or instruction-set specification.
+- **CHECK:** Appendix F assumes one layer of parallel `ZZ` injection PPMs and
+  two layers of parallel `ZZ`/`ZX` fixups, summarized as `3 tau_s`, for up to
+  `P` simultaneous CCZ consumptions. The paper explicitly says its goal is not
+  to specify concrete circuits or instruction sets, so these three layers are
+  not admitted as a finite high-rate direct-CCZ backend in this repository.
 - **CHECK:** Its 20--30% processor/factory encoding rates and some parallel-gadget capabilities rely on upcoming work, so the 26,000-qubit case is an architecture target, not yet a fully closed implementation proof.
 - **CHECK:** The abstract describes the 26,000-qubit P-256 runtime as a few days, while the main text and conclusion report 10 days; use the explicit 10-day table/model result until this wording is resolved.
 - **OPEN:** Determine whether automorphism, transversal/fold-transversal gates, or parallel surgery can realize every assumed carry-lookahead layer for canonical LP and mitten codes at the quoted distance and failure budget.

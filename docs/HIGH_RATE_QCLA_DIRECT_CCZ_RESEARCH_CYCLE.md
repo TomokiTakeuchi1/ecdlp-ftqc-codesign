@@ -4,6 +4,13 @@
 - Status: active research plan; no executable high-rate resource estimate is claimed here.
 - Scope: direct \(|CCZ\rangle\) distillation and injection for QCLA. This is separate from the existing seven-\(T\) PBC lowering path.
 
+Implementation update (`T-20260831-002`): the clean OOP source-trace frontend
+and a fail-closed capability/event schema now exist. Primary-source audit fixes
+the single-injection PPM skeleton, but the exact correction map and a finite
+high-rate direct-CCZ backend remain `OPEN`; no direct-CCZ event or schedule is
+admitted by the source-qualified configuration. See
+`docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT.md`.
+
 ## Research question
 
 Can a high-rate-surgery logical architecture execute the parallel structure of a quantum carry-lookahead adder (QCLA) with lower realizable space-time cost than a memory-processor baseline, after exact PPM support, reaction time, resource-state supply, injection ports, routing, and logical failure are included?

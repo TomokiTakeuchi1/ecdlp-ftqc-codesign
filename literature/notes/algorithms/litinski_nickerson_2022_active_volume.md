@@ -5,7 +5,7 @@
 - Version: arXiv:2211.15465v1, submitted 2022-11-28
 - Local PDF: `literature/papers/2211.15465v1.pdf`
 - SHA-256: `BF305E578AEFC986F4E74110EF55155E7C9711401B7D4E18BCB63BE304D2BC45`
-- Reading status: Figures 10, 15, 16, and 24 plus the bridge-qubit and
+- Reading status: Figures 10, 14--16, and 24 plus the bridge-qubit and
   Gidney-adder discussion audited for `T-20260824-001`
 
 ## Source-reported claims
@@ -25,6 +25,11 @@
   active-volume Gidney adder.
 - **LITERATURE:** Figure 24 gives lower active volumes for the first and last
   segments, `15+C_CCZ` and `4`, respectively.
+- **LITERATURE:** Figure 14 consumes one |CCZ⟩ state with three
+  two-body measurements. Their outcomes select three conditional `CZ`
+  corrections, while those outcomes together with the resource single-qubit
+  measurement outcomes determine Pauli corrections. The figure supplies a
+  circuit-level semantic reference but not a finite qLDPC high-rate schedule.
 
 ## Derived project relevance
 

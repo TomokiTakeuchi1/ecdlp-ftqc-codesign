@@ -1,0 +1,110 @@
+schema: ecdlp-ftqc/direct-ccz-high-rate-capability
+schema_version: 1
+capability_id: architecture-direct-ccz-high-rate-evidence-v1
+
+sources:
+  - source_id: Cain et al., arXiv:2603.28627v1
+    local_pdf: literature/papers/2603.28627v1.pdf
+    pdf_sha256: 9E38A056179ED432E34642744DE74521E91B14E45A1A6F860014221F90A39180
+    pages: [18, 19, 21, 24, 25]
+    establishes:
+      - Three resource-data ZZ PPMs followed by three resource X PPMs implement CCZ teleportation with conditional CZ corrections.
+      - A concrete kf=10 factory estimate reports 10 CCZ states in 120 processor-code cycles with approximate per-state error 1e-10.
+      - The time-efficient P-way direct-CCZ construction is explicitly an approximate estimate rather than a concrete circuit or instruction set.
+    evidence_status: LITERATURE
+  - source_id: Bhardwaj et al., arXiv:2607.28795v1
+    local_pdf: literature/papers/2607.28795v1.pdf
+    pdf_sha256: 4AC964874E5C49E8D02A284B6A877F590927E61523FE7F086D7B5F8BFF2B7D2E
+    pages: [48, 49, 54]
+    establishes:
+      - The finite parallel magic-state injection construction injects logical T states, not direct CCZ states.
+      - J300 parallel T-state injection has an explicit distance-preserving construction and physical-space table.
+    evidence_status: LITERATURE
+  - source_id: Zheng et al., arXiv:2607.28605v1
+    local_pdf: literature/papers/2607.28605v1.pdf
+    pdf_sha256: 60489451B1FB88206F1FE6E49373040EEA29CBBB4FE641F2DF06BC9336BBEFB0
+    pages: [20, 21, 22]
+    establishes:
+      - The column-parallel magic-state protocol injects logical T states using XX and ZZ joint measurements with Pauli feedback.
+      - The headline example injects 66 T states in parallel; it does not admit batched direct-CCZ injection.
+    evidence_status: LITERATURE
+  - source_id: Litinski and Nickerson, arXiv:2211.15465v1
+    local_pdf: literature/papers/2211.15465v1.pdf
+    pdf_sha256: BF305E578AEFC986F4E74110EF55155E7C9711401B7D4E18BCB63BE304D2BC45
+    pages: [19, 20]
+    establishes:
+      - CCZ-state consumption uses three two-body measurements whose outcomes control CZ and Pauli corrections.
+      - The active-volume construction is not a finite mitten or canonical-LP high-rate timing contract.
+    evidence_status: LITERATURE
+
+injection:
+  resource_state: CCZ
+  data_qubits: 3
+  resource_qubits: 3
+  resource_consumed: true
+  evidence_status: LITERATURE
+  measurements:
+    - measurement_id: zz_0
+      layer: 1
+      pauli_terms: [Z, Z]
+      operand_roles: [resource_0, data_0]
+      evidence_status: LITERATURE
+    - measurement_id: zz_1
+      layer: 1
+      pauli_terms: [Z, Z]
+      operand_roles: [resource_1, data_1]
+      evidence_status: LITERATURE
+    - measurement_id: zz_2
+      layer: 1
+      pauli_terms: [Z, Z]
+      operand_roles: [resource_2, data_2]
+      evidence_status: LITERATURE
+    - measurement_id: x_0
+      layer: 2
+      pauli_terms: [X]
+      operand_roles: [resource_0]
+      evidence_status: LITERATURE
+    - measurement_id: x_1
+      layer: 2
+      pauli_terms: [X]
+      operand_roles: [resource_1]
+      evidence_status: LITERATURE
+    - measurement_id: x_2
+      layer: 2
+      pauli_terms: [X]
+      operand_roles: [resource_2]
+      evidence_status: LITERATURE
+  correction:
+    family: conditional CZ plus Pauli corrections
+    exact_boolean_map: null
+    evidence_status: OPEN
+
+factory:
+  resource_state: CCZ
+  batch_size: 10
+  production_cycles: 120
+  output_error_probability: 1.0e-10
+  delivery_latency_cycles: null
+  buffer_capacity: null
+  storage_error_per_cycle: null
+  evidence_status: LITERATURE
+  source_note: Cain Appendix C concrete bb18 kf=10 estimate; delivery, buffering, and storage are not specified.
+
+high_rate:
+  admitted_batch_sizes: []
+  admitted_parallel_ppm_layers: null
+  admitted_duration_rounds: null
+  logical_error_per_batch: null
+  decoder_measurements_per_second: null
+  classical_reaction_latency_seconds: null
+  injection_port_capacity: null
+  processor_logical_capacity: null
+  routing_model: null
+  assumed_parallel_ppm_layers: 3
+  assumed_duration_surgery_cycles: 3
+  evidence_status: OPEN
+  source_note: Cain Appendix F assumes P-way direct-CCZ consumption and three parallel PPM/fixup layers for an approximate estimate; no concrete finite instruction set is supplied.
+
+admission:
+  event_lowering_admitted: false
+  high_rate_schedule_admitted: false
