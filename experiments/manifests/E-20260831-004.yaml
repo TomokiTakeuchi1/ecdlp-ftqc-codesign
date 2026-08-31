@@ -1,0 +1,29 @@
+experiment_id: E-20260831-004
+task_id: T-20260831-004
+title: Finite direct-CCZ backend compatibility and admission audit
+configuration: configs/architectures/direct_ccz_finite_backend_audit_v1.yaml
+entrypoint: scripts/run_direct_ccz_backend_audit_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_backend_audit_cycle.py
+assumptions:
+  - A-0027
+  - A-0031
+  - A-0033
+outputs:
+  - experiments/runs/T-20260831-004/direct_ccz_backend_audit.json
+  - experiments/runs/T-20260831-004/summary.json
+  - experiments/runs/T-20260831-004/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_audit
+  field_order: schema-defined required field order
+validation:
+  - every required field appears exactly once
+  - admitted values require admissible evidence and pinned sources
+  - physical values from another compatibility domain are rejected
+  - recorded admission must equal the derived fail-closed decision
+  - every local source PDF is verified by SHA-256
+  - no high-rate schedule artifact is emitted after rejection
+exclusions:
+  - executable direct-CCZ batch schedule
+  - physical qubit or runtime estimate for the rejected backend
+  - substitution of T-state ports for direct-CCZ ports
+  - composition of tricycle, mitten, canonical-LP, or Cain architecture regimes

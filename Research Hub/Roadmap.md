@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - roadmap
-updated: 2026-08-26
+updated: 2026-08-31
 ---
 
 # Research Roadmap
@@ -35,6 +35,7 @@ updated: 2026-08-26
 ### Active
 
 - [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
+- [ ] Construct or source-qualify one finite decoded direct-CCZ factory-to-consumer adapter in a single compatibility domain (blocked pending new evidence; `RV-20260831-004` found the pinned corpus does not close this).
 
 ### Still required for the full Month-1 goal
 

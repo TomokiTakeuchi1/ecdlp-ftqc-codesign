@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - decisions
-updated: 2026-08-26
+updated: 2026-08-31
 ---
 
 # Decisions and Blockers
@@ -29,7 +29,7 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 | 1 | QCLA memory/high-rate timing remains provisional | Width 256 now fits an independently replayed 60-slot fixed order and exposes 1,576 ten-XX batches, but transfer/native/clean-lifecycle times remain `CHECK` and the order is not optimal. | Cross-review the ownership/capacity result, then pin timing/routing contracts and compare placement orders. |
 | 1 | Memory and Bell-bridge schedules are separate | Memory I/O and carry teleportation now have distinct replayable contracts, but their shared occupancy, routing, and timing have not been jointly scheduled. | Add an explicit architecture adapter only after finite bridge timing and routing evidence are pinned. |
 | 1 | Parallel-surgery legality is narrow | Exact-ten disjoint-XX readiness, scratch, carrier, and operation-zone constraints are implemented, but only this source-supported family is enabled. | Audit other source-supported families before expanding the native high-rate gate set. |
-| 1 | Direct-CCZ high-rate service is not finite | The isolated Figure-14 event channel is now explicit, but no one backend closes batch timing/error, decoder/reaction throughput, ports, processor capacity, routing, factory delivery, buffering, and storage together. | Cross-review the single event, then pin one finite compatible backend and keep demand, service, backlog, buffer, and stalls as time series. |
+| 1 | Direct-CCZ high-rate service is not finite | The reviewed 17-field audit (`RV-20260831-004`) finds 13 missing fields and rejects three `bb18` factory values as incompatible with the selected Cain `P=20` backend. The isolated Figure-14 event remains portable only. | Construct or source-qualify one finite decoded factory-to-consumer adapter in a single compatibility domain. |
 
 ## Open research questions
 

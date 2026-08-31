@@ -6,6 +6,28 @@ To: codex and human
 
 ## Current objective
 
+`T-20260831-004` is `RV-20260831-004` `APPROVED` (Claude review, 2026-08-31).
+The fail-closed audit covers 17 required direct-CCZ fields and screens seven
+pinned primary sources without composing incompatible code families. The
+selected Cain ECC-256 `P=20` time-efficient candidate is rejected: 13 finite
+service fields remain absent, while the only qualified factory batch size,
+production time, and output-error values belong to the separate `bb18`
+space/balanced domain. The portable Figure 14(a) event remains admitted. No
+schedule artifact was emitted. The reviewer independently re-hashed all seven
+source PDFs, confirmed the `_PORTABLE_FIELD_IDS` exemption is a hardcoded
+Python constant rather than a YAML-editable field, ran every boundary test
+(forged admission, omitted field, coherent synthetic admission, mixed-domain
+rejection, real-candidate rejection), and -- most importantly -- pulled the
+raw Cain PDF text at pages 19 and 24 and found the source itself states the
+10-CCZ/120-cycle/`1e-10` figures apply "in our space-efficient or balanced
+architecture" (a different regime from the selected `P=20` time-efficient
+candidate) and that the time-efficient appendix explicitly disclaims
+specifying "concrete circuits or instruction sets." See
+`docs/DIRECT_CCZ_FINITE_BACKEND_AUDIT.md`,
+`configs/architectures/direct_ccz_finite_backend_audit_v1.yaml`,
+`experiments/runs/T-20260831-004/summary.json`, and
+`coordination/reviews/T-20260831-004.md` for the complete finding list.
+
 `T-20260831-003` implementation commit `75effd5` is `RV-20260831-003`
 `APPROVED` (Claude review, 2026-08-31). Litinski--Nickerson Figure 14(a) now
 supplies the exact single-event conditional-CZ/post-H Pauli map under the
@@ -90,7 +112,10 @@ no factory service, buffer, routing, or stalls.
 
 ## Next concrete action
 
-1. Pin one finite high-rate backend covering reaction, decoder, ports, capacity, routing, delivery, buffer, storage, and logical error before constructing conservative or frame-tracked schedules.
+1. Construct or source-qualify one finite decoded factory-to-consumer
+   direct-CCZ adapter (batch timing/error, decoder/reaction, ports/capacity/
+   routing, delivery/buffer/storage, all in one compatibility domain) before
+   any schedule is attempted.
 2. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
@@ -99,6 +124,14 @@ no factory service, buffer, routing, or stalls.
 
 ## Known risks
 
+- `R-20260831-006` is an `OPEN` negative admission result. Its field counts are
+  deterministic, but they do not prove that no finite direct-CCZ backend can
+  exist; they prove only that the pinned corpus does not close the selected
+  candidate under the recorded compatibility rule.
+- Tricycle finite CCZ generation strengthens the factory side but leaves
+  selective initialization and target-code teleportation unresolved; the
+  reported low memory error does not include the CCZ circuit's contribution to
+  final magic-state fidelity.
 - The clean QCLA source-ancilla allocation/release boundaries are validated
   from source reuse epochs, but their physical preparation/reset/routing time
   remains `CHECK` and adds no separate duration in this cycle.
@@ -122,4 +155,4 @@ no factory service, buffer, routing, or stalls.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; `T-20260831-003` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.
+Check `coordination/WORK_LOCKS.md`; `T-20260831-004` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.

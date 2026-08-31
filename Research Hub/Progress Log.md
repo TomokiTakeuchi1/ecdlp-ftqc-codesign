@@ -13,6 +13,43 @@ updated: 2026-08-31
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-08-31 — Finite direct-CCZ backend compatibility audit
+
+**Status:** Reviewed and approved (`T-20260831-004`, `RV-20260831-004`)
+
+What changed:
+
+- Audited seven pinned primary PDFs, including finite tricycle CCZ generation,
+  batched high-rate qLDPC operations, finite T ports, and in-situ Y injection.
+- Added a 17-field gate that keeps source-reported values, admitted values,
+  evidence labels, and architecture compatibility domains separate.
+- Added boundary tests for forged admission, missing fields, a complete
+  coherent backend, and a complete but mixed-domain backend.
+
+What we learned:
+
+- The selected Cain ECC-256 `P=20` candidate has 13 missing finite fields.
+- Cain's available batch-10, 120-cycle, approximately-`1e-10` factory values
+  are qualified but belong to the incompatible `bb18` space/balanced regime.
+- The exact Figure 14(a) event is portable, but no finite decoded
+  factory-to-consumer adapter closes the physical backend.
+
+> [!warning] Interpretation
+> This is an `OPEN` negative admission result, not proof that a finite
+> direct-CCZ backend is impossible. It says that the pinned corpus does not
+> close this candidate without cross-architecture substitution. No schedule,
+> runtime, physical-qubit total, or failure estimate was emitted.
+
+> [!success] Review note
+> Claude's review pulled the raw Cain PDF text at the pages reporting the
+> `bb18` factory figures and at the time-efficient appendix, and found the
+> source itself distinguishes the two architecture regimes in its own prose
+> -- directly confirming the audit's compatibility-domain claim rather than
+> merely re-checking the implementer's own labeling. See
+> `coordination/reviews/T-20260831-004.md`.
+
+Canonical record: [[docs/DIRECT_CCZ_FINITE_BACKEND_AUDIT|Finite backend audit]] · [[context/RESULT_LEDGER#R-20260831-006|Result R-20260831-006]]
+
 ## 2026-08-31 — Exact single-event direct-CCZ channel
 
 **Status:** Reviewed and approved (`T-20260831-003`, `RV-20260831-003`)

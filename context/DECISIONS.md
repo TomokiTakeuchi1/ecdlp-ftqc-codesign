@@ -127,3 +127,11 @@
 - Decision: Admit one typed direct-CCZ injection event only when the capability uses the canonical Litinski--Nickerson Figure 14(a) outcome-to-CZ/Pauli map, the explicit convention `0 -> +1` and `1 -> -1`, and an independent all-64-branch operator verification. Preserve source-gate dependencies in event-trace schema v2. Continue to reject finite high-rate scheduling unless the separate timing, error, decoder, reaction, port, capacity, routing, delivery, buffer, and storage contract closes.
 - Rationale: The primary circuit diagram and an implementation-independent six-qubit projector reconstruction now agree on every measurement branch, so the single-event semantic blocker can close without inventing an architecture. A correct isolated channel does not determine whether many events can be routed, decoded, supplied, or reacted to concurrently.
 - Consequences: The clean width-256 OOP-QCLA trace can emit 1,229 source-qualified injection events with exact event-local corrections and 3,955 preserved source dependencies. The resulting artifact is semantic demand only: it has no native duration, finite processor assignment, factory/buffer trajectory, physical-qubit total, failure probability, or runtime.
+
+## D-0017: Require one compatibility domain for finite direct-CCZ admission
+
+- Status: ACCEPTED (`RV-20260831-004` approved 2026-08-31)
+- Date: 2026-08-31
+- Decision: Treat the reviewed Figure 14(a) event semantics as a portable contract, but admit physical high-rate service only when every consumer, controller, processor, factory, and adapter field has source-qualified finite evidence in one compatibility domain. Preserve qualified values from other domains as explicit incompatibilities rather than substituting them.
+- Rationale: The current corpus contains useful but noncomposable pieces: a finite `bb18` CCZ factory estimate, approximate Cain `P=20` consumption, finite mitten/canonical-LP T ports, finite in-situ Y injection, tricycle CCZ generation, and batched high-rate qLDPC operations. Combining their best values would create an architecture that no source constructs or validates.
+- Consequences: `E-20260831-004` rejects the selected candidate with 13 missing fields and three incompatible finite factory fields, emits no schedule, and identifies a finite decoded factory-to-consumer adapter as the next evidence-producing step.

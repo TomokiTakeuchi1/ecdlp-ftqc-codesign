@@ -1,0 +1,283 @@
+schema: ecdlp-ftqc/direct-ccz-backend-audit
+schema_version: 1
+audit_id: finite-direct-ccz-backend-audit-v1
+task_id: T-20260831-004
+recorded_backend_admitted: false
+
+required_fields:
+  - consumer.event_semantics
+  - consumer.batch_size
+  - consumer.parallel_ppm_layers
+  - consumer.duration_rounds
+  - consumer.logical_error_per_batch
+  - controller.decoder_throughput
+  - controller.reaction_latency
+  - processor.injection_port_capacity
+  - processor.logical_capacity
+  - processor.routing_model
+  - factory.batch_size
+  - factory.production_cycles
+  - factory.output_error_probability
+  - factory.delivery_latency
+  - factory.buffer_capacity
+  - factory.storage_error_per_cycle
+  - compatibility.factory_to_consumer_adapter
+
+sources:
+  - source_id: "Litinski and Nickerson, arXiv:2211.15465v1"
+    local_pdf: literature/papers/2211.15465v1.pdf
+    pdf_sha256: BF305E578AEFC986F4E74110EF55155E7C9711401B7D4E18BCB63BE304D2BC45
+    pages: [19, 20]
+    establishes:
+      - Figure 14 supplies the architecture-independent six-measurement direct-CCZ event and exact conditional corrections.
+      - The active-volume construction does not specify a finite qLDPC consumer, decoder, delivery path, or buffer contract.
+    evidence_status: LITERATURE
+  - source_id: "Cain et al., arXiv:2603.28627v1"
+    local_pdf: literature/papers/2603.28627v1.pdf
+    pdf_sha256: 9E38A056179ED432E34642744DE74521E91B14E45A1A6F860014221F90A39180
+    pages: [19, 24, 25]
+    establishes:
+      - A concrete bb18 factory estimate reports ten CCZ states in 120 processor-code cycles with approximate per-state error 1e-10.
+      - The time-efficient ECC-256 P=20 direct-CCZ study assumes three parallel surgery cycles and explicitly remains an approximate estimate without a concrete instruction set.
+    evidence_status: LITERATURE
+  - source_id: "Bhardwaj et al., arXiv:2607.28795v1"
+    local_pdf: literature/papers/2607.28795v1.pdf
+    pdf_sha256: 4AC964874E5C49E8D02A284B6A877F590927E61523FE7F086D7B5F8BFF2B7D2E
+    pages: [48, 49, 54]
+    establishes:
+      - The finite mitten processor includes distance-preserving parallel magic ports, routing estimates, and decoder performance.
+      - Its parallel magic-state interface transports T states, not direct CCZ states.
+    evidence_status: LITERATURE
+  - source_id: "Zheng et al., arXiv:2607.28605v1"
+    local_pdf: literature/papers/2607.28605v1.pdf
+    pdf_sha256: 60489451B1FB88206F1FE6E49373040EEA29CBBB4FE641F2DF06BC9336BBEFB0
+    pages: [20, 21, 22]
+    establishes:
+      - The finite canonical-LP protocol transports column-parallel T states in two logical cycles.
+      - It does not specify the six-measurement direct-CCZ consumer or a CCZ factory adapter.
+    evidence_status: LITERATURE
+  - source_id: "Menon et al., arXiv:2508.10714v2"
+    local_pdf: literature/papers/2508.10714v2.pdf
+    pdf_sha256: D950240664442EFED7103231FB204FEF079F83D258D3CD64D203A290A59E0957
+    pages: [1, 6, 12, 49]
+    establishes:
+      - Finite tricycle blocks support constant-depth logical CCZ action and numerically studied magic-state generation.
+      - Selective initialization and concrete teleportation from tricycle codes to a target computation code remain nontrivial or future work.
+    evidence_status: LITERATURE
+  - source_id: "Xu et al., arXiv:2510.06159v1"
+    local_pdf: literature/papers/2510.06159v1.pdf
+    pdf_sha256: EA1E941E9A7378EF9D558A42CDD89BFD36B737D53645F3BD402FC3CAAE9A3974
+    pages: [1, 7]
+    establishes:
+      - Batched high-rate qLDPC gadgets and global non-Clifford operations have low asymptotic space-time overhead under a fast-classical-computation assumption.
+      - The finite BB construction emphasizes global T gates through parallel cultivation rather than a Figure-14 direct-CCZ consumer.
+    evidence_status: LITERATURE
+  - source_id: "Liu et al., arXiv:2604.05126v1"
+    local_pdf: literature/papers/2604.05126v1.pdf
+    pdf_sha256: 6028126D750D67506B184BBFECBF2B4381CA9899D4857E3761383465357F2D06
+    pages: [1, 12]
+    establishes:
+      - In-situ injection prepares multiple logical magic states directly within one CSS qLDPC block.
+      - The finite simulations instantiate logical Y states and leave a nonlocal, deep Clifford preparation caveat rather than closing direct CCZ consumption.
+    evidence_status: LITERATURE
+
+candidate:
+  candidate_id: cain-ecc256-p20-time-efficient-direct-ccz-v1
+  compatibility_domain: cain-ecc256-p20-time-efficient-v1
+  evidence_status: OPEN
+  conclusion: No finite direct-CCZ backend is admitted; the source-qualified event contract is portable, the finite bb18 factory values come from a different architecture regime, and every selected-backend service field remains unclosed.
+  fields:
+    - field_id: consumer.event_semantics
+      reported_value: Figure 14(a) three resource-data ZZ measurements, three resource X measurements, and exact conditional corrections
+      admitted_value: figure14-six-ppm-direct-ccz-event-v1
+      unit: event_contract
+      evidence_status: LITERATURE
+      source_ids: ["Litinski and Nickerson, arXiv:2211.15465v1"]
+      compatibility_domain: portable-direct-ccz-event-v1
+      note: Approved independently by RV-20260831-003; portable semantics do not supply physical timing or capacity.
+    - field_id: consumer.batch_size
+      reported_value: P=20 concurrent CCZ consumptions in the selected ECC-256 estimate
+      admitted_value: null
+      unit: CCZ_events_per_batch
+      evidence_status: OPEN
+      source_ids: ["Cain et al., arXiv:2603.28627v1"]
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: P is an estimate parameter, not a finite constructed consumer admission.
+    - field_id: consumer.parallel_ppm_layers
+      reported_value: one parallel ZZ layer followed by two parallel ZZ or ZX fixup layers
+      admitted_value: null
+      unit: PPM_layers
+      evidence_status: OPEN
+      source_ids: ["Cain et al., arXiv:2603.28627v1"]
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: The paper labels this construction approximate and does not specify the finite instruction set.
+    - field_id: consumer.duration_rounds
+      reported_value: 3 surgery cycles with d=20 in the estimate
+      admitted_value: null
+      unit: stabilizer_rounds
+      evidence_status: OPEN
+      source_ids: ["Cain et al., arXiv:2603.28627v1"]
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: A surgery-cycle assumption is not a finite decoded duration bound.
+    - field_id: consumer.logical_error_per_batch
+      reported_value: null
+      admitted_value: null
+      unit: probability_per_batch
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: No decoded logical failure probability is reported for the complete direct-CCZ batch.
+    - field_id: controller.decoder_throughput
+      reported_value: null
+      admitted_value: null
+      unit: measurements_per_second
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: The selected backend has no pinned decoder throughput under the batch measurement load.
+    - field_id: controller.reaction_latency
+      reported_value: null
+      admitted_value: null
+      unit: seconds
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: Conditional CZ and Pauli fixup reaction latency is not bounded.
+    - field_id: processor.injection_port_capacity
+      reported_value: null
+      admitted_value: null
+      unit: simultaneous_CCZ_states
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: P is not backed by a finite port construction for direct CCZ states.
+    - field_id: processor.logical_capacity
+      reported_value: P=20 estimate with processor code size left unspecified
+      admitted_value: null
+      unit: logical_qubits
+      evidence_status: OPEN
+      source_ids: ["Cain et al., arXiv:2603.28627v1"]
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: The paper warns that the time-efficient processor block is not concretely specified.
+    - field_id: processor.routing_model
+      reported_value: null
+      admitted_value: null
+      unit: routing_contract
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: No finite placement and routing model connects P factories, operation ancillas, and data supports.
+    - field_id: factory.batch_size
+      reported_value: "10"
+      admitted_value: "10"
+      unit: CCZ_states
+      evidence_status: LITERATURE
+      source_ids: ["Cain et al., arXiv:2603.28627v1"]
+      compatibility_domain: cain-bb18-space-balanced-v1
+      note: This finite value is qualified for the bb18 space-efficient or balanced regime, not the selected P=20 time-efficient backend.
+    - field_id: factory.production_cycles
+      reported_value: "120"
+      admitted_value: "120"
+      unit: processor_code_cycles
+      evidence_status: LITERATURE
+      source_ids: ["Cain et al., arXiv:2603.28627v1"]
+      compatibility_domain: cain-bb18-space-balanced-v1
+      note: The 120-cycle value is not a delivery-inclusive service time for the selected P=20 backend.
+    - field_id: factory.output_error_probability
+      reported_value: approximately 1e-10 per CCZ state
+      admitted_value: approximately 1e-10
+      unit: probability_per_state
+      evidence_status: LITERATURE
+      source_ids: ["Cain et al., arXiv:2603.28627v1"]
+      compatibility_domain: cain-bb18-space-balanced-v1
+      note: The estimate is source-qualified but belongs to the incompatible bb18 factory regime.
+    - field_id: factory.delivery_latency
+      reported_value: null
+      admitted_value: null
+      unit: processor_code_cycles
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: Factory-to-consumer delivery is not timed.
+    - field_id: factory.buffer_capacity
+      reported_value: null
+      admitted_value: null
+      unit: CCZ_states
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: No finite buffer absorbs factory bursts or consumer stalls.
+    - field_id: factory.storage_error_per_cycle
+      reported_value: null
+      admitted_value: null
+      unit: probability_per_state_per_cycle
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: Stored-resource error accumulation is not specified.
+    - field_id: compatibility.factory_to_consumer_adapter
+      reported_value: null
+      admitted_value: null
+      unit: adapter_contract
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: cain-ecc256-p20-time-efficient-v1
+      note: No finite, decoded adapter joins a qualified CCZ factory to the Figure-14 consumer in this backend.
+
+screened_components:
+  - component_id: active-volume-direct-ccz-event
+    role: portable_consumer_semantics
+    compatibility_domain: portable-direct-ccz-event-v1
+    source_ids: ["Litinski and Nickerson, arXiv:2211.15465v1"]
+    contribution: Exact single-event direct-CCZ measurement and correction contract.
+    exclusion: Architecture-independent semantics provide no finite qLDPC service contract.
+    evidence_status: CHECK
+  - component_id: cain-bb18-ccz-factory
+    role: finite_factory
+    compatibility_domain: cain-bb18-space-balanced-v1
+    source_ids: ["Cain et al., arXiv:2603.28627v1"]
+    contribution: Ten CCZ states per 120 processor-code cycles at approximate per-state error 1e-10.
+    exclusion: Different architecture regime and no delivery, buffer, storage, or consumer adapter.
+    evidence_status: CHECK
+  - component_id: cain-ecc256-p20-estimate
+    role: candidate_system
+    compatibility_domain: cain-ecc256-p20-time-efficient-v1
+    source_ids: ["Cain et al., arXiv:2603.28627v1"]
+    contribution: System-level target for P=20 direct-CCZ consumption and three surgery cycles.
+    exclusion: Explicitly approximate; concrete code, instruction set, decoder, ports, and routing remain unspecified.
+    evidence_status: OPEN
+  - component_id: tricycle-ccz-source
+    role: finite_factory_candidate
+    compatibility_domain: tricycle-neutral-atom-v2
+    source_ids: ["Menon et al., arXiv:2508.10714v2"]
+    contribution: Finite-block constant-depth CCZ action and circuit-level magic-state generation evidence.
+    exclusion: Selective initialization and target-code gate teleportation are not closed; no Figure-14 consumer adapter.
+    evidence_status: OPEN
+  - component_id: batched-high-rate-qldpc
+    role: high_rate_operations_candidate
+    compatibility_domain: batched-css-qldpc-v1
+    source_ids: ["Xu et al., arXiv:2510.06159v1"]
+    contribution: Batched qLDPC operations and global non-Clifford constructions with favorable asymptotic overhead.
+    exclusion: Fast classical computation is assumed and the finite construction targets global T, not a finite direct-CCZ consumer.
+    evidence_status: OPEN
+  - component_id: mitten-parallel-t-port
+    role: finite_processor_candidate
+    compatibility_domain: j300-mitten-v1
+    source_ids: ["Bhardwaj et al., arXiv:2607.28795v1"]
+    contribution: Finite parallel T-state port, routing estimates, and decoder evidence.
+    exclusion: The port transports T states and does not establish direct CCZ batch semantics.
+    evidence_status: CHECK
+  - component_id: canonical-lp-column-t-port
+    role: finite_processor_candidate
+    compatibility_domain: canonical-lp-v1
+    source_ids: ["Zheng et al., arXiv:2607.28605v1"]
+    contribution: Finite two-cycle column-parallel T-state injection.
+    exclusion: The injected resource and measurement contract are T-based rather than direct CCZ.
+    evidence_status: CHECK
+  - component_id: in-situ-css-injection
+    role: finite_injection_candidate
+    compatibility_domain: css-insitu-y-v1
+    source_ids: ["Liu et al., arXiv:2604.05126v1"]
+    contribution: Multiple logical magic states injected within one finite qLDPC block.
+    exclusion: Simulations instantiate Y states; a deep nonlocal Clifford remains a caveat and direct CCZ is not closed.
+    evidence_status: OPEN
