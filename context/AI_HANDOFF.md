@@ -1,18 +1,24 @@
 # AI handoff
 
 Last updated: 2026-08-31
-From: claude
-To: human and codex
+From: codex
+To: human and claude
 
 ## Current objective
 
-All fourteen Codex submissions to date are Claude-reviewed and `APPROVED`,
-including `T-20260831-001` (`RV-20260831-001`), the direct-CCZ high-rate QCLA
-research-cycle record. Its first workload is clean out-of-place modulo-\(2^{256}\)
-QCLA, chosen to separate forward prefix parallelism from in-place cleanup. The
-direct-CCZ injection and high-rate capability contract is still `OPEN`; this
-plan does not convert an XX-only batch demonstration or source-layer counts
-into runtime.
+`T-20260831-002` completed the first bounded cycle proposed by the reviewed
+direct-CCZ plan. It generated and replay-validated a clean out-of-place
+modulo-\(2^{256}\) QCLA trace with 1,229 Toffolis, 766 CNOTs, 20 source layers,
+240 clean prefix-scratch values, and 1,008 fully resident source values. These
+are architecture-neutral circuit quantities, not runtime.
+
+The same cycle audited the pinned direct-CCZ and high-rate sources into a
+machine-readable capability record. The sources establish a six-PPM
+single-injection skeleton and a separate ten-CCZ/120-cycle factory observation,
+but not the exact outcome-to-correction map or a finite high-rate direct-CCZ
+backend. The adapter therefore rejects before emitting any source-qualified
+event. Implementation commit `deebfc4` is pending Claude review as
+`RV-20260831-002`.
 
 `T-20260825-002` converted the reviewed width-256 QCLA adaptive-PBC trace from
 a resident-capacity rejection into an independently replayed, fixed-order
@@ -30,6 +36,11 @@ no factory service, buffer, routing, or stalls.
 - `context/STATUS.md`
 - `context/TASKS.md`
 - `coordination/PROTOCOL.md`
+- `coordination/reviews/T-20260831-002.md`
+- `docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT.md`
+- `configs/architectures/direct_ccz_high_rate_capability_v1.yaml`
+- `experiments/runs/T-20260831-002/summary.json`
+- `experiments/runs/T-20260831-002/direct_ccz_capability_gap.json`
 - `coordination/reviews/T-20260825-002.md`
 - `docs/QCLA_MEMORY_IO_CONTRACT.md`
 - `docs/QCLA_PBC_LOWERING_CONTRACT.md`
@@ -42,12 +53,13 @@ no factory service, buffer, routing, or stalls.
 
 ## Next concrete action
 
-1. Pin the native direct-\(|CCZ\rangle\) injection/high-rate capability record: PPM supports, outcomes/corrections, reaction dependencies, ports, factory delivery, decoder, and error terms.
-2. Generate the clean OOP QCLA trace and compile it to typed direct-CCZ events, then compare conservative and outcome/frame-tracked reaction schedules before adding memory constraints.
-3. Add factory service, finite buffer, routing, and backlog to the width-256
+1. Claude independently reviews `T-20260831-002`, especially the reused forward-prefix gates, OOP replay, admission recomputation, and absence of hidden backend claims.
+2. Close the exact single-CCZ outcome-to-CZ/Pauli correction map from a pinned primary circuit. Only then may source Toffolis become typed direct-CCZ events.
+3. Pin a finite high-rate backend covering reaction, decoder, ports, capacity, routing, delivery, buffer, storage, and logical error before constructing conservative or frame-tracked schedules.
+4. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
-4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
+5. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
 ## Known risks
@@ -65,11 +77,13 @@ no factory service, buffer, routing, or stalls.
   multiplication.
 - Direct CCZ injection may dominate the seven-T baseline in space or time.
 - The high-rate source presently supports a finite XX PPM demonstration, not an admitted direct-CCZ batch; this is an explicit input gap, not a scaling assumption.
-- The direct-CCZ research-cycle record's workload-ladder numbers (974/1,229/2,458 source CCXs) are literature formulae, independently re-derived and confirmed algebraically consistent during review, but not yet regenerated as a repository trace artifact; the first implementation step is to generate that trace.
+- The clean OOP trace is validated on computational-basis replay and structural identities; it is not an independent coherent-phase proof of the full arithmetic circuit.
+- The capability record's exact correction map is intentionally null. The synthetic complete map in tests verifies software typing only and must not be promoted to evidence.
+- Cain's three-surgery-cycle parallel model is stored as a `CHECK` assumption, not an admitted finite duration or instruction set.
 - The older Gidney integration suite retains two known checkout-pin failures:
   expected sibling HEAD `8c16388`, observed `75a6e83`. The relevant source
   paths were reviewed as identical; this QCLA task does not use that checkout.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; all tasks' locks are `RELEASED`.
+Check `coordination/WORK_LOCKS.md`; `T-20260831-002` is in `REVIEW` and its claimed implementation files should not be rewritten while Claude reviews them.

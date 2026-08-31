@@ -13,6 +13,37 @@ updated: 2026-08-31
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-08-31 — Clean OOP-QCLA and direct-CCZ capability gate
+
+**Status:** In review (`T-20260831-002`, `RV-20260831-002`)
+
+What changed:
+
+- Generated a deterministic clean out-of-place modulo-`2^n` QCLA trace and
+  replayed every computational-basis input through width 6.
+- Audited the pinned direct-CCZ, high-rate injection, and factory sources into
+  one machine-readable capability record.
+- Added a typed direct-CCZ adapter that refuses to emit events until the exact
+  correction map is source-qualified; high-rate scheduling has a separate,
+  stricter field gate.
+
+What we learned:
+
+- Width 256 has 1,229 Toffolis, 766 CNOTs, 20 source layers, 240 clean prefix
+  scratch values, and 1,008 fully resident source values.
+- A single-injection six-PPM skeleton is literature-supported, but the exact
+  outcome-to-CZ/Pauli map is still `OPEN` in the executable schema.
+- Cain's ten-CCZ/120-cycle factory observation does not close delivery,
+  buffering, routing, decoder, reaction, ports, or storage. The current
+  high-rate schedule is therefore correctly absent.
+
+> [!warning] Interpretation
+> The generated source-layer CCZ-candidate demand is `NUMERICAL`; the native
+> capability conclusion is `OPEN`. No QEC-cycle, wall-clock, physical-qubit,
+> or success-probability result was produced.
+
+Canonical record: [[docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT|Capability/OOP-QCLA contract]] · [[context/RESULT_LEDGER#R-20260831-002|OOP result]] · [[context/RESULT_LEDGER#R-20260831-003|Capability gap]]
+
 ## 2026-08-31 — Direct-CCZ high-rate QCLA research plan
 
 **Status:** Reviewed and approved (`T-20260831-001`, `RV-20260831-001`)

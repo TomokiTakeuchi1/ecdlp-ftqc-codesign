@@ -1,11 +1,12 @@
 # Project status
 
-Last updated: 2026-08-31 (claude)
+Last updated: 2026-08-31 (codex)
 Owner: human
 Phase: canonical baseline selection
 
 ## Current state
 
+- `T-20260831-002` has started and completed its first bounded implementation pass. A deterministic clean OOP-QCLA trace reproduces the width-256 1,229-Toffoli, 766-CNOT, 20-source-layer, 240-prefix-scratch workload and passes exhaustive basis replay through width 6. The primary-source capability audit preserves the six-PPM single-CCZ skeleton but leaves the exact correction map and finite high-rate backend `OPEN`; the source-qualified adapter rejects before emitting any event. Implementation commit `deebfc4` is awaiting `RV-20260831-002` Claude review. No runtime or physical-qubit result is claimed.
 - `T-20260831-001` records the human-directed direct-CCZ high-rate QCLA cycle. It starts with clean out-of-place \(n=256\) QCLA to isolate prefix parallelism; native injection/reaction semantics, factory-buffer dynamics, physical scheduling, and only then in-place/modular arithmetic follow. This is a research-plan record, not an executable-resource result. `RV-20260831-001` is `APPROVED` (Claude review, 2026-08-31); the reviewer independently re-derived all six new workload-ladder numbers (974/1,229/240/1,008 for the carry-status network and clean OOP QCLA) from the same closed-form Draper formulas used in prior reviews, confirming the OOP CCX-count formula recorded in `A-0029` algebraically matches an independent derivation exactly, and confirmed the plan makes no runtime, physical-qubit, or high-rate-capability claim beyond what the cited literature supports.
 - Research scope has been defined at a high level.
 - The first implementation target is a cross-layer trace and scheduler framework.
@@ -60,6 +61,12 @@ logical slots and independently replays ownership, but transfer/native/clean-
 lifecycle timing remains `CHECK`. Routing and factory service, buffers, and
 stalls remain separate, so neither the 40 source layers nor the provisional
 scheduled rounds are executable runtime.
+
+The direct-CCZ comparison track now also has a clean OOP-QCLA frontend and a
+machine-readable capability gate. Its first cycle deliberately ends in an
+evidence-backed rejection: the exact correction map and finite high-rate
+backend are absent. The resulting source-layer CCZ-candidate series is ready
+for later scheduling only after those fields are closed.
 
 ## Active bottleneck
 
