@@ -159,3 +159,11 @@
 - Decision: Classify symbolic PPM pairs with exact ANF symplectic and per-index axis polynomials, allow same-axis logical overlap, and pack causally ready frontiers into unitless candidate levels. Emit a finite schedule only through both the direct-CCZ capability gate and the coherent finite-backend audit; otherwise keep the native schedule null and retain a separate singleton semantic fallback.
 - Rationale: Global commutation can hide cancelling local X/Z conflicts, while support overlap can be harmless when axes agree. Neither algebraic screen establishes a code construction, and values from an incompatible factory or T/XX gadget cannot supply a direct-CCZ backend contract.
 - Consequences: `E-20260901-007` may prove optimality inside its explicit logical candidate model when a construction meets an exact lower bound, but it cannot call that level count surgery depth or runtime. Measured-product rewrites and selective materialization remain unadmitted until they have exact frame/lifetime certificates and independent semantic replay.
+
+## D-0021: Make audit figures deterministic projections of reviewed artifacts
+
+- Status: ACCEPTED (`RV-20260901-007` approved 2026-09-02)
+- Date: 2026-09-01
+- Decision: Generate the width-five PPM atlas only from the serialized Phase-A trace, Phase-B general candidate, and negative finite-admission record. Preserve exact machine IDs and full signatures in the atlas/SVG metadata, label all batch coordinates as non-temporal, retain PPM-free CNOT layers, and independently replay both atlas JSON and static SVG coverage.
+- Rationale: A human-readable figure can hide omitted layers, relabel a logical grouping as physical simultaneity, or drift from the machine trace even when the underlying scheduler is correct. Treating the figure as a checked projection makes those presentation errors detectable without creating another source of scheduling truth.
+- Consequences: `E-20260901-008` may report exact projection/coverage counts and deterministic document hashes, but it adds no native construction, time, space, routing, factory, or failure evidence. Any future atlas change must be made in the generator or reviewed input and regenerated; generated SVGs must not be edited manually.

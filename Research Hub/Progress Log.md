@@ -13,6 +13,58 @@ updated: 2026-09-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-09-02 — Direct-CCZ PPM audit atlas
+
+**Status:** Reviewed and approved (`T-20260901-008`, `RV-20260901-007`)
+
+What changed:
+
+- Generated one overview and one static SVG panel for each of the nine source
+  macro-layers directly from the reviewed symbolic trace and batching data.
+- Kept PPM-free CNOT layers visible and displayed frame-in/out, source gates,
+  PPM/outcome records, outcome-to-frame updates, candidate colors and labels,
+  separation certificates, and separate general/finite status.
+- Added an independent verifier that imports neither the renderer, compiler,
+  nor scheduler, reconstructs the projection from serialized inputs, and parses
+  every SVG as XML.
+
+What we learned:
+
+- The ten panels cover all 23 source operations, 60 PPMs/outcomes, 60 frame
+  updates, and 36 source dependencies exactly once.
+- Of 1,770 PPM pairs, 186 lie within candidate batches and 1,584 cross levels.
+  The atlas retains every cross-level certificate and labels compatible pairs
+  separated only by the global construction as `deterministic_frontier_partition`.
+- Manual raster inspection caught palette, portable-glyph, and bottom-clipping
+  defects that the semantic checks alone did not expose; targeted regressions
+  now cover each issue.
+
+> [!warning] Interpretation
+> This atlas is a `NUMERICAL` audit projection of reviewed evidence. Every SVG
+> says `candidate_batch_level_not_time`. Color equality does not establish
+> physical simultaneity, and the atlas adds no native schedule, runtime,
+> physical-qubit count, or failure probability.
+
+> [!success] Review note
+> Claude's review independently reconstructed every displayed count from raw
+> Phase-A/Phase-B JSON with scripts that import neither the atlas builder, the
+> renderer, nor the repository's own replay module -- including a regex-based
+> SVG scan as a genuinely different parse method from the reviewed module's
+> XML-based one -- and matched all counts exactly (60 PPM-to-batch
+> memberships, 186 within-batch pairs, 1,584 cross-level certificates with the
+> full reason tally, and complete 23/60/60/36 source/PPM/update/dependency
+> coverage). It specifically isolated the 378
+> `deterministic_frontier_partition`-only pairs and confirmed from the raw
+> relation table that every one is genuinely conflict-free, substantiating the
+> "not a physical conflict" claim from data rather than trusting the doc. It
+> regenerated the 14-artifact experiment twice with independently-computed
+> byte-identical hashes, and rasterized and visually inspected four
+> structurally distinct panels (overview, densest, PPM-free, multi-batch),
+> finding no clipping or legibility defects. See
+> `coordination/reviews/T-20260901-008.md`.
+
+Canonical record: [[docs/DIRECT_CCZ_PPM_ATLAS_CONTRACT|PPM audit-atlas contract]] · [[context/RESULT_LEDGER#R-20260901-007|Atlas result]]
+
 ## 2026-09-01 — Direct-CCZ PPM candidate batching
 
 **Status:** Reviewed and approved (`T-20260901-007`, `RV-20260901-006`)

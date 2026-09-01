@@ -1,10 +1,50 @@
 # AI handoff
 
-Last updated: 2026-09-01
-From: claude
+Last updated: 2026-09-02
+From: codex
 To: codex and human
 
 ## Next high-rate-aware QCLA-to-PPM cycle
+
+`T-20260901-008` is `RV-20260901-007` `APPROVED` (Claude review, 2026-09-02).
+The deterministic audit atlas regenerates the reviewed Phase-A trace and
+Phase-B batching from source, then emits one overview and nine static
+macro-layer SVGs. It preserves all 23 source operations, 60 PPMs/outcomes, 60
+conditional frame updates, 36 source dependencies, 12 candidate memberships,
+and 1,584 cross-level pair certificates; layers 2, 8, and 9 remain visible even
+though they contain no PPMs. Every document visibly and mechanically uses
+`candidate_batch_level_not_time` and separates the general logical candidate
+from the rejected finite backend.
+
+The independent atlas replay imports neither renderer, compiler, nor scheduler.
+It rebuilds the displayed projection from serialized inputs, parses all ten
+SVGs as XML, and checks one-time SVG coverage of 23 source IDs, 60 PPM IDs, and
+60 update IDs. Fourteen focused tests, 52 combined Phase-A/Phase-B/atlas/Hub
+tests, Ruff, strict mypy on 49 source files, compileall, and 14-artifact direct
+hash determinism pass. Full pytest reports 276 passes plus the same two known
+unrelated sibling-pin failures. Manual raster QA caught and fixed palette,
+portable-glyph, and frame-out clipping defects before submission. See
+`docs/DIRECT_CCZ_PPM_ATLAS_CONTRACT.md` and
+`coordination/reviews/T-20260901-008.md`.
+
+This is a `NUMERICAL` audit projection. It adds no native construction,
+surgery-round, runtime, physical-qubit, or failure result.
+
+The reviewer independently reconstructed every displayed count from the raw
+Phase-A/Phase-B JSON with scripts that import neither the atlas builder nor
+the renderer nor the repository's own replay module -- including a
+regex-based SVG scan as a genuinely different parse method from the reviewed
+module's XML-based one -- and got exact matches throughout (60 PPM-to-batch
+memberships, 186 within-batch pairs, 1,584 cross-level certificates with the
+full non-exclusive reason tally, and complete 23/60/60/36 source/PPM/
+update/dependency coverage). The reviewer also specifically isolated the 378
+`deterministic_frontier_partition`-only pairs and confirmed from the raw
+relation table (not the doc's prose) that every one is independently marked
+compatible, directly substantiating the "not a physical conflict" claim.
+Artifacts were regenerated twice with independently-computed byte-identical
+hashes, and four structurally distinct panels (overview, densest, PPM-free,
+multi-batch) were rasterized and visually inspected with no clipping or
+legibility defects found.
 
 `T-20260901-007` is `RV-20260901-006` `APPROVED` (Claude review, 2026-09-01).
 The exact Phase-B classifier profiles all 60 presented PPMs and all 1,770
@@ -67,9 +107,10 @@ surgery rounds, and pass-through CNOT time/space/routing/memory costs remain
 `OPEN`. Both compiler and replay reject `complete_native_schedule=true`; no
 `schedule.json` was emitted.
 
-After `RV-20260901-006` closes, `T-20260901-008` renders the reviewed decisions
-from the same machine-readable trace and candidate artifacts. `T-20260901-009`
-then reuses the compiler for IP-QCLA without the existing seven-T route.
+`T-20260901-008` renders the reviewed decisions from the same machine-readable
+trace and candidate artifacts and is `RV-20260901-007` `APPROVED`.
+`T-20260901-009` is now the next ready task and reuses the compiler for IP-QCLA
+without the existing seven-T route.
 `T-20260901-010` is the first point at which width scaling and a compatible
 finite backend may be integrated.
 
@@ -235,17 +276,15 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-1. Implement `T-20260901-008` as a human-auditable atlas generated from the
-   reviewed Phase-A trace and Phase-B candidate artifacts.
-2. Implement `T-20260901-009`, reusing the direct-CCZ PPM compiler for IP-QCLA
-   without the existing seven-T route (both this and item 1 are now `READY`).
-3. Source or compute a `d1=17,d2=27` output/transport/consumer
+1. Implement `T-20260901-009`, reusing the direct-CCZ PPM compiler for
+   IP-QCLA without the existing seven-T route (now `READY`).
+2. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.
-4. Add factory service, finite buffer, routing, and backlog to the width-256
+3. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
-5. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
+4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
 ## Known risks
@@ -306,6 +345,5 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-`T-20260901-007`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
-currently holds an active lock. `T-20260901-008` and `T-20260901-009` are both
-`READY` and may be claimed.
+`T-20260901-008`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
+currently holds an active lock. `T-20260901-009` is `READY` and unassigned.

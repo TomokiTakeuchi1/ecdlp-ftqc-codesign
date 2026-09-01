@@ -1,0 +1,51 @@
+experiment_id: E-20260901-008
+task_id: T-20260901-008
+title: Human-auditable width-5 direct-CCZ PPM atlas
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+  - configs/architectures/direct_ccz_finite_backend_audit_v1.yaml
+entrypoint: scripts/run_direct_ccz_ppm_atlas_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_ppm_atlas_cycle.py
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+  - A-0033
+  - A-0035
+  - A-0036
+outputs:
+  - experiments/runs/T-20260901-008/atlas.json
+  - experiments/runs/T-20260901-008/overview.svg
+  - experiments/runs/T-20260901-008/macro-layer-01.svg
+  - experiments/runs/T-20260901-008/macro-layer-02.svg
+  - experiments/runs/T-20260901-008/macro-layer-03.svg
+  - experiments/runs/T-20260901-008/macro-layer-04.svg
+  - experiments/runs/T-20260901-008/macro-layer-05.svg
+  - experiments/runs/T-20260901-008/macro-layer-06.svg
+  - experiments/runs/T-20260901-008/macro-layer-07.svg
+  - experiments/runs/T-20260901-008/macro-layer-08.svg
+  - experiments/runs/T-20260901-008/macro-layer-09.svg
+  - experiments/runs/T-20260901-008/independent_replay.json
+  - experiments/runs/T-20260901-008/summary.json
+  - experiments/runs/T-20260901-008/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_projection
+  data_model: canonical sorted JSON over reviewed serialized artifacts
+  rendering: standalone XML SVG with fixed geometry, palette, and ordering
+validation:
+  - all 23 source operations appear exactly once across nine macro-layer panels
+  - all 60 PPMs and outcome tokens appear exactly once with exact candidate membership
+  - all 60 correction updates preserve their exact outcome dependencies
+  - all 36 source dependencies and 1584 cross-level pair certificates are replayed
+  - overview and every layer SVG carry the non-temporal candidate-unit notice
+  - every SVG is parsed independently and its source, PPM, and update IDs are checked
+  - general logical candidacy and finite-backend rejection remain visibly separate
+exclusions:
+  - native surgery rounds, duration, or physical simultaneity
+  - finite processor placement, memory, routing, reaction, or decoder service
+  - CCZ factory delivery, buffering, storage, or stall trajectories
+  - physical qubit count or logical failure probability
+  - any new scheduling or measured-product transformation

@@ -15,6 +15,12 @@ from .direct_ccz_injection import (
     direct_ccz_injection_verification_to_data,
     verify_direct_ccz_injection_channel,
 )
+from .direct_ccz_ppm_atlas_replay import (
+    DirectCczPpmAtlasReplayError,
+    DirectCczPpmAtlasReplaySummary,
+    direct_ccz_ppm_atlas_replay_to_data,
+    replay_direct_ccz_ppm_atlas,
+)
 from .direct_ccz_ppm_batching_replay import (
     DirectCczPpmBatchingReplayError,
     DirectCczPpmBatchingReplaySummary,
@@ -35,6 +41,8 @@ __all__ = [
     "AutoCczChannelVerification",
     "DirectCczBranchCorrection",
     "DirectCczInjectionChannelVerification",
+    "DirectCczPpmAtlasReplayError",
+    "DirectCczPpmAtlasReplaySummary",
     "DirectCczPpmBatchingReplayError",
     "DirectCczPpmBatchingReplaySummary",
     "DirectCczPpmReplayError",
@@ -42,7 +50,9 @@ __all__ = [
     "autoccz_channel_verification_to_data",
     "direct_ccz_branch_correction",
     "direct_ccz_injection_verification_to_data",
+    "direct_ccz_ppm_atlas_replay_to_data",
     "direct_ccz_ppm_batching_replay_to_data",
+    "replay_direct_ccz_ppm_atlas",
     "replay_direct_ccz_ppm_batching",
     "replay_symbolic_direct_ccz_ppm_trace",
     "symbolic_direct_ccz_ppm_replay_to_data",
