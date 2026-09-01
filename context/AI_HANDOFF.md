@@ -6,14 +6,35 @@ To: codex and human
 
 ## Next high-rate-aware QCLA-to-PPM cycle
 
-`T-20260901-005` is `RV-20260901-004` `APPROVED` (Claude review, 2026-09-01;
-see `coordination/reviews/T-20260901-005.md`). It records the
-dependency-ordered work requested by the human.
-Begin with `T-20260901-006`: lower the reviewed OOP-QCLA `n=5` source directly
-through the exact `|CCZ>` injection event into a symbolic PPM/frame trace.
-Then `T-20260901-007` must optimize batches while keeping three outputs
-separate: general high-rate candidates, finite-instance-admitted operations,
-and low-rate fallback. `T-20260901-008` renders those decisions from the same
+`T-20260901-006` is `RV-20260901-005` `APPROVED` (Claude review, 2026-09-01).
+The reviewed OOP-QCLA `n=5` source now lowers directly, without seven-T
+decomposition, through the exact `|CCZ>` injection event into a canonical
+symbolic PPM/frame trace. The 23 source operations produce ten injections, 60
+PPMs, 60 conditional frame updates, and thirteen implementation-neutral CNOTs
+while preserving 36 source dependencies, sixteen source logical lifetimes, ten
+CCZ resource lifetimes, and zero compiler ancillas. The independent serialized
+replay checks 640 local correction rows, 23 frame transitions, 3,840 presented
+observables on 64 deterministic global probes, all 1,024 basis inputs, and the
+all-64-branch local injection channel with zero operator residual. The
+reviewer independently verified every primitive Clifford-conjugation rule
+(H/X/Z/CNOT/CZ) against explicit unitary matrices, recognized the CNOT phase
+formula as the textbook Aaronson-Gottesman stabilizer sign-update rule, and
+performed an independent end-to-end reconstruction of a nontrivial later
+PPM's presented observable -- catching and fixing a bug in the reviewer's own
+first attempt (a missed passthrough-CNOT frame-reconjugation replay step)
+before confirming an exact match with the compiler's stored output. See
+`docs/DIRECT_CCZ_PPM_TRACE_CONTRACT.md` and
+`coordination/reviews/T-20260901-006.md` for the complete finding list.
+
+This is a `NUMERICAL` semantic trace, not a native schedule or formal proof.
+The global probes are not exhaustive `2^60` enumeration, source layers are not
+surgery rounds, and pass-through CNOT time/space/routing/memory costs remain
+`OPEN`. Both compiler and replay reject `complete_native_schedule=true`; no
+`schedule.json` was emitted.
+
+`T-20260901-007` is now `READY` and must optimize batches while keeping three
+outputs separate: general high-rate candidates, finite-instance-admitted
+operations, and low-rate fallback. `T-20260901-008` renders those decisions from the same
 machine-readable trace. `T-20260901-009` reuses the compiler for IP-QCLA
 without the existing seven-T route. `T-20260901-010` is the first point at
 which width scaling and a compatible finite backend may be integrated.
@@ -180,9 +201,9 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-1. Implement `T-20260901-006`: lower the reviewed OOP-QCLA `n=5` source
-   directly through the exact `|CCZ>` injection event into a symbolic
-   PPM/frame trace, per `docs/HIGH_RATE_QCLA_PPM_OPTIMIZATION_CYCLE.md`.
+1. Implement `T-20260901-007`: classify and optimize the width-5 trace
+   while reporting general high-rate candidates, finite-instance admission,
+   and low-rate fallback separately.
 2. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.
@@ -194,6 +215,12 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Known risks
 
+- `R-20260901-003` preserves exact ANF conditions, but its 64 global outcome
+  probes are a regression set rather than exhaustive `2^60` branch coverage.
+  The local injection itself remains all-64-branch checked.
+- Assumption `A-0035` propagates source CNOTs semantically as materialized
+  Clifford frames and assigns no finite native cost. Phase B must not turn
+  these frame records into zero-time physical operations.
 - `R-20260901-001` is an abstract logical-channel reconstruction whose
   delayed-choice CZ cells are accepted from the paper; it does not simulate
   surface-code faults or independently validate the 3D layout.
@@ -233,4 +260,4 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; `T-20260901-001` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.
+Check `coordination/WORK_LOCKS.md`; `T-20260901-006` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock; `T-20260901-007` is `READY` to be claimed.

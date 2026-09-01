@@ -143,3 +143,11 @@
 - Decision: Admit the Gidney--Fowler surface-code path from one CCZ-factory output through its three delayed-choice-CZ fixup box to one Toffoli consumer as a source-native adapter. Keep source-stated physical timing as `CHECK`, and admit complete service only when the same `d1=17,d2=27` domain also supplies consumer/error, decoder, processor capacity, delivery, output buffer/storage, and integrated failure-budget evidence.
 - Rationale: The primary source and official layouts close the previously absent factory-to-consumer resource-type and local-routing link without cross-architecture substitution. They do not close burst service or failure, and the official calculator's finite output-error value belongs to a different `d1=15,d2=31` factory example.
 - Consequences: `E-20260901-001` admits the adapter and rejects complete service with nine missing and one incompatible field. No width-256 QCLA schedule, runtime, machine-size total, or failure result may be emitted from this configuration.
+
+## D-0019: Preserve direct-CCZ outcomes in a canonical symbolic Clifford frame
+
+- Status: ACCEPTED (`RV-20260901-005` approved 2026-09-01)
+- Date: 2026-09-01
+- Decision: Lower each OOP-QCLA CCX directly to the admitted six-PPM `|CCZ>` event, encode every correction condition in canonical algebraic normal form, and retain the resulting ordered conditional-Clifford frame across source gates and macro-layer boundaries. Keep source CNOTs explicit and implementation-neutral, and reject any Phase-A claim of a native schedule.
+- Rationale: Enumerating the global measurement tree grows as `2^(6N)`, while dropping the outcomes would erase the reaction and presented-observable structure that a high-rate optimizer must respect. Canonical symbolic propagation preserves those dependencies without choosing a code or physical schedule.
+- Consequences: `E-20260901-006` produces an independently replayable width-5 PPM/frame trace and no `schedule.json`. Phase B may classify candidate batches from this trace, but finite timing, routing, memory, reaction, decoder, factory, space, and failure claims remain unavailable until a compatible backend closes them.

@@ -15,6 +15,12 @@ from .direct_ccz_injection import (
     direct_ccz_injection_verification_to_data,
     verify_direct_ccz_injection_channel,
 )
+from .direct_ccz_ppm_replay import (
+    DirectCczPpmReplayError,
+    SymbolicDirectCczPpmReplaySummary,
+    replay_symbolic_direct_ccz_ppm_trace,
+    symbolic_direct_ccz_ppm_replay_to_data,
+)
 
 __all__ = [
     "AUTOCCZ_DELAYED_CHOICE_CZ_COUNT",
@@ -23,9 +29,13 @@ __all__ = [
     "AutoCczChannelVerification",
     "DirectCczBranchCorrection",
     "DirectCczInjectionChannelVerification",
+    "DirectCczPpmReplayError",
+    "SymbolicDirectCczPpmReplaySummary",
     "autoccz_channel_verification_to_data",
     "direct_ccz_branch_correction",
     "direct_ccz_injection_verification_to_data",
+    "replay_symbolic_direct_ccz_ppm_trace",
+    "symbolic_direct_ccz_ppm_replay_to_data",
     "verify_autoccz_consumption_channel",
     "verify_direct_ccz_injection_channel",
 ]

@@ -13,6 +13,45 @@ updated: 2026-09-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-09-01 — Symbolic direct-CCZ PPM/frame trace
+
+**Status:** Reviewed and approved (`T-20260901-006`, `RV-20260901-005`)
+
+What changed:
+
+- Lowered the reviewed width-5 clean OOP-QCLA directly through the exact
+  six-PPM direct-CCZ event, without the seven-T decomposition.
+- Kept measurement outcomes as exact Boolean expressions in a canonical
+  conditional-Clifford frame and recorded the observable presented to every
+  later PPM.
+- Preserved operation/source dependencies and logical/resource lifetimes, then
+  added a separate serialized replay that rebuilds them from scratch.
+
+What we learned:
+
+- The 23 source gates produce ten injections, 60 PPMs, 60 conditional frame
+  updates, thirteen pass-through CNOTs, and zero compiler ancillas.
+- Independent replay checks 640 local correction rows, 23 frame transitions,
+  3,840 presented-observable cases, all 1,024 basis inputs, and the 64-branch
+  local injection channel.
+- Exact symbolic outcomes avoid enumerating the global `2^60` tree; the 64
+  global probes are regression coverage, not exhaustive verification.
+
+> [!warning] Interpretation
+> This is a semantic compiler trace, not a physical schedule. The nine source
+> layers are not surgery rounds, pass-through CNOT costs remain `OPEN`, and no
+> high-rate batch, runtime, physical-qubit total, or failure result was emitted.
+
+> [!success] Review note
+> Claude's review independently verified every primitive Clifford-conjugation
+> rule against explicit unitary matrices and reconstructed a nontrivial later
+> PPM's presented observable end to end -- catching a bug in its own first
+> reconstruction attempt (a missed passthrough-CNOT frame-reconjugation replay
+> step) before confirming an exact match with the compiler's stored output.
+> See `coordination/reviews/T-20260901-006.md`.
+
+Canonical record: [[docs/DIRECT_CCZ_PPM_TRACE_CONTRACT|Symbolic PPM/frame contract]] · [[context/RESULT_LEDGER#R-20260901-003|Trace result]] · [[context/RESULT_LEDGER#R-20260901-004|Schedule gap]]
+
 ## 2026-09-01 — AutoCCZ surface-code adapter qualification
 
 **Status:** Reviewed and approved (`T-20260901-001`, `RV-20260901-001`)

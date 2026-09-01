@@ -1,0 +1,38 @@
+experiment_id: E-20260901-006
+task_id: T-20260901-006
+title: Symbolic direct-CCZ PPM and Clifford-frame trace for OOP-QCLA n=5
+configuration: configs/architectures/direct_ccz_single_event_capability_v1.yaml
+entrypoint: scripts/run_direct_ccz_ppm_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_ppm_cycle.py
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+  - A-0035
+outputs:
+  - experiments/runs/T-20260901-006/qcla_oop_n5_symbolic_direct_ccz_ppm.json
+  - experiments/runs/T-20260901-006/symbolic_direct_ccz_ppm_replay.json
+  - experiments/runs/T-20260901-006/summary.json
+  - experiments/runs/T-20260901-006/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_symbolic_replay
+  boolean_normal_form: canonical algebraic normal form over GF(2)
+  frame_order: source topological order with canonical conditional-Clifford terms
+validation:
+  - all 23 source operations and 36 source dependencies replay exactly
+  - all 10 direct-CCZ injections conserve six PPMs and six correction updates
+  - all 640 local correction truth-table rows replay independently
+  - 64 deterministic global outcome probes check all 60 presented observables
+  - all 1,024 width-5 computational-basis input pairs replay exactly
+  - all 64 local injection branches match ideal CCX with zero operator residual
+  - zero compiler ancillas and explicit logical/resource lifetimes are conserved
+exclusions:
+  - executable QEC runtime or native surgery schedule
+  - finite CNOT timing, space, routing, or memory I/O
+  - high-rate PPM batch admission or optimization
+  - physical qubit total
+  - factory delivery, buffer, and storage trajectory
+  - decoder throughput, reaction time, and failure budget

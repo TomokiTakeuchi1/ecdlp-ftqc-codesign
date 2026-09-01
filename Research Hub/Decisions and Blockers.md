@@ -24,6 +24,7 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
+| 0 | Symbolic direct-CCZ trace is reviewed but Phase B is unimplemented | The reviewed width-5 PPM/frame IR (`RV-20260901-005`) preserves outcomes and dependencies, but batch classification/optimization has not started. | Implement `T-20260901-007`, keeping general candidacy, finite-instance admission, and low-rate fallback separate. |
 | 0 | Several PBC native durations remain unresolved | Adaptive resource scheduling now exists, but state preparation, Z/ZZ/ZX/full-extractor time, reaction, and conditional-CZ costs remain `CHECK`. | Pin or validate those J300 contracts; strict mode already rejects placeholders. |
 | 1 | Factory service is absent from QCLA demand | The in-review width-256 overlay conserves 17,206 time-stamped T demands, but assumes ideal no-stall supply; average rate cannot establish burst feasibility. | Add explicit factory output, buffer, backlog, routing, and stall events to the emitted demand timeline. |
 | 1 | QCLA memory/high-rate timing remains provisional | Width 256 now fits an independently replayed 60-slot fixed order and exposes 1,576 ten-XX batches, but transfer/native/clean-lifecycle times remain `CHECK` and the order is not optimal. | Cross-review the ownership/capacity result, then pin timing/routing contracts and compare placement orders. |
