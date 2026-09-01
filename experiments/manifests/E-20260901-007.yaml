@@ -1,0 +1,45 @@
+experiment_id: E-20260901-007
+task_id: T-20260901-007
+title: Exact width-5 direct-CCZ PPM candidate batching and finite admission gate
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+  - configs/architectures/direct_ccz_finite_backend_audit_v1.yaml
+entrypoint: scripts/run_direct_ccz_ppm_batching_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_ppm_batching_cycle.py
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+  - A-0033
+  - A-0035
+  - A-0036
+outputs:
+  - experiments/runs/T-20260901-007/general_candidate_batches.json
+  - experiments/runs/T-20260901-007/finite_instance_admission.json
+  - experiments/runs/T-20260901-007/low_rate_fallback_order.json
+  - experiments/runs/T-20260901-007/strategy_pareto_frontier.json
+  - experiments/runs/T-20260901-007/independent_replay.json
+  - experiments/runs/T-20260901-007/summary.json
+  - experiments/runs/T-20260901-007/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_exact_search
+  relation_algebra: exact canonical Boolean ANF symplectic products
+  batching: lexicographically deterministic exact maximum compatible ready subsets
+validation:
+  - all 60 presented PPM profiles are independently reconstructed
+  - all 1770 PPM pairs receive exact commutation and logical-index axis certificates
+  - causal and reaction closures are independently reconstructed from semantic operations
+  - the 12-level candidate construction meets a 12-level exact lower bound
+  - compatible same-axis logical overlap remains batchable
+  - finite schedule stays null with every missing and incompatible field preserved
+  - all 60 PPMs appear once in the canonical low-rate semantic order
+exclusions:
+  - native surgery rounds or operation duration
+  - finite processor placement, memory traffic, routing, or logical capacity admission
+  - decoder throughput or classical reaction time
+  - CCZ delivery, buffering, storage trajectory, or stalls
+  - physical qubit total or logical failure probability
+  - unverified measured-product rewrites or Clifford-frame materialization

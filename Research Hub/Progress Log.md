@@ -13,6 +13,51 @@ updated: 2026-09-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-09-01 — Direct-CCZ PPM candidate batching
+
+**Status:** Reviewed and approved (`T-20260901-007`, `RV-20260901-006`)
+
+What changed:
+
+- Classified all 1,770 pairs of the 60 symbolic PPMs using exact Boolean
+  commutation and per-logical-index axis formulas.
+- Built two deterministic 12-level candidate schedules, while separately
+  emitting a rejected finite-backend verdict and a 60-operation low-rate
+  semantic order.
+- Added an independent serialized replay that reconstructs every relation,
+  causal/reaction path, liveness count, lower bound, and output class.
+
+What we learned:
+
+- No width-5 PPM has branch-possible Y content; 30 pairs have a nonzero
+  commutator and 30 have a local axis conflict.
+- Six compatible pairs share logical support, confirming that support overlap
+  alone must not force serialization.
+- The optimized candidate uses batches of 12, 12, 6, 6, then eight groups of
+  3. Its 12 levels meet both a causal and a conflict-clique lower bound of 12.
+- Peak demand in the stated logical-liveness coordinate is 26 logical values
+  and four live CCZ resource states; maximum presented PPM weight is seven.
+
+> [!warning] Interpretation
+> The 12 levels are unitless logical candidates, not surgery rounds or time.
+> The selected finite backend remains rejected with its schedule, runtime,
+> physical-qubit total, and failure probability all null. Product rewrites and
+> selective frame materialization have zero admitted transforms, and the
+> singleton fallback's finite cost is `OPEN`.
+
+> [!success] Review note
+> Claude's review independently reimplemented the entire DAG-closure and
+> pairwise-relation model from scratch, matching every claimed count exactly
+> after catching and fixing a bug in its own first attempt (comparing PPMs'
+> raw nominal logical support instead of their frame-corrected presented
+> support, which had produced 0 instead of the claimed 6 compatible
+> overlapping pairs). It then independently re-validated the actual 12-level
+> schedule end to end with zero compatibility or causality violations found,
+> and independently re-derived the peak liveness figures from the contract's
+> stated rule. See `coordination/reviews/T-20260901-007.md`.
+
+Canonical record: [[docs/DIRECT_CCZ_PPM_BATCHING_CONTRACT|PPM batching contract]] · [[context/RESULT_LEDGER#R-20260901-005|Candidate result]] · [[context/RESULT_LEDGER#R-20260901-006|Finite/fallback gap]]
+
 ## 2026-09-01 — Symbolic direct-CCZ PPM/frame trace
 
 **Status:** Reviewed and approved (`T-20260901-006`, `RV-20260901-005`)

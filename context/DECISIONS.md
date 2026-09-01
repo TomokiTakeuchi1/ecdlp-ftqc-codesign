@@ -151,3 +151,11 @@
 - Decision: Lower each OOP-QCLA CCX directly to the admitted six-PPM `|CCZ>` event, encode every correction condition in canonical algebraic normal form, and retain the resulting ordered conditional-Clifford frame across source gates and macro-layer boundaries. Keep source CNOTs explicit and implementation-neutral, and reject any Phase-A claim of a native schedule.
 - Rationale: Enumerating the global measurement tree grows as `2^(6N)`, while dropping the outcomes would erase the reaction and presented-observable structure that a high-rate optimizer must respect. Canonical symbolic propagation preserves those dependencies without choosing a code or physical schedule.
 - Consequences: `E-20260901-006` produces an independently replayable width-5 PPM/frame trace and no `schedule.json`. Phase B may classify candidate batches from this trace, but finite timing, routing, memory, reaction, decoder, factory, space, and failure claims remain unavailable until a compatible backend closes them.
+
+## D-0020: Separate exact PPM candidate levels from finite native execution
+
+- Status: ACCEPTED (`RV-20260901-006` approved 2026-09-01)
+- Date: 2026-09-01
+- Decision: Classify symbolic PPM pairs with exact ANF symplectic and per-index axis polynomials, allow same-axis logical overlap, and pack causally ready frontiers into unitless candidate levels. Emit a finite schedule only through both the direct-CCZ capability gate and the coherent finite-backend audit; otherwise keep the native schedule null and retain a separate singleton semantic fallback.
+- Rationale: Global commutation can hide cancelling local X/Z conflicts, while support overlap can be harmless when axes agree. Neither algebraic screen establishes a code construction, and values from an incompatible factory or T/XX gadget cannot supply a direct-CCZ backend contract.
+- Consequences: `E-20260901-007` may prove optimality inside its explicit logical candidate model when a construction meets an exact lower bound, but it cannot call that level count surgery depth or runtime. Measured-product rewrites and selective materialization remain unadmitted until they have exact frame/lifetime certificates and independent semantic replay.

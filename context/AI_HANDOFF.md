@@ -6,6 +6,41 @@ To: codex and human
 
 ## Next high-rate-aware QCLA-to-PPM cycle
 
+`T-20260901-007` is `RV-20260901-006` `APPROVED` (Claude review, 2026-09-01).
+The exact Phase-B classifier profiles all 60 presented PPMs and all 1,770
+pairs. It finds zero branch-possible-Y PPMs, 30 nonzero symplectic
+commutators, 30 per-index axis-conflict pairs, 1,206 causally ordered pairs,
+1,116 reaction-connected pairs, and six compatible pairs with shared logical
+support. Exact ready-frontier splitting produces 12 unitless candidate levels
+of sizes 12, 12, 6, 6, then eight groups of 3. Both the causal-path and
+conflict-clique lower bounds are 12, so the construction is optimal only
+inside the documented logical candidate model. Peak demand in the stated
+semantic-liveness coordinate is 26 logicals/four live CCZ resource states, and
+maximum presented PPM weight is seven.
+
+General candidates, finite-instance admission, and low-rate fallback are
+separate artifacts. The finite schedule/runtime/physical-qubit/failure fields
+are null: 13 capability fields and 13 backend fields remain missing, three
+bb18 factory values are incompatible with the selected domain, and four
+native-mapper obligations are absent. The low-rate artifact is a 60-PPM
+semantic singleton order with finite cost `OPEN`. Measured-product rewrites
+and selective Clifford materialization were screened with zero admitted
+transforms. The independent verifier imports neither compiler nor scheduler
+and reconstructs every relation, dependency/reaction closure, liveness count,
+lower bound, output class, and strategy row from serialized dictionaries. See
+`docs/DIRECT_CCZ_PPM_BATCHING_CONTRACT.md` and
+`coordination/reviews/T-20260901-007.md`.
+
+The reviewer independently reimplemented the entire DAG-closure and relation
+model from scratch, matching every claimed count exactly after catching and
+fixing a bug in the reviewer's own first attempt (a nominal-support-vs.
+frame-corrected-presented-support mismatch in the compatible-pair count),
+independently re-validated the actual 12-level schedule end to end with zero
+compatibility or causality violations found, and independently re-derived the
+peak liveness figures from the contract's stated rule.
+
+The number 12 is not surgery depth, a duration, or a finite-backend schedule.
+
 `T-20260901-006` is `RV-20260901-005` `APPROVED` (Claude review, 2026-09-01).
 The reviewed OOP-QCLA `n=5` source now lowers directly, without seven-T
 decomposition, through the exact `|CCZ>` injection event into a canonical
@@ -32,12 +67,11 @@ surgery rounds, and pass-through CNOT time/space/routing/memory costs remain
 `OPEN`. Both compiler and replay reject `complete_native_schedule=true`; no
 `schedule.json` was emitted.
 
-`T-20260901-007` is now `READY` and must optimize batches while keeping three
-outputs separate: general high-rate candidates, finite-instance-admitted
-operations, and low-rate fallback. `T-20260901-008` renders those decisions from the same
-machine-readable trace. `T-20260901-009` reuses the compiler for IP-QCLA
-without the existing seven-T route. `T-20260901-010` is the first point at
-which width scaling and a compatible finite backend may be integrated.
+After `RV-20260901-006` closes, `T-20260901-008` renders the reviewed decisions
+from the same machine-readable trace and candidate artifacts. `T-20260901-009`
+then reuses the compiler for IP-QCLA without the existing seven-T route.
+`T-20260901-010` is the first point at which width scaling and a compatible
+finite backend may be integrated.
 
 The cycle contract is
 `docs/HIGH_RATE_QCLA_PPM_OPTIMIZATION_CYCLE.md`. It explicitly forbids
@@ -201,20 +235,32 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-1. Implement `T-20260901-007`: classify and optimize the width-5 trace
-   while reporting general high-rate candidates, finite-instance admission,
-   and low-rate fallback separately.
-2. Source or compute a `d1=17,d2=27` output/transport/consumer
+1. Implement `T-20260901-008` as a human-auditable atlas generated from the
+   reviewed Phase-A trace and Phase-B candidate artifacts.
+2. Implement `T-20260901-009`, reusing the direct-CCZ PPM compiler for IP-QCLA
+   without the existing seven-T route (both this and item 1 are now `READY`).
+3. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.
-3. Add factory service, finite buffer, routing, and backlog to the width-256
+4. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
-4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
+5. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
 ## Known risks
 
+- `R-20260901-005` proves 12-level optimality only inside the explicit logical
+  candidate model. Bounded-degree construction, distance preservation,
+  physical support, routing, decoder service, and finite capacity are `OPEN`;
+  no reviewer should relabel candidate levels as surgery rounds.
+- The six compatible overlapping pairs establish that overlap alone is not a
+  conflict under the screen; they do not establish a backend construction for
+  overlapping physical supports.
+- Product rewrites and selective frame materialization have zero admitted
+  transforms. Their screened counts are opportunities, not validated savings.
+- The logical peak of 26 uses the documented semantic-layer/just-in-time-clean
+  coordinate; it is neither a physical-qubit total nor a finite memory plan.
 - `R-20260901-003` preserves exact ANF conditions, but its 64 global outcome
   probes are a regression set rather than exhaustive `2^60` branch coverage.
   The local injection itself remains all-64-branch checked.
@@ -260,4 +306,6 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; `T-20260901-006` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock; `T-20260901-007` is `READY` to be claimed.
+`T-20260901-007`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
+currently holds an active lock. `T-20260901-008` and `T-20260901-009` are both
+`READY` and may be claimed.

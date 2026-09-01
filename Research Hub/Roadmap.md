@@ -15,7 +15,7 @@ updated: 2026-09-01
 
 **Status: ACTIVE**
 
-<progress max="21" value="14"></progress> 14 of 21 listed Month-1 milestones are complete or in review; 7 more are required.
+<progress max="21" value="16"></progress> 16 of 21 listed Month-1 milestones are complete or in review; 5 more are required.
 
 ### Completed or reviewed
 
@@ -32,10 +32,12 @@ updated: 2026-09-01
 - [x] Lower and review the QCLA/Toffoli adaptive-PBC baseline and resident high-rate boundary (`RV-20260825-001`).
 - [x] Implement and review a replayable width-256 QCLA memory partition with I/O, PBC scratch, high-rate surgery, and time-stamped demand (`RV-20260825-002`).
 - [x] Implement and review the width-5 symbolic direct-CCZ PPM/frame trace (`RV-20260901-005`).
+- [x] Classify and optimize width-5 direct-CCZ PPM candidate levels while keeping finite admission and low-rate fallback separate (`RV-20260901-006`).
 
 ### Active
 
-- [ ] Classify and optimize width-5 direct-CCZ PPM batches, keeping general candidacy, finite-instance admission, and low-rate fallback separate.
+- [ ] Render a human-auditable width-5 PPM atlas from the reviewed trace and candidate artifacts (`T-20260901-008`, now `READY`).
+- [ ] Reuse the direct-CCZ PPM compiler for IP-QCLA without the seven-T route (`T-20260901-009`, now `READY`).
 - [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
 - [ ] Close the reviewed AutoCCZ adapter's (`RV-20260901-001`) nine missing and one distance-incompatible service fields before scheduling.
 

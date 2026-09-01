@@ -15,6 +15,12 @@ from .direct_ccz_injection import (
     direct_ccz_injection_verification_to_data,
     verify_direct_ccz_injection_channel,
 )
+from .direct_ccz_ppm_batching_replay import (
+    DirectCczPpmBatchingReplayError,
+    DirectCczPpmBatchingReplaySummary,
+    direct_ccz_ppm_batching_replay_to_data,
+    replay_direct_ccz_ppm_batching,
+)
 from .direct_ccz_ppm_replay import (
     DirectCczPpmReplayError,
     SymbolicDirectCczPpmReplaySummary,
@@ -29,11 +35,15 @@ __all__ = [
     "AutoCczChannelVerification",
     "DirectCczBranchCorrection",
     "DirectCczInjectionChannelVerification",
+    "DirectCczPpmBatchingReplayError",
+    "DirectCczPpmBatchingReplaySummary",
     "DirectCczPpmReplayError",
     "SymbolicDirectCczPpmReplaySummary",
     "autoccz_channel_verification_to_data",
     "direct_ccz_branch_correction",
     "direct_ccz_injection_verification_to_data",
+    "direct_ccz_ppm_batching_replay_to_data",
+    "replay_direct_ccz_ppm_batching",
     "replay_symbolic_direct_ccz_ppm_trace",
     "symbolic_direct_ccz_ppm_replay_to_data",
     "verify_autoccz_consumption_channel",
