@@ -1,0 +1,235 @@
+schema: ecdlp-ftqc/autoccz-surface-code-adapter
+schema_version: 1
+audit_id: autoccz-surface-code-adapter-v1
+task_id: T-20260901-001
+recorded_adapter_admitted: true
+recorded_service_admitted: false
+
+required_fields:
+  - consumer.event_semantics
+  - consumer.resource_type
+  - consumer.consumption_interval_cycles
+  - consumer.logical_error_per_event
+  - controller.decoder_throughput
+  - controller.reaction_latency_seconds
+  - processor.injection_port_capacity
+  - processor.logical_capacity
+  - processor.routing_model
+  - factory.batch_size
+  - factory.production_cycles
+  - factory.output_error_probability
+  - factory.delivery_latency_cycles
+  - factory.buffer_capacity
+  - factory.storage_error_per_cycle
+  - compatibility.factory_to_consumer_adapter
+  - compatibility.same_domain_failure_budget
+
+sources:
+  - source_id: "Gidney and Fowler, arXiv:1905.08916v1"
+    local_pdf: literature/papers/1905.08916v1.pdf
+    pdf_sha256: 9AF4F54C34DABED47DBC915BD2EA52D55BCE7B48E8D19BCD896376920A5E718B
+    pages: [1, 4, 5, 6, 7, 8, 11, 14]
+    establishes:
+      - AutoCCZ embeds three delayed-choice CZ fixups and uses six routing qubits so no CZ correction is performed at the consumption site.
+      - The source-native layout links a CCZ factory output to a fixup box while routing the state to a Toffoli consumer.
+      - Under the stated d1=17, d2=27, 1-us cycle, and 10-us reaction example, the level-2 factory rate is approximately 7.4 kHz and fourteen factories meet a 100-kHz average reaction-limited demand.
+    evidence_status: LITERATURE
+  - source_id: "Gidney and Fowler, arXiv:1812.01238v3"
+    local_pdf: literature/papers/1812.01238v3.pdf
+    pdf_sha256: C5F8A0D73C8C18D44CD86961760157CA8E261BF03382365C4AC8B8CFAF99594D
+    pages: [1, 2, 3, 6, 7, 8, 9, 11, 12]
+    establishes:
+      - The base surface-code lattice-surgery factory emits one CCZ state every 5.5d cycles before the AutoCCZ paper's 5d improvement.
+      - The official d1=15 and d2=31 calculator estimates CCZ output error 5.33332e-11 at physical error 1e-3.
+      - The paper discusses routing bottlenecks and qualitative surplus level-1 T-state storage but does not give a finite output-CCZ buffer service contract.
+    evidence_status: LITERATURE
+
+source_assets:
+  - asset_id: autoccz-ccz-factory-layout
+    source_id: "Gidney and Fowler, arXiv:1905.08916v1"
+    local_path: literature/papers/1905.08916v1-ccz-factory.skp
+    sha256: A7E509BC18FB52FA62F01EE1F1EBC4F7842FA0F3E114F90DAF8E0FDC6AF4731C
+    media_type: application/vnd.sketchup.skp
+    role: Official 3D CCZ-factory layout used by the AutoCCZ source.
+  - asset_id: autoccz-fixup-layout
+    source_id: "Gidney and Fowler, arXiv:1905.08916v1"
+    local_path: literature/papers/1905.08916v1-ccz-fixup.skp
+    sha256: FBF88A9CBD3897A04DC27F6268C4FB4761C302F700E0ECDBD42718D33D182213
+    media_type: application/vnd.sketchup.skp
+    role: Official 3D delayed-choice CZ fixup-box layout.
+  - asset_id: base-ccz-factory-calculator
+    source_id: "Gidney and Fowler, arXiv:1812.01238v3"
+    local_path: literature/papers/1812.01238v3-calculator-CCZ-2T-resources.ods
+    sha256: 0A1B884608A59FA0C68FAC62959310B2397FFB4DCD41292665C32585709EFFE2
+    media_type: application/vnd.oasis.opendocument.spreadsheet
+    role: Official resource calculator; its published examples use d1=15 or 19 and d2=31, not the AutoCCZ d1=17 and d2=27 example.
+  - asset_id: base-ccz-factory-layout
+    source_id: "Gidney and Fowler, arXiv:1812.01238v3"
+    local_path: literature/papers/1812.01238v3-model-ccz.skp
+    sha256: AFD007970A001B50017B9099F41AEC7D5440132A00335C3E7097B13FF74C83BB
+    media_type: application/vnd.sketchup.skp
+    role: Official 3D base CCZ-factory layout.
+
+model:
+  compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+  physical_gate_error_probability: 0.001
+  surface_code_cycle_seconds: 0.000001
+  reaction_latency_seconds: 0.00001
+  level_1_distance: 17
+  level_2_distance: 27
+  level_1_factory_count: 6
+  level_1_states_per_ccz: 8
+  level_1_depth_coefficient: 5.75
+  level_2_depth_coefficient: 5.0
+
+recorded_derived:
+  level_1_effective_cycles_per_ccz: 130.33333333333334
+  level_2_cycles_per_ccz: 135.0
+  level_1_rate_hz: 7672.634271099743
+  level_2_rate_hz: 7407.407407407407
+  bottleneck: level_2
+  reaction_demand_rate_hz: 99999.99999999999
+  factories_for_reaction_limited_demand: 14
+
+candidate:
+  candidate_id: gidney-fowler-autoccz-surface-code-d17-d27-v1
+  compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+  evidence_status: OPEN
+  conclusion: The source-native factory-to-consumer adapter is qualified, but the complete service is rejected because nine finite service fields remain absent and the only calculator-backed output-error value belongs to d1=15/d2=31 rather than the selected d1=17/d2=27 AutoCCZ example.
+  fields:
+    - field_id: consumer.event_semantics
+      reported_value: AutoCCZ Figure 4/6 Toffoli consumption with three delayed-choice CZ corrections and Pauli-frame updates
+      admitted_value: autoccz-three-delayed-cz-toffoli-consumption-v1
+      unit: logical_event_contract
+      evidence_status: LITERATURE
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The logical channel is independently checked after treating each source-proved delayed-choice cell as CZ or identity; the lattice-surgery realization remains literature evidence.
+    - field_id: consumer.resource_type
+      reported_value: one CCZ state augmented by three delayed-choice CZ cells using six routing qubits
+      admitted_value: one-AutoCCZ-state-with-six-routing-qubits
+      unit: resource_state_contract
+      evidence_status: LITERATURE
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The source explicitly reports two routing qubits for each of three possible CZ fixups.
+    - field_id: consumer.consumption_interval_cycles
+      reported_value: "10"
+      admitted_value: null
+      unit: surface_code_cycles_per_serial_dependency
+      evidence_status: CHECK
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: Ten cycles follows only from the paper's assumed 10-us reaction and 1-us cycle; it is not a decoded consumer-duration bound.
+    - field_id: consumer.logical_error_per_event
+      reported_value: null
+      admitted_value: null
+      unit: probability_per_AutoCCZ_consumption
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: No integrated d1=17/d2=27 error covers factory output, routing, delayed-choice measurements, and data-patch consumption.
+    - field_id: controller.decoder_throughput
+      reported_value: null
+      admitted_value: null
+      unit: detection_events_per_second
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The paper assumes a reaction loop but does not specify a decoder or its throughput under fourteen-factory load.
+    - field_id: controller.reaction_latency_seconds
+      reported_value: "0.00001"
+      admitted_value: null
+      unit: seconds
+      evidence_status: CHECK
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The 10-us reaction time is an explicit plausible-future-hardware assumption, not a demonstrated controller bound.
+    - field_id: processor.injection_port_capacity
+      reported_value: "1"
+      admitted_value: "1"
+      unit: simultaneous_AutoCCZ_states_per_consumer_block
+      evidence_status: LITERATURE
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: Figure 6 gives one explicit source-native AutoCCZ input interface for one Toffoli consumer block.
+    - field_id: processor.logical_capacity
+      reported_value: fourteen factories occupy approximately 2.6 million physical qubits
+      admitted_value: null
+      unit: logical_data_capacity
+      evidence_status: CHECK
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: A factory footprint is not a finite data-processor capacity or a width-256 QCLA placement.
+    - field_id: processor.routing_model
+      reported_value: factory, fixup-box, hallway, and consumer layouts with six delayed-choice routing qubits per AutoCCZ
+      admitted_value: source-native-AutoCCZ-fixup-and-hallway-routing-v1
+      unit: routing_contract
+      evidence_status: LITERATURE
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The source PDF and official SKP assets define the local route; they do not place the width-256 QCLA trace.
+    - field_id: factory.batch_size
+      reported_value: "1"
+      admitted_value: "1"
+      unit: CCZ_states
+      evidence_status: LITERATURE
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The improved source factory emits one CCZ state per output interval.
+    - field_id: factory.production_cycles
+      reported_value: "135"
+      admitted_value: "135"
+      unit: surface_code_cycles_per_CCZ_state
+      evidence_status: NUMERICAL
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The loader recomputes 5*d2=5*27=135 cycles and independently confirms the level-2 bottleneck.
+    - field_id: factory.output_error_probability
+      reported_value: "0.0000000000533332000000001"
+      admitted_value: "0.0000000000533332000000001"
+      unit: probability_per_CCZ_state
+      evidence_status: NUMERICAL
+      source_ids: ["Gidney and Fowler, arXiv:1812.01238v3"]
+      compatibility_domain: gidney-fowler-ccz-factory-d15-d31-v3
+      note: The official calculator value is source-qualified only for d1=15/d2=31 and the older 5.5d factory, so it is incompatible with the selected AutoCCZ example.
+    - field_id: factory.delivery_latency_cycles
+      reported_value: null
+      admitted_value: null
+      unit: surface_code_cycles
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The source depicts delivery while constructing the fixup box but does not bound route length or latency for a general consumer placement.
+    - field_id: factory.buffer_capacity
+      reported_value: surplus level-1 T states may occupy small hallways and an unused 2x4 area may hold target qubits
+      admitted_value: null
+      unit: buffered_AutoCCZ_states
+      evidence_status: CHECK
+      source_ids: ["Gidney and Fowler, arXiv:1812.01238v3"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: Qualitative internal T-state storage and target waiting space do not define a finite output-AutoCCZ buffer.
+    - field_id: factory.storage_error_per_cycle
+      reported_value: null
+      admitted_value: null
+      unit: probability_per_AutoCCZ_state_per_cycle
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: No stored-AutoCCZ error accumulation law is reported.
+    - field_id: compatibility.factory_to_consumer_adapter
+      reported_value: CCZ output linked to a three-fixup box during routing and consumed by the Figure 6 Toffoli block
+      admitted_value: ccz-output-to-autoccz-fixup-to-toffoli-consumer-v1
+      unit: adapter_contract
+      evidence_status: LITERATURE
+      source_ids: ["Gidney and Fowler, arXiv:1905.08916v1"]
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: This closes the previously absent resource-type and code-family adapter without importing qLDPC or Cain values.
+    - field_id: compatibility.same_domain_failure_budget
+      reported_value: null
+      admitted_value: null
+      unit: failure_budget_contract
+      evidence_status: OPEN
+      source_ids: []
+      compatibility_domain: gidney-fowler-autoccz-surface-code-d17-d27-v1
+      note: The selected model lacks compatible output, transport, storage, decoder, and consumer error contributions for one total failure budget.

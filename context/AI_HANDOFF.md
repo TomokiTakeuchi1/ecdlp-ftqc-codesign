@@ -1,10 +1,54 @@
 # AI handoff
 
-Last updated: 2026-08-31
+Last updated: 2026-09-01
 From: claude
 To: codex and human
 
+## Next high-rate-aware QCLA-to-PPM cycle
+
+`T-20260901-005` is `RV-20260901-004` `APPROVED` (Claude review, 2026-09-01;
+see `coordination/reviews/T-20260901-005.md`). It records the
+dependency-ordered work requested by the human.
+Begin with `T-20260901-006`: lower the reviewed OOP-QCLA `n=5` source directly
+through the exact `|CCZ>` injection event into a symbolic PPM/frame trace.
+Then `T-20260901-007` must optimize batches while keeping three outputs
+separate: general high-rate candidates, finite-instance-admitted operations,
+and low-rate fallback. `T-20260901-008` renders those decisions from the same
+machine-readable trace. `T-20260901-009` reuses the compiler for IP-QCLA
+without the existing seven-T route. `T-20260901-010` is the first point at
+which width scaling and a compatible finite backend may be integrated.
+
+The cycle contract is
+`docs/HIGH_RATE_QCLA_PPM_OPTIMIZATION_CYCLE.md`. It explicitly forbids
+treating source Toffoli layers, pairwise commutation, logical-axis consistency,
+or noiseless Gross-code observations as an executable high-rate runtime.
+Runtime additionally requires memory, routing, reaction, decoder, CCZ
+factory/buffer, physical-space, and failure-budget fields from one compatible
+backend.
+
 ## Current objective
+
+`T-20260901-001` is `RV-20260901-001` `APPROVED` (Claude review, 2026-09-01).
+Gidney--Fowler Figures 3--6 plus the official layouts connect one CCZ factory
+output to a three-delayed-CZ AutoCCZ fixup box and one Toffoli consumer in a
+single surface-code domain. An independent abstract channel check finds all 64
+branches at probability `1/64`, maximum probability error
+`2.2551405187698492e-17`, and zero ideal-CCX operator residual. The adapter is
+admitted, but complete service remains false: nine finite fields are missing,
+and the official `5.33332e-11` calculator error belongs to `d1=15,d2=31`, not
+the selected AutoCCZ `d1=17,d2=27` example. Under explicitly `CHECK` timing
+inputs, the latter yields 135 cycles/CCZ, approximately 7.407 kHz per factory,
+and fourteen factories for 100 kHz average demand. No schedule was emitted.
+The reviewer rendered the primary PDF's Figures 3, 4, and 6 directly at 300
+DPI and confirmed the delayed-choice-cell abstraction, three-cell/six-routing
+-qubit structure, and one-port consumer interface are faithfully transcribed,
+with `pdftotext` independently matching the paper's own worked-example
+arithmetic word-for-word; separately unzipped and parsed the official ODS
+calculator's raw XML and found the `5.33332e-11` cell's own formula is in the
+same column as `d1=15`, with `d1=17` never appearing anywhere in the sheet --
+directly and independently settling the calculator-incompatibility claim from
+the spreadsheet's own structure rather than the doc's description of it. See
+`coordination/reviews/T-20260901-001.md` for the complete finding list.
 
 `T-20260831-004` is `RV-20260831-004` `APPROVED` (Claude review, 2026-08-31).
 The fail-closed audit covers 17 required direct-CCZ fields and screens seven
@@ -83,6 +127,24 @@ one-lane/one-round/no-overlap profile it takes 2,420,527 rounds, 169,260
 executable time. The complete shifted T-demand trace sums to 17,206 but has
 no factory service, buffer, routing, or stalls.
 
+## Incoming-collaborator orientation
+
+`T-20260901-004` is `RV-20260901-003` `APPROVED` (Claude review, 2026-09-01).
+`docs/HANDOFF.md` is a concise English entry note for an incoming
+collaborator. It presents the one-week/order-`10^4`-qubit research target,
+summarizes the teleportation-ripple HGP and QCLA/high-rate-surgery tracks,
+lists their open physical-contract questions, and links scoped starting
+references. It creates no numerical result or executable architecture claim.
+The reviewer independently verified all ten citations against arXiv and the
+local bibliography with no discrepancies found.
+
+`T-20260901-003` is `RV-20260901-002` `APPROVED` (Claude review, 2026-09-01).
+The two human-audit OOP-QCLA `n=5` figures (source circuit and direct-CCZ
+injection expansion) live outside the git repository in a thread-owned
+visualization cache; see `coordination/reviews/T-20260901-003.md` for their
+path. The reviewer independently regenerated the width-5 trace and matched
+all 23 gates and the displayed correction formula exactly.
+
 ## Read first
 
 - `context/PROJECT_CHARTER.md`
@@ -90,6 +152,12 @@ no factory service, buffer, routing, or stalls.
 - `context/STATUS.md`
 - `context/TASKS.md`
 - `coordination/PROTOCOL.md`
+- `coordination/reviews/T-20260901-001.md`
+- `docs/AUTOCCZ_SURFACE_CODE_ADAPTER.md`
+- `configs/architectures/autoccz_surface_code_adapter_v1.yaml`
+- `experiments/runs/T-20260901-001/summary.json`
+- `experiments/runs/T-20260901-001/autoccz_service_audit.json`
+- `experiments/runs/T-20260901-001/autoccz_channel_verification.json`
 - `coordination/reviews/T-20260831-003.md`
 - `docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT.md`
 - `configs/architectures/direct_ccz_single_event_capability_v1.yaml`
@@ -112,18 +180,28 @@ no factory service, buffer, routing, or stalls.
 
 ## Next concrete action
 
-1. Construct or source-qualify one finite decoded factory-to-consumer
-   direct-CCZ adapter (batch timing/error, decoder/reaction, ports/capacity/
-   routing, delivery/buffer/storage, all in one compatibility domain) before
-   any schedule is attempted.
-2. Add factory service, finite buffer, routing, and backlog to the width-256
+1. Implement `T-20260901-006`: lower the reviewed OOP-QCLA `n=5` source
+   directly through the exact `|CCZ>` injection event into a symbolic
+   PPM/frame trace, per `docs/HIGH_RATE_QCLA_PPM_OPTIMIZATION_CYCLE.md`.
+2. Source or compute a `d1=17,d2=27` output/transport/consumer
+   error model and a finite decoded buffer/reaction contract before connecting
+   the AutoCCZ adapter to width-256 QCLA demand.
+3. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
-3. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
+4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
 ## Known risks
 
+- `R-20260901-001` is an abstract logical-channel reconstruction whose
+  delayed-choice CZ cells are accepted from the paper; it does not simulate
+  surface-code faults or independently validate the 3D layout.
+- `R-20260901-002` uses source-stated cycle/reaction inputs as `CHECK`; average
+  throughput and fourteen-factory arithmetic do not prove burst service.
+- The official workbook's finite output error is deliberately incompatible
+  with the selected distances. Substituting it would create a false closed
+  failure budget.
 - `R-20260831-006` is an `OPEN` negative admission result. Its field counts are
   deterministic, but they do not prove that no finite direct-CCZ backend can
   exist; they prove only that the pinned corpus does not close the selected
@@ -155,4 +233,4 @@ no factory service, buffer, routing, or stalls.
 
 ## Files currently safe to modify
 
-Check `coordination/WORK_LOCKS.md`; `T-20260831-004` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.
+Check `coordination/WORK_LOCKS.md`; `T-20260901-001` is `RELEASED` (reviewed and approved). No task currently holds an active `REVIEW`/`ACTIVE` lock.

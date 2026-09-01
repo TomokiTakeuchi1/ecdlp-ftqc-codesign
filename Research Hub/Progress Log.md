@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-08-31
+updated: 2026-09-01
 ---
 
 # Research Progress Log
@@ -12,6 +12,46 @@ updated: 2026-08-31
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-09-01 — AutoCCZ surface-code adapter qualification
+
+**Status:** Reviewed and approved (`T-20260901-001`, `RV-20260901-001`)
+
+What changed:
+
+- Pinned the Gidney--Fowler AutoCCZ and base-factory PDFs plus four official
+  layout/calculator assets.
+- Added a 17-field gate that distinguishes a real source-native adapter from a
+  complete decoded and buffered service.
+- Independently checked the abstract consumer on all 64 measurement branches
+  and recomputed the paper example's factory arithmetic.
+
+What we learned:
+
+- The surface-code factory, three delayed-choice CZ fixups, six routing qubits,
+  and one Toffoli consumer form one source-native adapter.
+- Under `CHECK` inputs, the factory bottleneck is 135 cycles/CCZ or about
+  7.407 kHz, requiring fourteen factories for 100 kHz average demand.
+- Complete service is not closed: nine fields are missing, and the official
+  `5.33332e-11` error uses `d1=15,d2=31` rather than the selected
+  `d1=17,d2=27` model.
+
+> [!warning] Interpretation
+> Adapter admission is not service admission. The branch check is an abstract
+> logical-consumer check, not a surface-code noise simulation. No width-256
+> schedule, runtime, machine-size total, or failure result was emitted.
+
+> [!success] Review note
+> Claude's review rendered Figures 3, 4, and 6 of the primary AutoCCZ PDF
+> directly at 300 DPI and confirmed the delayed-choice-cell abstraction and
+> routing/consumer-port structure are faithfully transcribed, and separately
+> unzipped and parsed the official ODS calculator's raw XML to confirm its
+> `5.33332e-11` output-error cell is in the same column as `d1=15` and that
+> `d1=17` never appears in the sheet -- independently settling the
+> calculator-incompatibility claim from the spreadsheet itself. See
+> `coordination/reviews/T-20260901-001.md`.
+
+Canonical record: [[docs/AUTOCCZ_SURFACE_CODE_ADAPTER|AutoCCZ adapter]] · [[context/RESULT_LEDGER#R-20260901-001|Channel result]] · [[context/RESULT_LEDGER#R-20260901-002|Service gap]]
 
 ## 2026-08-31 — Finite direct-CCZ backend compatibility audit
 

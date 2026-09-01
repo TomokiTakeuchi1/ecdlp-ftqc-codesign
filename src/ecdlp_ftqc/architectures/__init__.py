@@ -1,5 +1,20 @@
 """Architecture capability and resource records."""
 
+from ecdlp_ftqc.architectures.autoccz_adapter import (
+    AUTOCCZ_ADAPTER_SCHEMA,
+    AUTOCCZ_ADAPTER_SCHEMA_VERSION,
+    REQUIRED_AUTOCCZ_SERVICE_FIELDS,
+    AutoCczAdapterError,
+    AutoCczRecordedDerived,
+    AutoCczServiceAsset,
+    AutoCczServiceAudit,
+    AutoCczServiceCandidate,
+    AutoCczServiceFieldEvidence,
+    AutoCczServiceModel,
+    AutoCczServiceSource,
+    autoccz_service_audit_to_data,
+    load_autoccz_service_audit,
+)
 from ecdlp_ftqc.architectures.direct_ccz import (
     DIRECT_CCZ_CAPABILITY_SCHEMA,
     DIRECT_CCZ_CAPABILITY_SCHEMA_VERSION,
@@ -31,13 +46,24 @@ from ecdlp_ftqc.architectures.direct_ccz_backend_audit import (
 )
 
 __all__ = [
+    "AUTOCCZ_ADAPTER_SCHEMA",
+    "AUTOCCZ_ADAPTER_SCHEMA_VERSION",
     "DIRECT_CCZ_BACKEND_AUDIT_SCHEMA",
     "DIRECT_CCZ_BACKEND_AUDIT_SCHEMA_VERSION",
     "DIRECT_CCZ_CAPABILITY_SCHEMA",
     "DIRECT_CCZ_CAPABILITY_SCHEMA_VERSION",
     "DIRECT_CCZ_FIGURE14_CORRECTION_MAP",
     "DIRECT_CCZ_OUTCOME_BIT_CONVENTION",
+    "REQUIRED_AUTOCCZ_SERVICE_FIELDS",
     "REQUIRED_DIRECT_CCZ_BACKEND_FIELDS",
+    "AutoCczAdapterError",
+    "AutoCczRecordedDerived",
+    "AutoCczServiceAsset",
+    "AutoCczServiceAudit",
+    "AutoCczServiceCandidate",
+    "AutoCczServiceFieldEvidence",
+    "AutoCczServiceModel",
+    "AutoCczServiceSource",
     "DirectCczBackendAudit",
     "DirectCczBackendAuditError",
     "DirectCczBackendAuditSource",
@@ -52,8 +78,10 @@ __all__ = [
     "DirectCczPpmSpec",
     "DirectCczScreenedComponent",
     "DirectCczSourcePin",
+    "autoccz_service_audit_to_data",
     "direct_ccz_backend_audit_to_data",
     "direct_ccz_capability_to_data",
+    "load_autoccz_service_audit",
     "load_direct_ccz_backend_audit",
     "load_direct_ccz_capability",
 ]

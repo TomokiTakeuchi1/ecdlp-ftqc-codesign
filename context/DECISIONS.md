@@ -135,3 +135,11 @@
 - Decision: Treat the reviewed Figure 14(a) event semantics as a portable contract, but admit physical high-rate service only when every consumer, controller, processor, factory, and adapter field has source-qualified finite evidence in one compatibility domain. Preserve qualified values from other domains as explicit incompatibilities rather than substituting them.
 - Rationale: The current corpus contains useful but noncomposable pieces: a finite `bb18` CCZ factory estimate, approximate Cain `P=20` consumption, finite mitten/canonical-LP T ports, finite in-situ Y injection, tricycle CCZ generation, and batched high-rate qLDPC operations. Combining their best values would create an architecture that no source constructs or validates.
 - Consequences: `E-20260831-004` rejects the selected candidate with 13 missing fields and three incompatible finite factory fields, emits no schedule, and identifies a finite decoded factory-to-consumer adapter as the next evidence-producing step.
+
+## D-0018: Admit a source-native AutoCCZ adapter separately from complete service
+
+- Status: ACCEPTED (`RV-20260901-001` approved 2026-09-01)
+- Date: 2026-09-01
+- Decision: Admit the Gidney--Fowler surface-code path from one CCZ-factory output through its three delayed-choice-CZ fixup box to one Toffoli consumer as a source-native adapter. Keep source-stated physical timing as `CHECK`, and admit complete service only when the same `d1=17,d2=27` domain also supplies consumer/error, decoder, processor capacity, delivery, output buffer/storage, and integrated failure-budget evidence.
+- Rationale: The primary source and official layouts close the previously absent factory-to-consumer resource-type and local-routing link without cross-architecture substitution. They do not close burst service or failure, and the official calculator's finite output-error value belongs to a different `d1=15,d2=31` factory example.
+- Consequences: `E-20260901-001` admits the adapter and rejects complete service with nine missing and one incompatible field. No width-256 QCLA schedule, runtime, machine-size total, or failure result may be emitted from this configuration.

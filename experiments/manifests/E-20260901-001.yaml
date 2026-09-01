@@ -1,0 +1,32 @@
+experiment_id: E-20260901-001
+task_id: T-20260901-001
+title: AutoCCZ surface-code factory-to-consumer adapter qualification
+configuration: configs/architectures/autoccz_surface_code_adapter_v1.yaml
+entrypoint: scripts/run_autoccz_adapter_cycle.py
+command: uv --native-tls run python scripts/run_autoccz_adapter_cycle.py
+assumptions:
+  - A-0027
+  - A-0033
+  - A-0034
+outputs:
+  - experiments/runs/T-20260901-001/autoccz_service_audit.json
+  - experiments/runs/T-20260901-001/autoccz_channel_verification.json
+  - experiments/runs/T-20260901-001/summary.json
+  - experiments/runs/T-20260901-001/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_audit_and_all_branch_check
+  branch_order: lexicographic six-bit measurement outcomes
+  field_order: schema-defined required field order
+validation:
+  - every required service field appears exactly once
+  - all PDF, SKP, and ODS inputs are verified by SHA-256
+  - the adapter admission and complete-service admission are recomputed separately
+  - source-derived d1=17/d2=27 rates and factory count are recomputed
+  - the d1=15/d2=31 calculator error remains incompatible
+  - all 64 abstract AutoCCZ consumption branches match ideal CCX
+  - no width-256 schedule artifact is emitted after service rejection
+exclusions:
+  - width-256 QCLA scheduling
+  - measured hardware reaction or decoder performance
+  - finite output-AutoCCZ buffer and stored-state error
+  - total runtime, machine qubit count, or algorithm failure probability

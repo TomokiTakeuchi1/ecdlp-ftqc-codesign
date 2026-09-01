@@ -1,9 +1,9 @@
 # Local paper index
 
-- Tasks: `T-20260811-002`, `T-20260824-001`, `T-20260825-001`, `T-20260831-004`
-- Retrieved: initial corpus on 2026-08-11 from arXiv; additions on 2026-08-15 from arXiv and the IACR ePrint Archive; Active Volume v1 added on 2026-08-24; Selinger v2 added on 2026-08-25; finite CCZ/high-rate/in-situ sources added on 2026-08-31
-- Storage policy: PDF files are local and ignored by Git; this index is versioned.
-- Integrity check: every file begins with `%PDF-`; hashes are SHA-256.
+- Tasks: `T-20260811-002`, `T-20260824-001`, `T-20260825-001`, `T-20260831-004`, `T-20260901-001`
+- Retrieved: initial corpus on 2026-08-11 from arXiv; additions on 2026-08-15 from arXiv and the IACR ePrint Archive; Active Volume v1 added on 2026-08-24; Selinger v2 added on 2026-08-25; finite CCZ/high-rate/in-situ sources added on 2026-08-31; AutoCCZ, its base factory, and official ancillary assets added on 2026-09-01
+- Storage policy: PDF and official ancillary files are local and ignored by Git; this index is versioned.
+- Integrity check: every PDF begins with `%PDF-`; all listed hashes are SHA-256.
 
 | Source | Local PDF | Bytes | SHA-256 |
 |---|---|---:|---|
@@ -13,6 +13,8 @@
 | [2607.28605v1](https://arxiv.org/abs/2607.28605v1) | `2607.28605v1.pdf` | 1,480,994 | `60489451B1FB88206F1FE6E49373040EEA29CBBB4FE641F2DF06BC9336BBEFB0` |
 | [2602.14273v2](https://arxiv.org/abs/2602.14273v2) | `2602.14273v2.pdf` | 11,023,146 | `F5D6C511A668577A3B7479A91079FE27A92180433E78EA767D16E8FF6FD7809C` |
 | [1905.06903v3](https://arxiv.org/abs/1905.06903v3) | `1905.06903v3.pdf` | 1,498,450 | `C1B8AA5D0B975E1AE642C8E9836D9712155DD78E37DF5A4573E6EDCB53851F77` |
+| [1905.08916v1](https://arxiv.org/abs/1905.08916v1) | `1905.08916v1.pdf` | 2,316,698 | `9AF4F54C34DABED47DBC915BD2EA52D55BCE7B48E8D19BCD896376920A5E718B` |
+| [1812.01238v3](https://arxiv.org/abs/1812.01238v3) | `1812.01238v3.pdf` | 3,234,851 | `C5F8A0D73C8C18D44CD86961760157CA8E261BF03382365C4AC8B8CFAF99594D` |
 | [2607.28795v1](https://arxiv.org/abs/2607.28795v1) | `2607.28795v1.pdf` | 2,196,825 | `4AC964874E5C49E8D02A284B6A877F590927E61523FE7F086D7B5F8BFF2B7D2E` |
 | [2407.18490v1](https://arxiv.org/abs/2407.18490v1) | `2407.18490v1.pdf` | 4,921,890 | `F50363822EE43C0DD0BCB4D0ACB502AA11207FC37B5175E60EADEBF892D38C05` |
 | [2211.15465v1](https://arxiv.org/abs/2211.15465v1) | `2211.15465v1.pdf` | 6,165,657 | `BF305E578AEFC986F4E74110EF55155E7C9711401B7D4E18BCB63BE304D2BC45` |
@@ -26,5 +28,14 @@
 | [ePrint 2026/280, revision observed 2026-06-04](https://eprint.iacr.org/2026/280) | `eprint-2026-280-rev-2026-06-04.pdf` | 502,632 | `823E72795F0EF3AB17EF346D4EBC0B9EC9275D0B672E98A029D1E94C8D39F493` |
 | [2603.28846v2](https://arxiv.org/abs/2603.28846v2) | `2603.28846v2.pdf` | 1,964,648 | `1F59D951D24F360BB5FD89A25B22F28825519C65E17428F5AB204E7C2106AE99` |
 | [ePrint 2026/106, revision observed 2026-05-26](https://eprint.iacr.org/2026/106) | `eprint-2026-106-rev-2026-05-26.pdf` | 1,260,363 | `A6D1A55C23EA58A69B5059F17118940C310816E7E1A1D7757F2FB0187A05F7EB` |
+
+## Official ancillary files
+
+| Source | Local file | Bytes | SHA-256 |
+|---|---|---:|---|
+| AutoCCZ factory layout | `1905.08916v1-ccz-factory.skp` | 293,839 | `A7E509BC18FB52FA62F01EE1F1EBC4F7842FA0F3E114F90DAF8E0FDC6AF4731C` |
+| AutoCCZ fixup layout | `1905.08916v1-ccz-fixup.skp` | 227,392 | `FBF88A9CBD3897A04DC27F6268C4FB4761C302F700E0ECDBD42718D33D182213` |
+| CCZ/2T resource calculator | `1812.01238v3-calculator-CCZ-2T-resources.ods` | 23,294 | `0A1B884608A59FA0C68FAC62959310B2397FFB4DCD41292665C32585709EFFE2` |
+| Base CCZ-factory layout | `1812.01238v3-model-ccz.skp` | 668,454 | `AFD007970A001B50017B9099F41AEC7D5440132A00335C3E7097B13FF74C83BB` |
 
 The user supplied `2607.28605v1` twice; it is stored once.

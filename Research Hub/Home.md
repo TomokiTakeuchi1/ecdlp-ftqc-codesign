@@ -5,14 +5,14 @@ cssclasses:
   - research-dashboard
 tags:
   - dashboard
-updated: 2026-08-31
+updated: 2026-09-01
 ---
 
 # ECDLP-256 FTQC Research Hub
 
-> [!abstract] Current snapshot — 2026-08-31
+> [!abstract] Current snapshot — 2026-09-01
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** Close one finite direct-CCZ high-rate backend before scheduling.
+> **Current focus:** Cross-review the source-native AutoCCZ adapter, then close its finite service gaps before scheduling.
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
@@ -21,7 +21,7 @@ updated: 2026-08-31
 
 | Workstream | Status | Human-friendly summary |
 |---|---|---|
-| Literature baseline | ✅ Reviewed | 19 primary-source PDFs are indexed locally, including the three finite CCZ/high-rate/in-situ additions reviewed in `RV-20260831-004`. |
+| Literature baseline | ✅ Reviewed | 21 primary-source PDFs are indexed locally, including the two Gidney--Fowler PDFs and four official assets reviewed in `RV-20260901-001`. |
 | Gidney adder DAG | ✅ Reviewed | The ripple-carry adder is converted to a QEC-independent causal DAG and checked at small widths and width 256. |
 | Mitten scheduling prototype | ✅ Reviewed | Claude approved the conditional scheduler (`RV-20260815-004`); its operation times are still not an executable-runtime result. |
 | Adaptive PBC/CQLU lowering | ✅ Reviewed | Claude approved the quantum-output-preserving trace (`RV-20260815-006`); exact CNOT/H/S/T/T-dagger Pauli supports and compiler ancillas are generated, while native duration evidence remains open. |
@@ -34,13 +34,14 @@ updated: 2026-08-31
 | QCLA memory/high-rate schedule | ✅ Reviewed | Claude approved the epoch-aware memory overlay (`RV-20260825-002`); it independently replays width 256 within 60 logical slots and exposes 1,576 ten-XX batches, but its one-round transfer/native timing and ideal factory remain `CHECK`. |
 | Direct-CCZ single-event semantics | ✅ Reviewed | Claude approved the exact Figure 14(a) correction map (`RV-20260831-003`); width 256 emits 1,229 typed events, but finite high-rate service remains `OPEN`. |
 | Finite direct-CCZ backend audit | ✅ Reviewed | Claude approved the 17-field compatibility gate (`RV-20260831-004`); it rejects the selected backend with 13 missing and three incompatible fields, and no schedule is emitted. |
+| AutoCCZ surface-code adapter | ✅ Reviewed | Claude approved the source-native factory/fixup/consumer adapter (`RV-20260901-001`); complete service remains `OPEN` with nine missing and one distance-incompatible field, so no width-256 schedule exists. |
 | Full Shor estimate | ⚪ Not started | Month 2 begins after the arithmetic and architecture contracts are stable. |
 | Factory validation | ⚪ Not started | Month 3 will turn the T/CCZ demand trace into an explicit factory design. |
 
 ## What is trustworthy today?
 
 > [!success] Reviewed foundation
-> The Gidney adapter preserves logical-value lifetimes, quantum dependencies, X-basis erase measurements, and classical feed-forward. Claude approved this bounded prototype in `RV-20260815-003`. Claude also approved the conditional Mitten lowering and greedy scheduler in `RV-20260815-004`, including an independent gate-by-gate check of the Figure-3 trace against the pinned source's exhaustively verified circuit. Claude further approved the adaptive PBC/CQLU trace in `RV-20260815-006` after independently re-deriving its operation-count formulas and hand-checking the CNOT/H/S/T/T-dagger gadgets' Clifford-conjugation algebra. Claude also approved the J300 resource-constrained scheduler in `RV-20260815-007` after hand-verifying its high-rate round-savings arithmetic and scratch-slot allocation logic. Claude approved the memory-I/O overlay in `RV-20260823-001`, confirming its independent replay engine recomputes every placement from scratch rather than trusting the placement algorithm's own bookkeeping. Claude approved the Bell-bridge ripple cycle in `RV-20260824-001`, confirming the generic-bridge circuit is the standard teleportation decomposition and that its branch probability lands at essentially exactly 1/4 across 32 random states, as the no-signaling property predicts. Claude approved the Draper QCLA DAG in `RV-20260824-003`, hand-deriving the width-2 circuit by symbolic Boolean algebra and independently exhaustively replaying an untested width plus five untested random widths. Claude approved the QCLA adaptive-PBC lowering in `RV-20260825-001`, independently rebuilding the full 8x8 Selinger CCX unitary from scratch and finding it matches ideal CCX with zero global-phase correction needed. Claude approved the clean OOP-QCLA trace and direct-CCZ capability gate in `RV-20260831-002`, writing an independent from-scratch classical-reversible simulator that reproduced every closed-form count and confirmed the capability/adapter logic is genuinely fail-closed against forged admission flags. Claude approved the exact Figure 14(a) single-event correction map in `RV-20260831-003`, rendering the primary source PDF to a 600 DPI image and directly pixel-verifying every wire assignment and correction formula, and independently writing a from-scratch numpy channel reconstruction that reproduced all 64 measurement branches before reading the repository's own verifier. Claude most recently approved the finite direct-CCZ backend compatibility audit in `RV-20260831-004`, pulling the raw Cain PDF text directly and confirming the source itself attributes the incompatible factory figures to a different architecture regime than the selected candidate.
+> The Gidney adapter preserves logical-value lifetimes, quantum dependencies, X-basis erase measurements, and classical feed-forward. Claude approved this bounded prototype in `RV-20260815-003`. Claude also approved the conditional Mitten lowering and greedy scheduler in `RV-20260815-004`, including an independent gate-by-gate check of the Figure-3 trace against the pinned source's exhaustively verified circuit. Claude further approved the adaptive PBC/CQLU trace in `RV-20260815-006` after independently re-deriving its operation-count formulas and hand-checking the CNOT/H/S/T/T-dagger gadgets' Clifford-conjugation algebra. Claude also approved the J300 resource-constrained scheduler in `RV-20260815-007` after hand-verifying its high-rate round-savings arithmetic and scratch-slot allocation logic. Claude approved the memory-I/O overlay in `RV-20260823-001`, confirming its independent replay engine recomputes every placement from scratch rather than trusting the placement algorithm's own bookkeeping. Claude approved the Bell-bridge ripple cycle in `RV-20260824-001`, confirming the generic-bridge circuit is the standard teleportation decomposition and that its branch probability lands at essentially exactly 1/4 across 32 random states, as the no-signaling property predicts. Claude approved the Draper QCLA DAG in `RV-20260824-003`, hand-deriving the width-2 circuit by symbolic Boolean algebra and independently exhaustively replaying an untested width plus five untested random widths. Claude approved the QCLA adaptive-PBC lowering in `RV-20260825-001`, independently rebuilding the full 8x8 Selinger CCX unitary from scratch and finding it matches ideal CCX with zero global-phase correction needed. Claude approved the clean OOP-QCLA trace and direct-CCZ capability gate in `RV-20260831-002`, writing an independent from-scratch classical-reversible simulator that reproduced every closed-form count and confirmed the capability/adapter logic is genuinely fail-closed against forged admission flags. Claude approved the exact Figure 14(a) single-event correction map in `RV-20260831-003`, rendering the primary source PDF to a 600 DPI image and directly pixel-verifying every wire assignment and correction formula, and independently writing a from-scratch numpy channel reconstruction that reproduced all 64 measurement branches before reading the repository's own verifier. Claude approved the finite direct-CCZ backend compatibility audit in `RV-20260831-004`, pulling the raw Cain PDF text directly and confirming the source itself attributes the incompatible factory figures to a different architecture regime than the selected candidate. Claude most recently approved the AutoCCZ surface-code adapter in `RV-20260901-001`, rendering the primary source's Figures 3/4/6 directly and unzipping the official ODS calculator to independently confirm its output-error cell belongs to a different code-distance example than the selected candidate.
 
 > [!warning] Provisional sensitivity result — `CHECK`
 > For the adaptive width-32 Gidney trace, the J300 sensitivity profile gives **31,176 syndrome rounds**, ten-scratch occupancy **43**, and **zero high-rate hits**. Adding memory I/O (100 loads, 100 stores, one round each, fixed order, no prefetch) brings the combined figure to **31,376 rounds**. This excludes bridge occupancy, factory construction, routing, decoder tail, setup/readout, and wall-clock conversion. It is **not** a days-level runtime or total-qubit claim, and the 100/100 transfer count is a fixed-order/no-prefetch policy result, not a placement lower bound.
@@ -69,17 +70,27 @@ updated: 2026-08-31
 > remain visible alternatives but are not silently composed. No schedule was
 > generated.
 
+> [!warning] AutoCCZ adapter — `LITERATURE`/`NUMERICAL`, reviewed `RV-20260901-001`
+> Gidney--Fowler's source-native surface-code path connects one CCZ-factory
+> output through three delayed-choice CZ cells and six routing qubits to one
+> Toffoli consumer. An abstract check matches ideal CCX on all **64** branches.
+> Under `CHECK` timing inputs the example yields **135 cycles/CCZ**, about
+> **7.407 kHz/factory**, and **14 factories** for 100 kHz average demand.
+> Complete service is still rejected: nine finite fields are missing and the
+> official `5.33332e-11` error belongs to `d1=15,d2=31`, not the selected
+> `d1=17,d2=27`. No schedule was generated.
+
 ## Next three decisions/actions
 
 1. **Human:** close `T-BOOT-001` by choosing the canonical ECDLP circuit contract in [[docs/CANONICAL_CIRCUIT_DECISION|Canonical Circuit Decision]].
-2. **Backend:** source-qualify one finite decoded direct-CCZ factory-to-consumer adapter, and separately pin the remaining J300 native durations.
+2. **Backend:** close the selected AutoCCZ distances' output/transport/consumer error, finite decoded buffer/reaction, and failure budget; separately pin remaining J300 native durations.
 
 ## Quick access to canonical records
 
 - Project truth: [[context/STATUS|Project Status]] · [[context/TASKS|Task Board]] · [[context/AI_HANDOFF|AI Handoff]]
 - Scientific records: [[context/DECISIONS|Decisions]] · [[context/RESULT_LEDGER|Result Ledger]] · [[context/ASSUMPTIONS|Assumptions]]
 - Review state: [[coordination/REVIEW_QUEUE|Review Queue]]
-- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory/high rate]] · [[docs/HIGH_RATE_QCLA_DIRECT_CCZ_RESEARCH_CYCLE|Direct-CCZ research plan]] · [[docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT|Direct-CCZ capability/OOP trace]] · [[docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT|Direct-CCZ single event]] · [[docs/DIRECT_CCZ_FINITE_BACKEND_AUDIT|Finite direct-CCZ backend audit]]
+- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory/high rate]] · [[docs/HIGH_RATE_QCLA_DIRECT_CCZ_RESEARCH_CYCLE|Direct-CCZ research plan]] · [[docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT|Direct-CCZ capability/OOP trace]] · [[docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT|Direct-CCZ single event]] · [[docs/DIRECT_CCZ_FINITE_BACKEND_AUDIT|Finite direct-CCZ backend audit]] · [[docs/AUTOCCZ_SURFACE_CODE_ADAPTER|AutoCCZ adapter]]
 - Source corpus: [[literature/papers/INDEX|Paper Index]] · [[literature/READING_QUEUE|Reading Queue]]
 
 > [!info] Status language
