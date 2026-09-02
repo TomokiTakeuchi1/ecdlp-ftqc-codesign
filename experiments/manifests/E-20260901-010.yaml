@@ -1,0 +1,47 @@
+experiment_id: E-20260901-010
+task_id: T-20260901-010
+title: Exact-anchor and structural width scaling for direct-CCZ QCLA
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+  - configs/architectures/direct_ccz_finite_backend_audit_v1.yaml
+entrypoint: scripts/run_direct_ccz_ppm_scaling_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_ppm_scaling_cycle.py
+widths:
+  structural: [5, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257]
+  exact_pair_anchors: [5, 8]
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+  - A-0033
+  - A-0035
+  - A-0036
+  - A-0037
+outputs:
+  - experiments/runs/T-20260901-010/width_sweep.json
+  - experiments/runs/T-20260901-010/exact_anchors.json
+  - experiments/runs/T-20260901-010/width_256_demand.json
+  - experiments/runs/T-20260901-010/finite_scaling_admission.json
+  - experiments/runs/T-20260901-010/scaling_replay.json
+  - experiments/runs/T-20260901-010/summary.json
+  - experiments/runs/T-20260901-010/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_analysis
+  exact_relation_algebra: canonical Boolean ANF
+  structural_mode: deterministic source-DAG traversal without pair materialization
+validation:
+  - width-five structural counts agree with reviewed OOP/IP exact artifacts
+  - width-five and width-eight exact constructions meet their causal lower bounds
+  - every structural point is independently rebuilt without compiler or scheduler imports
+  - width-256 OOP/IP demand is evaluated directly rather than interpolated
+  - finite schedule, surgery rounds, runtime, physical qubits, and failure probability remain null
+exclusions:
+  - width-256 pair classification or compatible batch schedule
+  - native surgery rounds or operation duration
+  - finite processor placement, memory traffic, routing, or capacity admission
+  - decoder throughput or classical reaction time
+  - CCZ delivery, buffering, storage trajectory, or stalls
+  - physical qubit total or logical failure probability

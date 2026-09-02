@@ -1,10 +1,61 @@
 # AI handoff
 
-Last updated: 2026-09-02
+Last updated: 2026-09-03
 From: claude
 To: codex and human
 
 ## Current review handoff
+
+`T-20260901-010` is `RV-20260901-009` `APPROVED` (Claude review, 2026-09-03).
+It adds exact Boolean-ANF anchors at widths 5 and 8, then switches to a compact
+source/event traversal for 19 OOP/IP widths through 257 without materializing
+quadratic PPM pair tables. The four exact OOP/IP anchors use 12/24 levels at
+width 5 and 14/28 at width 8; every construction meets its exact causal lower
+bound and contains no fallback PPM.
+
+The direct width-256 structural result has 1,229/2,458 OOP/IP direct-CCZ
+events, 7,374/14,748 PPMs, theoretical pair tables of
+27,184,251/108,744,378 records, and weighted causal lower bounds 34/68. Both
+variants peak at 255 events or 1,530 PPMs in one source layer. Across the 19
+selected widths, IP event count, non-Clifford source-layer count, and causal
+lower bound are exactly twice OOP; this is labeled `NUMERICAL` for the selected
+sweep, not a general proof.
+
+The independent replay imports neither compiler nor scheduler, rebuilds all
+38 structural points, and detects mutations to a pair count, exact level, and
+prohibited finite runtime. The source two-phase envelope is only `CHECK` and
+is not a large-width schedule. Width-256 compatibility remains `OPEN`.
+The selected finite gate still has 13 capability gaps, 13 backend gaps, three
+incompatible factory fields, and four missing native-mapper obligations, so
+all native schedule/time/space/failure outputs remain null. Ten focused tests
+pass; the full suite reports 298 passes plus the two known unrelated
+sibling-pin failures. See `docs/DIRECT_CCZ_QCLA_SCALING_CONTRACT.md`,
+`experiments/runs/T-20260901-010/summary.json`, and
+`coordination/reviews/T-20260901-010.md`.
+
+The reviewer confirmed via `git diff --stat` that this task adds one new
+module plus purely additive exports and leaves every already-reviewed
+compiler/architecture/batching module untouched, independently re-derived
+that the weighted-causal-bound rule is a valid general lower bound from the
+already-verified two-layer Figure-14(a) event structure (not an empirical fit
+at the two anchor widths), and confirmed the analyzer actively cross-validates
+this bound against the full exact symbolic causal path at widths 5/8 rather
+than only asserting it. A from-scratch verification script importing only the
+already-reviewed source-trace builders (never the reviewed scaling module,
+compiler, or scheduler) independently reproduced every headline number at
+seven widths spanning 5 through 256 using its own independently implemented
+longest-path algorithm, including the width-256 figures and the exact
+IP-equals-2x-OOP relation at every tested width, and separately confirmed the
+power-of-two boundary pattern matches standard parallel-prefix
+carry-lookahead theory.
+
+No task currently holds an active lock; `T-20260901-010`'s lock is `RELEASED`.
+The next open item on the board is closing the AutoCCZ adapter's remaining
+service fields and adding factory service/buffer/routing to the width-256
+QCLA T-demand series (see Known risks below); no new task ID is queued for a
+width-256-compatible finite backend yet.
+
+## Reviewed IP-QCLA direct-CCZ foundation
 
 `T-20260901-009` is `RV-20260901-008` `APPROVED` (Claude review, 2026-09-02).
 The width-five in-place modulo-QCLA now uses the same
@@ -55,10 +106,8 @@ algorithm from raw JSON and reproduced the 24-level bound exactly, and
 hand-verified all combinatorics (7,140 pairs, 336 within-batch, 6,804
 cross-level).
 
-`T-20260901-010` is now `READY`: its dependencies (`T-20260901-007`,
-`T-20260901-009`, `T-20260831-004`) are all `DONE`. It must separate width
-scaling from finite-backend admission and must not extrapolate the seven
-bounded weight profiles as exact data.
+`T-20260901-010` consumed these reviewed dependencies and is now
+`RV-20260901-009` `APPROVED`.
 
 ## Reviewed high-rate-aware QCLA-to-PPM foundation
 
@@ -167,8 +216,8 @@ surgery rounds, and pass-through CNOT time/space/routing/memory costs remain
 trace and candidate artifacts and is `RV-20260901-007` `APPROVED`.
 `T-20260901-009` reuses the compiler for IP-QCLA without the existing seven-T
 route and is `RV-20260901-008` `APPROVED`.
-`T-20260901-010` is now `READY` and is the first point at which width scaling
-and a compatible finite backend may be integrated.
+`T-20260901-010` now separates exact-anchor width scaling from the still-open
+compatible finite-backend integration and is `RV-20260901-009` `APPROVED`.
 
 The cycle contract is
 `docs/HIGH_RATE_QCLA_PPM_OPTIMIZATION_CYCLE.md`. It explicitly forbids
@@ -332,16 +381,17 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-1. Implement `T-20260901-010`, scaling QCLA PPM schedules and integrating
-   finite backend resources (now `READY`); separate width scaling from
-   finite-backend admission and do not extrapolate the seven bounded weight
-   profiles from `T-20260901-009` as exact data.
-2. Source or compute a `d1=17,d2=27` output/transport/consumer
+1. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.
-3. Add factory service, finite buffer, routing, and backlog to the width-256
+2. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
+3. Toward a width-256-compatible direct-CCZ candidate schedule: either prove a
+   scalable compatibility construction that does not require materializing
+   the quadratic PPM pair table, or implement one coherent native mapper and
+   finite backend that can admit the already-reviewed structural demand from
+   `T-20260901-010`. Neither currently exists as a claimed task on the board.
 4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
@@ -403,5 +453,5 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-`T-20260901-009`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
-currently holds an active lock. `T-20260901-010` is `READY` and unassigned.
+`T-20260901-010`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
+currently holds an active lock.

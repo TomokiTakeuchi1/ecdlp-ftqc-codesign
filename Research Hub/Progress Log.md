@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-09-02
+updated: 2026-09-03
 ---
 
 # Research Progress Log
@@ -12,6 +12,60 @@ updated: 2026-09-02
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-09-03 — Direct-CCZ QCLA width scaling
+
+**Status:** Reviewed and approved (`T-20260901-010`, `RV-20260901-009`)
+
+What changed:
+
+- Added exact full-pair anchors at widths 5 and 8. OOP/IP candidates use
+  12/24 levels at width 5 and 14/28 at width 8, each meeting its exact causal
+  lower bound without fallback.
+- Added a compact source/event traversal for 19 widths through 257. It records
+  exact gates, events, PPMs, cleanup, layer bursts, and a weighted source-DAG
+  causal lower bound without building every PPM pair.
+- Directly evaluated width 256: OOP/IP has 1,229/2,458 CCZ events,
+  7,374/14,748 PPMs, and causal lower bounds 34/68. Both peak at 255 events or
+  1,530 PPMs in one source layer.
+- Added an independent replay with no compiler or scheduler imports and
+  mutation tests for pair counts, exact levels, and forbidden finite runtime.
+- Preserved the rejected finite backend and left native schedule, surgery
+  rounds, memory/routing, controller/factory service, runtime, physical
+  qubits, and failure probability null.
+
+Why it matters:
+
+The width-256 workload is now measured directly without attempting to store
+27,184,251 OOP or 108,744,378 IP pair records. Small-width exact equality with
+the causal bound remains an anchor, not an extrapolated large-width schedule.
+Across the selected widths, IP event count, non-Clifford source-layer count,
+and causal lower bound are twice OOP; this is `NUMERICAL`, not a theorem.
+
+Evidence: `NUMERICAL` structural results, model-relative `PROVED` exact
+width-5/8 anchors and causal lower-bound construction, `CHECK` two-phase
+source envelope, and `OPEN` width-256 compatibility/finite service. See
+`docs/DIRECT_CCZ_QCLA_SCALING_CONTRACT.md` and
+`coordination/reviews/T-20260901-010.md`.
+
+> [!success] Review note
+> Claude's review confirmed via `git diff --stat` that this task adds one new
+> module and only additive exports, leaving every already-reviewed compiler,
+> architecture, and batching module untouched. It independently re-derived
+> that the weighted-causal-lower-bound rule (weight two per Toffoli, zero per
+> Clifford) is a valid general lower bound from the already-verified
+> two-layer Figure-14(a) event structure, not an empirical fit at the two
+> anchor widths, and confirmed the analyzer actively cross-validates this
+> bound against the full exact symbolic causal path at widths 5 and 8. A
+> from-scratch verification script importing only the already-reviewed
+> source-trace builders -- never the reviewed scaling module, compiler, or
+> scheduler -- independently reproduced every headline number at seven widths
+> spanning 5 through 256 (including 1,229/2,458 events, 7,374/14,748 PPMs,
+> 27,184,251/108,744,378 theoretical pairs, and causal bounds 34/68 at width
+> 256) using its own independently implemented longest-path algorithm, and
+> separately confirmed the power-of-two boundary pattern matches standard
+> parallel-prefix carry-lookahead theory. See
+> `coordination/reviews/T-20260901-010.md`.
 
 ## 2026-09-02 — IP-QCLA direct-CCZ comparison
 
