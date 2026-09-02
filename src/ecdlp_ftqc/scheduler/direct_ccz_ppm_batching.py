@@ -61,7 +61,8 @@ class PpmObservableProfile:
     y_content: tuple[tuple[str, BooleanPolynomial], ...]
     minimum_weight: int
     maximum_weight: int
-    distinct_branch_observables: int
+    distinct_branch_observables: int | None
+    weight_bounds_exact: bool = True
 
     @property
     def has_possible_y(self) -> bool:
@@ -144,6 +145,7 @@ class CandidateSchedule:
     combined_batch_level_lower_bound: int
     fallback_operation_count: int
     optimality_evidence_status: EvidenceStatus
+    conflict_clique_bound_method: str = "exact_maximum_conflict_clique"
     complete_native_schedule: bool = False
 
     @property
@@ -326,6 +328,29 @@ def symbolic_y_content(
     return tuple(result)
 
 
+def _exact_axis_options(
+    word: SymbolicPauliWord,
+) -> dict[str, set[str]]:
+    x = _component_map(word.x_components)
+    z = _component_map(word.z_components)
+    axis_options: dict[str, set[str]] = {}
+    one = BooleanPolynomial.one()
+    for logical in sorted(set(x) | set(z)):
+        x_poly = _component(x, logical)
+        z_poly = _component(z, logical)
+        x_only = x_poly.multiply(one.xor(z_poly))
+        z_only = z_poly.multiply(one.xor(x_poly))
+        y = x_poly.multiply(z_poly)
+        axes = {
+            axis
+            for axis, polynomial in (("X", x_only), ("Y", y), ("Z", z_only))
+            if not polynomial.is_zero
+        }
+        if axes:
+            axis_options[logical] = axes
+    return axis_options
+
+
 def _observable_profile(ppm: SymbolicPpmMeasurement) -> PpmObservableProfile:
     word = ppm.presented_observable
     variables = tuple(
@@ -338,25 +363,29 @@ def _observable_profile(ppm: SymbolicPpmMeasurement) -> PpmObservableProfile:
             | set(word.sign.variables)
         )
     )
-    if len(variables) > 16:
-        raise DirectCczPpmBatchingError(
-            f"{ppm.operation_id} has {len(variables)} axis variables; exact branch "
-            "profiling is limited to 16 variables in this bounded optimizer"
+    axis_options = _exact_axis_options(word)
+    if len(variables) <= 16:
+        assignments = (
+            (
+                {name: bit for name, bit in zip(variables, bits, strict=True)}
+                for bits in product((0, 1), repeat=len(variables))
+            )
+            if variables
+            else iter(({},))
         )
-    assignments = (
-        ({name: bit for name, bit in zip(variables, bits, strict=True)} for bits in product((0, 1), repeat=len(variables)))
-        if variables
-        else iter(({},))
-    )
-    axis_options: dict[str, set[str]] = {}
-    weights: list[int] = []
-    distinct: set[tuple[int, tuple[tuple[str, str], ...]]] = set()
-    for assignment in assignments:
-        sign, support = word.evaluate(assignment)
-        weights.append(len(support))
-        distinct.add((sign, support))
-        for logical, axis in support:
-            axis_options.setdefault(logical, set()).add(axis)
+        distinct = {word.evaluate(assignment) for assignment in assignments}
+        weights = [len(support) for _, support in distinct]
+        minimum_weight = min(weights)
+        maximum_weight = max(weights)
+        distinct_count: int | None = len(distinct)
+    else:
+        # Every branch is a Clifford conjugate of a nonidentity source PPM, so
+        # weight one is a valid lower bound.  The exact union of branch-possible
+        # support is a safe upper bound.  Pair compatibility and Y detection
+        # remain exact ANF decisions and do not consume this weight bound.
+        minimum_weight = 1
+        maximum_weight = len(axis_options)
+        distinct_count = None
     return PpmObservableProfile(
         operation_id=ppm.operation_id,
         source_gate_id=ppm.source_gate_id,
@@ -370,9 +399,10 @@ def _observable_profile(ppm: SymbolicPpmMeasurement) -> PpmObservableProfile:
             for logical, axes in sorted(axis_options.items())
         ),
         y_content=symbolic_y_content(word),
-        minimum_weight=min(weights),
-        maximum_weight=max(weights),
-        distinct_branch_observables=len(distinct),
+        minimum_weight=minimum_weight,
+        maximum_weight=maximum_weight,
+        distinct_branch_observables=distinct_count,
+        weight_bounds_exact=len(variables) <= 16,
     )
 
 
@@ -777,27 +807,50 @@ def _candidate_schedule(
                 ),
                 causal_predecessor_batch_levels=causal_levels,
                 reaction_predecessor_batch_levels=reaction_levels,
+                unresolved_general_obligations=(
+                    GENERAL_OBLIGATIONS
+                    + (
+                        "maximum_ppm_weight_is_conservative_support_union_upper_bound",
+                    )
+                    if any(not profile.weight_bounds_exact for profile in group_profiles)
+                    else GENERAL_OBLIGATIONS
+                ),
             )
         )
 
     ppm_ids = frozenset(ppm_by_id)
     causal_lower = _longest_ppm_path(dependency, ppm_ids)
-    order = {
-        operation_id: index
-        for index, operation_id in enumerate(dependency.topological_ppm_order)
-    }
-    conflict_adjacency = {
-        operation_id: frozenset(
-            other
-            for other in ppm_ids
-            if other != operation_id
-            and not relations[frozenset((operation_id, other))].general_high_rate_compatible
+    if len(ppm_ids) <= 60:
+        order = {
+            operation_id: index
+            for index, operation_id in enumerate(dependency.topological_ppm_order)
+        }
+        conflict_adjacency = {
+            operation_id: frozenset(
+                other
+                for other in ppm_ids
+                if other != operation_id
+                and not relations[
+                    frozenset((operation_id, other))
+                ].general_high_rate_compatible
+            )
+            for operation_id in ppm_ids
+        }
+        conflict_lower = len(
+            _maximum_clique(
+                dependency.topological_ppm_order,
+                conflict_adjacency,
+                order,
+            )
         )
-        for operation_id in ppm_ids
-    }
-    conflict_lower = len(
-        _maximum_clique(dependency.topological_ppm_order, conflict_adjacency, order)
-    )
+        conflict_method = "exact_maximum_conflict_clique"
+    else:
+        # A single conflict-graph vertex is an exact witness of a one-level
+        # lower bound.  The width-5 IP construction is already closed by its
+        # 24-level causal lower bound, so solving the NP-hard 120-vertex maximum
+        # clique cannot strengthen the optimality result.
+        conflict_lower = int(bool(ppm_ids))
+        conflict_method = "single_vertex_proved_lower_bound_large_instance"
     combined_lower = max(causal_lower, conflict_lower)
     upper = len(batches)
     return CandidateSchedule(
@@ -813,6 +866,7 @@ def _candidate_schedule(
         optimality_evidence_status=(
             EvidenceStatus.PROVED if upper == combined_lower else EvidenceStatus.INCONCLUSIVE
         ),
+        conflict_clique_bound_method=conflict_method,
     )
 
 
@@ -1136,6 +1190,16 @@ def _schedule_to_data(schedule: CandidateSchedule) -> dict[str, Any]:
             "combined_batch_levels": schedule.combined_batch_level_lower_bound,
             "conflict_clique_batch_levels": schedule.conflict_clique_lower_bound,
             "evidence_status": EvidenceStatus.PROVED.value,
+            **(
+                {}
+                if schedule.conflict_clique_bound_method
+                == "exact_maximum_conflict_clique"
+                else {
+                    "conflict_clique_bound_method": (
+                        schedule.conflict_clique_bound_method
+                    )
+                }
+            ),
         },
         "maximum_ppm_weight": schedule.maximum_ppm_weight,
         "optimality_evidence_status": schedule.optimality_evidence_status.value,
@@ -1181,6 +1245,17 @@ def general_high_rate_candidate_to_data(
                 "source_algorithmic_layer": profile.source_algorithmic_layer,
                 "source_gate_id": profile.source_gate_id,
                 "variables": list(profile.variables),
+                **(
+                    {}
+                    if profile.weight_bounds_exact
+                    else {
+                        "weight_bounds_exact": False,
+                        "weight_bounds_interpretation": (
+                            "nonidentity lower bound and exact possible-support-union "
+                            "upper bound"
+                        ),
+                    }
+                ),
                 "y_content": [
                     {
                         "logical_value": logical,

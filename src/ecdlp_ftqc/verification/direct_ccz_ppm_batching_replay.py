@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from itertools import combinations, product
+from itertools import combinations
 from typing import Any
 
 import networkx as nx  # type: ignore[import-untyped]
@@ -93,7 +93,8 @@ class _ProfileReplay:
     y_content: tuple[tuple[str, _Poly], ...]
     minimum_weight: int
     maximum_weight: int
-    distinct_observables: int
+    distinct_observables: int | None
+    weight_bounds_exact: bool
 
 
 @dataclass(frozen=True, slots=True)
@@ -282,6 +283,126 @@ def _axis_conflicts(
     return tuple(result)
 
 
+_WordKey = tuple[
+    tuple[tuple[str, _Poly], ...],
+    tuple[tuple[str, _Poly], ...],
+    _Poly,
+]
+
+
+def _poly_restrict(polynomial: _Poly, variable: str, value: int) -> _Poly:
+    terms: set[tuple[str, ...]] = set()
+    for monomial in polynomial:
+        if variable in monomial:
+            if value == 0:
+                continue
+            restricted = tuple(item for item in monomial if item != variable)
+        else:
+            restricted = monomial
+        if restricted in terms:
+            terms.remove(restricted)
+        else:
+            terms.add(restricted)
+    return frozenset(terms)
+
+
+def _word_restrict(word: _WordKey, variable: str, value: int) -> _WordKey:
+    x, z, sign = word
+    return (
+        tuple(
+            (logical, restricted)
+            for logical, polynomial in x
+            if (restricted := _poly_restrict(polynomial, variable, value))
+        ),
+        tuple(
+            (logical, restricted)
+            for logical, polynomial in z
+            if (restricted := _poly_restrict(polynomial, variable, value))
+        ),
+        _poly_restrict(sign, variable, value),
+    )
+
+
+def _exact_observables(
+    word: tuple[dict[str, _Poly], dict[str, _Poly], _Poly],
+) -> frozenset[tuple[int, tuple[tuple[str, str], ...]]]:
+    start: _WordKey = (
+        tuple(sorted(word[0].items())),
+        tuple(sorted(word[1].items())),
+        word[2],
+    )
+    memo: dict[
+        _WordKey,
+        frozenset[tuple[int, tuple[tuple[str, str], ...]]],
+    ] = {}
+
+    def visit(current: _WordKey) -> frozenset[tuple[int, tuple[tuple[str, str], ...]]]:
+        cached = memo.get(current)
+        if cached is not None:
+            return cached
+        x_items, z_items, sign = current
+        variables = sorted(
+            {
+                variable
+                for _, polynomial in (*x_items, *z_items)
+                for monomial in polynomial
+                for variable in monomial
+            }
+            | {variable for monomial in sign for variable in monomial}
+        )
+        if variables:
+            selected = variables[0]
+            result = visit(_word_restrict(current, selected, 0)) | visit(
+                _word_restrict(current, selected, 1)
+            )
+        else:
+            x = {logical for logical, polynomial in x_items if () in polynomial}
+            z = {logical for logical, polynomial in z_items if () in polynomial}
+            support = []
+            for logical in sorted(x | z):
+                support.append(
+                    (
+                        logical,
+                        {
+                            (True, False): "X",
+                            (False, True): "Z",
+                            (True, True): "Y",
+                        }[(logical in x, logical in z)],
+                    )
+                )
+            result = frozenset(((int(() in sign), tuple(support)),))
+        memo[current] = result
+        return result
+
+    return visit(start)
+
+
+def _axis_options_and_support_polynomials(
+    word: tuple[dict[str, _Poly], dict[str, _Poly], _Poly],
+) -> tuple[dict[str, set[str]], tuple[_Poly, ...]]:
+    x, z, _ = word
+    one: _Poly = frozenset(((),))
+    axis_options: dict[str, set[str]] = {}
+    support_polynomials = []
+    for logical in sorted(set(x) | set(z)):
+        x_poly = _component(x, logical)
+        z_poly = _component(z, logical)
+        y = _poly_multiply(x_poly, z_poly)
+        axes = {
+            axis
+            for axis, polynomial in (
+                ("X", _poly_multiply(x_poly, _poly_xor(one, z_poly))),
+                ("Y", y),
+                ("Z", _poly_multiply(z_poly, _poly_xor(one, x_poly))),
+            )
+            if polynomial
+        }
+        if axes:
+            axis_options[logical] = axes
+        support_polynomials.append(_poly_xor(_poly_xor(x_poly, z_poly), y))
+    return axis_options, tuple(support_polynomials)
+
+
 def _profile(
     word: tuple[dict[str, _Poly], dict[str, _Poly], _Poly],
 ) -> _ProfileReplay:
@@ -296,42 +417,29 @@ def _profile(
             }
         )
     )
-    if len(variables) > 16:
-        raise DirectCczPpmBatchingReplayError(
-            "independent exact profile exceeds the 16-variable bounded limit"
-        )
-    axis_options: dict[str, set[str]] = {}
-    weights: list[int] = []
-    distinct: set[tuple[int, tuple[tuple[str, str], ...]]] = set()
-    assignments = product((0, 1), repeat=len(variables)) if variables else ((),)
-    for bits in assignments:
-        assignment = dict(zip(variables, bits, strict=True))
-        support = []
-        for logical in sorted(set(x) | set(z)):
-            bit_pair = (
-                _poly_evaluate(_component(x, logical), assignment),
-                _poly_evaluate(_component(z, logical), assignment),
-            )
-            axis = {(0, 0): "I", (1, 0): "X", (0, 1): "Z", (1, 1): "Y"}[
-                bit_pair
-            ]
-            if axis != "I":
-                support.append((logical, axis))
-                axis_options.setdefault(logical, set()).add(axis)
-        support_tuple = tuple(support)
-        weights.append(len(support_tuple))
-        distinct.add((_poly_evaluate(sign, assignment), support_tuple))
+    polynomial_axes, _ = _axis_options_and_support_polynomials(word)
+    if len(variables) <= 16:
+        distinct = _exact_observables(word)
+        weights = [len(support) for _, support in distinct]
+        minimum_weight = min(weights)
+        maximum_weight = max(weights)
+        distinct_count: int | None = len(distinct)
+    else:
+        minimum_weight = 1
+        maximum_weight = len(polynomial_axes)
+        distinct_count = None
     return _ProfileReplay(
         variables=variables,
-        possible_support=tuple(sorted(axis_options)),
+        possible_support=tuple(sorted(polynomial_axes)),
         axis_options=tuple(
             (logical, tuple(sorted(axes)))
-            for logical, axes in sorted(axis_options.items())
+            for logical, axes in sorted(polynomial_axes.items())
         ),
         y_content=_y_content(word),
-        minimum_weight=min(weights),
-        maximum_weight=max(weights),
-        distinct_observables=len(distinct),
+        minimum_weight=minimum_weight,
+        maximum_weight=maximum_weight,
+        distinct_observables=distinct_count,
+        weight_bounds_exact=len(variables) <= 16,
     )
 
 
@@ -668,8 +776,23 @@ def _validate_schedule(
         peak_live = max(peak_live, expected_total)
 
     causal_lower = _longest_path(graph, frozenset(graph.topological_ppms))
-    clique_lower = _clique_lower_bound(graph.topological_ppms, compatible)
     lower = _mapping(schedule.get("lower_bounds"), f"{path}.lower_bounds")
+    clique_method = lower.get(
+        "conflict_clique_bound_method",
+        "exact_maximum_conflict_clique",
+    )
+    if clique_method == "exact_maximum_conflict_clique":
+        clique_lower = _clique_lower_bound(graph.topological_ppms, compatible)
+    elif clique_method == "single_vertex_proved_lower_bound_large_instance":
+        if len(graph.topological_ppms) <= 60:
+            raise DirectCczPpmBatchingReplayError(
+                f"{path} used the large-instance clique witness below its threshold"
+            )
+        clique_lower = int(bool(graph.topological_ppms))
+    else:
+        raise DirectCczPpmBatchingReplayError(
+            f"{path} has an unsupported conflict-clique bound method"
+        )
     if _integer(lower.get("causal_critical_path_batch_levels"), f"{path}.lower_bounds.causal") != causal_lower:
         raise DirectCczPpmBatchingReplayError(f"{path} causal lower bound mismatch")
     if _integer(lower.get("conflict_clique_batch_levels"), f"{path}.lower_bounds.clique") != clique_lower:
@@ -762,8 +885,23 @@ def replay_direct_ccz_ppm_batching(
             raise DirectCczPpmBatchingReplayError(f"profile minimum weight mismatch for {operation_id}")
         if _integer(item.get("maximum_weight"), "$general.observable_profiles[].maximum_weight") != expected.maximum_weight:
             raise DirectCczPpmBatchingReplayError(f"profile maximum weight mismatch for {operation_id}")
-        if _integer(item.get("distinct_branch_observables"), "$general.observable_profiles[].distinct") != expected.distinct_observables:
+        observed_distinct = item.get("distinct_branch_observables")
+        if observed_distinct is not None:
+            observed_distinct = _integer(
+                observed_distinct,
+                "$general.observable_profiles[].distinct",
+            )
+        if observed_distinct != expected.distinct_observables:
             raise DirectCczPpmBatchingReplayError(f"profile branch count mismatch for {operation_id}")
+        observed_weight_exact = item.get("weight_bounds_exact", True)
+        if not isinstance(observed_weight_exact, bool):
+            raise DirectCczPpmBatchingReplayError(
+                f"profile weight-bound status is invalid for {operation_id}"
+            )
+        if observed_weight_exact != expected.weight_bounds_exact:
+            raise DirectCczPpmBatchingReplayError(
+                f"profile weight-bound status mismatch for {operation_id}"
+            )
         y_values = _sequence(item.get("y_content"), "$general.observable_profiles[].y_content")
         if len(y_values) != len(expected.y_content):
             raise DirectCczPpmBatchingReplayError(f"profile Y content mismatch for {operation_id}")

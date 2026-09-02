@@ -1,4 +1,4 @@
-"""Symbolic direct-CCZ PPM and Clifford-frame trace for clean OOP-QCLA.
+"""Symbolic direct-CCZ PPM and Clifford-frame traces for reviewed QCLA circuits.
 
 The trace is architecture independent.  Source layers remain dependency
 boundaries, not surgery rounds.  Deferred corrections use Boolean algebraic
@@ -14,15 +14,17 @@ import re
 from collections.abc import Iterable
 from dataclasses import dataclass, replace
 from enum import Enum
-from typing import Any
+from typing import Any, cast
 
 from ecdlp_ftqc.architectures import DirectCczCapability
-from ecdlp_ftqc.circuits.qcla import QclaGateKind
+from ecdlp_ftqc.circuits.qcla import QclaGate, QclaGateKind, QclaTrace
 from ecdlp_ftqc.circuits.qcla_oop import OopQclaGate, OopQclaTrace
 from ecdlp_ftqc.compiler.direct_ccz import (
+    DirectCczEventTrace,
     DirectCczInjectionEvent,
     DirectCczSourceDependency,
     lower_oop_qcla_to_direct_ccz_events,
+    lower_qcla_to_direct_ccz_events,
 )
 from ecdlp_ftqc.metadata import EvidenceStatus
 
@@ -715,7 +717,7 @@ class SymbolicDirectCczPpmTrace:
         clifford_source_ids = {
             instruction.source_gate_id
             for instruction in self.clifford_instructions
-            if instruction.role == "passthrough_cnot"
+            if instruction.role in {"passthrough_cnot", "passthrough_x"}
         }
         if event_source_ids | clifford_source_ids != set(source_ids):
             raise DirectCczPpmTraceError("every source gate must be lowered exactly once")
@@ -751,18 +753,21 @@ class SymbolicDirectCczPpmTrace:
             )
 
 
-def _source_predecessors(trace: OopQclaTrace) -> dict[str, tuple[str, ...]]:
-    result: dict[str, list[str]] = {gate.gate_id: [] for gate in trace.gates}
+def _source_predecessors(
+    trace: OopQclaTrace | QclaTrace,
+) -> dict[str, tuple[str, ...]]:
+    gates = cast(tuple[OopQclaGate | QclaGate, ...], trace.gates)
+    result: dict[str, list[str]] = {gate.gate_id: [] for gate in gates}
     for dependency in trace.dependencies:
         result[dependency.successor].append(dependency.predecessor)
-    order = {gate.gate_id: index for index, gate in enumerate(trace.gates)}
+    order = {gate.gate_id: index for index, gate in enumerate(gates)}
     return {
         gate_id: tuple(sorted(predecessors, key=order.__getitem__))
         for gate_id, predecessors in result.items()
     }
 
 
-def _logical_lifetimes(trace: OopQclaTrace) -> tuple[LogicalLifetime, ...]:
+def _oop_logical_lifetimes(trace: OopQclaTrace) -> tuple[LogicalLifetime, ...]:
     uses: dict[str, list[OopQclaGate]] = {}
     for gate in trace.gates:
         for logical in gate.logical_support:
@@ -792,13 +797,43 @@ def _logical_lifetimes(trace: OopQclaTrace) -> tuple[LogicalLifetime, ...]:
     return tuple(result)
 
 
-def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
-    trace: OopQclaTrace,
-    capability: DirectCczCapability,
-) -> SymbolicDirectCczPpmTrace:
-    """Lower an OOP-QCLA trace to an unscheduled symbolic PPM/frame program."""
+def _ip_logical_lifetimes(trace: QclaTrace) -> tuple[LogicalLifetime, ...]:
+    uses: dict[str, list[QclaGate]] = {}
+    for gate in trace.gates:
+        for logical in gate.logical_support:
+            uses.setdefault(logical, []).append(gate)
+    result = []
+    for logical, gates in sorted(uses.items()):
+        if logical.startswith("p:"):
+            role = "source_prefix_scratch_ancilla"
+            origin = "clean_zero"
+        elif logical.startswith("z:"):
+            role = "source_carry_ancilla"
+            origin = "clean_zero"
+        else:
+            role = "source_input_inout"
+            origin = "source_input"
+        result.append(
+            LogicalLifetime(
+                logical_value=logical,
+                role=role,
+                origin=origin,
+                first_source_gate_id=gates[0].gate_id,
+                last_source_gate_id=gates[-1].gate_id,
+                first_source_layer=gates[0].algorithmic_layer,
+                last_source_layer=gates[-1].algorithmic_layer,
+            )
+        )
+    return tuple(result)
 
-    event_trace = lower_oop_qcla_to_direct_ccz_events(trace, capability)
+
+def _lower_qcla_to_symbolic_direct_ccz_ppm(
+    trace: OopQclaTrace | QclaTrace,
+    event_trace: DirectCczEventTrace,
+    logical_lifetimes: tuple[LogicalLifetime, ...],
+) -> SymbolicDirectCczPpmTrace:
+    """Lower one supported QCLA trace to the shared unscheduled PPM/frame IR."""
+
     events_by_source = {
         event.source_gate_id: event for event in event_trace.injection_events
     }
@@ -814,7 +849,7 @@ def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
     macro_frames: list[MacroLayerFrame] = []
     resources: list[ResourceLifetime] = []
 
-    by_layer: dict[int, list[OopQclaGate]] = {}
+    by_layer: dict[int, list[OopQclaGate | QclaGate]] = {}
     for gate in trace.gates:
         by_layer.setdefault(gate.algorithmic_layer, []).append(gate)
 
@@ -827,26 +862,34 @@ def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
                 terminal_by_source[source_id]
                 for source_id in predecessors[gate.gate_id]
             )
-            if gate.kind is QclaGateKind.CNOT:
-                logical_gate = FrameGate(
-                    FrameGateKind.CNOT,
-                    (gate.controls[0], gate.target),
-                )
+            if gate.kind in {QclaGateKind.CNOT, QclaGateKind.X}:
+                if gate.kind is QclaGateKind.CNOT:
+                    logical_gate = FrameGate(
+                        FrameGateKind.CNOT,
+                        (gate.controls[0], gate.target),
+                    )
+                    passthrough_role = "passthrough_cnot"
+                    operation_id = f"{gate.gate_id}:passthrough-cnot"
+                    presented_name = "CNOT"
+                else:
+                    logical_gate = FrameGate(FrameGateKind.X, (gate.target,))
+                    passthrough_role = "passthrough_x"
+                    operation_id = f"{gate.gate_id}:passthrough-x"
+                    presented_name = "X"
                 frame_terms = _conjugate_frame_by_gate(frame_terms, logical_gate)
                 operation_frame_out = _snapshot(frame_terms)
-                operation_id = f"{gate.gate_id}:passthrough-cnot"
                 cliffords.append(
                     SymbolicCliffordInstruction(
                         operation_id=operation_id,
                         source_gate_id=gate.gate_id,
-                        role="passthrough_cnot",
+                        role=passthrough_role,
                         logical_gate=logical_gate,
                         frame_in_signature=operation_frame_in.signature,
                         frame_out_signature=operation_frame_out.signature,
                         presented_as=(
-                            f"BARE_LOGICAL_CNOT_FRAME_UPDATE("
+                            f"BARE_LOGICAL_{presented_name}_FRAME_UPDATE("
                             f"{operation_frame_in.signature},"
-                            f"CNOT({gate.controls[0]},{gate.target}))"
+                            f"{presented_name}({','.join(logical_gate.support)}))"
                         ),
                         predecessor_operation_ids=source_predecessor_operations,
                         evidence_status=gate.semantic_evidence_status,
@@ -860,7 +903,9 @@ def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
                         source_algorithmic_layer=gate.algorithmic_layer,
                         source_stage=gate.stage.value,
                         logical_support=gate.logical_support,
-                        lowering_kind="implementation_neutral_passthrough_cnot",
+                        lowering_kind=(
+                            f"implementation_neutral_{passthrough_role}"
+                        ),
                         emitted_operation_ids=(operation_id,),
                         frame_in_signature=operation_frame_in.signature,
                         frame_out_signature=operation_frame_out.signature,
@@ -868,7 +913,9 @@ def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
                 )
                 continue
             if gate.kind is not QclaGateKind.TOFFOLI:
-                raise DirectCczPpmTraceError("OOP direct-CCZ compiler accepts CNOT/CCX")
+                raise DirectCczPpmTraceError(
+                    "direct-CCZ QCLA compiler accepts X/CNOT/CCX"
+                )
 
             event = events_by_source[gate.gate_id]
             basis_before_id = f"{event.event_id}:basis-before"
@@ -1021,7 +1068,7 @@ def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
         source_trace_id=trace.trace_id,
         source_trace_schema_version=trace.schema_version,
         width=trace.width,
-        capability_id=capability.capability_id,
+        capability_id=event_trace.capability_id,
         source_operations=tuple(source_operations),
         injections=tuple(injections),
         ppms=tuple(ppms),
@@ -1029,9 +1076,35 @@ def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
         correction_updates=tuple(corrections),
         macro_layer_frames=tuple(macro_frames),
         source_dependencies=event_trace.source_dependencies,
-        logical_lifetimes=_logical_lifetimes(trace),
+        logical_lifetimes=logical_lifetimes,
         resource_lifetimes=tuple(resources),
         compiler_ancilla_lifetimes=(),
+    )
+
+
+def lower_oop_qcla_to_symbolic_direct_ccz_ppm(
+    trace: OopQclaTrace,
+    capability: DirectCczCapability,
+) -> SymbolicDirectCczPpmTrace:
+    """Lower an OOP-QCLA trace to an unscheduled symbolic PPM/frame program."""
+
+    return _lower_qcla_to_symbolic_direct_ccz_ppm(
+        trace,
+        lower_oop_qcla_to_direct_ccz_events(trace, capability),
+        _oop_logical_lifetimes(trace),
+    )
+
+
+def lower_qcla_to_symbolic_direct_ccz_ppm(
+    trace: QclaTrace,
+    capability: DirectCczCapability,
+) -> SymbolicDirectCczPpmTrace:
+    """Lower reviewed in-place QCLA without routing through seven-T expansion."""
+
+    return _lower_qcla_to_symbolic_direct_ccz_ppm(
+        trace,
+        lower_qcla_to_direct_ccz_events(trace, capability),
+        _ip_logical_lifetimes(trace),
     )
 
 

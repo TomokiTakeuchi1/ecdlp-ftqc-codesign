@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-09-01
+updated: 2026-09-02
 ---
 
 # Research Progress Log
@@ -12,6 +12,54 @@ updated: 2026-09-01
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-09-02 — IP-QCLA direct-CCZ comparison
+
+**Status:** Reviewed and approved (`T-20260901-009`, `RV-20260901-008`)
+
+What changed:
+
+- Reused the reviewed direct-CCZ PPM/conditional-frame representation for the
+  in-place width-5 QCLA without passing through the seven-T CCX decomposition.
+- Represented all 20 Toffolis as 120 PPMs and retained all source X/CNOT frame
+  effects, 75 dependencies, and logical/resource lifetimes explicitly.
+- Added independent serialized semantic and batching replay, including all
+  1,024 basis inputs and all 7,140 PPM-pair certificates.
+- Constructed 24 unitless candidate levels matching a 24-level causal lower
+  bound. Seven large-frame profiles visibly use conservative weight bounds;
+  pair compatibility remains exact.
+- Generated a deterministic OOP/IP report and retained the rejected finite
+  backend with null schedule, runtime, physical-qubit, and failure outputs.
+
+Why it matters:
+
+The clean OOP and in-place variants can now be compared under the same logical
+direct-CCZ semantics. At width 5 the source/event/candidate-level counts double
+from OOP to IP, while peak semantic liveness remains 26. This is a bounded
+logical result, not evidence for doubled wall-clock runtime or an executable
+backend.
+
+Evidence: `NUMERICAL`, with model-relative `PROVED` 24-level optimality and a
+`CHECK` boundary on seven profile-weight summaries. See
+`docs/DIRECT_CCZ_IP_QCLA_COMPARISON_CONTRACT.md` and
+`coordination/reviews/T-20260901-009.md`.
+
+> [!success] Review note
+> Claude's review was the first in this line to touch the core compiler and
+> scheduler rather than a presentation layer. It proved by code-structure
+> reading that the already-reviewed OOP path degenerates byte-for-byte to its
+> pre-existing behavior, independently re-derived that the new exact-ANF
+> axis-existence test used for profiles above 16 variables is mathematically
+> identical to the brute-force enumeration it replaces, and confirmed the
+> `minimum_weight=1`/support-union `maximum_weight` bounds are valid (a
+> Clifford conjugate of a nonidentity Pauli is never the identity). A
+> from-scratch verification script importing none of the reviewed modules ran
+> a 120,000-point Monte Carlo cross-check (400 sampled pairs x 300 random
+> assignments) against every claimed commutation/axis-conflict/Y decision with
+> zero contradictions, independently reimplemented the causal longest-path
+> algorithm from raw JSON and reproduced the 24-level bound exactly, and
+> hand-verified all combinatorics (7,140 pairs, 336 within-batch, 6,804
+> cross-level). See `coordination/reviews/T-20260901-009.md`.
 
 ## 2026-09-02 — Direct-CCZ PPM audit atlas
 

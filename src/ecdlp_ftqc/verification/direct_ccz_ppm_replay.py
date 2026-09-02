@@ -12,9 +12,14 @@ import json
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass
 from itertools import product
-from typing import Any
+from typing import Any, cast
 
-from ecdlp_ftqc.circuits.qcla import QclaGateKind
+from ecdlp_ftqc.circuits.qcla import (
+    QclaGate,
+    QclaGateKind,
+    QclaTrace,
+    replay_qcla,
+)
 from ecdlp_ftqc.circuits.qcla_oop import OopQclaGate, OopQclaTrace, replay_oop_qcla
 from ecdlp_ftqc.verification.direct_ccz_injection import (
     direct_ccz_branch_correction,
@@ -39,6 +44,33 @@ class SymbolicDirectCczPpmReplaySummary:
     injection_count: int
     ppm_count: int
     passthrough_cnot_count: int
+    correction_update_count: int
+    macro_layer_count: int
+    source_dependency_count: int
+    logical_lifetime_count: int
+    resource_lifetime_count: int
+    compiler_ancilla_count: int
+    correction_truth_table_rows_checked: int
+    frame_transition_count_checked: int
+    frame_probe_assignment_count: int
+    presented_observable_checks: int
+    source_basis_input_pairs_checked: int
+    local_injection_branch_count: int
+    local_injection_maximum_operator_error: float
+    complete_native_schedule: bool
+    all_passed: bool
+
+
+@dataclass(frozen=True, slots=True)
+class IpQclaSymbolicDirectCczPpmReplaySummary:
+    """Independent bounded replay counts for an in-place QCLA PPM trace."""
+
+    width: int
+    source_operation_count: int
+    injection_count: int
+    ppm_count: int
+    passthrough_cnot_count: int
+    passthrough_x_count: int
     correction_update_count: int
     macro_layer_count: int
     source_dependency_count: int
@@ -157,12 +189,12 @@ def _snapshot_terms(snapshot_value: object) -> list[dict[str, Any]]:
     return terms
 
 
-def _conjugate_terms_by_cnot(
+def _conjugate_terms_by_gate(
     terms: Sequence[Mapping[str, Any]],
-    control: str,
-    target: str,
+    kind: str,
+    support: tuple[str, ...],
 ) -> list[dict[str, Any]]:
-    cnot = _gate("CNOT", (control, target))
+    gate = _gate(kind, support)
     result: list[dict[str, Any]] = []
     for raw_term in terms:
         term = {str(key): value for key, value in raw_term.items()}
@@ -170,9 +202,17 @@ def _conjugate_terms_by_cnot(
             _mapping(item, label="frame circuit gate")
             for item in _sequence(term.get("circuit"), label="frame circuit")
         ]
-        term["circuit"] = _normalize_circuit((cnot, *circuit, cnot))
+        term["circuit"] = _normalize_circuit((gate, *circuit, gate))
         result.append(term)
     return result
+
+
+def _conjugate_terms_by_cnot(
+    terms: Sequence[Mapping[str, Any]],
+    control: str,
+    target: str,
+) -> list[dict[str, Any]]:
+    return _conjugate_terms_by_gate(terms, "CNOT", (control, target))
 
 
 @dataclass(slots=True)
@@ -291,12 +331,14 @@ def _probe_assignments(outcomes: tuple[str, ...]) -> tuple[dict[str, int], ...]:
     return tuple(assignments)
 
 
-def _source_gate_map(source: OopQclaTrace) -> dict[str, OopQclaGate]:
+def _source_gate_map(
+    source: OopQclaTrace | QclaTrace,
+) -> dict[str, OopQclaGate | QclaGate]:
     return {gate.gate_id: gate for gate in source.gates}
 
 
 def _validate_source_projection(
-    source: OopQclaTrace,
+    source: OopQclaTrace | QclaTrace,
     trace: Mapping[str, Any],
 ) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
     operations = [
@@ -347,7 +389,7 @@ def _validate_source_projection(
 
 
 def _validate_injections_and_corrections(
-    source: OopQclaTrace,
+    source: OopQclaTrace | QclaTrace,
     trace: Mapping[str, Any],
 ) -> int:
     gates = _source_gate_map(source)
@@ -456,7 +498,7 @@ def _validate_injections_and_corrections(
 
 
 def _validate_operation_dependencies(
-    source: OopQclaTrace,
+    source: OopQclaTrace | QclaTrace,
     trace: Mapping[str, Any],
     operations: Mapping[str, Mapping[str, Any]],
 ) -> None:
@@ -494,10 +536,11 @@ def _validate_operation_dependencies(
             )
         )
     }
+    source_gates = cast(tuple[OopQclaGate | QclaGate, ...], source.gates)
     source_predecessors: dict[str, list[str]] = {
-        gate.gate_id: [] for gate in source.gates
+        gate.gate_id: [] for gate in source_gates
     }
-    source_order = {gate.gate_id: index for index, gate in enumerate(source.gates)}
+    source_order = {gate.gate_id: index for index, gate in enumerate(source_gates)}
     for dependency in source.dependencies:
         source_predecessors[dependency.successor].append(dependency.predecessor)
     for predecessors in source_predecessors.values():
@@ -512,11 +555,19 @@ def _validate_operation_dependencies(
         predecessor_ids = tuple(
             terminal_by_source[item] for item in source_predecessors[gate.gate_id]
         )
-        if gate.kind is QclaGateKind.CNOT:
-            operation_id = f"{gate.gate_id}:passthrough-cnot"
+        if gate.kind in {QclaGateKind.CNOT, QclaGateKind.X}:
+            is_cnot = gate.kind is QclaGateKind.CNOT
+            suffix = "cnot" if is_cnot else "x"
+            role = f"passthrough_{suffix}"
+            operation_id = f"{gate.gate_id}:passthrough-{suffix}"
             instruction = cliffords.get(operation_id)
             if instruction is None:
-                raise DirectCczPpmReplayError("pass-through CNOT disappeared")
+                raise DirectCczPpmReplayError("pass-through Clifford disappeared")
+            logical_gate = (
+                _gate("CNOT", (gate.controls[0], gate.target))
+                if is_cnot
+                else _gate("X", (gate.target,))
+            )
             if (
                 instruction.get("source_gate_id"),
                 instruction.get("role"),
@@ -527,15 +578,20 @@ def _validate_operation_dependencies(
                 ),
             ) != (
                 gate.gate_id,
-                "passthrough_cnot",
-                _gate("CNOT", (gate.controls[0], gate.target)),
+                role,
+                logical_gate,
                 predecessor_ids,
             ):
-                raise DirectCczPpmReplayError("pass-through CNOT dependency changed")
+                raise DirectCczPpmReplayError(
+                    "pass-through Clifford dependency changed"
+                )
             if _strings(
-                operation.get("emitted_operation_ids"), label="emitted CNOT IDs"
+                operation.get("emitted_operation_ids"),
+                label="emitted pass-through IDs",
             ) != (operation_id,):
-                raise DirectCczPpmReplayError("pass-through CNOT provenance changed")
+                raise DirectCczPpmReplayError(
+                    "pass-through Clifford provenance changed"
+                )
             expected_cliffords.add(operation_id)
             terminal_by_source[gate.gate_id] = operation_id
             continue
@@ -656,7 +712,7 @@ def _validate_operation_dependencies(
 
 
 def _replay_frames(
-    source: OopQclaTrace,
+    source: OopQclaTrace | QclaTrace,
     trace: Mapping[str, Any],
 ) -> tuple[int, dict[str, list[dict[str, Any]]]]:
     operations = {
@@ -716,6 +772,8 @@ def _replay_frames(
                     gate.controls[0],
                     gate.target,
                 )
+            elif gate.kind is QclaGateKind.X:
+                terms = _conjugate_terms_by_gate(terms, "X", (gate.target,))
             else:
                 injection = injections[gate.gate_id]
                 new_terms = [
@@ -792,7 +850,10 @@ def _validate_presented_observables(
     return len(assignments), checks
 
 
-def _validate_lifetimes(source: OopQclaTrace, trace: Mapping[str, Any]) -> None:
+def _validate_lifetimes(
+    source: OopQclaTrace | QclaTrace,
+    trace: Mapping[str, Any],
+) -> None:
     observed = {
         _string(item.get("logical_value"), label="lifetime logical value"): item
         for item in (
@@ -800,7 +861,7 @@ def _validate_lifetimes(source: OopQclaTrace, trace: Mapping[str, Any]) -> None:
             for raw in _sequence(trace.get("logical_lifetimes"), label="lifetimes")
         )
     }
-    uses: dict[str, list[OopQclaGate]] = {}
+    uses: dict[str, list[OopQclaGate | QclaGate]] = {}
     for gate in source.gates:
         for logical in gate.logical_support:
             uses.setdefault(logical, []).append(gate)
@@ -820,6 +881,20 @@ def _validate_lifetimes(source: OopQclaTrace, trace: Mapping[str, Any]) -> None:
             gates[-1].algorithmic_layer,
         ):
             raise DirectCczPpmReplayError("logical lifetime interval changed")
+        if isinstance(source, QclaTrace):
+            expected_role = "source_input_inout"
+            expected_origin = "source_input"
+            if logical.startswith("p:"):
+                expected_role = "source_prefix_scratch_ancilla"
+                expected_origin = "clean_zero"
+            elif logical.startswith("z:"):
+                expected_role = "source_carry_ancilla"
+                expected_origin = "clean_zero"
+            if (lifetime.get("role"), lifetime.get("origin")) != (
+                expected_role,
+                expected_origin,
+            ):
+                raise DirectCczPpmReplayError("IP-QCLA lifetime role changed")
     if _sequence(trace.get("compiler_ancilla_lifetimes"), label="compiler ancillas"):
         raise DirectCczPpmReplayError("unexpected compiler ancilla lifetime")
     resource_lifetimes = _sequence(
@@ -917,9 +992,113 @@ def replay_symbolic_direct_ccz_ppm_trace(
     )
 
 
+def replay_ip_qcla_symbolic_direct_ccz_ppm_trace(
+    source: QclaTrace,
+    trace_data: Mapping[str, Any],
+) -> IpQclaSymbolicDirectCczPpmReplaySummary:
+    """Independently verify one bounded in-place QCLA symbolic PPM trace."""
+
+    if source.width > 5:
+        raise DirectCczPpmReplayError(
+            "bounded exhaustive IP-QCLA replay is restricted to width at most five"
+        )
+    trace = {str(key): value for key, value in trace_data.items()}
+    if trace.get("schema") != EXPECTED_SCHEMA or trace.get("schema_version") != 1:
+        raise DirectCczPpmReplayError("unsupported symbolic PPM schema")
+    if trace.get("frame_normal_form") != EXPECTED_FRAME_NORMAL_FORM:
+        raise DirectCczPpmReplayError("unsupported frame normal form")
+    if trace.get("source_trace_id") != source.trace_id:
+        raise DirectCczPpmReplayError("source trace ID changed")
+    if trace.get("source_trace_schema_version") != source.schema_version:
+        raise DirectCczPpmReplayError("source schema version changed")
+    if trace.get("width") != source.width:
+        raise DirectCczPpmReplayError("source width changed")
+    if trace.get("complete_native_schedule") is not False:
+        raise DirectCczPpmReplayError("Phase-A trace claimed a native schedule")
+
+    operations, operation_by_id = _validate_source_projection(source, trace)
+    truth_rows = _validate_injections_and_corrections(source, trace)
+    _validate_operation_dependencies(source, trace, operation_by_id)
+    transitions, frame_in_by_source = _replay_frames(source, trace)
+    probe_count, observable_checks = _validate_presented_observables(
+        trace,
+        frame_in_by_source,
+    )
+    _validate_lifetimes(source, trace)
+
+    basis_pairs = 0
+    limit = 1 << source.width
+    for input_a in range(limit):
+        for input_b in range(limit):
+            replay_qcla(source, input_a, input_b)
+            basis_pairs += 1
+    local = verify_direct_ccz_injection_channel()
+    if not local.all_passed:
+        raise DirectCczPpmReplayError("local direct-CCZ channel check failed")
+
+    injections = _sequence(trace.get("injections"), label="injections")
+    ppms = _sequence(trace.get("ppms"), label="PPMs")
+    cliffords = [
+        _mapping(raw, label="Clifford instruction")
+        for raw in _sequence(
+            trace.get("clifford_instructions"), label="Clifford instructions"
+        )
+    ]
+    passthrough_cnot_count = sum(
+        instruction.get("role") == "passthrough_cnot"
+        for instruction in cliffords
+    )
+    passthrough_x_count = sum(
+        instruction.get("role") == "passthrough_x" for instruction in cliffords
+    )
+    corrections = _sequence(trace.get("correction_updates"), label="corrections")
+    layers = _sequence(trace.get("macro_layer_frames"), label="macro layers")
+    dependencies = _sequence(trace.get("source_dependencies"), label="dependencies")
+    lifetimes = _sequence(trace.get("logical_lifetimes"), label="lifetimes")
+    resource_lifetimes = _sequence(
+        trace.get("resource_lifetimes"), label="resource lifetimes"
+    )
+    compiler_ancillas = _sequence(
+        trace.get("compiler_ancilla_lifetimes"), label="compiler ancillas"
+    )
+    return IpQclaSymbolicDirectCczPpmReplaySummary(
+        width=source.width,
+        source_operation_count=len(operations),
+        injection_count=len(injections),
+        ppm_count=len(ppms),
+        passthrough_cnot_count=passthrough_cnot_count,
+        passthrough_x_count=passthrough_x_count,
+        correction_update_count=len(corrections),
+        macro_layer_count=len(layers),
+        source_dependency_count=len(dependencies),
+        logical_lifetime_count=len(lifetimes),
+        resource_lifetime_count=len(resource_lifetimes),
+        compiler_ancilla_count=len(compiler_ancillas),
+        correction_truth_table_rows_checked=truth_rows,
+        frame_transition_count_checked=transitions,
+        frame_probe_assignment_count=probe_count,
+        presented_observable_checks=observable_checks,
+        source_basis_input_pairs_checked=basis_pairs,
+        local_injection_branch_count=local.branch_count,
+        local_injection_maximum_operator_error=(
+            local.maximum_operator_frobenius_error
+        ),
+        complete_native_schedule=False,
+        all_passed=True,
+    )
+
+
 def symbolic_direct_ccz_ppm_replay_to_data(
     summary: SymbolicDirectCczPpmReplaySummary,
 ) -> dict[str, Any]:
     """Return deterministic JSON-compatible replay data."""
+
+    return asdict(summary)
+
+
+def ip_qcla_symbolic_direct_ccz_ppm_replay_to_data(
+    summary: IpQclaSymbolicDirectCczPpmReplaySummary,
+) -> dict[str, Any]:
+    """Return deterministic JSON-compatible IP-QCLA replay data."""
 
     return asdict(summary)

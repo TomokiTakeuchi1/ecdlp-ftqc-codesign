@@ -1,4 +1,4 @@
-"""Fail-closed direct-CCZ event adapter for clean OOP-QCLA Toffolis."""
+"""Fail-closed direct-CCZ event adapters for reviewed QCLA Toffolis."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from ecdlp_ftqc.architectures import DirectCczCapability, DirectCczCapabilityError
-from ecdlp_ftqc.circuits.qcla import QclaGateKind
+from ecdlp_ftqc.circuits.qcla import QclaGate, QclaGateKind, QclaTrace
 from ecdlp_ftqc.circuits.qcla_oop import OopQclaGate, OopQclaTrace
 from ecdlp_ftqc.metadata import EvidenceStatus
 
@@ -167,8 +167,8 @@ def _require_event_capability(capability: DirectCczCapability) -> None:
         )
 
 
-def lower_oop_toffoli_to_direct_ccz_event(
-    gate: OopQclaGate,
+def _lower_toffoli_to_direct_ccz_event(
+    gate: OopQclaGate | QclaGate,
     capability: DirectCczCapability,
     *,
     ordinal: int,
@@ -238,6 +238,36 @@ def lower_oop_toffoli_to_direct_ccz_event(
     )
 
 
+def lower_oop_toffoli_to_direct_ccz_event(
+    gate: OopQclaGate,
+    capability: DirectCczCapability,
+    *,
+    ordinal: int,
+) -> DirectCczInjectionEvent:
+    """Lower one clean OOP-QCLA source Toffoli."""
+
+    return _lower_toffoli_to_direct_ccz_event(
+        gate,
+        capability,
+        ordinal=ordinal,
+    )
+
+
+def lower_qcla_toffoli_to_direct_ccz_event(
+    gate: QclaGate,
+    capability: DirectCczCapability,
+    *,
+    ordinal: int,
+) -> DirectCczInjectionEvent:
+    """Lower one reviewed in-place QCLA source Toffoli."""
+
+    return _lower_toffoli_to_direct_ccz_event(
+        gate,
+        capability,
+        ordinal=ordinal,
+    )
+
+
 def _evidence_rank(status: EvidenceStatus) -> int:
     order = {
         EvidenceStatus.PROVED: 8,
@@ -263,6 +293,46 @@ def lower_oop_qcla_to_direct_ccz_events(
     cliffords = tuple(gate.gate_id for gate in trace.gates if gate.kind is QclaGateKind.CNOT)
     events = tuple(
         lower_oop_toffoli_to_direct_ccz_event(
+            gate,
+            capability,
+            ordinal=ordinal,
+        )
+        for ordinal, gate in enumerate(toffolis)
+    )
+    return DirectCczEventTrace(
+        trace_id=f"{trace.trace_id}:direct-ccz-events-v2",
+        source_trace_id=trace.trace_id,
+        source_trace_schema_version=trace.schema_version,
+        capability_id=capability.capability_id,
+        injection_events=events,
+        passthrough_clifford_gate_ids=cliffords,
+        source_dependencies=tuple(
+            DirectCczSourceDependency(
+                predecessor_source_gate_id=dependency.predecessor,
+                successor_source_gate_id=dependency.successor,
+                logical_values=dependency.values,
+                reason=dependency.reason,
+            )
+            for dependency in trace.dependencies
+        ),
+    )
+
+
+def lower_qcla_to_direct_ccz_events(
+    trace: QclaTrace,
+    capability: DirectCczCapability,
+) -> DirectCczEventTrace:
+    """Emit direct-CCZ events and retain IP-QCLA X/CNOT Cliffords."""
+
+    _require_event_capability(capability)
+    toffolis = tuple(
+        gate for gate in trace.gates if gate.kind is QclaGateKind.TOFFOLI
+    )
+    cliffords = tuple(
+        gate.gate_id for gate in trace.gates if gate.kind is not QclaGateKind.TOFFOLI
+    )
+    events = tuple(
+        lower_qcla_toffoli_to_direct_ccz_event(
             gate,
             capability,
             ordinal=ordinal,

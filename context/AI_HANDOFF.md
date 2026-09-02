@@ -1,10 +1,66 @@
 # AI handoff
 
 Last updated: 2026-09-02
-From: codex
+From: claude
 To: codex and human
 
-## Next high-rate-aware QCLA-to-PPM cycle
+## Current review handoff
+
+`T-20260901-009` is `RV-20260901-008` `APPROVED` (Claude review, 2026-09-02).
+The width-five in-place modulo-QCLA now uses the same
+architecture-independent six-PPM direct-CCZ and ordered conditional-Clifford-
+frame IR as the reviewed clean OOP trace, without the Selinger seven-T route.
+Its 43 source operations map to 20 events, 120 PPMs, 120 conditional updates,
+15 pass-through CNOTs, and eight pass-through X gates over 18 source layers,
+with all 75 dependencies preserved and no compiler ancilla.
+
+Independent serialized replay imports neither compiler nor scheduler and
+checks 1,280 local correction rows, all 43 source frame transitions, 14,880
+presented-observable probes, all 1,024 width-five basis inputs, and the local
+64-branch injection channel with zero operator residual. Independent batching
+replay rebuilds all 120 profiles and 7,140 pair certificates. Exact ANF
+compatibility gives a deterministic 24-level construction matching the exact
+causal lower bound 24. Seven late-frame profiles exceed exact branch-weight
+enumeration: their pair compatibility remains exact, while weight is visibly
+reported only as proved lower/upper bounds and distinct-observable count is
+null under `A-0037`.
+
+The OOP/IP comparison records 10/20 direct-CCZ events, 12/24 unitless
+candidate levels, 36/96 reaction boundaries, and 5/17 explicitly scoped
+cleanup operations. Neither count is physical time. Finite execution remains
+rejected with 13 capability gaps, 13 backend gaps, three incompatible factory
+fields, four native-mapper obligations, and null native schedule/runtime/
+physical-qubit/failure outputs. Widths 2--5 pass exhaustive independent source
+replay; twelve focused cases, 178 combined related cases, and 288 full-suite
+cases pass, with only the two known unrelated sibling-pin failures remaining.
+Ruff, strict mypy on 49 library files plus the generator, and byte-identical
+two-run regeneration of all 11 artifacts pass. Reviewer findings are in
+`coordination/reviews/T-20260901-009.md`; the contract is
+`docs/DIRECT_CCZ_IP_QCLA_COMPARISON_CONTRACT.md`.
+
+The reviewer proved by code-structure reading (not just by test) that the OOP
+path degenerates byte-for-byte to its pre-existing behavior, independently
+re-derived that the new exact-ANF axis-existence test used for profiles above
+16 variables is mathematically identical to the brute-force enumeration it
+replaces, confirmed the `minimum_weight=1`/support-union `maximum_weight`
+bounds are valid proved/conservative bounds (a Clifford conjugate of a
+nonidentity Pauli is never the identity), and confirmed the 120-vertex
+large-instance conflict-clique shortcut can never corrupt the PROVED-
+optimality claim since the causal bound alone already closes it. A from-
+scratch verification script that imports none of the reviewed modules ran a
+120,000-point Monte Carlo cross-check (400 sampled pairs x 300 random
+assignments) against every claimed commutation/axis-conflict/Y decision with
+zero contradictions, independently reimplemented the causal DAG longest-path
+algorithm from raw JSON and reproduced the 24-level bound exactly, and
+hand-verified all combinatorics (7,140 pairs, 336 within-batch, 6,804
+cross-level).
+
+`T-20260901-010` is now `READY`: its dependencies (`T-20260901-007`,
+`T-20260901-009`, `T-20260831-004`) are all `DONE`. It must separate width
+scaling from finite-backend admission and must not extrapolate the seven
+bounded weight profiles as exact data.
+
+## Reviewed high-rate-aware QCLA-to-PPM foundation
 
 `T-20260901-008` is `RV-20260901-007` `APPROVED` (Claude review, 2026-09-02).
 The deterministic audit atlas regenerates the reviewed Phase-A trace and
@@ -109,10 +165,10 @@ surgery rounds, and pass-through CNOT time/space/routing/memory costs remain
 
 `T-20260901-008` renders the reviewed decisions from the same machine-readable
 trace and candidate artifacts and is `RV-20260901-007` `APPROVED`.
-`T-20260901-009` is now the next ready task and reuses the compiler for IP-QCLA
-without the existing seven-T route.
-`T-20260901-010` is the first point at which width scaling and a compatible
-finite backend may be integrated.
+`T-20260901-009` reuses the compiler for IP-QCLA without the existing seven-T
+route and is `RV-20260901-008` `APPROVED`.
+`T-20260901-010` is now `READY` and is the first point at which width scaling
+and a compatible finite backend may be integrated.
 
 The cycle contract is
 `docs/HIGH_RATE_QCLA_PPM_OPTIMIZATION_CYCLE.md`. It explicitly forbids
@@ -276,8 +332,10 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-1. Implement `T-20260901-009`, reusing the direct-CCZ PPM compiler for
-   IP-QCLA without the existing seven-T route (now `READY`).
+1. Implement `T-20260901-010`, scaling QCLA PPM schedules and integrating
+   finite backend resources (now `READY`); separate width scaling from
+   finite-backend admission and do not extrapolate the seven bounded weight
+   profiles from `T-20260901-009` as exact data.
 2. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.
@@ -345,5 +403,5 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-`T-20260901-008`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
-currently holds an active lock. `T-20260901-009` is `READY` and unassigned.
+`T-20260901-009`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
+currently holds an active lock. `T-20260901-010` is `READY` and unassigned.

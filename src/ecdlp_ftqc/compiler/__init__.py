@@ -11,6 +11,8 @@ from ecdlp_ftqc.compiler.direct_ccz import (
     dumps_direct_ccz_event_trace,
     lower_oop_qcla_to_direct_ccz_events,
     lower_oop_toffoli_to_direct_ccz_event,
+    lower_qcla_to_direct_ccz_events,
+    lower_qcla_toffoli_to_direct_ccz_event,
 )
 from ecdlp_ftqc.compiler.direct_ccz_ppm import (
     DIRECT_CCZ_PPM_TRACE_SCHEMA,
@@ -34,6 +36,7 @@ from ecdlp_ftqc.compiler.direct_ccz_ppm import (
     SymbolicSourceOperation,
     dumps_symbolic_direct_ccz_ppm_trace,
     lower_oop_qcla_to_symbolic_direct_ccz_ppm,
+    lower_qcla_to_symbolic_direct_ccz_ppm,
     parse_boolean_expression,
     symbolic_direct_ccz_ppm_trace_to_data,
 )
@@ -147,6 +150,9 @@ __all__ = [
     "lower_oop_toffoli_to_direct_ccz_event",
     "lower_qcla_phase_exact",
     "lower_qcla_to_adaptive_pbc",
+    "lower_qcla_to_direct_ccz_events",
+    "lower_qcla_to_symbolic_direct_ccz_ppm",
+    "lower_qcla_toffoli_to_direct_ccz_event",
     "lower_to_adaptive_pauli_measurements",
     "parse_boolean_expression",
     "pbc_trace_to_data",

@@ -1,0 +1,51 @@
+experiment_id: E-20260901-009
+task_id: T-20260901-009
+title: Width-5 in-place versus out-of-place direct-CCZ PPM comparison
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+  - configs/architectures/direct_ccz_finite_backend_audit_v1.yaml
+entrypoint: scripts/run_direct_ccz_ip_qcla_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_ip_qcla_cycle.py
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+  - A-0033
+  - A-0035
+  - A-0036
+  - A-0037
+outputs:
+  - experiments/runs/T-20260901-009/ip_qcla_n5_symbolic_direct_ccz_ppm.json
+  - experiments/runs/T-20260901-009/ip_general_candidate_batches.json
+  - experiments/runs/T-20260901-009/ip_finite_instance_admission.json
+  - experiments/runs/T-20260901-009/ip_low_rate_fallback_order.json
+  - experiments/runs/T-20260901-009/ip_strategy_pareto_frontier.json
+  - experiments/runs/T-20260901-009/ip_semantic_replay.json
+  - experiments/runs/T-20260901-009/ip_batching_replay.json
+  - experiments/runs/T-20260901-009/oop_semantic_replay.json
+  - experiments/runs/T-20260901-009/oop_ip_comparison.json
+  - experiments/runs/T-20260901-009/summary.json
+  - experiments/runs/T-20260901-009/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_symbolic_analysis
+  relation_algebra: exact canonical Boolean ANF
+  batching: lexicographically deterministic maximum compatible ready subsets
+validation:
+  - all 43 IP source operations map once to the shared PPM/frame IR
+  - all 20 direct-CCZ events retain six PPMs and six correction updates
+  - all 75 source dependencies and 18 frame boundaries replay independently
+  - all 1024 width-5 basis input pairs replay the IP arithmetic contract
+  - all 7140 PPM pairs receive exact commutation, axis, causal, reaction, and resource certificates
+  - the 24-level construction meets the exact 24-level causal lower bound
+  - seven large-frame weight fields are visibly conservative bounds and do not affect compatibility
+  - finite schedule, runtime, physical qubits, and failure probability remain null
+exclusions:
+  - width scaling or width-256 extrapolation
+  - native surgery rounds or operation duration
+  - finite processor placement, memory traffic, routing, or capacity admission
+  - decoder throughput or classical reaction time
+  - CCZ delivery, buffering, storage trajectory, or stalls
+  - physical qubit total or logical failure probability

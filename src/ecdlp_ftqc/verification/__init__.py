@@ -29,7 +29,10 @@ from .direct_ccz_ppm_batching_replay import (
 )
 from .direct_ccz_ppm_replay import (
     DirectCczPpmReplayError,
+    IpQclaSymbolicDirectCczPpmReplaySummary,
     SymbolicDirectCczPpmReplaySummary,
+    ip_qcla_symbolic_direct_ccz_ppm_replay_to_data,
+    replay_ip_qcla_symbolic_direct_ccz_ppm_trace,
     replay_symbolic_direct_ccz_ppm_trace,
     symbolic_direct_ccz_ppm_replay_to_data,
 )
@@ -46,14 +49,17 @@ __all__ = [
     "DirectCczPpmBatchingReplayError",
     "DirectCczPpmBatchingReplaySummary",
     "DirectCczPpmReplayError",
+    "IpQclaSymbolicDirectCczPpmReplaySummary",
     "SymbolicDirectCczPpmReplaySummary",
     "autoccz_channel_verification_to_data",
     "direct_ccz_branch_correction",
     "direct_ccz_injection_verification_to_data",
     "direct_ccz_ppm_atlas_replay_to_data",
     "direct_ccz_ppm_batching_replay_to_data",
+    "ip_qcla_symbolic_direct_ccz_ppm_replay_to_data",
     "replay_direct_ccz_ppm_atlas",
     "replay_direct_ccz_ppm_batching",
+    "replay_ip_qcla_symbolic_direct_ccz_ppm_trace",
     "replay_symbolic_direct_ccz_ppm_trace",
     "symbolic_direct_ccz_ppm_replay_to_data",
     "verify_autoccz_consumption_channel",

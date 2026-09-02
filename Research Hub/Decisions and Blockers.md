@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - decisions
-updated: 2026-09-01
+updated: 2026-09-02
 ---
 
 # Decisions and Blockers
@@ -24,7 +24,7 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
-| 0 | Logical direct-CCZ candidate batching and its audit atlas are both reviewed, but finite execution is still rejected | The reviewed Phase-B result (`RV-20260901-006`) reaches 12 unitless candidate levels, and the reviewed audit atlas (`RV-20260901-007`) makes those memberships and split certificates independently checkable; the selected backend still lacks 13 finite fields, has three incompatible factory values, and lacks native operation/basis/support/ancilla construction. | Reuse the compiler for IP-QCLA (`T-20260901-009`), and obtain one coherent finite direct-CCZ mapper/backend contract before assigning rounds or runtime. |
+| 0 | OOP/IP logical direct-CCZ comparison is reviewed, but finite execution remains rejected | The reviewed `T-20260901-009` comparison (`RV-20260901-008`) reuses one IR and reaches 12/24 unitless OOP/IP candidate levels; the IP construction matches its causal lower bound, but seven weight profiles are conservatively bounded and the selected backend still lacks 13 finite fields, has three incompatible factory values, and lacks native operation/basis/support/ancilla construction. | Scale schedules and separate width scaling from one coherent finite direct-CCZ mapper/backend contract (`T-20260901-010`, now `READY`) before assigning rounds or runtime. |
 | 0 | Several PBC native durations remain unresolved | Adaptive resource scheduling now exists, but state preparation, Z/ZZ/ZX/full-extractor time, reaction, and conditional-CZ costs remain `CHECK`. | Pin or validate those J300 contracts; strict mode already rejects placeholders. |
 | 1 | Factory service is absent from QCLA demand | The in-review width-256 overlay conserves 17,206 time-stamped T demands, but assumes ideal no-stall supply; average rate cannot establish burst feasibility. | Add explicit factory output, buffer, backlog, routing, and stall events to the emitted demand timeline. |
 | 1 | QCLA memory/high-rate timing remains provisional | Width 256 now fits an independently replayed 60-slot fixed order and exposes 1,576 ten-XX batches, but transfer/native/clean-lifecycle times remain `CHECK` and the order is not optimal. | Cross-review the ownership/capacity result, then pin timing/routing contracts and compare placement orders. |
