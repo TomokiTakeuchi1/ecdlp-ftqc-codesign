@@ -13,6 +13,61 @@ updated: 2026-09-03
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-09-03 — Scalable direct-CCZ PPM compatibility
+
+**Status:** Reviewed and approved (`T-20260903-001`, `RV-20260903-001`)
+
+What changed:
+
+- Replaced the unverified source two-phase envelope with a linear-size proof
+  certificate. Conditional `X/Z/CNOT/CZ` frames preserve Z-type observables,
+  so phase-1 `ZZ` measurements stay same-axis and Y-free; fresh-resource
+  phase-2 `X` measurements are disjoint and absent from the frame.
+- Checked source-layer support disjointness, strictly later dependencies,
+  exact source/event DAG preservation, one event per Toffoli, canonical six-
+  PPM event shape, and resource uniqueness for 19 OOP/IP widths through 257.
+- At width 256, certified 34 OOP and 68 IP unitless candidate levels. Both
+  constructions meet their causal lower bounds while avoiding the
+  27,184,251/108,744,378 possible global pair records.
+- Matched the full-ANF OOP/IP width-5/8 schedules by batch hash and validated
+  all 2,466 materialized within-batch relations and Y-free profiles.
+- Added an independent source-only replay plus deterministic first-witness
+  rejection for malformed axes/frames and fail-closed finite-output tests.
+
+Why it matters:
+
+Width-256 logical compatibility is no longer an extrapolation from small
+instances: it follows from a generator-closure argument whose premises are
+checked in linear trace size. However, the result remains inside the logical
+candidate screen. It provides no physical simultaneous-measurement gadget,
+routing, duration, capacity, decoder, factory/buffer, qubit, or failure model.
+The 34/68 values are not surgery rounds or runtime.
+
+Evidence: `PROVED` generator closure and model-relative optimal candidate
+counts; `NUMERICAL` exact-anchor bridge; `OPEN` finite execution. See
+`docs/DIRECT_CCZ_QCLA_SCALABLE_COMPATIBILITY_CONTRACT.md` and
+`coordination/reviews/T-20260903-001.md`.
+
+> [!success] Review note
+> This was the mathematically deepest submission in the direct-CCZ line, so
+> Claude's review went beyond structural checking into independent
+> mathematical verification of the theorem itself. It wrote a from-scratch
+> numpy script -- no import of the reviewed code -- that built explicit
+> unitary matrices for X, Z, CNOT, and CZ and exhaustively confirmed
+> (148 cases on 2- and 3-qubit systems) that conjugation by any of them
+> preserves the Z-type Pauli subspace, that H is exactly the primitive that
+> breaks this, and that any two Z-type Paulis automatically commute with no
+> possible Y content. A second from-scratch script, importing only the
+> already-reviewed source-trace and event builders, independently re-derived
+> every structural premise the theorem depends on (fresh disjoint resources,
+> canonical six-PPM shape, CZ/Z/X-only corrections confined to event data,
+> disjoint source-layer support, layer-advancing dependencies, X/CNOT-only
+> passthroughs) at widths 5, 8, 17, and 256 for both variants -- 56 checks,
+> zero failures. It also hand-verified the OOP width-5 within-batch pair
+> count (186) against the generated data and confirmed via `git diff --stat`
+> that the task touches no previously reviewed compiler, architecture, or
+> batching code. See `coordination/reviews/T-20260903-001.md`.
+
 ## 2026-09-03 — Direct-CCZ QCLA width scaling
 
 **Status:** Reviewed and approved (`T-20260901-010`, `RV-20260901-009`)

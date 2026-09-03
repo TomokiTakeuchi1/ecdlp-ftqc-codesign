@@ -15,7 +15,7 @@ updated: 2026-09-03
 
 **Status: ACTIVE**
 
-<progress max="21" value="19"></progress> 19 of 21 listed Month-1 milestones are complete or in review; 2 more are required.
+<progress max="21" value="20"></progress> 20 of 21 listed Month-1 milestones are complete or in review; 1 more is required.
 
 ### Completed or reviewed
 
@@ -36,10 +36,11 @@ updated: 2026-09-03
 - [x] Generate, independently replay, and review one overview plus nine width-5 direct-CCZ PPM audit panels (`T-20260901-008`, `RV-20260901-007`).
 - [x] Reuse and review the direct-CCZ PPM compiler for width-5 IP-QCLA without the seven-T route, with the independently replayed OOP/IP comparison (`T-20260901-009`, `RV-20260901-008`).
 - [x] Implement and review exact width-5/8 anchors and compact structural OOP/IP scaling through width 257 while retaining fail-closed finite outputs (`T-20260901-010`, `RV-20260901-009`).
+- [x] Prove and review a linear-size source-aligned compatibility certificate through width 257, including exact width-5/8 ANF bridges and width-256 OOP/IP candidate counts 34/68 (`T-20260903-001`, `RV-20260903-001`).
 
 ### Active
 
-- [ ] Prove a scalable width-256 candidate-compatibility construction, or implement one coherent native mapper/finite backend that can admit the reviewed structural demand (no task ID claimed yet).
+- [ ] Implement one coherent native mapper/finite backend that can admit the now-certified 34/68 width-256 logical candidate levels (no task ID claimed yet).
 - [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
 - [ ] Close the reviewed AutoCCZ adapter's (`RV-20260901-001`) nine missing and one distance-incompatible service fields before scheduling.
 

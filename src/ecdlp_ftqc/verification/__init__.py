@@ -27,6 +27,12 @@ from .direct_ccz_ppm_batching_replay import (
     direct_ccz_ppm_batching_replay_to_data,
     replay_direct_ccz_ppm_batching,
 )
+from .direct_ccz_ppm_compatibility_replay import (
+    DirectCczPpmCompatibilityReplayError,
+    DirectCczPpmCompatibilityReplaySummary,
+    direct_ccz_ppm_compatibility_replay_to_data,
+    replay_direct_ccz_ppm_compatibility,
+)
 from .direct_ccz_ppm_replay import (
     DirectCczPpmReplayError,
     IpQclaSymbolicDirectCczPpmReplaySummary,
@@ -54,6 +60,8 @@ __all__ = [
     "DirectCczPpmAtlasReplaySummary",
     "DirectCczPpmBatchingReplayError",
     "DirectCczPpmBatchingReplaySummary",
+    "DirectCczPpmCompatibilityReplayError",
+    "DirectCczPpmCompatibilityReplaySummary",
     "DirectCczPpmReplayError",
     "DirectCczPpmScalingReplayError",
     "DirectCczPpmScalingReplaySummary",
@@ -64,10 +72,12 @@ __all__ = [
     "direct_ccz_injection_verification_to_data",
     "direct_ccz_ppm_atlas_replay_to_data",
     "direct_ccz_ppm_batching_replay_to_data",
+    "direct_ccz_ppm_compatibility_replay_to_data",
     "direct_ccz_ppm_scaling_replay_to_data",
     "ip_qcla_symbolic_direct_ccz_ppm_replay_to_data",
     "replay_direct_ccz_ppm_atlas",
     "replay_direct_ccz_ppm_batching",
+    "replay_direct_ccz_ppm_compatibility",
     "replay_direct_ccz_ppm_scaling",
     "replay_ip_qcla_symbolic_direct_ccz_ppm_trace",
     "replay_symbolic_direct_ccz_ppm_trace",

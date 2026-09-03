@@ -1,10 +1,70 @@
 # AI handoff
 
 Last updated: 2026-09-03
-From: claude
+From: codex
 To: codex and human
 
 ## Current review handoff
+
+`T-20260903-001` is `RV-20260903-001` `APPROVED` (Claude review, 2026-09-03).
+It replaces the large-width `CHECK` two-phase envelope with a linear-size
+logical compatibility certificate. Under the reviewed frame normal form,
+conditional `X/Z/CNOT/CZ` generators preserve branchwise Z-type Paulis. Each
+source layer's phase-1 resource-data `ZZ` PPMs are therefore same-axis,
+commuting, and Y-free; phase-2 resource `X` readouts are disjoint on globally
+fresh resource values absent from the frame. The certifier also checks exact
+source/event DAG preservation, support-disjoint source layers, strictly
+layer-advancing dependencies, one event per Toffoli, canonical six-PPM event
+shape, and resource uniqueness.
+
+All 19 selected OOP/IP widths through 257 pass without materializing a global
+pair table. Width-256 OOP/IP now has 34/68 unitless logical candidate levels
+for 1,229/2,458 events and 7,374/14,748 PPMs; both constructions meet the
+weighted causal lower bound. The 27,184,251/108,744,378 possible global pairs
+remain unmaterialized. The largest candidate batch is 765 PPMs; 1,530 is the
+combined demand of both ordered phases in one source layer.
+
+Full-ANF OOP/IP widths 5/8 match every compact batch-membership digest and
+validate all 2,466 materialized within-batch pairs, Y-free profiles, candidate
+counts, and causal bounds. Independent replay imports neither compiler nor
+scheduler and rebuilds all 38 certificates. Hash and finite-runtime tampering
+fail; malformed axes and non-CSS frame generators return the first
+`FALSIFIED` witness and no candidate count. Twenty-five focused and 61 combined
+tests pass; the full suite reports 323 passes plus the two known unrelated
+sibling-pin failures. Ruff, strict mypy on 54 source files plus the generator,
+compileall, and two genuine consecutive byte-identical regenerations of all
+six outputs pass.
+
+The result is `PROVED` only inside the architecture-independent logical
+screen. It does not supply a code-level simultaneous PPM construction, native
+surgery rounds, physical support/placement, routing, source-Clifford or basis-
+change duration, reaction/decoder service, factory/buffer service, physical
+qubits, or failure probability. All finite outputs remain null. See
+`docs/DIRECT_CCZ_QCLA_SCALABLE_COMPATIBILITY_CONTRACT.md`,
+`experiments/runs/T-20260903-001/summary.json`, and
+`coordination/reviews/T-20260903-001.md`.
+
+The reviewer independently proved the generator-closure theorem itself from
+scratch with an explicit numpy matrix construction (X/Z/CNOT/CZ conjugation
+preserves the Z-type Pauli subspace across 148 exhaustive test cases on 2- and
+3-qubit systems; H breaks it exactly as claimed; any two Z-type Paulis
+provably commute; Y-content is automatically impossible) rather than trusting
+the docstring, then independently re-derived that the actual OOP/IP source and
+event traces satisfy every premise the theorem depends on -- fresh disjoint
+resources, the canonical six-PPM shape, CZ/Z/X-only deferred corrections
+confined to event data, disjoint source-layer support, strictly
+layer-advancing dependencies, and X/CNOT-only passthroughs -- at widths 5, 8,
+17, and 256 using a script that imports neither the certifier nor the
+compiler. Hand-verified the OOP width-5 within-batch pair count (186) against
+the generated summary, and confirmed via `git diff --stat` that this task
+touches no previously reviewed compiler, architecture, or batching code.
+
+No task currently holds an active lock; `T-20260903-001`'s lock is
+`RELEASED`. This closes the last open item on the current task board; the
+next open work is implementing one coherent native mapper/finite backend that
+can admit the 34/68 width-256 logical candidate levels (no task ID claimed
+yet), or the separate factory/buffer/routing work already tracked for the
+width-256 QCLA T-demand series.
 
 `T-20260901-010` is `RV-20260901-009` `APPROVED` (Claude review, 2026-09-03).
 It adds exact Boolean-ANF anchors at widths 5 and 8, then switches to a compact
@@ -48,12 +108,6 @@ longest-path algorithm, including the width-256 figures and the exact
 IP-equals-2x-OOP relation at every tested width, and separately confirmed the
 power-of-two boundary pattern matches standard parallel-prefix
 carry-lookahead theory.
-
-No task currently holds an active lock; `T-20260901-010`'s lock is `RELEASED`.
-The next open item on the board is closing the AutoCCZ adapter's remaining
-service fields and adding factory service/buffer/routing to the width-256
-QCLA T-demand series (see Known risks below); no new task ID is queued for a
-width-256-compatible finite backend yet.
 
 ## Reviewed IP-QCLA direct-CCZ foundation
 
@@ -387,11 +441,11 @@ all 23 gates and the displayed correction formula exactly.
 2. Add factory service, finite buffer, routing, and backlog to the width-256
    adaptive-PBC T-demand series as a separate, comparison track; report stalls
    separately from the current ideal-supply timeline.
-3. Toward a width-256-compatible direct-CCZ candidate schedule: either prove a
-   scalable compatibility construction that does not require materializing
-   the quadratic PPM pair table, or implement one coherent native mapper and
-   finite backend that can admit the already-reviewed structural demand from
-   `T-20260901-010`. Neither currently exists as a claimed task on the board.
+3. Implement one coherent native mapper and finite backend that can admit the
+   now-certified 34/68 width-256 logical candidate levels from
+   `T-20260903-001`. Do not treat those levels as surgery rounds while
+   physical support, routing, timing, capacity, decoder/reaction, and factory
+   service are open; no task ID is claimed for this yet.
 4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
@@ -453,5 +507,5 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-`T-20260901-010`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
+`T-20260903-001`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
 currently holds an active lock.

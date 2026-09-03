@@ -1,0 +1,46 @@
+experiment_id: E-20260903-001
+task_id: T-20260903-001
+title: Scalable logical compatibility certificates for direct-CCZ QCLA PPM batches
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+  - configs/architectures/direct_ccz_finite_backend_audit_v1.yaml
+entrypoint: scripts/run_direct_ccz_ppm_compatibility_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_ppm_compatibility_cycle.py
+widths:
+  certificates: [5, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257]
+  exact_anf_equivalence: [5, 8]
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+  - A-0033
+  - A-0035
+  - A-0036
+  - A-0037
+  - A-0038
+  - A-0039
+outputs:
+  - experiments/runs/T-20260903-001/compatibility_certificates.json
+  - experiments/runs/T-20260903-001/exact_anchor_equivalence.json
+  - experiments/runs/T-20260903-001/width_256_candidate_certificate.json
+  - experiments/runs/T-20260903-001/compatibility_replay.json
+  - experiments/runs/T-20260903-001/summary.json
+  - experiments/runs/T-20260903-001/reproducibility.json
+determinism:
+  random_seed: not_applicable_deterministic_proof_certificate
+  certificate_mode: linear source/event traversal with SHA-256 batch membership digests
+  exact_anchor_mode: canonical Boolean ANF with materialized pair relations
+validation:
+  - every proposed batch proves same-axis, no-Y, causal independence, and no resource reuse
+  - OOP/IP widths 5 and 8 match the reviewed full-ANF source-aligned batches
+  - every selected construction meets the weighted causal lower bound
+  - independent replay imports neither the compiler nor scheduler
+  - certificate mutation and fabricated finite output tests fail closed
+exclusions:
+  - native surgery construction, physical support, routing, or capacity admission
+  - operation duration, decoder service, reaction latency, or wall-clock time
+  - CCZ factory delivery, buffering, storage, or stalls
+  - physical qubit total or logical failure probability
