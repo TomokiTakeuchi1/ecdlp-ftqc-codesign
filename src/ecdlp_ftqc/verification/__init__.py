@@ -48,6 +48,12 @@ from .direct_ccz_ppm_scaling_replay import (
     direct_ccz_ppm_scaling_replay_to_data,
     replay_direct_ccz_ppm_scaling,
 )
+from .direct_ccz_ppm_support_replay import (
+    DirectCczPpmSupportReplayError,
+    DirectCczPpmSupportReplaySummary,
+    direct_ccz_ppm_support_replay_to_data,
+    replay_direct_ccz_ppm_support,
+)
 
 __all__ = [
     "AUTOCCZ_DELAYED_CHOICE_CZ_COUNT",
@@ -65,6 +71,8 @@ __all__ = [
     "DirectCczPpmReplayError",
     "DirectCczPpmScalingReplayError",
     "DirectCczPpmScalingReplaySummary",
+    "DirectCczPpmSupportReplayError",
+    "DirectCczPpmSupportReplaySummary",
     "IpQclaSymbolicDirectCczPpmReplaySummary",
     "SymbolicDirectCczPpmReplaySummary",
     "autoccz_channel_verification_to_data",
@@ -74,11 +82,13 @@ __all__ = [
     "direct_ccz_ppm_batching_replay_to_data",
     "direct_ccz_ppm_compatibility_replay_to_data",
     "direct_ccz_ppm_scaling_replay_to_data",
+    "direct_ccz_ppm_support_replay_to_data",
     "ip_qcla_symbolic_direct_ccz_ppm_replay_to_data",
     "replay_direct_ccz_ppm_atlas",
     "replay_direct_ccz_ppm_batching",
     "replay_direct_ccz_ppm_compatibility",
     "replay_direct_ccz_ppm_scaling",
+    "replay_direct_ccz_ppm_support",
     "replay_ip_qcla_symbolic_direct_ccz_ppm_trace",
     "replay_symbolic_direct_ccz_ppm_trace",
     "symbolic_direct_ccz_ppm_replay_to_data",

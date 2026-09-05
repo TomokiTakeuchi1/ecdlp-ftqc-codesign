@@ -13,6 +13,55 @@ updated: 2026-09-03
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-09-03 — Scalable direct-CCZ PPM support hypergraphs
+
+**Status:** Reviewed and approved (`T-20260903-002`, `RV-20260903-002`)
+
+What changed:
+
+- Proved the exact support-update rule for source CNOTs and the two target-
+  touching conditional corrections, then matched every component ANF at OOP/IP
+  widths 5 and 8.
+- Falsified the initial outcome-independent-support hypothesis with a minimal
+  exact width-5 witness: one later PPM contains `a:0` iff one earlier outcome
+  bit is one.
+- Generated exact OOP possible-support unions for 19 widths through 257. At
+  width 256, the largest union is 1,003 and the largest batch contact is 129.
+- For IP-256, separated the 512-branch witnessed-union/contact lower bounds
+  935/523, actual sampled single-branch maximum weight 509, and sound may-
+  support/contact upper bounds 1,006/567. The unsaturated gap stays `CHECK`.
+- Added compiler/scheduler-free independent reconstruction at widths 5, 8,
+  and 256, full width-256 hypergraphs, mutation tests, and null finite outputs.
+
+Why it matters:
+
+The previous compatibility proof establishes that a logical batch is
+same-axis and commuting, but it does not make its support fixed. A native
+mapper must now handle branch-dependent support or specify which frame terms
+are materialized. A possible-support union may combine different branches; it
+is not a simultaneous physical support, surgery depth, or runtime.
+
+Evidence: `FALSIFIED` outcome independence; `PROVED` OOP exact unions and
+support-update rule; `NUMERICAL` exact-anchor equivalence; `CHECK` large-IP
+union gap; `OPEN` native execution. See
+`docs/DIRECT_CCZ_QCLA_SCALABLE_SUPPORT_CONTRACT.md` and
+`coordination/reviews/T-20260903-002.md`.
+
+> [!success] Review note
+> The support-update algebra (sparse Boolean-ANF propagation of `C†Z(q)C`
+> through source CNOTs and the two support-changing conditional corrections)
+> is genuinely new math for this line. Rather than trust a manual tableau
+> derivation -- which produced suspicious results on paper -- Claude's review
+> independently cross-checked the certificate's exact support activities
+> against the already matrix-verified full symbolic compiler's
+> presented-observable computation, using hand-written comparison code, across
+> all 522 PPMs at widths 5 and 8 for both variants. Zero mismatches. It also
+> independently reproduced the outcome-independence falsification witness by
+> direct inspection, confirmed the large-IP may-support envelope is sound by
+> construction (every update is a monotonic set union, never a removal) by
+> reading the code, and verified every width-256 bound ordering the model
+> requires. See `coordination/reviews/T-20260903-002.md`.
+
 ## 2026-09-03 — Scalable direct-CCZ PPM compatibility
 
 **Status:** Reviewed and approved (`T-20260903-001`, `RV-20260903-001`)

@@ -1,0 +1,47 @@
+experiment_id: E-20260903-002
+task_id: T-20260903-002
+title: Logical support hypergraphs for scalable direct-CCZ QCLA PPM batches
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+entrypoint: scripts/run_direct_ccz_ppm_support_cycle.py
+command: uv --native-tls run python scripts/run_direct_ccz_ppm_support_cycle.py
+widths:
+  certificates: [5, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257]
+  exact_full_anf_equivalence: [5, 8]
+  full_hypergraph_artifact: [256]
+assumptions:
+  - A-0027
+  - A-0028
+  - A-0029
+  - A-0030
+  - A-0031
+  - A-0032
+  - A-0033
+  - A-0035
+  - A-0036
+  - A-0037
+  - A-0038
+  - A-0039
+  - A-0040
+outputs:
+  - experiments/runs/T-20260903-002/support_aggregates.json
+  - experiments/runs/T-20260903-002/exact_anchor_equivalence.json
+  - experiments/runs/T-20260903-002/width_256_support_hypergraphs.json
+  - experiments/runs/T-20260903-002/independent_replay.json
+  - experiments/runs/T-20260903-002/summary.json
+  - experiments/runs/T-20260903-002/reproducibility.json
+determinism:
+  exact_mode: canonical Boolean ANF support propagation
+  sampled_mode: 512 deterministic SHAKE-256 branch assignments including all-zero and all-one assignments
+  sample_seed: T-20260903-002-support-witnesses-v1
+validation:
+  - OOP/IP widths 5 and 8 match the reviewed full symbolic ANF trace
+  - independent replay imports neither the compiler nor scheduler
+  - OOP possible-support unions are exact at every selected width
+  - IP widths above 8 retain sound may-support upper envelopes and concrete branch-witness lower envelopes
+  - width-256 support-hypergraph mutation fails independent replay
+exclusions:
+  - native surgery geometry, routing, or executable parallelism
+  - surgery rounds, operation duration, decoder service, reaction latency, or wall-clock time
+  - CCZ factory delivery, buffering, storage, or stalls
+  - physical qubit total or logical failure probability

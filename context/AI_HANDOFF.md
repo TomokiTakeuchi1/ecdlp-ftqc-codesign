@@ -1,10 +1,71 @@
 # AI handoff
 
 Last updated: 2026-09-03
-From: codex
+From: claude
 To: codex and human
 
 ## Current review handoff
+
+`T-20260903-002` is `RV-20260903-002` `APPROVED` (Claude review, 2026-09-03).
+It adds logical-support hypergraphs for the reviewed source-aligned direct-CCZ
+candidate levels and separates exact possible-support unions, sampled lower
+witnesses, and sound may-support upper envelopes.
+
+The initial hypothesis is `FALSIFIED`: Z-type closure does not make support
+outcome-independent. The first exact OOP width-5 witness is
+`direct-ccz:000005:ppm:zz_0`, where logical value `a:0` has activity ANF
+`direct-ccz:000000:outcome:zz_1`. Its zero/one assignments remove/add that
+component. Exact OOP/IP widths 5 and 8 match every component ANF and the first
+witness in the reviewed full symbolic trace.
+
+All 19 selected OOP widths through 257 use exact Boolean-ANF possible-support
+propagation. At OOP width 256, 7,374 PPMs contain 1,924 branch-dependent
+profiles; the largest exact possible-support union is 1,003 and the largest
+within-batch possible-contact count is 129. A possible-support union may
+combine values occurring in different branches and is not a simultaneous
+branch weight.
+
+IP widths above 8 use a sound may-support upper envelope plus 512 deterministic
+concrete branches. At width 256, 14,748 PPMs contain 5,355 observed branch-
+dependent profiles. The witnessed possible-support-union lower bound is 935,
+the maximum support weight actually present in one sampled branch is 509, and
+the witnessed contact lower bound is 523. The may-support upper bounds are
+1,006 and 567. Because 4,462 profiles retain 118,501 unwitnessed may-
+incidences, large-IP exact support remains `CHECK`, not `PROVED`.
+
+The independent replay imports neither compiler nor scheduler, checks source
+identity/counts for all 38 certificates, and reconstructs the full logical
+support claims at widths 5, 8, and 256, including both 256-bit hypergraphs.
+Noncanonical correction maps and hypergraph mutation fail closed. All native
+schedule, surgery-round, runtime, placement/routing, processor/factory,
+physical-qubit, and failure outputs remain null. See
+`docs/DIRECT_CCZ_QCLA_SCALABLE_SUPPORT_CONTRACT.md`,
+`experiments/runs/T-20260903-002/summary.json`, and
+`coordination/reviews/T-20260903-002.md`.
+
+Rather than hand-derive the two-sided CNOT-conjugation tableau algebra (an
+error-prone manual exercise that produced suspicious intermediate results on
+paper), the reviewer independently cross-checked the certificate's exact
+support activities against the already matrix-verified full symbolic
+compiler's `presented_observable` z/x-components using hand-written
+comparison code -- not the reviewed comparison function -- across all 522
+PPMs at widths 5 and 8 for both variants, finding zero mismatches and
+correctly identifying every branch-dependent component. The reviewer
+independently reproduced the outcome-independence falsification witness by
+direct inspection, matching the claim exactly; confirmed the large-IP
+may-support envelope is sound by construction (every update is a monotonic
+set union, never a removal) by reading the code rather than only observing
+it empirically; and verified all width-256 bound orderings (witnessed-union
+<= may-support upper bound, single-sampled-branch weight <= witnessed union,
+witnessed contact <= upper contact) hold from the generated summary.
+`git diff --stat` confirmed the task touches no previously reviewed
+compiler, architecture, batching, or compatibility-certificate code.
+
+No task currently holds an active lock; `T-20260903-002`'s lock is
+`RELEASED`. The next open item is implementing one coherent native mapper or
+explicit frame-materialization policy for the branch-dependent width-256
+support hypergraphs (no task ID claimed yet), alongside the separate
+factory/buffer/routing and AutoCCZ finite-field work already tracked below.
 
 `T-20260903-001` is `RV-20260903-001` `APPROVED` (Claude review, 2026-09-03).
 It replaces the large-width `CHECK` two-phase envelope with a linear-size
@@ -59,12 +120,11 @@ compiler. Hand-verified the OOP width-5 within-batch pair count (186) against
 the generated summary, and confirmed via `git diff --stat` that this task
 touches no previously reviewed compiler, architecture, or batching code.
 
-No task currently holds an active lock; `T-20260903-001`'s lock is
-`RELEASED`. This closes the last open item on the current task board; the
-next open work is implementing one coherent native mapper/finite backend that
-can admit the 34/68 width-256 logical candidate levels (no task ID claimed
-yet), or the separate factory/buffer/routing work already tracked for the
-width-256 QCLA T-demand series.
+`T-20260903-002` holds a `REVIEW` lock while Claude reviews the support
+certificate. After approval, the next evidence-producing action is to define
+one coherent native mapping policy for branch-dependent logical support, or
+to prove which frame terms must be materialized before mapping. No subsequent
+task is claimed yet.
 
 `T-20260901-010` is `RV-20260901-009` `APPROVED` (Claude review, 2026-09-03).
 It adds exact Boolean-ANF anchors at widths 5 and 8, then switches to a compact
@@ -443,9 +503,12 @@ all 23 gates and the displayed correction formula exactly.
    separately from the current ideal-supply timeline.
 3. Implement one coherent native mapper and finite backend that can admit the
    now-certified 34/68 width-256 logical candidate levels from
-   `T-20260903-001`. Do not treat those levels as surgery rounds while
-   physical support, routing, timing, capacity, decoder/reaction, and factory
-   service are open; no task ID is claimed for this yet.
+   `T-20260903-001`, together with the branch-dependent support hypergraphs
+   from `T-20260903-002` (either a mapper that handles branch-dependent
+   support directly, or an explicit frame-materialization policy). Do not
+   treat those levels as surgery rounds while physical support, routing,
+   timing, capacity, decoder/reaction, and factory service are open; no task
+   ID is claimed for this yet.
 4. Human records the `T-BOOT-001` full-ECDLP circuit choice before project-wide
    `T-BOOT-002` is claimed.
 
@@ -507,5 +570,5 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-`T-20260903-001`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
+`T-20260903-002`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
 currently holds an active lock.
