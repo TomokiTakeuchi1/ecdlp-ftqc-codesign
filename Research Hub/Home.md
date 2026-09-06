@@ -5,14 +5,14 @@ cssclasses:
   - research-dashboard
 tags:
   - dashboard
-updated: 2026-09-03
+updated: 2026-09-06
 ---
 
 # ECDLP-256 FTQC Research Hub
 
-> [!abstract] Current snapshot — 2026-09-03
+> [!abstract] Current snapshot — 2026-09-06
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** Implement one coherent native mapper or frame-materialization policy for the branch-dependent width-256 support hypergraphs; logical candidate levels and possible-support unions still do not imply physical execution.
+> **Current focus:** `T-20260905-001` (H/CNOT strategy audit) and `T-20260906-001` (joint-CCX re-evaluation plan) are both approved (2026-09-06). The next executable task is unassigned `T-20260906-002`: prove and independently replay joint direct-CCZ and measurement-uncompute semantics at width 5, before any commutation-aware width-256 rerun. Logical primitive layers still do not imply physical execution.
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
@@ -40,6 +40,7 @@ updated: 2026-09-03
 | Direct-CCZ QCLA width scaling | ✅ Reviewed | Claude approved the exact-anchor plus compact structural sweep (`RV-20260901-009`); it directly evaluates 19 OOP/IP widths through 257, width 256 has 1,229/2,458 events and causal lower bounds 34/68, but its 27,184,251/108,744,378 possible pair records are not materialized; compatibility and every finite cost remain `OPEN`. |
 | Scalable direct-CCZ PPM compatibility | ✅ Reviewed | Claude approved the linear-size frame-generator-closure certificate (`RV-20260903-001`); it proves the source-aligned two-phase construction under the logical same-axis/no-Y/causality/resource screen. Width-256 OOP/IP has 34/68 unitless candidates matching the causal lower bounds without global pair tables, and every native/finite output remains null. |
 | Scalable direct-CCZ PPM support | ✅ Reviewed | Claude approved the logical support-hypergraph certificate (`RV-20260903-002`); outcome independence is falsified. OOP-256 has exact possible-support-union/contact maxima 1,003/129; IP-256 has witnessed-union/contact lower bounds 935/523, a sampled single-branch maximum 509, and sound may-support/contact upper bounds 1,006/567. These are logical support quantities, not native geometry or time. |
+| QCLA H/CNOT strategy audit | ✅ Reviewed | Claude approved `T-20260905-001` (`RV-20260905-001`) after codex's fix: H teleportation is now self-derived `NUMERICAL`, all four outcome branches are independently verified exactly (twice, by two differently-coded scripts), and replay rejects renewed Xu attribution. The reviewed layer counts and logical conclusions are unchanged. |
 | Finite direct-CCZ backend audit | ✅ Reviewed | Claude approved the 17-field compatibility gate (`RV-20260831-004`); it rejects the selected backend with 13 missing and three incompatible fields, and no schedule is emitted. |
 | AutoCCZ surface-code adapter | ✅ Reviewed | Claude approved the source-native factory/fixup/consumer adapter (`RV-20260901-001`); complete service remains `OPEN` with nine missing and one distance-incompatible field, so no width-256 schedule exists. |
 | Full Shor estimate | ⚪ Not started | Month 2 begins after the arithmetic and architecture contracts are stable. |
@@ -58,6 +59,9 @@ updated: 2026-09-03
 
 > [!warning] QCLA source parallelism — `NUMERICAL`, not runtime
 > The width-256 Draper trace has **40 source layers**, **495 logical circuit ancillas**, and a peak of **255 Toffolis in one layer**. This is the demand a backend must serve, not evidence that 255 operations can execute simultaneously or that the adder completes in 40 QEC cycles.
+
+> [!warning] H/CNOT logical-policy audit — `PROVED`/`NUMERICAL`, reviewed `RV-20260905-001`
+> Only frame-conjugated H generally preserves the established Z-only data-PPM invariant; bare/tracked H can produce mixed axes and Y. Every CNOT policy remains Z-only, but support and routing can grow. At width 256, OOP/IP has **34/68 H layers** and only **3/4 CNOT layers**. One-layer-H plus SIMD-CNOT gives conditional logical envelopes **54/106**; H-teleport plus measurement-CNOT gives **94/182**. These assume provisioned ancillas and ideal layer concurrency and are not QEC cycles or runtime. H teleport adds `ZX,X` and is recorded as a self-derived `NUMERICAL` identity with all four branches independently verified twice; CNOT teleport adds `ZZ,XX,Z` and is the only gadget here cited to Xu et al. Figure 11(c).
 
 > [!warning] QCLA memory/high-rate sensitivity — `NUMERICAL` placement / `CHECK` time
 > The fixed-order width-256 overlay now enforces **60 logical slots** and independently replays all value moves. One-scratch serial uses **46,355 loads and 46,355 stores**; ten-scratch high-rate uses **53,788 of each**, selects **1,576 exact-ten-XX batches**, and changes the provisional one-round/one-lane schedule from **2,589,787 to 2,420,527 rounds** (6.54% shorter). This is not a placement optimum or executable runtime; routing, factory service/buffering/stalls, decoding, failure, and wall-clock conversion are excluded.

@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - decisions
-updated: 2026-09-03
+updated: 2026-09-06
 ---
 
 # Decisions and Blockers
@@ -24,6 +24,7 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
+| 0 | H/CNOT logical policy is separated from native realization, but no code-side choice is admitted | `T-20260905-001` proposes frame-conjugated H plus bare CNOT; `RV-20260905-001` is `APPROVED` (Claude, 2026-09-06) after independently confirming the H/Y witness, CNOT closure, width-256 layers, RASCqL citations, and codex's H-teleport citation fix (H is self-derived `NUMERICAL` with an exact four-branch channel check, independently re-derived twice; Xu Figure 11(c) remains only on measurement CNOT). H-SWAP/H teleportation directly implements bare H and can break the Z-only invariant without frame clearing or an H-safe proof; CNOT is axis-safe but addressability, support, routing, and relabel debt remain. The 54/106--111/216 figures are logical-layer envelopes only. | Test either the 3/4 CNOT-layer matrices against a concrete automorphism/SIMD ISA or the 34/68 H masks against H-SWAP packing / whole-event co-design. |
 | 0 | Logical compatibility and support are both reviewed, but native execution is absent | The reviewed `T-20260903-002` (`RV-20260903-002`) falsifies outcome-independent support. OOP-256 has an exact maximum possible-support union of 1,003; IP-256 retains a witnessed-union lower bound 935 and sound upper bound 1,006, while one sampled branch reaches weight 509. These logical unions are not connected code supports and may combine different branches. | Implement a coherent native mapper or explicit frame-materialization policy before assigning surgery rounds, runtime, or physical resources; no task ID is claimed for this yet. |
 | 0 | Several PBC native durations remain unresolved | Adaptive resource scheduling now exists, but state preparation, Z/ZZ/ZX/full-extractor time, reaction, and conditional-CZ costs remain `CHECK`. | Pin or validate those J300 contracts; strict mode already rejects placeholders. |
 | 1 | Factory service is absent from QCLA demand | The in-review width-256 overlay conserves 17,206 time-stamped T demands, but assumes ideal no-stall supply; average rate cannot establish burst feasibility. | Add explicit factory output, buffer, backlog, routing, and stall events to the emitted demand timeline. |

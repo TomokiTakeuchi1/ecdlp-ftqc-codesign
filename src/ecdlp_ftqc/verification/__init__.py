@@ -54,6 +54,14 @@ from .direct_ccz_ppm_support_replay import (
     direct_ccz_ppm_support_replay_to_data,
     replay_direct_ccz_ppm_support,
 )
+from .qcla_clifford_strategy_replay import (
+    OneBitHTeleportationChannelVerification,
+    QclaCliffordStrategyReplayError,
+    QclaCliffordStrategyReplaySummary,
+    qcla_clifford_strategy_replay_to_data,
+    replay_qcla_clifford_strategy,
+    verify_one_bit_h_teleportation_channel,
+)
 
 __all__ = [
     "AUTOCCZ_DELAYED_CHOICE_CZ_COUNT",
@@ -74,6 +82,9 @@ __all__ = [
     "DirectCczPpmSupportReplayError",
     "DirectCczPpmSupportReplaySummary",
     "IpQclaSymbolicDirectCczPpmReplaySummary",
+    "OneBitHTeleportationChannelVerification",
+    "QclaCliffordStrategyReplayError",
+    "QclaCliffordStrategyReplaySummary",
     "SymbolicDirectCczPpmReplaySummary",
     "autoccz_channel_verification_to_data",
     "direct_ccz_branch_correction",
@@ -84,14 +95,17 @@ __all__ = [
     "direct_ccz_ppm_scaling_replay_to_data",
     "direct_ccz_ppm_support_replay_to_data",
     "ip_qcla_symbolic_direct_ccz_ppm_replay_to_data",
+    "qcla_clifford_strategy_replay_to_data",
     "replay_direct_ccz_ppm_atlas",
     "replay_direct_ccz_ppm_batching",
     "replay_direct_ccz_ppm_compatibility",
     "replay_direct_ccz_ppm_scaling",
     "replay_direct_ccz_ppm_support",
     "replay_ip_qcla_symbolic_direct_ccz_ppm_trace",
+    "replay_qcla_clifford_strategy",
     "replay_symbolic_direct_ccz_ppm_trace",
     "symbolic_direct_ccz_ppm_replay_to_data",
     "verify_autoccz_consumption_channel",
     "verify_direct_ccz_injection_channel",
+    "verify_one_bit_h_teleportation_channel",
 ]

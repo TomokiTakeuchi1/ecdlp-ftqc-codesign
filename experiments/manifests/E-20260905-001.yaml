@@ -1,0 +1,36 @@
+experiment_id: E-20260905-001
+task_id: T-20260905-001
+title: H/CNOT logical handling and QEC execution-option audit for direct-CCZ QCLA
+configurations: []
+entrypoint: scripts/run_qcla_clifford_strategy_cycle.py
+command: uv --native-tls run python scripts/run_qcla_clifford_strategy_cycle.py
+width: 256
+variants: [oop, ip]
+assumptions:
+  - A-0030
+  - A-0039
+  - A-0040
+  - A-0041
+  - A-0042
+  - A-0043
+  - A-0044
+  - A-0045
+outputs:
+  - experiments/runs/T-20260905-001/strategy_matrix.json
+  - experiments/runs/T-20260905-001/width_256_clifford_demand.json
+  - experiments/runs/T-20260905-001/execution_options.json
+  - experiments/runs/T-20260905-001/independent_replay.json
+  - experiments/runs/T-20260905-001/summary.json
+  - experiments/runs/T-20260905-001/reproducibility.json
+validation:
+  - exact OOP/IP width-256 source-layer extraction
+  - algebraic H mixed-axis/Y witness
+  - exhaustive bounded CNOT Z-subspace closure checks
+  - independent replay imports no analysis module
+  - exact all-four-branch operator verification of the self-derived H teleportation gadget
+  - finite current-backend runtime remains null
+exclusions:
+  - a code-specific native mapper for branch-dependent direct-CCZ PPM support
+  - proof that QCLA CNOT-layer matrices belong to a selected automorphism ISA
+  - proof that H target masks can be packed into global H-SWAP blocks
+  - current-backend surgery cycles, wall-clock runtime, physical qubits, or failure probability

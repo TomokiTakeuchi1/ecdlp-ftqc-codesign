@@ -1,10 +1,155 @@
 # AI handoff
 
-Last updated: 2026-09-03
+Last updated: 2026-09-06
 From: claude
 To: codex and human
 
 ## Current review handoff
+
+`T-20260906-001` is `RV-20260906-001` `APPROVED` (Claude review, 2026-09-06).
+It records a validation-first cycle for reconsidering the source-aligned
+direct-CCZ QCLA dependency model. The reviewed width-5 12-level and width-256
+34-level candidates remain unchanged baselines. The proposed width-5
+alternatives -- ten CCX in four macro-layers/eight unitless PPM levels, or
+nine CCX in three macro-layers/six levels plus measurement cleanup -- are
+explicitly `CONJECTURE`.
+
+The reviewer independently reconstructed the ten-gate width-5 OOP CCX list
+directly from `build_oop_qcla_trace(5)` (bypassing anything new in this task)
+and matched every gate, algorithmic layer, and claimed control/control or
+control/target overlap exactly, including the specific reason `T4` cannot
+merge into `T3` (`p_{1,1}` is a control in the long-prefix event but the
+target of the uncompute). It confirmed `A-0045`/`A-0046` are labeled
+`CONJECTURE` and `D-0027` is `PROPOSED`, confirmed the task-chain dependencies
+in `context/TASKS.md` have no forward reference, and confirmed via
+`git status`/`git diff --stat` that this task touches no previously reviewed
+compiler, scheduler, or verification module -- only coordination/context
+records and one new planning document.
+
+The next executable task is `T-20260906-002`: derive and independently replay
+joint direct-CCZ lowering under one common incoming frame, test all overlap
+orientations, and verify the measurement-uncompute identity in the complete
+width-5 OOP channel.  Only after it passes may `T-20260906-003` replace
+conservative nearest-use wire edges at widths 2--8; only after that may
+`T-20260906-004` rerun width 256.  The width-256 output is structural demand
+only and must retain null native cycles, seconds, physical qubits, and failure
+probability.  See `docs/JOINT_CCX_QCLA_REEVALUATION_CYCLE.md`,
+`context/DECISIONS.md` decision `D-0027`, and
+`coordination/reviews/T-20260906-001.md`.
+
+`T-20260905-001` is `RV-20260905-001` `APPROVED` (Claude re-review,
+2026-09-06), closing the sole defect from the first-pass review. The
+`one_bit_h_teleportation` option is now a self-derived `NUMERICAL` identity;
+it no longer cites Xu et al. The Xu Figure 11(c) `LITERATURE` citation remains
+only on measurement CNOT. A new independent operator-channel verifier checks
+all four `ZX`/destructive-`X` outcome branches for the `|0>` carrier, obtains
+probability `1/4` per branch within `5.551115123125783e-17`, and matches H up
+to the branch Pauli correction with maximum Frobenius residual
+`1.1102230246251565e-16`; the reviewer independently re-derived this exact
+channel with a second, differently-coded script and matched every number
+including the scalar corrections (`0.5, 0.5, 0.5, -0.5`). Replay rejects
+renewed Xu attribution or an H evidence label other than `NUMERICAL`, and the
+reviewer confirmed the corresponding mutation test actually exercises this
+guard. `A-0042` now records only the cited measurement-CNOT assumption and
+`A-0045` records the H identity. Six focused tests, 11 combined strategy/Hub
+tests, Ruff, strict mypy, compileall, generation, replay, and mutation checks
+pass; the full suite has 338 passes and only the same two unrelated
+sibling-pin failures -- all independently reproduced by the reviewer, including
+two independent byte-identical artifact regenerations matching the
+implementer's recorded hashes exactly. The layer counts, logical envelopes,
+frame-conjugated-H plus bare-CNOT policy, and null native outputs are
+unchanged from the first pass.
+
+Review history: `T-20260905-001` received `RV-20260905-001`
+`CHANGES_REQUESTED` (Claude review,
+2026-09-06). The task separates the logical H/CNOT frame policy from the
+code-side realization question, and the review confirmed every part of that
+separation except one citation.
+
+Under `physical = C^dagger logical`, the independently replayed six-row matrix
+finds that only frame-conjugated H generally preserves the existing Z-only
+direct-CCZ phase-1 invariant. Bare or tracked H has an explicit two-qubit
+mixed-axis/Y witness. All three CNOT modes preserve Z type by closure of the
+`X/Z/CNOT/CZ` subgroup, but bare/tracked CNOT can grow, reroute, and retain
+branch dependence in later support. Fresh-resource phase-2 readouts remain
+X-only in every case. The proposed logical default is therefore
+frame-conjugated H plus bare CNOT, pending review.
+
+Width-256 OOP/IP has 17/34 Toffoli-bearing layers and 3/4 CNOT-only layers,
+giving 34/68 H layers with maximum parallel demand 255 and CNOT-layer maximum
+256. Starting from the reviewed 34/68 candidate levels, one-layer-H plus SIMD
+CNOT gives conditional overlap totals 54/106 or strict totals 71/140.
+One-bit-H teleportation plus measurement CNOT gives 94/182 or 111/216. These
+are logical primitive-layer envelopes only. The overlap version assumes the
+closing H/H-teleport step can overlap the disjoint fresh-resource-X phase.
+
+The H teleportation gadget needs one provisioned `|0>` carrier per parallel H
+and ordered `ZX`, `X` measurements; the CNOT gadget needs one `|+>` scratch
+per parallel CNOT and ordered `ZZ`, `XX`, `Z` measurements. Neither consumes
+T/CCZ magic states. H-SWAP and H teleportation implement bare H, not the
+selected frame-conjugated H, unless the frame is cleared, the target is
+proved H-safe, or the whole conjugated-H/direct-CCZ event is co-designed.
+
+RASCqL Table 1/2 values are retained only as an incompatible-domain `CHECK`
+comparator. They yield OOP 65.1/73.6 ms and IP 124.2/141.2 ms for the
+overlap/strict H-SWAP+tCNOT arithmetic while excluding relabel debt. They are
+not current direct-CCZ runtime. Current-backend cycles, seconds, physical
+qubits, and failure remain null.
+
+Five focused tests pass; the full suite has 337 passes and only the two known
+unrelated sibling-pin failures. Ruff, strict mypy, compileall, deterministic
+generation, independent replay, and mutation checks pass. See
+`docs/HIGH_RATE_QCLA_H_CNOT_STRATEGY_CONTRACT.md`,
+`experiments/runs/T-20260905-001/summary.json`, and
+`coordination/reviews/T-20260905-001.md`.
+
+The review independently reconstructed the H/Y witness and the CNOT-closure
+argument from explicit numpy matrices, independently re-extracted every
+width-256 OOP/IP layer count directly from the reviewed QCLA builders (not the
+new module) and matched them exactly, independently recomputed every
+strict/overlap added-layer total and the RASCqL-domain millisecond totals from
+the stated formulas, and directly pixel-verified the RASCqL Table 1/2 values
+and the CNOT-teleportation gadget against Xu et al. Figure 11(c) with zero
+discrepancies. It reproduced the 5 focused tests, ran ruff/strict
+mypy/compileall clean on all new files, and regenerated the six-artifact
+experiment twice with independently confirmed byte-identical hashes.
+
+The review found one defect: the `one_bit_h_teleportation` execution option's
+citation to "Xu et al. 2024, arXiv:2407.18490v1, Figure 11" is wrong. Page 28
+of that source shows only (a) generic `ZZ`+destructive-`X` teleportation on a
+`|+>` ancilla, (b) a teleported S gate, and (c) measurement-based CNOT (the
+gadget correctly cited elsewhere in the same record); it contains no
+one-bit-H-teleportation panel, and the paper's actual Hadamard method
+(Section 5) is an unrelated global fold-transversal H-SWAP technique. An
+independent from-scratch numpy simulation (20 random states, exact
+statevector arithmetic) confirms the `ZX`-then-`X`, `|0>`-ancilla gadget
+described in the contract is nonetheless mathematically correct -- it reaches
+fidelity 1.0 to `H|psi>` on every outcome branch via one deterministic Pauli
+correction -- so this is a citation/evidence-label defect (the claim should be
+`NUMERICAL`/re-sourced rather than `LITERATURE`/Xu-Figure-11), not a
+computational error, and it does not affect any other finding, the width-256
+layer-demand numbers, or the null current-backend outputs. See
+`coordination/reviews/T-20260905-001.md` for the complete finding list and
+required changes.
+
+That requested change has now been implemented in
+`src/ecdlp_ftqc/analysis/qcla_clifford_strategy.py`, the contract, and the
+assumption ledger: the accurate CNOT half retains its
+`LITERATURE`/Xu-Figure-11(c) label, while the H half is recorded separately as
+the self-derived `NUMERICAL` assumption `A-0045`. The re-review independently
+verified the fix rather than trusting the implementer's report: it re-read the
+updated `ExecutionOption` record and the new
+`verify_one_bit_h_teleportation_channel`/`_h_teleportation_branch_operator`
+functions, ran them directly, then wrote a second independently-coded script
+using a different derivation (explicit basis-vector projectors and a
+separately-derived probability formula) that reproduced the identical branch
+operators, scalars, and error magnitudes to the last bit; confirmed the
+mutation-rejection test genuinely reinstates an Xu citation and checks replay
+raises on it; reran the focused and full test suites, ruff, and strict mypy;
+and regenerated the experiment twice, matching both the implementer's recorded
+hashes and each other byte-for-byte. `T-20260905-001` is now `DONE` and its
+lock is `RELEASED`. See `coordination/reviews/T-20260905-001.md` for the
+complete re-review.
 
 `T-20260903-002` is `RV-20260903-002` `APPROVED` (Claude review, 2026-09-03).
 It adds logical-support hypergraphs for the reviewed source-aligned direct-CCZ
@@ -495,6 +640,9 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
+0. `T-20260905-001` and `T-20260906-001` are both closed and approved. The next
+   executable task is `T-20260906-002` (unassigned): prove and independently
+   replay joint direct-CCZ and measurement-uncompute semantics at width 5.
 1. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.
@@ -570,5 +718,5 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-`T-20260903-002`'s lock is `RELEASED` in `coordination/WORK_LOCKS.md`; no task
-currently holds an active lock.
+No task currently holds an active lock in `coordination/WORK_LOCKS.md`; every
+row is `RELEASED`.

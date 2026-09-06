@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-09-03
+updated: 2026-09-06
 ---
 
 # Research Progress Log
@@ -12,6 +12,67 @@ updated: 2026-09-03
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-09-06 — Joint-CCX validation and width-256 re-evaluation plan
+
+**Status:** Reviewed and approved (`T-20260906-001`, `RV-20260906-001`, 2026-09-06)
+
+What changed:
+
+- Recorded a validation-first plan asking whether the reviewed direct-CCZ QCLA
+  dependency model is over-serialized by conservative nearest-use wire edges.
+- Proposed two width-5 alternatives to the reviewed 10-CCX/12-level baseline:
+  a four-macro-layer/eight-level unitary grouping, and a three-macro-layer/
+  six-level grouping that replaces the final uncompute with a destructive
+  measurement plus conditional-frame update.
+- Gated any adoption behind three sequential proofs: exact width-5 logical
+  commutation and joint-injection verification, a commutation-aware
+  small-width (2-8) dependency model, and only then a width-256 structural
+  rerun.
+
+Why it matters:
+
+Both proposed reductions remain `CONJECTURE` until their own task closes; the
+existing 12-level width-5 and 34-level width-256 source-aligned results are
+explicit, unchanged baselines. The reviewer independently reconstructed the
+ten-gate width-5 CCX list and every claimed gate-overlap relationship directly
+from the reviewed circuit builder and found no transcription error. See
+`docs/JOINT_CCX_QCLA_REEVALUATION_CYCLE.md` and
+`coordination/reviews/T-20260906-001.md`. The next executable task is
+unassigned `T-20260906-002`.
+
+## 2026-09-05 — H/CNOT logical policy and QEC execution options
+
+**Status:** Reviewed and approved (`T-20260905-001`, `RV-20260905-001`, 2026-09-06). The H option is now explicitly self-derived `NUMERICAL`, and the Xu et al. Figure 11(c) citation remains only on measurement CNOT. A repository-owned exact channel verifier checks all four H-teleportation outcome branches: each has probability `1/4` within `5.551115123125783e-17`, and the corrected branch operator matches H with maximum Frobenius residual `1.1102230246251565e-16`. Replay rejects an incorrect evidence label or renewed Xu attribution. Claude independently re-derived the same channel with a second, differently-coded script and matched every number exactly before approving. See `coordination/reviews/T-20260905-001.md`.
+
+What changed:
+
+- Compared frame-conjugated logical, bare logical, and frame-tracked handling
+  separately for H and CNOT under one exact correction-frame convention.
+- Proved that all three CNOT choices preserve Z-only data PPMs, although
+  support and routing can grow; only frame-conjugated H preserves that
+  guarantee in general, and bare/tracked H has an explicit Y witness.
+- Extracted width-256 OOP/IP demand: 34/68 H layers, 3/4 CNOT-only layers,
+  and maximum same-layer H/CNOT counts 255/256.
+- Compared whole-event co-design, global H-SWAP and transversal CNOT, one-bit
+  H and measurement-CNOT teleportation, and addressable deformation/surgery.
+- Kept RASCqL timing arithmetic in its own source domain and left every
+  current-backend finite output null.
+
+Why it matters:
+
+This separates two questions that were previously mixed together: which
+logical frame policy keeps high-rate PPMs Z/X-only, and which code mechanism
+can actually execute that policy. The proposed default is frame-conjugated H
+plus bare CNOT. A native H-SWAP or H-teleport gadget implements bare H, so it
+still needs frame clearing, an H-safe proof, or whole-event co-design.
+
+Starting from 34/68 direct-CCZ candidate levels, one-layer-H plus SIMD-CNOT
+gives conditional-overlap totals 54/106 or strict totals 71/140. H teleport
+plus measurement CNOT gives 94/182 or 111/216. These are logical primitive
+layers, not QEC cycles. See
+`docs/HIGH_RATE_QCLA_H_CNOT_STRATEGY_CONTRACT.md` and
+`coordination/reviews/T-20260905-001.md`.
 
 ## 2026-09-03 — Scalable direct-CCZ PPM support hypergraphs
 

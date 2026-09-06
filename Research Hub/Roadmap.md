@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - roadmap
-updated: 2026-09-03
+updated: 2026-09-06
 ---
 
 # Research Roadmap
@@ -15,7 +15,7 @@ updated: 2026-09-03
 
 **Status: ACTIVE**
 
-<progress max="22" value="21"></progress> 21 of 22 listed Month-1 milestones are complete or in review; 1 more is required.
+<progress max="24" value="23"></progress> 23 of 24 listed Month-1 milestones are complete or in review; 1 more is required.
 
 ### Completed or reviewed
 
@@ -38,10 +38,13 @@ updated: 2026-09-03
 - [x] Implement and review exact width-5/8 anchors and compact structural OOP/IP scaling through width 257 while retaining fail-closed finite outputs (`T-20260901-010`, `RV-20260901-009`).
 - [x] Prove and review a linear-size source-aligned compatibility certificate through width 257, including exact width-5/8 ANF bridges and width-256 OOP/IP candidate counts 34/68 (`T-20260903-001`, `RV-20260903-001`).
 - [x] Construct and review exact OOP and bounded large-IP logical-support hypergraphs through width 257, falsifying outcome-independent support and reporting the width-256 lower/upper envelopes (`T-20260903-002`, `RV-20260903-002`).
+- [x] Compare H/CNOT frame-conjugated, bare, and tracked logical policies; extract width-256 H/CNOT layers; and review the co-design/SIMD/teleportation/surgery audit, including a citation-fix round (`T-20260905-001`, `RV-20260905-001` `APPROVED`).
+- [x] Record and review a validation-first joint-CCX plan that gates any commutation-aware depth reduction behind width-5 proofs before touching width 256 (`T-20260906-001`, `RV-20260906-001` `APPROVED`).
 
 ### Active
 
-- [ ] Implement one coherent native mapper/frame-materialization policy for the branch-dependent 34/68 width-256 logical candidate levels (no task ID claimed yet).
+- [ ] Prove and independently replay joint direct-CCZ and measurement-uncompute semantics at width 5 (`T-20260906-002`, unassigned).
+- [ ] Test frame-conjugated H plus bare CNOT against one coherent native mapper/frame-materialization policy for the branch-dependent 34/68 width-256 logical candidate levels.
 - [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
 - [ ] Close the reviewed AutoCCZ adapter's (`RV-20260901-001`) nine missing and one distance-incompatible service fields before scheduling.
 
