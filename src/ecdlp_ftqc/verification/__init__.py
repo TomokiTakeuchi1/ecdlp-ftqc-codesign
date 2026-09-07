@@ -78,6 +78,12 @@ from .qcla_clifford_strategy_replay import (
     replay_qcla_clifford_strategy,
     verify_one_bit_h_teleportation_channel,
 )
+from .width256_commutation_aware_qcla import (
+    Width256CommutationAwareReplayError,
+    Width256CommutationAwareReplaySummary,
+    replay_width256_commutation_aware_study,
+    width256_commutation_aware_replay_to_data,
+)
 
 __all__ = [
     "AUTOCCZ_DELAYED_CHOICE_CZ_COUNT",
@@ -108,6 +114,8 @@ __all__ = [
     "SmallWidthCommutationAwareReplaySummary",
     "SymbolicDirectCczPpmReplaySummary",
     "VariantReplaySummary",
+    "Width256CommutationAwareReplayError",
+    "Width256CommutationAwareReplaySummary",
     "WidthFiveJointDirectCczReplaySummary",
     "WidthReplaySummary",
     "autoccz_channel_verification_to_data",
@@ -131,9 +139,11 @@ __all__ = [
     "replay_small_width_commutation_aware_study",
     "replay_symbolic_direct_ccz_ppm_trace",
     "replay_width5_joint_direct_ccz",
+    "replay_width256_commutation_aware_study",
     "symbolic_direct_ccz_ppm_replay_to_data",
     "verify_autoccz_consumption_channel",
     "verify_direct_ccz_injection_channel",
     "verify_one_bit_h_teleportation_channel",
     "width5_joint_direct_ccz_replay_to_data",
+    "width256_commutation_aware_replay_to_data",
 ]

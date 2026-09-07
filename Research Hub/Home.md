@@ -12,7 +12,7 @@ updated: 2026-09-07
 
 > [!abstract] Current snapshot — 2026-09-07
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** `T-20260906-003` is approved (`RV-20260907-002`, 2026-09-07). The separate complete-pair model exactly schedules widths 2--8 in its stated logical coordinate. At width 5 the source/unitary/measured values are 12/8/6 two-phase candidate levels; cleanup helps widths 5 and 7 but not 6 or 8. Inter-macro reaction dependencies remain conservative `CHECK`, width 256 remains at the reviewed 34-level source baseline, and no value is a surgery round or runtime. The next executable task is unassigned `T-20260906-004`: the width-256 structural rerun.
+> **Current focus:** `T-20260906-004` is approved (`RV-20260907-003`, 2026-09-07). At width 256, the commutation-aware unitary result is exactly **15 macro-layers / 30 two-phase candidate levels** in its logical model, versus the preserved source 17/34 baseline. All 240 measurement-cleanup candidates are rejected by the current Z/X-only PPM gate because a conditional CZ can present cleanup `X(p)` as mixed `X(p)Z(q)`; the fallback remains unitary 15/30. No value is a surgery round or runtime. No task is yet claimed for a native mapper/finite backend over these certified logical results.
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
@@ -42,6 +42,7 @@ updated: 2026-09-07
 | Scalable direct-CCZ PPM support | ✅ Reviewed | Claude approved the logical support-hypergraph certificate (`RV-20260903-002`); outcome independence is falsified. OOP-256 has exact possible-support-union/contact maxima 1,003/129; IP-256 has witnessed-union/contact lower bounds 935/523, a sampled single-branch maximum 509, and sound may-support/contact upper bounds 1,006/567. These are logical support quantities, not native geometry or time. |
 | QCLA H/CNOT strategy audit | ✅ Reviewed | Claude approved `T-20260905-001` (`RV-20260905-001`) after codex's fix: H teleportation is now self-derived `NUMERICAL`, all four outcome branches are independently verified exactly (twice, by two differently-coded scripts), and replay rejects renewed Xu attribution. The reviewed layer counts and logical conclusions are unchanged. |
 | Commutation-aware QCLA scheduling | ✅ Reviewed | Claude approved `T-20260906-003` (`RV-20260907-002`); it retains noncommuting orders, source CNOT barriers, cleanup lifetimes, and conservative reaction frontiers while closing exact model-relative depths through width 8. Width 5 is 4/3 macros or 8/6 candidate levels for unitary/measured variants. |
+| Width-256 commutation-aware QCLA | ✅ Reviewed | Claude approved `T-20260906-004` (`RV-20260907-003`); it scans all 754,606 CCX pairs and finds exact unitary depth 15 macros / 30 candidates. Peak CCZ burst is 255; exact macro-entry support maxima are possible weight 1,003, union 1,647, and contact 54. Cleanup fails closed on 240 mixed-axis witnesses. All quantities remain logical, not native time or geometry. |
 | Finite direct-CCZ backend audit | ✅ Reviewed | Claude approved the 17-field compatibility gate (`RV-20260831-004`); it rejects the selected backend with 13 missing and three incompatible fields, and no schedule is emitted. |
 | AutoCCZ surface-code adapter | ✅ Reviewed | Claude approved the source-native factory/fixup/consumer adapter (`RV-20260901-001`); complete service remains `OPEN` with nine missing and one distance-incompatible field, so no width-256 schedule exists. |
 | Full Shor estimate | ⚪ Not started | Month 2 begins after the arithmetic and architecture contracts are stable. |
@@ -50,7 +51,7 @@ updated: 2026-09-07
 ## What is trustworthy today?
 
 > [!success] Reviewed foundation
-> The detailed approval history is retained in `context/STATUS.md` and the individual review records. `T-20260906-003` / `RV-20260907-002` is now Claude-approved; the next unreviewed item is unassigned `T-20260906-004`.
+> The detailed approval history is retained in `context/STATUS.md` and the individual review records. `T-20260906-004` / `RV-20260907-003` is now Claude-approved; no task is currently in review.
 
 > [!warning] Provisional sensitivity result — `CHECK`
 > For the adaptive width-32 Gidney trace, the J300 sensitivity profile gives **31,176 syndrome rounds**, ten-scratch occupancy **43**, and **zero high-rate hits**. Adding memory I/O (100 loads, 100 stores, one round each, fixed order, no prefetch) brings the combined figure to **31,376 rounds**. This excludes bridge occupancy, factory construction, routing, decoder tail, setup/readout, and wall-clock conversion. It is **not** a days-level runtime or total-qubit claim, and the 100/100 transfer count is a fixed-order/no-prefetch policy result, not a placement lower bound.
@@ -131,6 +132,16 @@ updated: 2026-09-07
 > may combine different branches; none of these values is a physical support,
 > surgery round, or runtime.
 
+> [!success] Width-256 commutation-aware result — `PROVED` logical / cleanup-axis `FALSIFIED`, reviewed `RV-20260907-003`
+> A compact rank certificate and a full **754,606-pair** scan agree on **15
+> unitary macros / 30 two-phase candidates**, down from the source-aligned
+> 17/34 baseline. The largest macro needs **255** fresh CCZ states and 255
+> distinct target-Hs. Macro-entry exact support reaches possible weight
+> **1,003**, union **1,647**, and contact **54**; these are not native geometry.
+> Every one of 240 cleanup candidates has a branch-specific mixed-axis
+> `X(p)Z(q)` witness, so no cleanup is removed under the present Z/X-only
+> family. Native cycles, runtime, physical qubits, and failure stay null.
+
 > [!danger] Finite direct-CCZ backend gate — `OPEN`, reviewed `RV-20260831-004`
 > Seven primary sources were mapped into one 17-field compatibility audit. The
 > selected Cain `P=20` candidate has **13 missing finite fields**; the available
@@ -153,14 +164,15 @@ updated: 2026-09-07
 ## Next three decisions/actions
 
 1. **Human:** close `T-BOOT-001` by choosing the canonical ECDLP circuit contract in [[docs/CANONICAL_CIRCUIT_DECISION|Canonical Circuit Decision]].
-2. **Implement:** one coherent native mapper or explicit frame-materialization policy for the branch-dependent width-256 support hypergraphs; no task ID is claimed yet.
+2. **Architecture decision:** select the coherent native mapper/frame-materialization scope for the reviewed 15/30 candidate result, including whether mixed-axis cleanup will be deferred or supported explicitly.
+3. **Implement next:** claim one bounded task for that mapper or materialization policy, retaining routing, reaction/decoder, factory/buffer, physical-space, and failure outputs as null until one compatible finite backend closes them.
 
 ## Quick access to canonical records
 
 - Project truth: [[context/STATUS|Project Status]] · [[context/TASKS|Task Board]] · [[context/AI_HANDOFF|AI Handoff]]
 - Scientific records: [[context/DECISIONS|Decisions]] · [[context/RESULT_LEDGER|Result Ledger]] · [[context/ASSUMPTIONS|Assumptions]]
 - Review state: [[coordination/REVIEW_QUEUE|Review Queue]]
-- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory/high rate]] · [[docs/HIGH_RATE_QCLA_DIRECT_CCZ_RESEARCH_CYCLE|Direct-CCZ research plan]] · [[docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT|Direct-CCZ capability/OOP trace]] · [[docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT|Direct-CCZ single event]] · [[docs/DIRECT_CCZ_PPM_TRACE_CONTRACT|Symbolic direct-CCZ PPM/frame trace]] · [[docs/DIRECT_CCZ_PPM_BATCHING_CONTRACT|Direct-CCZ PPM candidate batching]] · [[docs/DIRECT_CCZ_PPM_ATLAS_CONTRACT|Direct-CCZ PPM audit atlas]] · [[docs/DIRECT_CCZ_IP_QCLA_COMPARISON_CONTRACT|IP-QCLA direct-CCZ comparison]] · [[docs/DIRECT_CCZ_QCLA_SCALING_CONTRACT|Direct-CCZ QCLA scaling]] · [[docs/DIRECT_CCZ_QCLA_SCALABLE_SUPPORT_CONTRACT|Scalable direct-CCZ PPM support]] · [[docs/COMMUTATION_AWARE_QCLA_SCHEDULING_CONTRACT|Commutation-aware QCLA scheduling]] · [[docs/DIRECT_CCZ_FINITE_BACKEND_AUDIT|Finite direct-CCZ backend audit]] · [[docs/AUTOCCZ_SURFACE_CODE_ADAPTER|AutoCCZ adapter]]
+- Technical contracts: [[docs/GIDNEY_DAG_CONTRACT|Gidney DAG]] · [[docs/MITTEN_GIDNEY_LOWERING_CONTRACT|Mitten Lowering]] · [[docs/PBC_CQLU_LOWERING_CONTRACT|Adaptive PBC/CQLU]] · [[docs/J300_PBC_SCHEDULING_CONTRACT|J300 scheduling]] · [[docs/MEMORY_IO_EXECUTION_CONTRACT|Memory I/O]] · [[docs/TELEPORTATION_BRIDGE_RIPPLE_CONTRACT|Bell-bridge ripple]] · [[docs/QCLA_DAG_CONTRACT|QCLA DAG]] · [[docs/QCLA_PBC_LOWERING_CONTRACT|QCLA adaptive PBC]] · [[docs/QCLA_MEMORY_IO_CONTRACT|QCLA memory/high rate]] · [[docs/HIGH_RATE_QCLA_DIRECT_CCZ_RESEARCH_CYCLE|Direct-CCZ research plan]] · [[docs/DIRECT_CCZ_CAPABILITY_AND_OOP_QCLA_CONTRACT|Direct-CCZ capability/OOP trace]] · [[docs/DIRECT_CCZ_SINGLE_EVENT_CONTRACT|Direct-CCZ single event]] · [[docs/DIRECT_CCZ_PPM_TRACE_CONTRACT|Symbolic direct-CCZ PPM/frame trace]] · [[docs/DIRECT_CCZ_PPM_BATCHING_CONTRACT|Direct-CCZ PPM candidate batching]] · [[docs/DIRECT_CCZ_PPM_ATLAS_CONTRACT|Direct-CCZ PPM audit atlas]] · [[docs/DIRECT_CCZ_IP_QCLA_COMPARISON_CONTRACT|IP-QCLA direct-CCZ comparison]] · [[docs/DIRECT_CCZ_QCLA_SCALING_CONTRACT|Direct-CCZ QCLA scaling]] · [[docs/DIRECT_CCZ_QCLA_SCALABLE_SUPPORT_CONTRACT|Scalable direct-CCZ PPM support]] · [[docs/COMMUTATION_AWARE_QCLA_SCHEDULING_CONTRACT|Commutation-aware QCLA scheduling]] · [[docs/WIDTH256_COMMUTATION_AWARE_QCLA_CONTRACT|Width-256 commutation-aware QCLA]] · [[docs/DIRECT_CCZ_FINITE_BACKEND_AUDIT|Finite direct-CCZ backend audit]] · [[docs/AUTOCCZ_SURFACE_CODE_ADAPTER|AutoCCZ adapter]]
 - Source corpus: [[literature/papers/INDEX|Paper Index]] · [[literature/READING_QUEUE|Reading Queue]]
 
 > [!info] Status language

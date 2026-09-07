@@ -13,6 +13,41 @@ updated: 2026-09-07
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-09-07 — Width-256 commutation-aware QCLA rerun
+
+**Status:** Reviewed and approved (`T-20260906-004`, `RV-20260907-003`, 2026-09-07)
+
+What changed:
+
+- Replaced the quadratic saved pair table with one compact rank record per
+  CCX, then independently rescanned all 754,606 pairs to check it.
+- Reduced the exact logical unitary result from the source-aligned 17 macros /
+  34 two-phase candidates to 15 / 30, with a matching fifteen-event critical
+  path.
+- Recomputed support at each common macro entry for all 7,374 PPMs. The peak
+  logical burst is 255 CCZ states; possible PPM weight, level union, and
+  contact maxima are 1,003, 1,647, and 54.
+- Tested all 240 width-256 measurement cleanups and rejected them under the
+  present Z/X-only family: a retained conditional CZ turns cleanup `X(p)`
+  into branch-dependent mixed `X(p)Z(q)`. No cleanup CCX was removed.
+
+Why it matters:
+
+The commutation argument now gives a smaller exact width-256 logical
+critical path, but the cleanup shortcut does not scale for free. The selected
+result remains the unitary 15/30 candidate. Support unions are not
+simultaneous branch weights or native geometry, and cycles, runtime, physical
+qubits, failure, routing, reactions, and factory service remain null/open.
+The reviewer independently reimplemented the complete pairwise-dependency
+and longest-path computation from scratch against the real width-256 source
+trace, matching all five headline pair-oracle numbers and the full
+macro-layer size vector exactly; algebraically re-derived the cleanup
+mixed-axis identity; and independently confirmed the required structure
+holds for all 240 (not sampled) cleanup candidates. See
+`docs/WIDTH256_COMMUTATION_AWARE_QCLA_CONTRACT.md` and
+`coordination/reviews/T-20260906-004.md`. No task is yet claimed for a
+native mapper/finite backend over these certified logical results.
+
 ## 2026-09-07 — Exact small-width commutation-aware QCLA schedules
 
 **Status:** Reviewed and approved (`T-20260906-003`, `RV-20260907-002`, 2026-09-07)

@@ -1,10 +1,90 @@
 # AI handoff
 
 Last updated: 2026-09-07
-From: claude
+From: codex
 To: codex and human
 
 ## Current review handoff
+
+`T-20260906-004` is `RV-20260907-003` `APPROVED` (Claude review, 2026-09-07).
+The selected width-256 result is the exact model-relative commutation-aware
+unitary schedule, not the raw measurement-cleanup relaxation.
+
+The clean OOP source has 1,229 CCXs, 766 CNOTs, 240 prefix scratch values,
+seventeen source CCX layers, and 34 source-aligned two-phase candidates. The
+new compact recurrence stores one dependency/rank record per CCX and agrees
+with a complete 754,606-pair oracle: 251,125 pairs retain dependencies,
+503,481 are admitted, and 3,249 are noncommuting. The resulting fifteen
+macro-layers have a matching fifteen-event critical path, proving 30
+two-phase candidate levels inside the explicit unlimited-capacity logical
+model.
+
+Support is recomputed at each common macro-entry rather than feeding one
+same-macro event's corrections into the next. All 7,374 PPM profiles replay.
+The peak macro has 255 CCZ states, 765 PPMs per phase, and 255 distinct target
+Hs. Across levels, maximum possible PPM weight is 1,003, possible union is
+1,647 including fresh resources, and possible contact is 54. These are exact
+logical hypergraph envelopes, not simultaneous branch weights, connected
+code support, or native geometry. Active source values peak at 1,004 versus
+1,008 under fully resident allocation. Bare CNOT source layers contain
+254/256/256 gates.
+
+The width-5 cleanup channel remains valid, but its naive width-256 promotion
+fails a new axis gate. Each of 240 prefix candidates has a branch where the
+last-use event's conditional control--control `CZ(p,q)` presents cleanup
+`X(p)` as mixed-axis `X(p)Z(q)`. Early source cleanups are also followed by up
+to 236 other CCXs, so their conditional frame cannot be discarded. No
+cleanup CCX is removed, no raw-removal depth is reported, and the cleanup
+alternative falls back to unitary 15/30. This is `FALSIFIED` only for the
+current Z-only/X-only high-rate family, not for the abstract
+measurement-uncompute identity.
+
+Focused tests (5), Ruff, strict mypy on 64 source files, and the independent
+replay pass. The replay reconstructs all pairs, nodes, levels, PPM profiles,
+lifetimes, and mixed-axis witnesses and rejects rank, axis-admission, and
+finite-output mutations. The full suite has 375 passes and only the same two
+unrelated sibling source-pin failures. Native cycles, seconds, physical
+qubits, failure, addressability, routing, reaction/decoder latency, and
+factory/buffer service remain null or open. See
+`docs/WIDTH256_COMMUTATION_AWARE_QCLA_CONTRACT.md` and
+`coordination/reviews/T-20260906-004.md`.
+
+The reviewer independently reimplemented the complete O(n^2) pairwise
+dependency and longest-path computation from scratch (not importing the
+reviewed scheduler or its shipped replay module) directly against the real
+width-256 source trace, and matched every headline pair-oracle number
+exactly: 1,229 nodes, 754,606 pairs, 251,125 dependencies, 503,481
+admissions, 3,249 noncommuting pairs, macro-depth 15, and the complete
+15-element macro-layer size vector `[255, 253, 126, 64, 34, 23, 20, 28, 40,
+61, 66, 72, 53, 70, 64]`. It independently verified the streaming
+recurrence's soundness (redundant/non-minimal dependency edges never shorten
+or lengthen the true longest path, so tracking only the highest-rank
+predecessor per conflicting qubit name per barrier segment is exact, not an
+empirical shortcut). It algebraically re-derived the cleanup mixed-axis
+identity `CZ(p,q) X(p) CZ(p,q) = X(p) Z(q)` from explicit basis-state action,
+and independently confirmed -- for all 240 candidates, not a sample -- that
+each has a well-defined last-use CCX with the target as one of exactly two
+controls and a read-only intervening history, that the earliest candidate
+precedes exactly 236 later CCXs, and that every candidate's
+`released_target_later_ppm_use_count` is zero. It confirmed this task's
+`FALSIFIED` cleanup-axis finding is additive to, not in conflict with, the
+narrower classical-channel/relative-phase claims already approved in
+`RV-20260907-001` and `RV-20260907-002` (neither of which claimed native
+PPM-family compatibility for the cleanup measurement). Two independent
+byte-identical regenerations matched the implementer's five recorded SHA-256
+prefixes (`060adb65`, `26c984c1`, `5d506b6b`, `9dc4cc64`, `ef478fc5`) exactly.
+
+The next unassigned item is a coherent native mapper/finite backend for the
+certified logical candidate levels and support hypergraphs (see "Next
+concrete action" below); no width-257+ or further commutation-aware task is
+currently claimed.
+
+Post-review bookkeeping is synchronized: `D-0029` is `ACCEPTED`,
+`R-20260907-008` through `R-20260907-010` record the approved validation,
+the task/session status is complete, and the work lock is released. This
+normalization changes no scientific result or implementation.
+
+## Previous approved handoff
 
 `T-20260906-003` is `RV-20260907-002` `APPROVED` (Claude review, 2026-09-07).
 It implements the separate commutation-aware clean OOP-QCLA dependency model
@@ -732,13 +812,16 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-0. `T-20260906-003` is approved (`RV-20260907-002`). `T-20260906-004`
-   (unassigned) is now the next executable task: re-evaluate width-256
-   OOP-QCLA structural demand using only the now-verified commutation-aware
-   rules, reporting exact logical demand, macro-depth, candidate levels,
-   support/multiplicity/contact envelopes, and live-value demand with
-   deterministic independent replay; all native cycles, seconds, physical
-   qubits, and failure outputs must remain null.
+0. `T-20260906-004` is approved (`RV-20260907-003`). The width-256
+   commutation-aware unitary schedule (15 macros / 30 candidate levels) is
+   now the certified structural result, and the measurement-cleanup
+   shortcut is closed (`FALSIFIED` for the current Z/X-only PPM family). No
+   task ID is claimed yet for the next step: implement one coherent native
+   mapper or explicit frame-materialization policy for the certified 15/30
+   width-256 logical candidate levels and the branch-dependent support
+   hypergraphs from `T-20260903-002`, together with a mixed-axis-compatible
+   cleanup protocol (frame clearing, a mixed-axis PPM construction, or a new
+   joint cleanup protocol) if cleanup is ever to be revisited.
 1. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.

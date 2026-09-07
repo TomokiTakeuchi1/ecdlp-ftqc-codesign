@@ -1,0 +1,45 @@
+experiment_id: E-20260906-004
+task_id: T-20260906-004
+title: Width-256 commutation-aware clean OOP-QCLA structural re-evaluation
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+entrypoint: scripts/run_width256_commutation_aware_qcla_cycle.py
+command: uv --native-tls run python scripts/run_width256_commutation_aware_qcla_cycle.py
+widths: [256]
+variants:
+  - source_aligned_baseline
+  - commutation_aware_unitary
+  - commutation_aware_measured_cleanup_fail_closed
+assumptions:
+  - A-0030
+  - A-0032
+  - A-0039
+  - A-0040
+  - A-0041
+  - A-0046
+  - A-0047
+  - A-0048
+  - A-0049
+  - A-0050
+  - A-0051
+  - A-0052
+outputs:
+  - experiments/runs/T-20260906-004/width256_study.json
+  - experiments/runs/T-20260906-004/level_envelopes.json
+  - experiments/runs/T-20260906-004/independent_replay.json
+  - experiments/runs/T-20260906-004/summary.json
+  - experiments/runs/T-20260906-004/reproducibility.json
+validation:
+  - compact streaming ranks equal the complete 754606-pair oracle
+  - widths 2 through 8 reproduce the reviewed exact macro-depth bridge
+  - longest-path lower bound equals the constructed unitary macro-depth
+  - each macro uses one common incoming frame and fresh per-event CCZ resources
+  - exact Boolean-ANF possible-support and contact envelopes are recomputed at macro entry
+  - all 240 cleanup lifecycle and later-PPM relations are inspected
+  - each rejected cleanup has a branch-specific mixed-axis Pauli witness
+  - independent reconstruction rejects rank, cleanup-axis, and finite-output mutations
+exclusions:
+  - materializing the quadratic pair table
+  - admitting mixed-axis cleanup PPMs
+  - connected code support, placement, routing, ports, or storage
+  - native cycles, runtime, physical qubits, or failure probability

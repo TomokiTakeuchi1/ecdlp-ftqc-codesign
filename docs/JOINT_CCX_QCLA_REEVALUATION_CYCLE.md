@@ -276,3 +276,39 @@ Independent replay covers 776 pair decisions, 39,824 pair truth-table rows,
 relative-phase pairs without mismatch. Width 256 remains unchanged at its
 reviewed source-aligned 34 candidate levels until `T-20260906-004`; no native
 cycles, seconds, physical qubits, or failure probability are inferred.
+
+## T-20260906-004 width-256 structural result — reviewed and approved
+
+The width-256 gate produces a selected unitary candidate and a fail-closed
+cleanup assessment.
+
+- **Compact/full-pair agreement (`PROVED`):** a linear-size streaming rank
+  certificate agrees at every vertex with an independent scan of all 754,606
+  CCX pairs. Of these, 251,125 retain a dependency and 503,481 are admitted to
+  share a macro when their ranks agree. The fifteen-layer construction has a
+  matching fifteen-event critical path.
+- **Selected logical result (`PROVED` in the stated model):** the preserved
+  source baseline is 1,229 CCXs, 17 macros, and 34 two-phase levels. The
+  commutation-aware unitary result retains all 1,229 CCXs in 15 macros and 30
+  levels. It consumes 1,229 fresh CCZ states; peak macro demand is 255 states
+  and 255 distinct target-H operations.
+- **Support (`PROVED` logical hypergraph):** exact common-frame macro-entry
+  propagation reconstructs all 7,374 PPMs. Maximum possible PPM weight is
+  1,003, maximum possible level-union size is 1,647 including fresh resource
+  values, and maximum possible logical contact is 54. The union is not one
+  branch's simultaneous weight and neither quantity is native geometry.
+- **Cleanup stop (`FALSIFIED` for the current PPM family):** all 240 prefix
+  cleanup candidates satisfy their local lifetime identity, but each has a
+  branch where a retained conditional `CZ(p,q)` presents `X(p)` as mixed-axis
+  `X(p)Z(q)`. Early cleanup frames also precede as many as 236 later CCXs. No
+  cleanup is admitted, no raw-removal depth is quoted, and the cleanup
+  alternative falls back to the 15/30 unitary result. The abstract
+  measurement-uncompute identity is not falsified.
+
+The active-source-value peak is 1,004 against 1,008 fully resident source
+values. Native cycles, seconds, physical qubits, failure, placement, routing,
+ports, reaction/decoder latency, and factory/buffer service remain null or
+open. Claude independently reproduced the complete pair relation, exact
+fifteen-layer construction, and all 240 cleanup-axis witnesses; see
+`docs/WIDTH256_COMMUTATION_AWARE_QCLA_CONTRACT.md` and approved review
+`RV-20260907-003`.
