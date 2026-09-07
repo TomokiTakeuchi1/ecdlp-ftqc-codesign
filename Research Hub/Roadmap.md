@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - roadmap
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Research Roadmap
@@ -15,7 +15,7 @@ updated: 2026-09-06
 
 **Status: ACTIVE**
 
-<progress max="24" value="23"></progress> 23 of 24 listed Month-1 milestones are complete or in review; 1 more is required.
+<progress max="25" value="24"></progress> 24 of 25 listed Month-1 milestones are complete or in review; 1 more is required.
 
 ### Completed or reviewed
 
@@ -40,10 +40,11 @@ updated: 2026-09-06
 - [x] Construct and review exact OOP and bounded large-IP logical-support hypergraphs through width 257, falsifying outcome-independent support and reporting the width-256 lower/upper envelopes (`T-20260903-002`, `RV-20260903-002`).
 - [x] Compare H/CNOT frame-conjugated, bare, and tracked logical policies; extract width-256 H/CNOT layers; and review the co-design/SIMD/teleportation/surgery audit, including a citation-fix round (`T-20260905-001`, `RV-20260905-001` `APPROVED`).
 - [x] Record and review a validation-first joint-CCX plan that gates any commutation-aware depth reduction behind width-5 proofs before touching width 256 (`T-20260906-001`, `RV-20260906-001` `APPROVED`).
+- [x] Prove and review the width-5 joint direct-CCZ common-frame factorization and measurement-uncompute semantic gate (`T-20260906-002`, `RV-20260907-001` `APPROVED`).
 
 ### Active
 
-- [ ] Prove and independently replay joint direct-CCZ and measurement-uncompute semantics at width 5 (`T-20260906-002`, unassigned).
+- [ ] Build and exactly replay the separate commutation-aware OOP-QCLA dependency model at widths 2--8 (`T-20260906-003`, unassigned). The 8/6 two-phase levels remain `CHECK` envelopes until this task constructs and closes an exact dependency schedule.
 - [ ] Test frame-conjugated H plus bare CNOT against one coherent native mapper/frame-materialization policy for the branch-dependent 34/68 width-256 logical candidate levels.
 - [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
 - [ ] Close the reviewed AutoCCZ adapter's (`RV-20260901-001`) nine missing and one distance-incompatible service fields before scheduling.

@@ -54,6 +54,14 @@ from .direct_ccz_ppm_support_replay import (
     direct_ccz_ppm_support_replay_to_data,
     replay_direct_ccz_ppm_support,
 )
+from .joint_direct_ccz import (
+    JointDirectCczReplayError,
+    JointInjectionAnchorSummary,
+    MeasurementUncomputeReplaySummary,
+    WidthFiveJointDirectCczReplaySummary,
+    replay_width5_joint_direct_ccz,
+    width5_joint_direct_ccz_replay_to_data,
+)
 from .qcla_clifford_strategy_replay import (
     OneBitHTeleportationChannelVerification,
     QclaCliffordStrategyReplayError,
@@ -82,10 +90,14 @@ __all__ = [
     "DirectCczPpmSupportReplayError",
     "DirectCczPpmSupportReplaySummary",
     "IpQclaSymbolicDirectCczPpmReplaySummary",
+    "JointDirectCczReplayError",
+    "JointInjectionAnchorSummary",
+    "MeasurementUncomputeReplaySummary",
     "OneBitHTeleportationChannelVerification",
     "QclaCliffordStrategyReplayError",
     "QclaCliffordStrategyReplaySummary",
     "SymbolicDirectCczPpmReplaySummary",
+    "WidthFiveJointDirectCczReplaySummary",
     "autoccz_channel_verification_to_data",
     "direct_ccz_branch_correction",
     "direct_ccz_injection_verification_to_data",
@@ -104,8 +116,10 @@ __all__ = [
     "replay_ip_qcla_symbolic_direct_ccz_ppm_trace",
     "replay_qcla_clifford_strategy",
     "replay_symbolic_direct_ccz_ppm_trace",
+    "replay_width5_joint_direct_ccz",
     "symbolic_direct_ccz_ppm_replay_to_data",
     "verify_autoccz_consumption_channel",
     "verify_direct_ccz_injection_channel",
     "verify_one_bit_h_teleportation_channel",
+    "width5_joint_direct_ccz_replay_to_data",
 ]

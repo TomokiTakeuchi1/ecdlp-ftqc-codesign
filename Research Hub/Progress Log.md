@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Research Progress Log
@@ -12,6 +12,41 @@ updated: 2026-09-06
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-09-07 — Width-5 joint direct-CCZ semantic gate
+
+**Status:** Reviewed and approved (`T-20260906-002`, `RV-20260907-001`, 2026-09-07)
+
+What changed:
+
+- Proved inside the positive-control CCX model that two CCXs commute exactly
+  when neither target is used as a control by the other. The exact width-5
+  source has 45 pairs: 36 commute and nine do not.
+- Replayed the four proposed unitary macro-groups (sizes 4/3/2/1) under one
+  common incoming frame. Ten fresh resource triples, canonical corrections,
+  all 64 single-event branches, both actual shared-control anchors, and one
+  synthetic shared-target anchor pass without an event-to-event reaction edge.
+- Replaced the final cleanup CCX in a separate candidate by destructive
+  `X(p:1:1)` plus conditional `CZ(b:2,b:3)`. All 1,024 width-5 input columns
+  and 2,048 outcome branches pass, including 2,046 relative-phase checks.
+  The resulting frame remains live through four later CNOTs and reaches a
+  conservative six-value final support; it is not counted as free cleanup.
+
+Why it matters:
+
+This admits the four unitary and three measured-cleanup macro-groups as
+semantic inputs to the next small-width dependency task. It does **not** yet
+prove that the corresponding 8/6 two-phase levels are schedules, optimal, or
+physically executable. The reviewed 12-level width-5 and 34-level width-256
+baselines remain unchanged, and native cycles, time, physical qubits, and
+failure probability remain null. Fourteen focused and 64 related tests pass;
+the full suite has 352 passes and the same two unrelated sibling-pin failures.
+The reviewer independently reimplemented the commutation classifier and a
+differently-structured joint-injection statevector simulator from scratch,
+matching the claimed 36/9 pair split and probability/operator error
+magnitudes exactly, and hand-derived the measurement-uncompute phase identity
+and frame-propagation support. See `docs/JOINT_DIRECT_CCZ_WIDTH5_CONTRACT.md`
+and `coordination/reviews/T-20260906-002.md`.
 
 ## 2026-09-06 — Joint-CCX validation and width-256 re-evaluation plan
 
@@ -38,8 +73,8 @@ explicit, unchanged baselines. The reviewer independently reconstructed the
 ten-gate width-5 CCX list and every claimed gate-overlap relationship directly
 from the reviewed circuit builder and found no transcription error. See
 `docs/JOINT_CCX_QCLA_REEVALUATION_CYCLE.md` and
-`coordination/reviews/T-20260906-001.md`. The next executable task is
-unassigned `T-20260906-002`.
+`coordination/reviews/T-20260906-001.md`. The planned semantic gate is now
+implemented and reviewed in `T-20260906-002` (`RV-20260907-001` `APPROVED`).
 
 ## 2026-09-05 — H/CNOT logical policy and QEC execution options
 

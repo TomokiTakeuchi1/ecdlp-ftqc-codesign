@@ -1,0 +1,36 @@
+experiment_id: E-20260906-002
+task_id: T-20260906-002
+title: Width-5 joint direct-CCZ and measurement-uncompute validation
+configurations: []
+entrypoint: scripts/run_joint_direct_ccz_width5_cycle.py
+command: uv --native-tls run python scripts/run_joint_direct_ccz_width5_cycle.py
+width: 5
+variant: clean_oop_qcla
+assumptions:
+  - A-0030
+  - A-0032
+  - A-0036
+  - A-0046
+  - A-0047
+outputs:
+  - experiments/runs/T-20260906-002/width5_joint_direct_ccz_plan.json
+  - experiments/runs/T-20260906-002/commutation_certificates.json
+  - experiments/runs/T-20260906-002/measurement_uncompute_verification.json
+  - experiments/runs/T-20260906-002/independent_replay.json
+  - experiments/runs/T-20260906-002/summary.json
+  - experiments/runs/T-20260906-002/reproducibility.json
+validation:
+  - exact truth-table commutation classification for all 45 source CCX pairs
+  - synthetic coverage of disjoint, shared-control, shared-target, and both target-control orientations
+  - all 64 single-event direct-CCZ branches
+  - common-frame primitive factorization for all four admitted macro-layers
+  - simultaneous statevector anchors for width-5 shared-control and synthetic shared-target pairs
+  - all 1024 width-5 input basis columns and both measurement-uncompute outcomes
+  - relative-phase equality for arbitrary input superpositions
+  - outcome-dependent cleanup-frame propagation through all later source operations
+  - mutation rejection for pair, correction, resource, ordering, reaction, and lifecycle records
+exclusions:
+  - a commutation-aware dependency builder or exact candidate schedule
+  - width-256 rescaling
+  - physical support, placement, routing, or port constraints
+  - native cycles, runtime, physical qubits, or failure probability

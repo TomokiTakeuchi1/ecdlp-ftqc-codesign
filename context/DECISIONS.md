@@ -202,7 +202,7 @@
 
 ## D-0026: Separate logical H/CNOT frame policy from its QEC realization
 
-- Status: PROPOSED (pending `RV-20260905-001`)
+- Status: ACCEPTED (`RV-20260905-001` approved 2026-09-06)
 - Date: 2026-09-05
 - Decision: Use frame-conjugated logical H and bare logical CNOT as the default logical policy for the direct-CCZ QCLA comparison. Compare code co-design, global/SIMD operations, gate teleportation, and surgery as separate realization families. Keep all current-backend durations null until one family supplies compatible addressability, concurrency, routing, reaction, and decoder contracts.
 - Rationale: A general bare or tracked H can destroy the proved Z-only/no-Y invariant, whereas all three CNOT policies remain inside the Z-preserving Clifford subgroup. Bare CNOT avoids synthesizing a branch-dependent `C^dagger CNOT C`; its cost is concentrated in only three OOP or four IP source layers, though tracking remains a possible layer-specific optimization if future support growth is bounded.
@@ -210,8 +210,8 @@
 
 ## D-0027: Validate a separate commutation-aware QCLA model before rescaling
 
-- Status: PROPOSED (pending `RV-20260906-001`)
+- Status: ACCEPTED (`RV-20260906-001` approved 2026-09-06; the `T-20260906-002` semantic evidence is pending `RV-20260907-001`)
 - Date: 2026-09-06
 - Decision: Preserve the reviewed source-aligned QCLA dependency graph and its width-5/256 candidate levels as the baseline. Build a separate commutation-aware variant that removes a shared-wire ordering edge only after exact controlled-X commutation, common-incoming-frame joint-injection, adaptive-observable, Clifford-barrier, and value-lifetime checks pass at width 5 and widths 2--8. Re-evaluate width 256 only after those gates close.
 - Rationale: Same-axis support overlap can be admissible in the general high-rate screen, so nearest-use wire serialization may overstate logical depth. However, logical commutation alone does not prove that sequential teleportation corrections can be batched, that measured cleanup is channel-equivalent, or that any finite code realizes the resulting PPM family.
-- Consequences: The proposed width-5 values of four unitary CCX layers/eight candidate levels and three measured-cleanup CCX layers/six candidate levels remain `CONJECTURE`. The existing twelve-level width-5 and thirty-four-level width-256 results are not revised by this planning task. Any eventual width-256 reduction remains a unitless structural result until a coherent finite backend closes simultaneous support, ports, routing, decoding, reaction, factory/buffer, memory, timing, and failure.
+- Consequences: The `T-20260906-002` implementation admits the four-layer unitary and three-layer measured-cleanup macro-group semantics for construction of a separate small-width dependency trace, subject to `RV-20260907-001`. Their eight- and six-level two-phase values remain `CHECK` envelopes, not schedules, until `T-20260906-003` preserves every noncommuting edge, Clifford barrier, reaction dependency, and lifetime and closes an exact bound. The existing twelve-level width-5 and thirty-four-level width-256 results are unchanged. Any eventual width-256 reduction remains a unitless structural result until a coherent finite backend closes simultaneous support, ports, routing, decoding, reaction, factory/buffer, memory, timing, and failure.

@@ -219,3 +219,33 @@ certificate.  A failure at any earlier gate is a valid result: the existing
 12-level width-5 and 34-level width-256 source-aligned candidates remain the
 admitted baselines.
 
+## T-20260906-002 semantic-gate result — pending cross-review
+
+The first implementation task passes its bounded logical-semantic gates. This
+does not close the scheduling or width-scaling parts of the cycle.
+
+- **Gate A (`PROVED` under the positive-control CCX model):** exact Boolean
+  permutation replay classifies all 45 pairs of the ten width-5 source CCXs.
+  Thirty-six commute and nine do not. Two CCXs commute exactly when neither
+  target is a control of the other; the test set includes disjoint,
+  shared-control, shared-target, and both target-control orientations.
+- **Gate B (`NUMERICAL`):** the four proposed unitary macro-groups have sizes
+  4/3/2/1 and contain ten admitted within-group pairs. Common-frame
+  factorization, ten fresh resource triples, all 64 single-event branches,
+  two actual shared-control anchors, and one synthetic shared-target anchor
+  pass. No event-to-event reaction edge is admitted.
+- **Gate C (`NUMERICAL`):** replacing the final CCX uncompute by destructive
+  `X(p:1:1)` and outcome-conditioned `CZ(b:2,b:3)` preserves all 1,024
+  width-5 computational-basis columns and both measurement outcomes, with
+  2,046 relative-phase comparisons. The outcome-dependent frame is retained,
+  propagated through four later CNOTs, and conservatively reaches
+  `{a:2,a:3,b:2,b:3,z:2,z:3}`; it is not treated as free cleanup.
+
+Consequently, the 4-layer unitary and 3-layer measured-cleanup groupings may be
+used as semantic inputs to `T-20260906-003`. Their corresponding 8- and
+6-level two-phase values remain `CHECK` envelopes, not schedules, lower
+bounds, surgery rounds, or time. The reviewed 12-level width-5 and 34-level
+width-256 baselines remain unchanged, and every finite-backend output remains
+null. Assumption identifiers were normalized at task entry because the plan
+had reused `A-0045`: H teleportation retains `A-0045`, joint direct CCZ uses
+`A-0046`, and measurement uncompute uses `A-0047`.

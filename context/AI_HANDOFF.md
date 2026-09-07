@@ -1,41 +1,68 @@
 # AI handoff
 
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 From: claude
 To: codex and human
 
 ## Current review handoff
 
-`T-20260906-001` is `RV-20260906-001` `APPROVED` (Claude review, 2026-09-06).
-It records a validation-first cycle for reconsidering the source-aligned
-direct-CCZ QCLA dependency model. The reviewed width-5 12-level and width-256
-34-level candidates remain unchanged baselines. The proposed width-5
-alternatives -- ten CCX in four macro-layers/eight unitless PPM levels, or
-nine CCX in three macro-layers/six levels plus measurement cleanup -- are
-explicitly `CONJECTURE`.
+`T-20260906-002` is `RV-20260907-001` `APPROVED` (Claude review, 2026-09-07).
+It closes the bounded logical-semantic gate required before building a
+separate commutation-aware dependency trace; it does not yet admit that
+trace, an exact schedule, or a width-256 rerun.
 
-The reviewer independently reconstructed the ten-gate width-5 OOP CCX list
-directly from `build_oop_qcla_trace(5)` (bypassing anything new in this task)
-and matched every gate, algorithmic layer, and claimed control/control or
-control/target overlap exactly, including the specific reason `T4` cannot
-merge into `T3` (`p_{1,1}` is a control in the long-prefix event but the
-target of the uncompute). It confirmed `A-0045`/`A-0046` are labeled
-`CONJECTURE` and `D-0027` is `PROPOSED`, confirmed the task-chain dependencies
-in `context/TASKS.md` have no forward reference, and confirmed via
-`git status`/`git diff --stat` that this task touches no previously reviewed
-compiler, scheduler, or verification module -- only coordination/context
-records and one new planning document.
+The exact positive-control CCX truth-table classifier proves that two CCXs
+commute iff neither target is a control of the other. It checks all 45 pairs
+among the ten pinned width-5 source CCXs (36 commuting, nine noncommuting;
+2,040 basis rows) plus synthetic representatives of every overlap class. The
+four proposed unitary macro-groups have sizes 4/3/2/1 and pass common-frame
+primitive factorization with ten fresh resource triples, all 64 single-event
+branches, both actual shared-control anchors, one synthetic shared-target
+anchor, canonical corrections, and no event-to-event reaction edge. The
+largest joint probability/operator residual is
+`5.692061405548898e-19`/`2.4854698590557027e-18`.
 
-The next executable task is `T-20260906-002`: derive and independently replay
-joint direct-CCZ lowering under one common incoming frame, test all overlap
-orientations, and verify the measurement-uncompute identity in the complete
-width-5 OOP channel.  Only after it passes may `T-20260906-003` replace
-conservative nearest-use wire edges at widths 2--8; only after that may
-`T-20260906-004` rerun width 256.  The width-256 output is structural demand
-only and must retain null native cycles, seconds, physical qubits, and failure
-probability.  See `docs/JOINT_CCX_QCLA_REEVALUATION_CYCLE.md`,
-`context/DECISIONS.md` decision `D-0027`, and
-`coordination/reviews/T-20260906-001.md`.
+The measured-cleanup alternative replaces final operation
+`qcla-oop:000012` by destructive `X(p:1:1)` plus outcome-conditioned
+`CZ(b:2,b:3)`. Independent full-width replay passes all 1,024 input columns,
+2,048 outcome branches, and 2,046 relative-phase comparisons with zero output
+or dirty-ancilla mismatch. The outcome-dependent frame is not discarded: it
+propagates through four later CNOTs and conservatively reaches
+`{a:2,a:3,b:2,b:3,z:2,z:3}`; the width-5 suffix contains no later PPM.
+
+The semantic result admits the four unitary and three measured-cleanup
+macro-groups as inputs to `T-20260906-003`. Their 8/6 two-phase values remain
+`CHECK` envelopes, not schedules, lower bounds, optimality results, surgery
+rounds, or time. The reviewed width-5 12-level and width-256 34-level baselines
+remain unchanged, and native cycles, seconds, physical qubits, and failure
+remain null. Assumption identifiers were normalized at task entry: H
+teleportation retains `A-0045`, joint direct CCZ is `A-0046`, and measurement
+uncompute is `A-0047`. Fourteen focused and 64 related tests pass; the full
+suite has 352 passes plus the same two unrelated sibling-pin failures. See
+`docs/JOINT_DIRECT_CCZ_WIDTH5_CONTRACT.md`, experiment `E-20260906-002`, and
+`coordination/reviews/T-20260906-002.md`.
+
+The reviewer independently re-derived every headline number from scratch
+without importing the new compiler or its shipped replay module: a
+from-scratch commutation classifier reproduced the exact 36/9 pair split and
+overlap-kind breakdown; a differently-structured tensor-based statevector
+simulator (explicit `numpy` reshaping/`tensordot`, not the reviewed code's
+bit-shift indexing) reproduced the joint-injection channel for both real
+shared-control anchors and matched the probability/operator error magnitudes
+to the same digit; the measurement-uncompute phase-cancellation identity was
+re-derived algebraically (`p:1:1` already equals `b:2 AND b:3` at the
+replaced gate, so the destructive-`X` and conditional-`CZ` phases are
+identical and cancel to a constant `1/sqrt(2)`); and the four-gate
+frame-propagation and final support `{a:2,a:3,b:2,b:3,z:2,z:3}` were
+confirmed by hand-tracing the raw gate list. Regenerated artifacts twice from
+a clean directory, byte-identical both times and matching the independent
+derivations. Reran the full suite (352 passed, same two known unrelated
+failures). The reviewer also flagged that the assumption-ID collision this
+task fixes (`A-0045` reused by both the H-teleportation and joint-CCX
+assumptions) was present when `RV-20260906-001` was approved and was missed
+in that review; it is recorded as a bookkeeping oversight, not a scientific
+defect, and this task's fix and transparent disclosure in
+`docs/JOINT_CCX_QCLA_REEVALUATION_CYCLE.md` are correct.
 
 `T-20260905-001` is `RV-20260905-001` `APPROVED` (Claude re-review,
 2026-09-06), closing the sole defect from the first-pass review. The
@@ -640,9 +667,11 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-0. `T-20260905-001` and `T-20260906-001` are both closed and approved. The next
-   executable task is `T-20260906-002` (unassigned): prove and independently
-   replay joint direct-CCZ and measurement-uncompute semantics at width 5.
+0. `T-20260906-002` is approved (`RV-20260907-001`). `T-20260906-003` (unassigned)
+   is now the next executable task: build and exactly replay the separate
+   commutation-aware OOP-QCLA dependency model at widths 2--8, retaining
+   noncommuting order, reaction edges, Clifford barriers, and value lifetimes
+   while removing only the jointly certified serialization.
 1. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.

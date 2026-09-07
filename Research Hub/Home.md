@@ -5,14 +5,14 @@ cssclasses:
   - research-dashboard
 tags:
   - dashboard
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # ECDLP-256 FTQC Research Hub
 
-> [!abstract] Current snapshot — 2026-09-06
+> [!abstract] Current snapshot — 2026-09-07
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** `T-20260905-001` (H/CNOT strategy audit) and `T-20260906-001` (joint-CCX re-evaluation plan) are both approved (2026-09-06). The next executable task is unassigned `T-20260906-002`: prove and independently replay joint direct-CCZ and measurement-uncompute semantics at width 5, before any commutation-aware width-256 rerun. Logical primitive layers still do not imply physical execution.
+> **Current focus:** `T-20260906-002` (bounded width-5 joint direct-CCZ and measurement-uncompute validation) is approved (`RV-20260907-001`, 2026-09-07). Exact replay finds 36 commuting and nine noncommuting CCX pairs; the 4/3/2/1 unitary groups and three measured-cleanup groups pass their semantic checks. Their 8/6 levels remain `CHECK` envelopes, not schedules or time. The next executable task is unassigned `T-20260906-003`: build the separate exact small-width dependency model before any width-256 rerun.
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
