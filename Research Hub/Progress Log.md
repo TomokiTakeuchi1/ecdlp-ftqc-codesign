@@ -13,6 +13,43 @@ updated: 2026-09-07
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-09-07 — Exact small-width commutation-aware QCLA schedules
+
+**Status:** Reviewed and approved (`T-20260906-003`, `RV-20260907-002`, 2026-09-07)
+
+What changed:
+
+- Built a separate dependency model for every clean OOP-QCLA width from 2 to
+  8. It keeps noncommuting CCX order and source CNOT barriers, and removes only
+  serialization admitted by the reviewed common-frame joint-injection rule.
+- Proved the resulting macro-depth exactly inside that complete logical model
+  by matching each earliest-rank construction to a critical-path lower bound.
+- Kept source/unitary/measured results side by side. At width 5 they are
+  6/4/3 macro-layers, or 12/8/6 two-phase direct-CCZ candidate levels.
+- Verified measurement cleanup across every input and outcome branch. It
+  shortens depths at widths 5 and 7 but not 6 or 8, where another critical
+  path remains.
+
+Why it matters:
+
+The former width-5 8/6 envelopes are now reviewed exact schedules in the stated
+architecture-independent logical model. They are still
+not surgery rounds or time: reaction frontiers retain every predecessor
+outcome conservatively, their duration is unknown, and physical support,
+routing, decoding, factory service, space, and failure remain absent. Width
+256 is unchanged at 34 reviewed source-aligned candidate levels until the next
+gated task. Independent replay checked 776 pair decisions, 39,824 truth-table
+rows, 174,752 arithmetic runs, 337,920 measured branches, and 337,908 relative
+phase pairs with zero mismatch. The full suite has 370 passes and the same two
+unrelated sibling-pin failures. The reviewer independently reimplemented the
+whole pairwise-dependency-plus-longest-path scheduler from scratch, matched
+the exact macro-depth table at every width, re-derived all five aggregate
+totals from first principles, verified the optimality argument
+mathematically, and hand-traced both width-8 measurement-uncompute cleanups.
+See `docs/COMMUTATION_AWARE_QCLA_SCHEDULING_CONTRACT.md` and
+`coordination/reviews/T-20260906-003.md`. The next executable task is
+unassigned `T-20260906-004`.
+
 ## 2026-09-07 — Width-5 joint direct-CCZ semantic gate
 
 **Status:** Reviewed and approved (`T-20260906-002`, `RV-20260907-001`, 2026-09-07)

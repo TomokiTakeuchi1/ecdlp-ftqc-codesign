@@ -1,0 +1,41 @@
+experiment_id: E-20260906-003
+task_id: T-20260906-003
+title: Exact small-width commutation-aware clean OOP-QCLA schedules
+configurations: []
+entrypoint: scripts/run_commutation_aware_qcla_cycle.py
+command: uv --native-tls run python scripts/run_commutation_aware_qcla_cycle.py
+widths: [2, 3, 4, 5, 6, 7, 8]
+variants:
+  - source_aligned_baseline
+  - commutation_aware_unitary
+  - commutation_aware_measured_cleanup
+assumptions:
+  - A-0030
+  - A-0032
+  - A-0036
+  - A-0039
+  - A-0046
+  - A-0047
+outputs:
+  - experiments/runs/T-20260906-003/small_width_study.json
+  - experiments/runs/T-20260906-003/exact_schedule_table.json
+  - experiments/runs/T-20260906-003/width5_schedule_witness.json
+  - experiments/runs/T-20260906-003/independent_replay.json
+  - experiments/runs/T-20260906-003/summary.json
+  - experiments/runs/T-20260906-003/reproducibility.json
+validation:
+  - immutable hashes and source-aligned baselines for every width
+  - exact truth-table commutation decisions for every serialized CCX pair
+  - complete noncommuting and source-Clifford-barrier dependency reconstruction
+  - exact longest-path lower-bound equality in the stated logical model
+  - fresh direct-CCZ resource triples and no within-macro reaction edges
+  - conservative inter-macro reaction frontiers retaining every predecessor outcome
+  - cleanup measurement lifetime, release, frame propagation, and final support
+  - exhaustive arithmetic replay for both variants at all widths
+  - phase-sensitive measurement-branch equality for arbitrary superpositions
+  - mutation rejection for pair, dependency, macro, resource, reaction, cleanup, finite, and baseline records
+exclusions:
+  - minimal classical-outcome dependency subsets or reaction duration
+  - width-256 rescaling
+  - physical support, placement, routing, ports, or storage constraints
+  - native cycles, runtime, physical qubits, or failure probability

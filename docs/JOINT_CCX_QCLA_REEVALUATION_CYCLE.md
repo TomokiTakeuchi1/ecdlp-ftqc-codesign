@@ -219,7 +219,7 @@ certificate.  A failure at any earlier gate is a valid result: the existing
 12-level width-5 and 34-level width-256 source-aligned candidates remain the
 admitted baselines.
 
-## T-20260906-002 semantic-gate result — pending cross-review
+## T-20260906-002 semantic-gate result — approved
 
 The first implementation task passes its bounded logical-semantic gates. This
 does not close the scheduling or width-scaling parts of the cycle.
@@ -249,3 +249,30 @@ width-256 baselines remain unchanged, and every finite-backend output remains
 null. Assumption identifiers were normalized at task entry because the plan
 had reused `A-0045`: H teleportation retains `A-0045`, joint direct CCZ uses
 `A-0046`, and measurement uncompute uses `A-0047`.
+
+## T-20260906-003 small-width scheduling result — approved
+
+The separate dependency model closes the bounded logical scheduling gate at
+widths 2--8 and is approved as `RV-20260907-002`.
+
+- **Exact model-relative schedule (`PROVED`):** every ordered CCX pair is
+  classified. A dependency is retained for noncommuting target--control
+  overlap or an intervening source CNOT layer. Earliest longest-path ranks
+  form legal common-frame macro-layers and attain the explicit critical-path
+  lower bound.
+- **Unitary result (`PROVED` in that model):** macro-depth through widths 2--8
+  is `1,2,3,4,4,5,5`, corresponding to two-phase candidate levels
+  `2,4,6,8,8,10,10`.
+- **Measured cleanup (`NUMERICAL` semantics, `PROVED` schedule conditional on
+  that transformation):** macro-depth is `1,2,3,3,4,4,5`. Cleanup reduces
+  depth at widths 5 and 7, but not at 6 or 8 because another critical path
+  dominates.
+- **Reaction boundary (`CHECK`):** all six predecessor-event outcomes are
+  conservatively retained between macros. The minimal subset and duration are
+  unresolved.
+
+Independent replay covers 776 pair decisions, 39,824 pair truth-table rows,
+174,752 arithmetic runs, 337,920 measurement-branch columns, and 337,908
+relative-phase pairs without mismatch. Width 256 remains unchanged at its
+reviewed source-aligned 34 candidate levels until `T-20260906-004`; no native
+cycles, seconds, physical qubits, or failure probability are inferred.

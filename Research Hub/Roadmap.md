@@ -15,7 +15,7 @@ updated: 2026-09-07
 
 **Status: ACTIVE**
 
-<progress max="25" value="24"></progress> 24 of 25 listed Month-1 milestones are complete or in review; 1 more is required.
+<progress max="25" value="25"></progress> 25 of 25 listed Month-1 milestones are complete or in review.
 
 ### Completed or reviewed
 
@@ -41,10 +41,11 @@ updated: 2026-09-07
 - [x] Compare H/CNOT frame-conjugated, bare, and tracked logical policies; extract width-256 H/CNOT layers; and review the co-design/SIMD/teleportation/surgery audit, including a citation-fix round (`T-20260905-001`, `RV-20260905-001` `APPROVED`).
 - [x] Record and review a validation-first joint-CCX plan that gates any commutation-aware depth reduction behind width-5 proofs before touching width 256 (`T-20260906-001`, `RV-20260906-001` `APPROVED`).
 - [x] Prove and review the width-5 joint direct-CCZ common-frame factorization and measurement-uncompute semantic gate (`T-20260906-002`, `RV-20260907-001` `APPROVED`).
+- [x] Build and review the separate commutation-aware OOP-QCLA dependency model at widths 2--8 (`T-20260906-003`, `RV-20260907-002` `APPROVED`). Width-5 unitary/measured depths are exactly 4/3 macros or 8/6 candidate levels in the stated logical model; reaction duration and all finite outputs remain unresolved.
 
 ### Active
 
-- [ ] Build and exactly replay the separate commutation-aware OOP-QCLA dependency model at widths 2--8 (`T-20260906-003`, unassigned). The 8/6 two-phase levels remain `CHECK` envelopes until this task constructs and closes an exact dependency schedule.
+- [ ] Re-evaluate width-256 OOP-QCLA structural demand using the now-verified commutation-aware rules (`T-20260906-004`, unassigned).
 - [ ] Test frame-conjugated H plus bare CNOT against one coherent native mapper/frame-materialization policy for the branch-dependent 34/68 width-256 logical candidate levels.
 - [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
 - [ ] Close the reviewed AutoCCZ adapter's (`RV-20260901-001`) nine missing and one distance-incompatible service fields before scheduling.

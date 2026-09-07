@@ -6,6 +6,71 @@ To: codex and human
 
 ## Current review handoff
 
+`T-20260906-003` is `RV-20260907-002` `APPROVED` (Claude review, 2026-09-07).
+It implements the separate commutation-aware clean OOP-QCLA dependency model
+at widths 2--8 after the approved width-5 semantic gate.
+
+Every ordered CCX pair is independently truth-table classified. The DAG keeps
+source order for noncommuting target--control overlap and for any pair crossing
+a source CNOT layer; other pairs may share one approved common-frame macro.
+Earliest longest-path ranks form legal layers and meet an explicit critical-
+path lower bound, proving exact macro-depth within this complete logical model.
+Source/unitary/measured depth is `1/1/1, 2/2/2, 3/3/3, 6/4/3, 6/4/4,
+7/5/4, 7/5/5`. With two direct-CCZ candidate levels per macro, width 5 is
+therefore source 12, unitary 8, and measured cleanup 6.
+
+The measured variant removes `0/0/0/1/1/2/2` certified final cleanup CCXs.
+Independent complete arithmetic and phase replay shows that cleanup reduces
+depth at widths 5 and 7 but not at 6 or 8, where another critical path remains.
+The verifier imports neither the new scheduler nor the joint direct-CCZ
+compiler and checks 776 pair decisions, 39,824 pair truth-table rows, 174,752
+arithmetic runs, 337,920 measured branch columns, and 337,908 relative-phase
+pairs with zero mismatch.
+
+The result deliberately retains all six outcome tokens per predecessor CCX at
+each inter-macro reaction boundary. This frontier is conservative `CHECK`;
+the minimal outcome subset and reaction duration remain unresolved. The exact
+claim is therefore logical macro-depth only, not native cycles or time. Width
+256 has not been rerun and remains at its reviewed source-aligned 34 candidate
+levels. Placement, routing, ports, memory, decoding/reaction, factory/buffer,
+physical qubits, failure, and every finite output remain null.
+
+Eighteen focused and 55 related tests pass. The full suite has 370 passes and
+only the same two unrelated sibling source-pin failures. Ruff and strict mypy
+pass; compileall, Hub validation, and final deterministic regeneration are
+recorded in `coordination/sessions/T-20260906-003.md`.
+
+The reviewer independently reimplemented the entire pairwise-dependency and
+ASAP-longest-path scheduler from scratch (not importing the reviewed
+scheduler or its shipped replay module), running it against the real,
+already-reviewed `build_oop_qcla_trace` for every width 2--8 and both
+variants, and reproduced the exact `1/1/1, 2/2/2, 3/3/3, 6/4/3, 6/4/4, 7/5/4,
+7/5/5` macro-depth table exactly. It independently re-derived all five
+aggregate replay totals from first principles (776 pairs via
+`sum(C(n,2))`; 39,824 truth-table rows via `sum(2^|union support|)`; 174,752
+arithmetic inputs via `sum(4^width)*2`; 337,920 branch columns and 337,908
+relative pairs via the branch/relative-pair formulas applied to widths 5--8)
+and matched every one exactly. It verified the ASAP-layering optimality claim
+mathematically: a dependency edge always strictly increases longest-path
+depth, and this propagates correctly through transitive chains even without
+an explicit transitive edge, so the "PROVED optimal within this stated
+logical model" claim is not merely an empirical observation. It hand-traced
+both width-8 measurement-uncompute cleanups from the raw gate list (producer,
+last quantum use, frame propagation) and found the generated
+`cleanup_records` matched exactly, including two disjoint final frame
+supports. It also located and spot-checked the out-of-repository public
+width-5 "Parallelization audit" page (a local file on this machine, not a
+remote claim) and found its `CHECK`/"not physical time" labeling and its
+"Width 256 is not revised yet" disclaimer consistent with the reviewed
+claims, though it could not independently verify the page's full rendering.
+See `docs/COMMUTATION_AWARE_QCLA_SCHEDULING_CONTRACT.md`, experiment
+`E-20260906-003`, and `coordination/reviews/T-20260906-003.md`.
+
+Approval of `RV-20260907-002` clears the dependency gate for the still-unassigned
+`T-20260906-004` width-256 structural rerun.
+
+## Previous approved handoff
+
 `T-20260906-002` is `RV-20260907-001` `APPROVED` (Claude review, 2026-09-07).
 It closes the bounded logical-semantic gate required before building a
 separate commutation-aware dependency trace; it does not yet admit that
@@ -667,11 +732,13 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-0. `T-20260906-002` is approved (`RV-20260907-001`). `T-20260906-003` (unassigned)
-   is now the next executable task: build and exactly replay the separate
-   commutation-aware OOP-QCLA dependency model at widths 2--8, retaining
-   noncommuting order, reaction edges, Clifford barriers, and value lifetimes
-   while removing only the jointly certified serialization.
+0. `T-20260906-003` is approved (`RV-20260907-002`). `T-20260906-004`
+   (unassigned) is now the next executable task: re-evaluate width-256
+   OOP-QCLA structural demand using only the now-verified commutation-aware
+   rules, reporting exact logical demand, macro-depth, candidate levels,
+   support/multiplicity/contact envelopes, and live-value demand with
+   deterministic independent replay; all native cycles, seconds, physical
+   qubits, and failure outputs must remain null.
 1. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.
