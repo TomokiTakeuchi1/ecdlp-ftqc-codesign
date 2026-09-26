@@ -1,0 +1,27 @@
+{
+  "task_id": "T-20260926-001",
+  "experiment_id": "E-20260926-001",
+  "width": 256,
+  "variants": ["oop", "ip"],
+  "seed": "T-20260926-001-full-frame-v1",
+  "hashed_branch_count": 64,
+  "boundary_branches": [-2, -1],
+  "parallel_limits": [1, 4, 16, 64, 256, null],
+  "weight_limits": [16, 32, 64, 128, 256, 512, null],
+  "total_support_limits_at_k64": [512, 2048, 8192],
+  "modes": ["qwc", "general"],
+  "timing": {
+    "surgery": 1.0,
+    "prepare_zero": 0.25,
+    "readout": 0.25,
+    "reaction": 0.1,
+    "prepare_lanes": 64,
+    "readout_lanes": 64,
+    "seconds_per_unit": 0.001
+  },
+  "timing_evidence": "CHECK",
+  "complete_native_schedule": false,
+  "factory": "ideal supply; each macro reserves all required CCZ states at entry",
+  "memory": "all source wires retained; no transfer or frame-clearing service",
+  "sampling_claim": "deterministic witnesses, not population quantiles or exhaustive bounds"
+}

@@ -1,0 +1,41 @@
+experiment_id: E-20260907-002
+task_id: T-20260907-002
+title: Width-256 OOP/IP branch-maximum PPM-weight sampling comparison
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+entrypoint: scripts/run_width256_oop_ip_branch_weight_sampling_cycle.py
+command: uv --native-tls run python scripts/run_width256_oop_ip_branch_weight_sampling_cycle.py
+widths: [256]
+variants:
+  - commutation_aware_out_of_place_unitary
+  - commutation_aware_in_place_coherent
+assumptions:
+  - A-0030
+  - A-0039
+  - A-0040
+  - A-0050
+  - A-0051
+  - A-0053
+  - A-0054
+outputs:
+  - experiments/runs/T-20260907-002/branch_weight_study.json
+  - experiments/runs/T-20260907-002/level_quantiles.json
+  - experiments/runs/T-20260907-002/independent_replay.json
+  - experiments/runs/T-20260907-002/summary.json
+  - experiments/runs/T-20260907-002/reproducibility.json
+validation:
+  - both variants use the same deterministic 512-branch assignment protocol
+  - every phase-one value is the maximum presented PPM weight in one level and branch
+  - every phase-two fresh-resource X readout has exact weight one
+  - sampled maxima never exceed the reviewed OOP exact or IP may-support ceilings
+  - an independent scalar replay reproduces every one of the 46080 sampled level values
+  - complete-vector hashes, nearest-rank quantiles, and assignment hashes are replayed
+  - forced all-zero/all-one boundary branches are separated from the 510 hashed assignments
+  - sample-vector, quantile, and finite-output mutations fail closed
+exclusions:
+  - treating a sampled maximum as an exhaustive maximum
+  - treating a possible-support union as a simultaneous branch weight
+  - connected code support, placement, routing, ports, contacts, or storage
+  - H or CNOT native realization and latency
+  - decoder, reaction, factory, or buffer service
+  - native cycles, runtime, physical qubits, or failure probability

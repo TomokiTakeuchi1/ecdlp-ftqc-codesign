@@ -2,6 +2,10 @@
 
 | Review ID | Task | Implementer | Reviewer | Review file | Status | Priority |
 |---|---|---|---|---|---|---:|
+| RV-20260926-001 | T-20260926-001 | codex | claude | `coordination/reviews/T-20260926-001.md` | APPROVED | 0 |
+| RV-20260909-001 | T-20260909-001 | codex | claude | `coordination/reviews/T-20260909-001.md` | APPROVED | 0 |
+| RV-20260907-005 | T-20260907-002 | codex | claude | `coordination/reviews/T-20260907-002.md` | APPROVED | 0 |
+| RV-20260907-004 | T-20260907-001 | codex | claude | `coordination/reviews/T-20260907-001.md` | APPROVED | 0 |
 | RV-20260907-003 | T-20260906-004 | codex | claude | `coordination/reviews/T-20260906-004.md` | APPROVED | 0 |
 | RV-20260907-002 | T-20260906-003 | codex | claude | `coordination/reviews/T-20260906-003.md` | APPROVED | 0 |
 | RV-20260907-001 | T-20260906-002 | codex | claude | `coordination/reviews/T-20260906-002.md` | APPROVED | 0 |

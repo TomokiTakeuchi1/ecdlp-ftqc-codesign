@@ -1,0 +1,41 @@
+experiment_id: E-20260909-001
+task_id: T-20260909-001
+title: Partial Clifford-frame clearing for in-place high-rate QCLA
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+entrypoint: scripts/run_qcla_partial_frame_clearing_cycle.py
+command: uv --native-tls run python scripts/run_qcla_partial_frame_clearing_cycle.py
+widths: [5, 256]
+branch_samples:
+  width_5: 16
+  width_256: 32
+policies:
+  - full_frame_conjugation
+  - bare_h_frame_propagation
+  - h_frame_tracking
+  - full_frame_clearing
+  - target_component_partial_clearing
+assumptions:
+  - A-0030
+  - A-0039
+  - A-0040
+  - A-0041
+  - A-0053
+  - A-0055
+outputs:
+  - experiments/runs/T-20260909-001/studies.json
+  - experiments/runs/T-20260909-001/independent_replay.json
+  - experiments/runs/T-20260909-001/summary.json
+  - experiments/runs/T-20260909-001/reproducibility.json
+validation:
+  - ordered interaction-component factorization is exact for every resolved branch
+  - width 5 checks factorization, physical action, and retained-frame commutation on every logical X and Z generator
+  - an independent complete-pair oracle reconstructs width-5 and width-256 macro layers
+  - complete branch vectors, quantiles, and hashes are replayed independently
+  - partial clearing preserves the admitted Z/X-only phase-one family in all sampled branches
+  - fabricated native schedules and runtimes fail closed
+exclusions:
+  - minimal Clifford synthesis or cancellation beyond adjacent identical generators
+  - native H or CNOT implementation, addressability, placement, routing, or surgery capacity
+  - decoder, classical reaction, CCZ factory, buffer, or memory service
+  - native cycles, runtime, physical qubits, or failure probability

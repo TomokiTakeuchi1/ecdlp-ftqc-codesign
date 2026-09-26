@@ -1,5 +1,21 @@
 # Decision log
 
+## D-0033: Profile fully tracked QCLA through explicit parallel low-rate macros
+
+- Status: ACCEPTED (human-authorized scope; `RV-20260926-001` APPROVED by Claude, 2026-09-26)
+- Date: 2026-09-26
+- Decision: Keep the approved coherent IP/OOP CCZ macros and Clifford barriers,
+  track H/CNOT in a signed general Clifford frame, and compare QWC packing with
+  explicit regularized general-commuting measurement gadgets. Apply K, individual
+  logical weight and multiplicity-counted total-support limits after lowering.
+- Rationale: The human-directed scope prioritizes parallel low-rate surgery
+  following technical concerns about the previous high-rate construction.
+- Consequences: CHECK conditional service sensitivities may be reported alongside
+  NUMERICAL branch witnesses; native time, physical space and failure remain OPEN.
+  Keep source/output preparation, retained frame, classical control, factory,
+  routing and memory assumptions explicit. This does not approve or supersede
+  the independently approved partial-clearing implementation T-20260909-001.
+
 ## D-0001: Python package structure
 
 - Status: ACCEPTED
@@ -231,3 +247,27 @@
 - Decision: Use the exact fifteen-macro, thirty-candidate-level commutation-aware unitary OOP-QCLA result as the width-256 structural candidate. Do not remove any of the 240 prefix-uncompute CCXs under the current Z-only/X-only high-rate PPM family: retain the local measurement-uncompute identity as valid, but require explicit frame clearing, mixed-axis support, or a new joint cleanup protocol before rescheduling it.
 - Rationale: A complete 754,606-pair oracle agrees with the linear-size rank certificate and supplies a fifteen-event lower-bound path, closing the unitary logical result. In contrast, each proposed cleanup X measurement has a branch-specific `X(p)Z(q)` presented-observable witness from a surviving conditional control--control CZ frame term, and early cleanup frames precede later PPMs. Lifecycle validity does not imply axis compatibility.
 - Consequences: The source-aligned 17-macro/34-level baseline remains visible, while the selected unitary structural result is 15/30 with 1,229 CCZ states, a peak 255-state logical burst, and exact macro-entry support envelopes. The raw measurement-removal depth is not reported. Native cycles, seconds, physical qubits, failure, routing, ports, H/CNOT realization, reaction service, and factory/buffer service remain null or open.
+
+## D-0030: Use the coherent 30/60 width-256 IP schedule as the next mapping workload
+
+- Status: ACCEPTED (`RV-20260907-004` approved 2026-09-07)
+- Date: 2026-09-07
+- Decision: Apply the reviewed common-frame CCX rule to the complete in-place modulo-`2^256` QCLA while treating both X and CNOT source layers as ordering barriers. Retain the coherent reverse network and select the resulting thirty-macro/sixty-candidate-level trace as the IP structural workload for the subsequent frame-materialization and native-mapping comparison.
+- Rationale: The OOP-only 15/30 workload does not expose reverse cleanup, source X barriers, the 495-ancilla source lifecycle, or the stronger IP branch-dependent support burden. A complete 3,019,653-pair oracle agrees with the compact certificate and a thirty-event critical path, while exhaustive reordered arithmetic replay through width 8 preserves the source computation.
+- Consequences: OOP 15/30 remains the clean control workload and IP 30/60 becomes the harder comparison workload. The IP support geometry remains `CHECK`, with sampled lower and may-support upper bounds kept separate. Neither workload admits native cycles, runtime, physical qubits, or failure until a compatible code/architecture contract exists.
+
+## D-0031: Carry branch-distribution witnesses beside support ceilings
+
+- Status: ACCEPTED (`RV-20260907-005` approved 2026-09-07)
+- Date: 2026-09-07
+- Decision: For the OOP/IP width-256 native-mapping comparison, carry the per-candidate-level branch-maximum PPM-weight vectors and nearest-rank summaries beside the reviewed exact/may-support ceilings. Separate the forced all-zero/all-one boundary assignments from the remaining 510 deterministic hashed assignments, and never substitute any sampled maximum or quantile for the ceiling in a fail-closed mapper.
+- Rationale: The shared replay finds the same full sampled maximum of 509 for OOP and IP, but that headline is driven by the forced all-one branch. The hashed-assignment maxima are 223/248 and the largest p95 values are 168/188, while the retained ceilings are 1,003/1,006. One scalar hides both the IP reverse-half burden and the large unresolved ceiling slack.
+- Consequences: A future mapper can evaluate demand sensitivity at multiple logical-support coordinates without claiming a probability law or exhaustive bound. Branch statistics remain `NUMERICAL`; OOP exact and IP may-support ceilings retain their prior evidence labels; native cycles, runtime, space, and failure remain unavailable until code geometry and service constraints close.
+
+## D-0032: Treat partial frame clearing as a compiler Pareto point, not a runtime result
+
+- Status: ACCEPTED (`RV-20260909-001` `APPROVED`, Claude, 2026-09-26)
+- Date: 2026-09-09
+- Decision: Retain target-component partial clearing as a valid intermediate compiler policy beside full conjugation, bare H propagation, H tracking, and full clearing. Compare literal generator count, logical same-wire depth, residual frame, and presented PPM support separately; do not select a winner or assign time until native H/CNOT synthesis, routing, and surgery-capacity constraints are available.
+- Rationale: On the fixed width-256 branch witnesses, partial clearing reduces the median literal CNOT count relative to full clearing but increases the logical batch envelope and leaves larger residual frames and PPM support. No single architecture-independent scalar orders these effects.
+- Consequences: Future work should optimize a multi-objective materialization frontier and test whether savings survive global Clifford resynthesis and a finite code-native mapper. The current result cannot establish a speedup over RASCqL; native cycles, runtime, space, and failure remain null.

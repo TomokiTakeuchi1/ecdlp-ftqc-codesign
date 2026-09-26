@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-09-07
+updated: 2026-09-26
 ---
 
 # Research Progress Log
@@ -12,6 +12,108 @@ updated: 2026-09-07
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-09-26 — Parallel low-rate surgery on fully tracked QCLA
+
+**Status:** Reviewed and approved (`T-20260926-001`, `RV-20260926-001`, 2026-09-26)
+
+What changed:
+
+- Tracked every source H/CNOT in a signed Clifford frame (no physical gates), then lowered each reviewed CCZ macro into logical measurements two ways: *QWC* (measure compatible Paulis together) and *general* (change the generating set so every commuting set becomes two regular sets, each measured with a two-stage gadget on a fresh |0> ancilla).
+- Applied capacity limits after lowering: K simultaneous measurements, per-measurement logical weight, and total support. 64 hashed plus two forced branches for each width-256 OOP and IP workload; 730,026 coupling measurements independently replayed.
+
+Plain-language reading: with unlimited support, median surgery steps are OOP 92 (QWC) / 111 (general) and IP 296 / 263 at K=64, and OOP 54 / 44, IP 249 / 104 with unlimited K. Under an arbitrary CHECK service example (preparation, readout, reaction charged) the IP K=64 ordering reverses (330.5 versus 359.5 units), so fewer primary steps do not automatically mean less time. Tracked frames make logical weights large (IP median 261-270, all-one witness 638-662), so a cap of 512 admits every hashed witness but not the all-one witness.
+
+Review notes (Claude): the signed traces were recomputed with an independent Clifford-tableau library (every measurement and final frame equal); multi-event macros and the measurement gadget were verified with from-scratch dense simulations; all 132 artifacts passed an independent regularity/packing audit and every table value was reproduced; the cited papers were read and match. Non-blocking: pin the two PDFs; executed maximum weight (not step count) shifts by about 10% under another valid regularization order.
+
+Still open: physical representatives and weights, routing, native timing, decoder/reaction, factory/buffer service, memory, physical qubits, and failure. The 512-witness boundary refinement has not been run.
+
+## 2026-09-26 — Partial Clifford-frame clearing (compiler profile)
+
+**Status:** Reviewed and approved (`T-20260909-001`, `RV-20260909-001`, 2026-09-26)
+
+What changed:
+
+- Formalized every H-frame policy from one equation, `G = F_out U F_in^dagger`, under the byproduct convention `physical = F ideal`, and added *target-component partial clearing*: only the frame components touching a simultaneous H layer are materialized, disjoint components stay in the frame.
+- Width 5: 11,520 exact projective Clifford checks, zero mismatch. On the coherent width-256 IP 30/60 workload with 32 fixed branch witnesses, partial clearing has median 3,843 literal CNOTs versus 4,250 for full clearing (9.58% fewer) but more serialized layers (380 versus 270) and wider presented PPM support (median 11, sampled maximum 16, versus 2).
+
+Plain-language reading: clearing less of the frame saves gate occurrences but leaves a bigger frame behind and lengthens the same-wire ordering. This is a trade-off between three quantities, not a winner, and none of the numbers is time.
+
+Review notes (Claude): the frame convention and factor order match the approved compiler; frame accumulation was cross-checked against the approved symbolic compiler on 192 width-5 rows, and all width-256 headlines were reproduced by a second implementation. The CNOT-batch envelope depends on ASAP direction (148/249 when scheduled forward in time versus the stored 176/284); the layer envelope is essentially invariant.
+
+Still open: native H/CNOT realization, addressability, surgery geometry and capacity, decoder/reaction, factory/buffer service, cycles, runtime, physical qubits, and failure.
+
+## 2026-09-07 — OOP/IP branch-maximum PPM-weight comparison
+
+**Status:** Reviewed and approved (`T-20260907-002`, `RV-20260907-005`, 2026-09-07)
+
+What changed:
+
+- Evaluated the reviewed OOP 15/30 and IP 30/60 schedules with the same
+  deterministic 512-branch protocol, recording the largest PPM support weight
+  in every candidate level and branch.
+- Separated p50/p95/p99, the maximum over 510 hashed assignments, two forced
+  all-zero/all-one boundary branches, and the reviewed support ceiling.
+- Replayed all 46,080 level--branch values with a separate scalar
+  implementation, covering 11,326,464 branch--PPM evaluations in total.
+- Added a compressed OOP/IP switch view showing the demand schedule and the
+  complete branch-weight summary curves.
+
+Why it matters:
+
+The scalar headline 509 hides the shape of the workload: it is driven by the
+forced all-one boundary branch in both variants. OOP/IP p95 peaks are 168/188,
+p99 peaks are 198/222, and hashed-assignment maxima are 223/248, while the
+separate OOP exact/IP may-support ceilings are 1,003/1,006. The IP reverse half
+adds sustained distributional load, but this sample does not turn the large
+ceiling gap into a probability or native-cost claim. Native time, geometry,
+routing, factory, decoder, space, and failure remain null. The reviewer
+independently reimplemented the support-propagation rule a third time with a
+set-based data structure, computed both deterministic forced boundary
+branches from scratch (catching and fixing a bug in that script), and
+matched the full sampled maximum of 509 to the exact claimed level for both
+variants; separately recomputed every quantile and hotspot directly from the
+stored vectors for all 90 levels and matched the contract's table exactly.
+See `docs/WIDTH256_OOP_IP_BRANCH_WEIGHT_SAMPLING_CONTRACT.md` and
+`coordination/reviews/T-20260907-002.md`. This closes the width-256 OOP/IP
+structural comparison cycle; no task is yet claimed for the next
+native-mapping step.
+
+## 2026-09-07 — Width-256 in-place commutation-aware QCLA rerun
+
+**Status:** Reviewed and approved (`T-20260907-001`, `RV-20260907-004`, 2026-09-07)
+
+What changed:
+
+- Extended the approved CCX relation to the in-place modulo-`2^256` source,
+  retaining both X and CNOT layers as global source-Clifford barriers.
+- Scanned all 3,019,653 ordered CCX pairs and matched the complete oracle to a
+  linear-size rank/parent certificate and a thirty-event critical path.
+- Reduced the structural result from source-aligned 34 macros / 68 candidates
+  to 30 / 60 while retaining all 1,229 CCXs in the coherent reverse cleanup.
+- Exhaustively replayed the independently reordered schedules for all 87,376
+  input pairs at widths 2--8, preserving in-place addition and clean ancillas.
+- Recomputed all 14,748 PPM profiles with 512 deterministic branches plus a
+  sound may-support envelope. Maximum sampled/upper PPM weight is 509/1,006,
+  witnessed/may contact is 633/634, and level-union upper bound is 1,770.
+
+Why it matters:
+
+The native mapper can now be tested against both a clean OOP 15/30 control and
+the harder IP 30/60 workload, which exposes reverse cleanup, X barriers, 495
+source ancillas, and stronger branch-dependent contact. The 30/60 depth is
+`PROVED` only inside the stated logical dependency model; support remains
+`CHECK`, and all native time, geometry, routing, factory, decoder, physical-
+qubit, and failure outputs are null. The reviewer independently reimplemented
+the complete pairwise-dependency and longest-path computation from scratch
+against the real IP source trace, matching every headline pair-oracle number
+and the full macro-layer size vector exactly, and independently confirmed by
+hand calculation that X on a CCX control does not commute with that CCX,
+justifying the X-barrier extension. See
+`docs/WIDTH256_IP_COMMUTATION_AWARE_QCLA_CONTRACT.md` and
+`coordination/reviews/T-20260907-001.md`. This closes the joint-CCX/
+commutation-aware validation cycle for both OOP and IP width-256 workloads;
+no task is yet claimed for the next native-mapping step.
 
 ## 2026-09-07 — Width-256 commutation-aware QCLA rerun
 

@@ -1,0 +1,41 @@
+experiment_id: E-20260907-001
+task_id: T-20260907-001
+title: Width-256 commutation-aware in-place modulo-2^n QCLA structural re-evaluation
+configurations:
+  - configs/architectures/direct_ccz_single_event_capability_v1.yaml
+entrypoint: scripts/run_width256_ip_commutation_aware_qcla_cycle.py
+command: uv --native-tls run python scripts/run_width256_ip_commutation_aware_qcla_cycle.py
+widths: [256]
+variants:
+  - source_aligned_inplace_baseline
+  - commutation_aware_inplace_unitary
+assumptions:
+  - A-0030
+  - A-0032
+  - A-0039
+  - A-0040
+  - A-0041
+  - A-0046
+  - A-0050
+  - A-0053
+outputs:
+  - experiments/runs/T-20260907-001/width256_ip_study.json
+  - experiments/runs/T-20260907-001/level_envelopes.json
+  - experiments/runs/T-20260907-001/independent_replay.json
+  - experiments/runs/T-20260907-001/summary.json
+  - experiments/runs/T-20260907-001/reproducibility.json
+validation:
+  - the compact streaming ranks equal an independent complete 3019653-pair oracle
+  - source X and CNOT layers are both retained as Clifford barriers
+  - widths 2 through 8 pass exhaustive reordered arithmetic replay
+  - the critical-path lower bound equals the constructed width-256 macro-depth
+  - every macro uses one common incoming frame and fresh per-event CCZ resources
+  - 512 deterministic branches produce witnessed support/contact lower bounds
+  - monotone may-support propagation produces sound support/contact upper bounds
+  - independent reconstruction rejects rank, support, and finite-output mutations
+exclusions:
+  - prime-field modular reduction or controlled ECDLP arithmetic
+  - replacing the coherent reverse network with measurement cleanup
+  - treating witnessed unions as one simultaneous branch geometry
+  - connected code support, placement, routing, ports, or storage
+  - native cycles, runtime, physical qubits, or failure probability

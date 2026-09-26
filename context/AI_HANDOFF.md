@@ -1,10 +1,180 @@
 # AI handoff
 
-Last updated: 2026-09-07
+Last updated: 2026-09-26
 From: codex
-To: codex and human
+To: claude, codex and human
+
+## Current implementation handoff
+
+`T-20260926-001` is `RV-20260926-001` `APPROVED` (Claude review, 2026-09-26). Reviewer evidence: the signed trace was recomputed with Stim Clifford tableaus for 10 width-256 traces (OOP/IP, branches -2, -1, 0, 17, 63) with every PPM and the final frame equal; a from-scratch dense simulation verified shared-control and shared-target tracked-H macros over all 4,096 branches (negative control fails); the measurement gadget was verified for all 162 signed Paulis on 1-3 qubits including odd Y; all 132 stored artifacts passed an independent regularity/signed-product/packing audit and every grid cell and headline median was reproduced; the cited Cowtan et al. section 3.6/Definition 3.14 and Zhang-Li appendix I were read and match. Non-blocking: pin the two PDFs; executed maximum weight (not step count) changes by about 10% under another valid regularization order.
+
+Original submission note: the human
+redirected the next mapping workload to parameterized parallel low-rate surgery.
+The new modules do not depend on the separately approved partial-clearing task below.
+Full H/CNOT frame tracking preserves signed X/Y/Z observables; general commuting
+sets are explicitly regularized and lowered to verified measurement gadgets.
+K, per-executed-PPM weight, and sum-support constraints are applied after lowering.
+
+The first checkpoint includes 64 hashed plus two forced branches for each
+width-256 OOP/IP workload, 730,026 independently replayed coupling PPMs, full
+compressed traces/lowerings, capacity grids, and representative CCZ/service
+timelines. Under unlimited support, median QWC/general surgery steps are
+OOP 92/111 and IP 296/263 at K=64, versus OOP 54/44 and IP 249/104 at unlimited K.
+In the explicit CHECK service example, IP K=64 takes 330.5/359.5 units, while
+K=256 takes 288.5/216 units: fewer primary steps need not mean shorter time.
+Weight 512 admits all hashed witnesses but neither all-one witness. Real Clifford
+closure proves even Y parity, so this workload does not need logical Y catalysts.
+
+Post-review synchronization (codex, 2026-09-26): the task is DONE, review is
+APPROVED, decision D-0033 is ACCEPTED and the work lock is RELEASED. The contract
+now records the review's regularization-order sensitivity beside the weight-cap
+counts (F4.2); unchanged step counts in the tested cases are not a general theorem.
+Next: pin the two versioned PDFs with SHA-256 (F4.1, still OPEN), then pursue
+the proposed boundary refinement to 512 hashed witnesses (NOT yet run) and
+code-specific service/support calibration. Do not interpret the hypothetical
+1ms/unit conversion as neutral-atom runtime.
+
+Validation: latest focused suite 26 passes; the earlier-collected full run has
+411 passes and the two known sibling-pin failures. All six forced/hash-0 artifacts
+regenerate byte-identically. See the task session for exact scope and environment.
+Reviewer validation additionally records 416 full-suite passes and the same two
+known sibling-pin failures, plus four further byte-identical regenerations.
+No git commit was made; preexisting dirty work and the approved review are preserved.
+
+## Reviewed partial-clearing handoff (`RV-20260909-001` `APPROVED`)
+
+`T-20260909-001` implements and profiles conservative target-component partial
+Clifford-frame clearing for the reviewed in-place QCLA workload.  It exposes
+the byproduct convention `physical = F ideal` and enforces
+`G = F_out U F_in^dagger`.  For each simultaneous H layer, the incoming frame
+is stably partitioned as `F_in = A R`: every interaction component touching an
+H target is materialized as `U_H A^dagger`, while disjoint components remain
+as `F_out = R`.  Width 5 checks factorization, physical action, and commutation
+on every logical X/Z generator, giving 11,520 projective checks with zero
+mismatch.
+
+For the width-256 coherent IP 30-macro/60-candidate workload and 32 fixed
+branch witnesses, partial clearing has median 3,843 literal CNOT generators,
+284 CNOT batches, 380 serialized logical layers, presented PPM weight 11
+(sampled maximum 16), and final-frame size 1,862.  Full clearing gives
+4,250/176/270, PPM weight 2/2, and final-frame size 1,273.  Thus partial
+clearing saves 9.58% in literal CNOT count but loses in the present same-wire
+depth envelope and leaves more support.  It remains a compiler Pareto point,
+not a selected native implementation.
+
+`RV-20260909-001` is `APPROVED` (Claude review, 2026-09-26); see
+`coordination/reviews/T-20260909-001.md`.  The reviewer confirmed the frame
+convention against the approved compiler, cross-checked frame accumulation on
+192 width-5 rows (192/192 agree), and reproduced every width-256 headline with a
+second implementation.  Non-blocking requests: state that the CNOT-batch
+envelope depends on ASAP direction (forward-time scheduling of the chronological
+circuit gives 148/249 instead of 176/284; layers 270/379 are essentially
+invariant), note that literal counts depend on intra-layer generator order,
+and add the compiler cross-check as a regression test.  Next, after review, the
+scientific task is a global Clifford resynthesis/native-mapper frontier for
+full versus partial clearing.  Do not convert any current layer number into
+runtime: addressable H/CNOT, surgery geometry/capacity, decoder/reaction,
+factory/buffer, memory, cycles, physical qubits, and failure remain open.
+
+See `docs/PARTIAL_CLIFFORD_FRAME_CLEARING_CONTRACT.md` and
+`experiments/runs/T-20260909-001/summary.json`.
+
+## Public visualization
+
+`T-20260907-003` published the reviewed OOP/IP width-256 standalone visualization at
+`https://qcla-oop-ip-width256.sleek-clove-8896.chatgpt.site` with public access.
+The deployed page is byte-identical to the reviewed local standalone preview and
+an external request returned HTTP 200. This task changes presentation/access only;
+all review conclusions and the next scientific action below are unchanged.
 
 ## Current review handoff
+
+`T-20260907-002` is `RV-20260907-005` `APPROVED` (Claude review, 2026-09-07).
+It evaluates both reviewed width-256 compressed workloads
+under one deterministic 512-branch protocol. For each candidate level and
+global branch, it records the maximum presented logical PPM support weight;
+the compact table retains p50/p95/p99, the maximum over 510 hashed
+assignments, all-zero/all-one boundary values, the full sampled maximum, and
+the reviewed support ceiling.
+
+OOP/IP largest p95 values are 168/188, p99 values are 198/222, and
+hashed-assignment maxima are 223/248. Both full sampled maxima are 509 because
+the forced all-one branch dominates. The separate OOP exact/IP may-support
+ceilings remain 1,003/1,006, with largest same-level gaps 494/622. Every
+fresh-resource X phase has exact weight one. The 512 assignments are
+deterministic numerical witnesses, not random population estimates or
+exhaustive maxima.
+
+The primary implementation uses sample-packed bit planes. A separate scalar
+verifier imports none of the sampler and reconstructs all 46,080 level--branch
+values and 11,326,464 branch--PPM evaluations one branch at a time, including
+assignment/vector hashes, nearest-rank quantiles, ceilings, and exact X
+phases. Mutation tests reject vector, quantile, and native-output changes.
+Native cycles, runtime, physical qubits, failure, connected support, routing,
+decoder/reaction, and factory/buffer service remain null/open. See
+`docs/WIDTH256_OOP_IP_BRANCH_WEIGHT_SAMPLING_CONTRACT.md` and
+`coordination/reviews/T-20260907-002.md`.
+
+The reviewer independently reimplemented the support-propagation rule a
+**third** time, using a deliberately different data structure (plain
+`dict[str, set[str]]` columns with set symmetric difference) rather than
+either the scheduler's 512-wide bit-plane packing or the shipped replay's
+per-branch integer bitsets. Using this independent implementation to compute
+only the two *deterministic* forced boundary branches (all outcomes zero,
+all outcomes one) for both OOP and IP, the reviewer found and fixed a bug in
+their own first attempt (an incorrect XOR-toggle condition), then matched
+the corrected result to the claimed full sampled maximum of 509 at the exact
+claimed level for both variants (OOP level 29, IP level 31). The reviewer
+separately wrote a script that recomputes every nearest-rank quantile,
+hashed-assignment maximum, and sampled-to-ceiling gap directly from the
+stored 512-entry vectors for all 90 candidate levels (not re-deriving the
+physics, just the statistics layer) and matched the contract's complete
+headline hotspot table exactly, including every recorded tie. The reviewer
+also confirmed the OOP/IP evidence-label boundary is enforced structurally
+in the dataclass `__post_init__` guards, not merely asserted in prose, and
+spot-checked the out-of-repository rendered OOP/IP switch view (a local
+file, not a hosted claim), finding its byte size and every headline number
+consistent with the reviewed data. Two independent byte-identical
+regenerations matched the implementer's five recorded SHA-256 prefixes
+(`4AEB8EDA`, `60D7DD5E`, `66D96F73`, `B0720F02`, `2E36BB9F`) exactly.
+
+This closes the width-256 OOP/IP structural comparison cycle. No task ID is
+currently claimed for the next step (a native mapper/frame-materialization
+policy for the certified logical candidates, or closing the IP support
+envelope's remaining 29 `CHECK` levels).
+
+## Previous approved handoff
+
+`T-20260907-001` is `RV-20260907-004` `APPROVED` (Claude review, 2026-09-07). It applies the approved positive-control CCX commutation rule to the reviewed width-256 in-place modulo-`2^256` QCLA while treating intervening X and CNOT source layers as global ordering barriers. A complete 3,019,653-pair scan and an implementation-independent replay agree with the streaming recurrence: 2,012,691 pairs retain dependencies, 1,006,962 are admitted, the critical path has thirty events, and the exact model-relative schedule is 30 macros/60 two-phase candidates versus the source-aligned 34/68 baseline.
+
+Exact logical demand is 2,458 fresh CCZ states, 14,748 PPMs, 4,916 target-H applications, and peak 255 CCZ states/target-Hs per macro. The source uses 495 ancillas and 1,007 fully resident values; source-coordinate liveness peaks at all 495 ancillas. Support is deliberately mixed-evidence: 31 levels are exact and 29 retain sampled/may-support bounds, with maximum sampled single-branch PPM weight 509, sound weight upper bound 1,006, possible union 1,770, possible contact 634, and 118,038 unwitnessed may-incidences. Possible unions are not simultaneous branch weights, connected code support, or native geometry.
+
+The independent replay reconstructs every pair decision, rank, parent, barrier kind, demand row, and support envelope without importing the new scheduler, and exhaustively verifies the reordered arithmetic for widths 2--8 over 87,376 input pairs. It rejects rank, support, and finite-native-output mutations. Five focused tests, Ruff, strict mypy on 67 source files, compileall, and the full suite (380 passes plus only the two known sibling-pin failures) are complete. Native cycles, seconds, physical qubits, failure, addressability, routing, decoder/reaction service, and factory/buffer service remain null/open. See `docs/WIDTH256_IP_COMMUTATION_AWARE_QCLA_CONTRACT.md` and `coordination/reviews/T-20260907-001.md`.
+
+The reviewer independently reimplemented the complete O(n^2) pairwise
+dependency and longest-path computation from scratch (not importing the
+reviewed scheduler or its shipped replay module) directly against the real
+width-256 in-place source trace, and matched every headline number exactly:
+2,458 CCXs, 1,019 CNOTs, 510 X gates, 3,019,653 pairs, 2,012,691
+dependencies, 1,006,962 admissions, 12,996 noncommuting pairs, macro-depth
+30, the complete 30-element macro-layer size vector, and the widths-2--8
+bridge table `(2,2),(4,4),(6,6),(12,8),(12,8),(14,10),(14,10)`. It
+independently verified by direct hand calculation that `X` on a CCX control
+does not commute with that CCX (`X` then `CCX` gives a different result than
+`CCX` then `X` for `c0=0,c1=1,t=0`), confirming that treating only CNOT
+layers as barriers -- omitting X -- would have been an unsound generalization
+of the OOP rule. It confirmed the sampled/may-support/exact evidence labels
+are enforced structurally (not just asserted) and numerically exact: 31 of
+60 support levels are exact and 29 retain `CHECK` gaps, the sum of
+unwitnessed may-incidences is exactly 118,038, and every sampled-weight/
+may-support/contact bound in the generated data matches the contract table.
+Two independent byte-identical regenerations matched the implementer's five
+recorded SHA-256 prefixes (`9EE1D02E`, `4EDB7E65`, `5CCC22D7`, `FF2CC9C6`,
+`353B7AE4`) exactly.
+
+This closes the entire joint-CCX/commutation-aware validation cycle
+(`T-20260906-001` through `T-20260907-001`) for both the OOP and IP width-256
+workloads. No task ID is currently claimed for the next step.
 
 `T-20260906-004` is `RV-20260907-003` `APPROVED` (Claude review, 2026-09-07).
 The selected width-256 result is the exact model-relative commutation-aware
@@ -812,16 +982,21 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Next concrete action
 
-0. `T-20260906-004` is approved (`RV-20260907-003`). The width-256
-   commutation-aware unitary schedule (15 macros / 30 candidate levels) is
-   now the certified structural result, and the measurement-cleanup
-   shortcut is closed (`FALSIFIED` for the current Z/X-only PPM family). No
-   task ID is claimed yet for the next step: implement one coherent native
-   mapper or explicit frame-materialization policy for the certified 15/30
-   width-256 logical candidate levels and the branch-dependent support
-   hypergraphs from `T-20260903-002`, together with a mixed-axis-compatible
-   cleanup protocol (frame clearing, a mixed-axis PPM construction, or a new
-   joint cleanup protocol) if cleanup is ever to be revisited.
+0. `T-20260906-004` (OOP, 15/30), `T-20260907-001` (IP, 30/60), and
+   `T-20260907-002` (the shared OOP/IP branch-weight distribution overlay)
+   are all approved. Both width-256 commutation-aware structural results are
+   now certified, with the IP support envelope explicitly `CHECK` (31 of 60
+   levels exact, 29 sampled/may-support) rather than fully resolved, and the
+   branch-weight overlay adds distributional witnesses (p50/p95/p99, hashed
+   maxima) beside those ceilings without changing either schedule. No task
+   ID is claimed yet for the next step: implement one coherent native mapper
+   or explicit frame-materialization policy for these certified logical
+   candidate levels and the branch-dependent support hypergraphs from
+   `T-20260903-002`, together with a mixed-axis-compatible cleanup protocol
+   (frame clearing, a mixed-axis PPM construction, or a new joint cleanup
+   protocol) if OOP cleanup is ever to be revisited, and/or a plan to close
+   the IP support envelope's remaining 29 `CHECK` levels before treating it
+   as exact.
 1. Source or compute a `d1=17,d2=27` output/transport/consumer
    error model and a finite decoded buffer/reaction contract before connecting
    the AutoCCZ adapter to width-256 QCLA demand.

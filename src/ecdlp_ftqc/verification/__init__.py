@@ -84,6 +84,19 @@ from .width256_commutation_aware_qcla import (
     replay_width256_commutation_aware_study,
     width256_commutation_aware_replay_to_data,
 )
+from .width256_ip_commutation_aware_qcla import (
+    Width256IpCommutationAwareReplayError,
+    Width256IpCommutationAwareReplaySummary,
+    replay_width256_ip_commutation_aware_study,
+    width256_ip_commutation_aware_replay_to_data,
+)
+from .width256_oop_ip_branch_weight_sampling import (
+    VariantBranchWeightReplay,
+    Width256BranchWeightReplay,
+    Width256BranchWeightReplayError,
+    replay_width256_oop_ip_branch_weight_study,
+    width256_oop_ip_branch_weight_replay_to_data,
+)
 
 __all__ = [
     "AUTOCCZ_DELAYED_CHOICE_CZ_COUNT",
@@ -113,9 +126,14 @@ __all__ = [
     "QclaCliffordStrategyReplaySummary",
     "SmallWidthCommutationAwareReplaySummary",
     "SymbolicDirectCczPpmReplaySummary",
+    "VariantBranchWeightReplay",
     "VariantReplaySummary",
+    "Width256BranchWeightReplay",
+    "Width256BranchWeightReplayError",
     "Width256CommutationAwareReplayError",
     "Width256CommutationAwareReplaySummary",
+    "Width256IpCommutationAwareReplayError",
+    "Width256IpCommutationAwareReplaySummary",
     "WidthFiveJointDirectCczReplaySummary",
     "WidthReplaySummary",
     "autoccz_channel_verification_to_data",
@@ -140,10 +158,14 @@ __all__ = [
     "replay_symbolic_direct_ccz_ppm_trace",
     "replay_width5_joint_direct_ccz",
     "replay_width256_commutation_aware_study",
+    "replay_width256_ip_commutation_aware_study",
+    "replay_width256_oop_ip_branch_weight_study",
     "symbolic_direct_ccz_ppm_replay_to_data",
     "verify_autoccz_consumption_channel",
     "verify_direct_ccz_injection_channel",
     "verify_one_bit_h_teleportation_channel",
     "width5_joint_direct_ccz_replay_to_data",
     "width256_commutation_aware_replay_to_data",
+    "width256_ip_commutation_aware_replay_to_data",
+    "width256_oop_ip_branch_weight_replay_to_data",
 ]

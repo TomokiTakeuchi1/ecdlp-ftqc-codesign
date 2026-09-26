@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - roadmap
-updated: 2026-09-07
+updated: 2026-09-26
 ---
 
 # Research Roadmap
@@ -15,7 +15,7 @@ updated: 2026-09-07
 
 **Status: ACTIVE**
 
-<progress max="26" value="26"></progress> 26 of 26 listed Month-1 milestones are complete or in review.
+<progress max="28" value="28"></progress> 28 of 28 listed Month-1 milestones are complete or in review.
 
 ### Completed or reviewed
 
@@ -43,12 +43,17 @@ updated: 2026-09-07
 - [x] Prove and review the width-5 joint direct-CCZ common-frame factorization and measurement-uncompute semantic gate (`T-20260906-002`, `RV-20260907-001` `APPROVED`).
 - [x] Build and review the separate commutation-aware OOP-QCLA dependency model at widths 2--8 (`T-20260906-003`, `RV-20260907-002` `APPROVED`). Width-5 unitary/measured depths are exactly 4/3 macros or 8/6 candidate levels in the stated logical model; reaction duration and all finite outputs remain unresolved.
 - [x] Re-evaluate and review width-256 OOP-QCLA structurally (`T-20260906-004`, `RV-20260907-003` `APPROVED`): exact unitary 15 macros/30 candidates versus source 17/34; 240 cleanup candidates fail closed on mixed-axis witnesses; finite outputs remain null.
+- [x] Re-evaluate and review width-256 in-place modulo-`2^n` QCLA with X/CNOT barriers and coherent cleanup retained (`T-20260907-001`, `RV-20260907-004` `APPROVED`): exact model-relative 30 macros/60 candidates versus source 34/68; bounded support remains `CHECK`; finite outputs remain null.
+- [x] Profile and review fully tracked OOP/IP width-256 QCLA on capacity-limited parallel low-rate surgery (`T-20260926-001`, `RV-20260926-001` `APPROVED`): QWC versus regularized general measurement macros under K/weight/support limits; native mapping and the 512-witness refinement remain open.
+- [x] Evaluate and review partial Clifford-frame clearing for the coherent IP 30/60 workload (`T-20260909-001`, `RV-20260909-001` `APPROVED`, 2026-09-26): exact `G = F_out U F_in^dagger` policy algebra and a literal-count/layer/support Pareto comparison; global resynthesis and native mapping remain open.
+- [x] Compare and review OOP/IP width-256 branch-maximum PPM-weight distributions under one 512-assignment protocol (`T-20260907-002`, `RV-20260907-005` `APPROVED`): complete vectors and independent replay are implemented; OOP/IP p95 peaks are 168/188 and hashed-assignment maxima are 223/248; finite outputs remain null.
 
 ### Active
 
-- [ ] Implement one coherent native mapper or explicit frame-materialization policy for the certified 15-macro/30-level width-256 logical candidates and the branch-dependent support hypergraphs from `T-20260903-002` (no task ID claimed yet).
+- [ ] Implement one coherent native mapper or explicit frame-materialization policy for both the certified OOP 15/30 and IP 30/60 logical candidates and their branch-dependent support hypergraphs (no task ID claimed yet).
+- [ ] Decide whether to pursue closing the IP support envelope's remaining 29 `CHECK` levels before treating it as exact.
 - [ ] Design a mixed-axis-compatible cleanup protocol (frame clearing, a mixed-axis PPM construction, or a new joint protocol) if width-256 measurement cleanup is to be revisited.
-- [ ] Test frame-conjugated H plus bare CNOT against one coherent native mapper/frame-materialization policy for the branch-dependent 34/68 width-256 logical candidate levels.
+- [ ] Test frame-conjugated H plus bare CNOT against one coherent native mapper/frame-materialization policy for the OOP/IP 15/30 and 30/60 candidate schedules.
 - [ ] Add factory service, finite buffer, routing, and backlog to the width-256 QCLA T-demand series.
 - [ ] Close the reviewed AutoCCZ adapter's (`RV-20260901-001`) nine missing and one distance-incompatible service fields before scheduling.
 
