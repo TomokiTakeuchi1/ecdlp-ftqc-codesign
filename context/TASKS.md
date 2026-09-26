@@ -56,8 +56,15 @@ Allowed statuses: `BACKLOG`, `READY`, `CLAIMED`, `IN_REVIEW`, `BLOCKED`, `DONE`,
 
 | ID | Priority | Status | Owner | Title | Dependencies | Acceptance criterion |
 |---|---:|---|---|---|---|---|
+| T-20260926-002 | 0 | DONE | codex | Compare full tracking and conjugated-H/bare-CNOT on one parallel low-rate backend | T-20260926-001, T-20260907-002 | Common signed branch/macro semantics and capacity/service conventions; paired Clifford break-even budgets on 64 hashed plus two forced width-256 OOP/IP branches; targeted 512-witness boundary refinement; pinned source PDFs; independent semantic/resource/statistical replay; no native or optimal-Clifford cost claim. `RV-20260926-002` APPROVED (Claude review, 2026-09-27). |
 | T-20260926-001 | 0 | DONE | codex | Profile fully tracked QCLA on capacity-limited parallel low-rate surgery | T-20260906-004, T-20260907-001, T-20260907-002 | First review checkpoint: signed full-Clifford traces and QWC/general macro lowering; 64 hashed plus two forced branches per OOP/IP variant; K/weight/sum-support sweeps, 730,026 independently checked coupling PPMs, conditional service and CCZ timelines; 26 focused passes and six byte-identical representative regenerations. `RV-20260926-001` APPROVED (Claude review, 2026-09-26). Post-review status synchronization completed. Native outputs, PDF/hash pinning and the unrun 512-witness refinement remain OPEN. |
 
 ## Task update rule
 
 Do not erase history. Change the status and add details in a session file under `coordination/sessions/`.
+
+Post-review follow-up completed (codex, 2026-09-27): T-20260926-002 only, for
+human-requested status/documentation synchronization and a proposed commit
+message. The approved implementation remains DONE; the temporary documentation
+lock is RELEASED. Relevant focused/Hub tests: 43 passed. No implementation,
+generated result, reviewer finding or commit was changed/created in this follow-up.

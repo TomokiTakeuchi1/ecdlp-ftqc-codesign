@@ -4,9 +4,14 @@
 - Retrieved: initial corpus on 2026-08-11 from arXiv; additions on 2026-08-15 from arXiv and the IACR ePrint Archive; Active Volume v1 added on 2026-08-24; Selinger v2 added on 2026-08-25; finite CCZ/high-rate/in-situ sources added on 2026-08-31; AutoCCZ, its base factory, and official ancillary assets added on 2026-09-01
 - Storage policy: PDF and official ancillary files are local and ignored by Git; this index is versioned.
 - Integrity check: every PDF begins with `%PDF-`; all listed hashes are SHA-256.
+- T-20260926-002: versioned parallel low-rate surgery PDFs pinned on 2026-09-26,
+  resolving review RV-20260926-001 F4.1. Download URLs are the corresponding
+  `https://arxiv.org/pdf/<versioned-id>` endpoints.
 
 | Source | Local PDF | Bytes | SHA-256 |
 |---|---|---:|---|
+| [2408.01339v3](https://arxiv.org/abs/2408.01339v3) | `2408.01339v3.pdf` | 3,008,517 | `F11C40FF1E4C7A5A9D5B81DBBBD24A6ED6811FBC401C3A0FA165EF7623C69B4A` |
+| [2503.05003v3](https://arxiv.org/abs/2503.05003v3) | `2503.05003v3.pdf` | 2,164,288 | `8FFEB13F3299A1037C709EB1D63E8B032E962514397FA94C5FD6178BA5630EB2` |
 | [2604.05126v1](https://arxiv.org/abs/2604.05126v1) | `2604.05126v1.pdf` | 776,303 | `6028126D750D67506B184BBFECBF2B4381CA9899D4857E3761383465357F2D06` |
 | [2510.06159v1](https://arxiv.org/abs/2510.06159v1) | `2510.06159v1.pdf` | 9,885,032 | `EA1E941E9A7378EF9D558A42CDD89BFD36B737D53645F3BD402FC3CAAE9A3974` |
 | [2508.10714v2](https://arxiv.org/abs/2508.10714v2) | `2508.10714v2.pdf` | 4,275,170 | `D950240664442EFED7103231FB204FEF079F83D258D3CD64D203A290A59E0957` |

@@ -5,14 +5,14 @@ cssclasses:
   - research-dashboard
 tags:
   - dashboard
-updated: 2026-09-26
+updated: 2026-09-27
 ---
 
 # ECDLP-256 FTQC Research Hub
 
-> [!abstract] Current snapshot — 2026-09-07
+> [!abstract] Current snapshot — 2026-09-27
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** `T-20260907-002` (branchwise PPM-weight distributions for the reviewed OOP 15/30 and IP 30/60 width-256 workloads) is approved (`RV-20260907-005`, 2026-09-07). Across one shared 512-assignment protocol, OOP/IP largest p95 values are **168/188**, p99 values **198/222**, and maxima over 510 hashed assignments **223/248**. Both full sampled maxima are 509 because a forced all-one boundary branch dominates; separate support ceilings remain 1,003/1,006. These are numerical logical-support witnesses, not probability estimates, surgery rounds, or runtime. This closes the width-256 OOP/IP structural comparison cycle; no task is currently claimed for the next native-mapping step.
+> **Current focus:** `T-20260926-002` is approved (`RV-20260926-002`, Claude, 2026-09-27): full tracking versus conjugated-H/bare-CNOT on the same parallel low-rate backend. The selected 18 IP/weight-256 cells now have 512 hashes: legacy PPM fits 512, tracked QWC 218, fixed general lowering 179. Legacy Clifford time remains unknown **B**; a PPM saving is a budget for that work, not a demonstrated native speedup. Both final frames remain explicit obligations. See [[docs/LOW_RATE_CLIFFORD_BREAK_EVEN_CONTRACT|paired Clifford-budget contract]].
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
@@ -21,7 +21,8 @@ updated: 2026-09-26
 
 | Workstream | Status | Human-friendly summary |
 |---|---|---|
-| Literature baseline | ✅ Reviewed | 21 primary-source PDFs are indexed locally, including the two Gidney--Fowler PDFs and four official assets reviewed in `RV-20260901-001`. |
+| Paired Clifford-budget comparison | ✅ Reviewed (`RV-20260926-002`) | T-20260926-002 compares shared branches/macros on one low-rate backend. K=64, unlimited-support median budgets versus tracked QWC are OOP 29 / IP 170 conditional units (64 hashes). Unknown branch-dependent Clifford cost B, different retained frames and all native resources remain OPEN; 18 IP boundary cells refined to 512 hashes. |
+| Literature baseline | ✅ Reviewed | 23 primary-source PDFs are indexed locally, including the two Gidney--Fowler PDFs and four official assets reviewed in `RV-20260901-001`; T-20260926-002 adds version/SHA-256 pins for Zhang--Li and Cowtan et al. |
 | Gidney adder DAG | ✅ Reviewed | The ripple-carry adder is converted to a QEC-independent causal DAG and checked at small widths and width 256. |
 | Mitten scheduling prototype | ✅ Reviewed | Claude approved the conditional scheduler (`RV-20260815-004`); its operation times are still not an executable-runtime result. |
 | Adaptive PBC/CQLU lowering | ✅ Reviewed | Claude approved the quantum-output-preserving trace (`RV-20260815-006`); exact CNOT/H/S/T/T-dagger Pauli supports and compiler ancillas are generated, while native duration evidence remains open. |

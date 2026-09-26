@@ -1,5 +1,21 @@
 # Decision log
 
+## D-0034: Measure the conditional Clifford budget before choosing a physical H/CNOT policy
+
+- Status: ACCEPTED (human-authorized implementation; `RV-20260926-002` APPROVED by Claude, 2026-09-27)
+- Date: 2026-09-26
+- Decision: Compare both policies on the SAME parallel low-rate primitives and
+  shared source macros/outcomes. Compute Bcrit per branch before aggregating,
+  only where both PPM lowerings fit. Treat legacy Clifford service and its
+  feasibility as unknown, not zero. Preserve signed final frames and service
+  count differences, so new timing assumptions can be evaluated explicitly.
+- Rationale: A comparison with free legacy H/CNOT would reward an unimplemented
+  operation; an unpaired difference of medians can reverse a conclusion.
+- Consequences: CHECK conditional budgets can guide the next synthesis task,
+  but do not select a native backend or claim end-to-end arithmetic advantage.
+  This cycle does not implement optimized/partial frame clearing, route a
+  factory, close a failure budget, or replace the approved baseline modules.
+
 ## D-0033: Profile fully tracked QCLA through explicit parallel low-rate macros
 
 - Status: ACCEPTED (human-authorized scope; `RV-20260926-001` APPROVED by Claude, 2026-09-26)

@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-09-26
+updated: 2026-09-27
 ---
 
 # Research Progress Log
@@ -12,6 +12,36 @@ updated: 2026-09-26
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-09-26 — Paired Clifford-budget comparison
+
+**Status:** Reviewed and approved (`T-20260926-002`, `RV-20260926-002`, 2026-09-27). Claude recomputed every grid entry of all 580 artifacts, densely verified the legacy entrance-frame H/H semantics, and reproduced the selector, refined counts (218/179 of 512) and tables; the legacy Clifford cost B remains unknown.
+
+The comparison now uses the same low-rate backend for both full tracking and
+conjugated-H/bare-CNOT. It measures how much extra physical Clifford time the
+latter can afford, rather than assuming those gates are free. Initial 64-hash
+OOP/IP profiles are independently checked. The 18 IP/weight-256 boundary
+cells were extended to 512 hashes under the predeclared selection rule:
+legacy PPM fits 512, tracked QWC 218, fixed general lowering 179. Other cells
+remain at 64 hashes. This is not a probability law or a universal ordering
+of measurement constructions; Cliffords still need a realizable service B.
+The versioned Zhang--Li and Cowtan et al. PDFs are pinned with SHA-256.
+
+CHECK: at K=64 with unbounded support, median additional-Clifford budgets
+against tracked QWC are 29 units (OOP) and 170 units (IP). These are total
+kernel allowances, not time per H/CNOT or a complete hardware estimate.
+
+Details: [[docs/LOW_RATE_CLIFFORD_BREAK_EVEN_CONTRACT|paired comparison contract]].
+
+Post-review synchronization (codex, 2026-09-27): task DONE, review APPROVED,
+D-0034 ACCEPTED; no required changes. Session, contract and handoff now agree
+with the review. Implementation and numerical outputs are unchanged, and
+legacy Clifford execution/native runtime remain OPEN.
+
+Validation: 8,067,156 signed coupling PPM replays; seven fresh artifacts and
+resumed summary/SVG byte-identical; independent exact-rational saved-output
+audit and visual map QA. Full suite 454 pass plus two known sibling-pin
+failures; latest focused + Hub 43 pass. No commit or native runtime claim.
 
 ## 2026-09-26 — Parallel low-rate surgery on fully tracked QCLA
 

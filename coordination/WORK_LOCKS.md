@@ -1,5 +1,17 @@
 # Work locks
 
+## Post-review documentation follow-up
+
+| Task | Owner | Branch | Files/directories | Claimed at | Last heartbeat | Status |
+|---|---|---|---|---|---|---|
+| T-20260926-002 | codex | existing branch, HEAD `a4dba72`; status-only follow-up | `context/TASKS.md`; `context/STATUS.md`; `context/AI_HANDOFF.md`; `coordination/WORK_LOCKS.md`; `coordination/CHANGELOG_AI.md`; `coordination/sessions/T-20260926-002.md`; `docs/LOW_RATE_CLIFFORD_BREAK_EVEN_CONTRACT.md`; `Research Hub/Home.md`; `Research Hub/Progress Log.md`; `Research Hub/Decisions and Blockers.md` | 2026-09-27 | 2026-09-27 | RELEASED |
+
+Completed the human-requested documentation synchronization; focused/Hub tests
+43 passed and `git diff --check` passed. No implementation, generated result,
+reviewer finding or unrelated task changed; no commit made.
+
+## Research-cycle locks
+
 | Task | Owner | Branch | Files/directories | Claimed at | Last heartbeat | Status |
 |---|---|---|---|---|---|---|
 | T-20260811-001 | codex | master (unborn) | `context/TASKS.md`; `context/STATUS.md`; `context/AI_HANDOFF.md`; `literature/READING_QUEUE.md`; `literature/bibliography.bib`; `literature/notes/algorithms/`; `docs/CANONICAL_CIRCUIT_DECISION.md`; `coordination/sessions/T-20260811-001.md`; `coordination/reviews/T-20260811-001.md`; `coordination/REVIEW_QUEUE.md`; `coordination/CHANGELOG_AI.md` | 2026-08-11 | 2026-08-11 | RELEASED |
@@ -49,6 +61,7 @@ Status values: `ACTIVE`, `REVIEW`, `RELEASED`, `STALE`.
 
 | Task | Owner | Branch | Files/directories | Claimed at | Last heartbeat | Status |
 |---|---|---|---|---|---|---|
+| T-20260926-002 | codex | existing `agent/codex/T-20260907-002-oop-ip-branch-weight-sampling`, HEAD `a4dba72`; preserve unrelated `.claude/` | `context/`; `coordination/WORK_LOCKS.md`; `coordination/REVIEW_QUEUE.md`; `coordination/CHANGELOG_AI.md`; `coordination/sessions/T-20260926-002.md`; `coordination/reviews/T-20260926-002.md`; `src/ecdlp_ftqc/compiler/low_rate_policy_trace.py`; `src/ecdlp_ftqc/analysis/low_rate_break_even.py`; `src/ecdlp_ftqc/verification/low_rate_break_even.py`; `tests/unit/test_low_rate_break_even.py`; `tests/unit/test_low_rate_break_even_cycle.py`; `scripts/run_low_rate_break_even_cycle.py`; `scripts/audit_low_rate_break_even_outputs.py`; `experiments/manifests/E-20260926-002.json`; `experiments/runs/T-20260926-002/`; `docs/LOW_RATE_CLIFFORD_BREAK_EVEN_CONTRACT.md`; `literature/papers/INDEX.md`; `literature/papers/2408.01339v3.pdf`; `literature/papers/2503.05003v3.pdf`; `literature/bibliography.bib`; `literature/notes/architecture/parallel_low_rate_surgery.md`; `Research Hub/` | 2026-09-26 | 2026-09-26 | RELEASED |
 | T-20260926-001 | codex | existing dirty branch `agent/codex/T-20260907-002-oop-ip-branch-weight-sampling`, HEAD `b7aad59` | `context/TASKS.md`; `context/STATUS.md`; `context/AI_HANDOFF.md`; `context/ASSUMPTIONS.md`; `context/DECISIONS.md`; `context/RESULT_LEDGER.md`; `coordination/WORK_LOCKS.md`; `coordination/REVIEW_QUEUE.md`; `coordination/CHANGELOG_AI.md`; `coordination/sessions/T-20260926-001.md`; `coordination/reviews/T-20260926-001.md`; `docs/PARALLEL_LOW_RATE_QCLA_CONTRACT.md`; `literature/notes/architecture/parallel_low_rate_surgery.md`; `src/ecdlp_ftqc/compiler/parallel_low_rate_trace.py`; `src/ecdlp_ftqc/scheduler/parallel_low_rate.py`; `src/ecdlp_ftqc/verification/parallel_low_rate.py`; `tests/unit/test_parallel_low_rate.py`; `scripts/run_parallel_low_rate_cycle.py`; `experiments/manifests/E-20260926-001.json`; `experiments/runs/T-20260926-001/` | 2026-09-26 | 2026-09-26 | RELEASED |
 
 Post-review claim completed (codex, 2026-09-26): T-20260926-001 only, for
