@@ -15,6 +15,19 @@ This page explains the research in plain language. Evidence, assumptions, and ex
 
 ## 2026-10-01 - Two-stage protected LP mask (reviewed and approved)
 
+## 2026-10-01 - Direct retained-block GHZ preparation (reviewed and approved)
+
+T-20261001-006 retains the masked Q block
+instead of transferring to a fresh data block. It prepares300 GHZ4s with an
+explicit all-outcome frame and separated residual modes. This removes the
+second matching and output readout for state preparation only.
+
+**Status:** Reviewed and approved (`T-20261001-006`, `RV-20261001-006`, 2026-10-01). Claude independently re-derived the direct quartet sign formula and automorphism decomposition by hand, and reproduced the dimension count, the preparation schedule table, and the fault-diagnostic witness with differently-structured code. The initial
+bare-check baseline is now scheduled, but an explicit record-blind single
+hook disproves its declared common-recovery criterion. Further Q-X/flag
+information and a noisy recovery design are needed before claiming FT costs.
+See [[docs/LP_DIRECT_GHZ_PREPARATION_CONTRACT|direct retained-block results]].
+
 T-20261001-004 addresses the previous helper's distance-one problem using
 native LP checks on a9075-qubit mask and a full9600-qubit auxiliary. Mask Z
 readout fixes900 unwanted canonical+38 residual modes; auxiliary X readout

@@ -1,0 +1,32 @@
+{
+  "schema": "lp-direct-ghz-input-v1",
+  "task_id": "T-20261001-006",
+  "lift": 75,
+  "construction": "retain_masked_Q_then_automorphism",
+  "selected_canonical_row_zero_based": 3,
+  "residual_fixing_allowed": true,
+  "outcome_postselection": false,
+  "ancilla_caps_per_block": [1, 64, 256, 5250],
+  "preparation_projection_passes": 1,
+  "fault_scope": "spreading_axis_check_ancilla_faults_and_mask_readout_flips",
+  "random_seed": null,
+  "native_runtime_seconds": null,
+  "ft_admission": false,
+  "inherited_files": [
+    {
+      "path": "src/ecdlp_ftqc/code_constructions/lp_ghz.py",
+      "sha256": "22037fe103aef5ddbbe01763894cd1cca4b023d2816bf2f05c7e1b502e9c2a5d",
+      "review": "RV-20261001-001 APPROVED; constructor, canonical section, automorphism"
+    },
+    {
+      "path": "src/ecdlp_ftqc/code_constructions/lp_protected_ghz.py",
+      "sha256": "95cdd573214f1dc0f25ae40ee9c0911a298209cebc1b66f38917221b602a2dc6",
+      "review": "RV-20261001-004 APPROVED; mask constructor and whole measured algebra"
+    },
+    {
+      "path": "experiments/runs/T-20261001-004/summary.json",
+      "sha256": "5f7eff673a37581369d36afbc575cd6de988b5854ec51c736cb7c465077156ba",
+      "review": "RV-20261001-004 APPROVED; historical artifact status remains immutable"
+    }
+  ]
+}

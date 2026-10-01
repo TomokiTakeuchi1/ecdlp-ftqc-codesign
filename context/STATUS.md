@@ -1,5 +1,32 @@
 # Project status
 
+- `T-20261001-006` is `RV-20261001-006` `APPROVED` (Claude review, 2026-10-01). Reviewer evidence: independently re-derived the direct quartet sign formula and the automorphism's CNOT decomposition by hand from first principles (not merely checked numerically); independently reproduced the 938=6164-5226 dimension count via the new dual framing and confirmed M's own CSS self-commutation; independently reimplemented the preparation scheduler (different code) and reproduced the complete four-row schedule table exactly; independently reproduced the fault-diagnostic weight-3 witness with a differently-structured O(n) algorithm; regenerated the summary byte-for-byte; confirmed all three pinned inherited-file hashes unchanged.
+  NUMERICAL: retaining the masked Q block directly gives 300 GHZ4 outputs;
+  938 outcome-bit duals, all 1,200 canonical stabilizers and 38Z+2X residual
+  factorization pass. Initial projection signs have independent exact recovery
+  maps (Q 3,134, M 5,226 bits); these are not noisy decoders. Only one
+  9,075-CNOT interface matching and no output X destruction are needed for
+  this state-preparation specialization, not a general PPM channel.
+  NUMERICAL: 18,675 code carriers, 18,803 including two 64-ancilla check pools;
+  77,175 preparation CNOTs + 9,075 interface CNOTs in one bare projection pass.
+  These are not an FT footprint or native cycles. Four pool-cap schedules and
+  symbolic stage/lifetime costs are explicit.
+  FALSIFIED: for this bare baseline without extra Q-X records, no common
+  record-conditioned Pauli recovery leaves both no-fault and every covered
+  single-fault history equivalent to at most one physical error. An explicit
+  row-0/third-CNOT hook has harmless-coset minimum weight exactly three while
+  leaving all collected records unchanged. This is not an LP FT impossibility.
+  Census: 86,250 specified faults; ideal ten-qubit replay covers 16 branches.
+  180 related/Hub tests passed; final focused checks and regeneration recorded
+  in the session. Circuit FT, decoder, native runtime/failure remain OPEN.
+  See docs/LP_DIRECT_GHZ_PREPARATION_CONTRACT.md. No commit made.
+  Post-review synchronization (codex, T-20261001-007): task DONE, review
+  APPROVED, D-0038 ACCEPTED and lock RELEASED; no required changes. Current
+  contract/session/handoff/ledger statuses are aligned; already-correct Hub
+  entries, reviewer findings and scientific files are preserved. Reviewer
+  validation:180 related passes and770 full-suite passes plus2 known unrelated
+  sibling-pin failures. No new full-suite result is inferred from this sync.
+
 - `T-20261001-004` is `RV-20261001-004` `APPROVED` (Claude review, 2026-10-01). Reviewer evidence: independently rebuilt the punctured mask M from scratch and confirmed HX_M is bit-for-bit the same row set as HX_Q restricted to S, and every HZ_M row embeds into row(HZ_Q); independently recomputed the complete 938=900+38 measured-Z dimension count and the 302-dimensional final X space using the reviewer's own previously-verified Q canonical generators (all exact matches); independently validated the no-weight<=2-logical distance algorithm against brute-force enumeration on 20 random small codes before applying a differently-coded version to the real 9600/9075-qubit codes (both certified d>=3, matching exactly); independently reproduced the masked-channel claim with a different 11-qubit explicit state-vector simulation (max residual 1.57e-16, uniform 1/128 branch probabilities); regenerated the summary byte-for-byte.
   NUMERICAL: a 9,075-qubit LP mask, used as CNOT target from a uniform-plus
   full Q auxiliary, fixes exactly 900 canonical + 38 residual Z modes.

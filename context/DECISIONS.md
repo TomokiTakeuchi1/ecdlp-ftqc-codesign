@@ -1,5 +1,23 @@
 # Decision log
 
+## D-0038: Specialize to retained-block GHZ preparation before an FT factory
+
+- Status: ACCEPTED (T-20261001-006; `RV-20261001-006` APPROVED by Claude, 2026-10-01)
+- Date: 2026-10-01
+- Decision: Keep the masked Q as the output and conjugate its known frame
+  through the automorphism. Separate ideal direct preparation, explicit bare
+  projection resources and fault-correctability obligations. Do not retain an
+  unnecessary data-transfer/readout step for this state-preparation use case.
+- Evidence: NUMERICAL whole-instance dual/sign/GHZ certificate and independent
+  reduced dense replay. FALSIFIED bare common-recovery criterion via an explicit
+  indistinguishable single-hook/no-fault pair with minimum difference weight3.
+- Consequences: one matching and 18,675 code carriers suffice ideally; FT space,
+  repeats and time are not admitted. Next implementation should address extra
+  Q-X/flag information and a recovery rule, not merely quote a stronger static
+  distance or return to arithmetic scheduling. Requires human authorization.
+- Scope: prior general two-stage measurement interface remains valid and
+  unchanged. No impossibility claim against augmented LP GHZ preparation.
+
 ## D-0037: Use a two-stage LP mask before pricing a protected GHZ factory
 
 - Status: ACCEPTED (implemented in T-20261001-004; `RV-20261001-004` APPROVED by Claude, 2026-10-01)

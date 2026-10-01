@@ -78,6 +78,59 @@ their exceptionally exhaustive checks are NOT mandatory templates for future
 reviews. This policy does not itself change any review verdict or scientific
 result, or authorize another implementation cycle.
 
+## Direct retained-block LP GHZ handoff - 2026-10-01
+
+`T-20261001-006` is `RV-20261001-006` APPROVED (Claude review, 2026-10-01). Reviewer evidence: independently re-derived the direct quartet sign formula and the automorphism's CNOT decomposition by hand from first principles (not merely checked numerically); independently reproduced the 938=6164-5226 dimension count via the new dual framing and confirmed M's own CSS self-commutation; independently reimplemented the preparation scheduler (different code) and reproduced the complete four-row schedule table exactly; independently reproduced the fault-diagnostic weight-3 witness with a differently-structured O(n) algorithm; regenerated the summary byte-for-byte; confirmed all three pinned inherited-file hashes unchanged.
+
+Original submission note: current submission was T-20261001-006 IN_REVIEW; RV-20261001-006 PENDING with
+claude. Apply the standing review-efficiency policy above. Start with
+docs/LP_DIRECT_GHZ_PREPARATION_CONTRACT.md and the review/session records.
+Approved predecessor modules, reviews and source transcription are unchanged.
+
+NUMERICAL: retain masked Q, omit second data block/matching/output readout,
+then auto ->300 GHZ4. Exact938-bit frame duals, all1200 target stabilizers and
+residual38Z+2X factorization pass. This is not938 sampled branches. Physical
+readout6164-dimensional space /5226 stabilizer-randomness yields938 logical
+bits. Separate initial projection-sign recovery maps coverQ3134/M5226 bits;
+physical X_Q/Z_M corrections precede matching. Tracking them instead must
+propagate Z_M ontoQ and X_Q intoM readout; logical mask frame is tracked through
+the automorphism. These linear maps are not noisy decoders.
+
+FALSIFIED only for the declared bare baseline: Q-Z check0, ancillaZ after
+thirdCNOT, leaves the entire actual record identical to nofault, while its
+harmless-coset minimum error weight is3. No common record-conditioned Pauli
+recovery leaves both at weight<=1. Exact weight0/1/2 signature exclusion plus
+the explicit weight3 prefix proves this; no need to repeat a full fault search
+or distance calculation. The witness is independent of random projection
+syndromes, and survives the output's weight-preserving permutation. This does
+not falsify LP GHZ factories with added syndrome/flag information or QEC.
+
+NUMERICAL resources:18675 carriers;18803 with128 syndrome ancillas at primary
+pool64 perblock. One bareprojectionpass costs77175 checkCNOTs+9075 interface.
+Four cap schedules and all stage/lifetime costs are explicit, not optimal or
+native FT costs. Bounded census86250 events covers only spreading-axis check
+ancilla faults andM-readout flips. OtherPaulis/preparation/correction/idle/
+interface/auto/classical faults are excluded. Noisy recovery, FT initialization,
+native seconds/failure and actual total FT footprint remain OPEN.
+
+Original review priorities: (1) complete ideal sign maps and residual factorization,
+(2) branchwise identical records and precise common-recovery criterion,
+(3) layer/ancilla accounting and omitted service. Existing low-weight-distance
+audits are inherited evidence, not rerun requirements. 180 related/Hub tests
+passed; final focused checks and byte-comparison details are in the session.
+Generated artifacts follow repository policy and are local/ignored; regenerate
+with scripts/run_lp_direct_ghz_cycle.py. Do not hand-edit them.
+Current management state: task DONE, review APPROVED, D-0038 ACCEPTED and
+lock RELEASED. No required changes. T-20261001-007 synchronizes the remaining
+current-status text without changing scientific results or reviewer findings.
+Reviewer validation includes180 focused tests and770 full-suite passes with
+the two known unrelated sibling-pin failures; these are review evidence, not
+fresh status-sync test results. Individual X-dual weights, dense negative-control
+simulations and unchanged private-PDF transcription were not independently
+recomputed by this review. All OPEN FT/native obligations remain unchanged.
+Next concrete action: propose a bounded additional Q-X extraction/flag and
+recovery study for human authorization. Do not automatically start that cycle.
+
 ## Protected LP mask handoff - 2026-10-01
 
 `T-20261001-004` is `RV-20261001-004` APPROVED (Claude review, 2026-10-01). Reviewer evidence: independently rebuilt the punctured mask M from scratch and confirmed HX_M is bit-for-bit the same row set as HX_Q restricted to S, and every HZ_M row embeds into row(HZ_Q); independently recomputed the complete 938=900+38 measured-Z dimension count and the 302-dimensional final X space using the reviewer's own previously-verified Q canonical generators (all exact matches); independently validated the no-weight<=2-logical distance algorithm against brute-force enumeration on 20 random small codes before applying a differently-coded version to the real 9600/9075-qubit codes (both certified d>=3, matching exactly); independently reproduced the masked-channel claim with a different 11-qubit explicit state-vector simulation (max residual 1.57e-16, uniform 1/128 branch probabilities); regenerated the summary byte-for-byte.

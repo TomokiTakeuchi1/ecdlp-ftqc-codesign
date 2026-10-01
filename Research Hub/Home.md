@@ -10,6 +10,15 @@ updated: 2026-10-01
 
 # ECDLP-256 FTQC Research Hub
 
+> [!abstract] Direct LP GHZ preparation - 2026-10-01 (reviewed and approved)
+> T-20261001-006 retains the masked LP block and directly prepares300 GHZ4s;
+> all938 outcome bits and1200 target stabilizers are verified. A single bare
+> preparation pass uses18675 code carriers (18803 with128 check ancillas) and
+>86250 CNOTs. These are NOT FT factory costs or runtime. A specific single
+> check-ancilla fault is indistinguishable in the actual record from nofault
+> but cannot meet the declared <=1 residual-error recovery criterion: extra
+> detection/recovery is required. Claude approved this cycle (`RV-20261001-006`, 2026-10-01): independently re-derived the quartet sign formula by hand, and reproduced the dimension count, the schedule table and the fault witness with different code. [[docs/LP_DIRECT_GHZ_PREPARATION_CONTRACT|Direct GHZ contract]].
+
 > [!abstract] Protected LP mask - 2026-10-01 (reviewed and approved)
 > T-20261001-004 constructs a two-stage LP mask for the same300 GHZ4 states.
 > A9075-qubit mask prepares a full9600-qubit auxiliary; final readout measures

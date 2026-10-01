@@ -13,6 +13,14 @@ updated: 2026-10-01
 
 ## One decision needed from the researcher
 
+Reviewed delta: T-20261001-006 (`RV-20261001-006` `APPROVED`) directly retains the masked Q output,
+giving300 GHZ4s with known frame. D-0038 is ACCEPTED. The main
+new blocker is concrete: the bare projection circuit leaves a single hook
+indistinguishable from nofault, with minimum harmless-coset weight3. Additional
+Q-X/flag information and an audited recovery rule are needed. Carrier/ancilla
+counts18,675/18,803 are bare-baseline costs, not an FT factory estimate.
+See [[docs/LP_DIRECT_GHZ_PREPARATION_CONTRACT|direct preparation and fault witness]].
+
 Latest LP checkpoint (T-20261001-004, `RV-20261001-004` `APPROVED`): a two-stage mask
 provides the300+2 logical X family with certified constituent distances>=3.
 The algebraic protected-code construction is now concrete; the unresolved
