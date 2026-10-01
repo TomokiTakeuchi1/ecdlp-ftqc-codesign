@@ -1,9 +1,16 @@
 # Work locks
 
-## Post-review documentation follow-up
+## Active research and post-review follow-up
+
+T-20261001-004 scope extension (codex, 2026-10-01): independent signed-channel
+validation in `src/ecdlp_ftqc/verification/lp_masked_channel.py` and
+`tests/unit/test_lp_masked_channel.py`, plus `context/ASSUMPTIONS.md`, under
+the same task lock (now RELEASED following RV-20261001-004 APPROVED).
 
 | Task | Owner | Branch | Files/directories | Claimed at | Last heartbeat | Status |
 |---|---|---|---|---|---|---|
+| T-20261001-005 | codex | existing branch, HEAD e3a84d8; status-only follow-up | `context/{TASKS,STATUS,AI_HANDOFF,RESULT_LEDGER}.md`; `coordination/{WORK_LOCKS,CHANGELOG_AI}.md`; `coordination/sessions/T-20261001-004.md`; `coordination/sessions/T-20261001-005.md`; `docs/LP_PROTECTED_GHZ_CONTRACT.md`; `Research Hub/{Home,Progress Log,Decisions and Blockers}.md` | 2026-10-01 | 2026-10-01 | RELEASED |
+| T-20261001-004 | codex | existing branch, HEAD e3a84d8 | `src/ecdlp_ftqc/code_constructions/lp_protected_ghz.py`; `src/ecdlp_ftqc/verification/{lp_protected_ghz,lp_masked_channel}.py`; `tests/unit/test_lp_protected_ghz*.py`; `tests/unit/test_lp_masked_channel.py`; `scripts/run_lp_protected_ghz_cycle.py`; `experiments/manifests/E-20261001-004.json`; `experiments/runs/T-20261001-004/`; `docs/LP_PROTECTED_GHZ_CONTRACT.md`; `context/{TASKS,STATUS,ASSUMPTIONS,DECISIONS,RESULT_LEDGER,AI_HANDOFF}.md`; `coordination/{WORK_LOCKS,REVIEW_QUEUE,CHANGELOG_AI}.md`; `coordination/sessions/T-20261001-004.md`; `coordination/reviews/T-20261001-004.md`; `Research Hub/{Home,Progress Log,Decisions and Blockers}.md` | 2026-10-01 | 2026-10-01 | RELEASED |
 | T-20261001-003 | codex | existing branch, HEAD b30f42d; status-only follow-up | `context/TASKS.md`; `context/STATUS.md`; `context/AI_HANDOFF.md`; `context/RESULT_LEDGER.md`; `coordination/WORK_LOCKS.md`; `coordination/CHANGELOG_AI.md`; `coordination/sessions/T-20261001-001.md`; `coordination/sessions/T-20261001-003.md`; `docs/LP_GHZ_HOMOMORPHIC_PREPARATION_CONTRACT.md` | 2026-10-01 | 2026-10-01 | RELEASED |
 | T-20261001-002 | codex | existing branch; documentation-only follow-up | `context/AI_HANDOFF.md`; `context/TASKS.md`; `coordination/WORK_LOCKS.md`; `coordination/sessions/T-20261001-002.md` | 2026-10-01 | 2026-10-01 | RELEASED |
 | T-20260926-002 | codex | existing branch, HEAD `a4dba72`; status-only follow-up | `context/TASKS.md`; `context/STATUS.md`; `context/AI_HANDOFF.md`; `coordination/WORK_LOCKS.md`; `coordination/CHANGELOG_AI.md`; `coordination/sessions/T-20260926-002.md`; `docs/LOW_RATE_CLIFFORD_BREAK_EVEN_CONTRACT.md`; `Research Hub/Home.md`; `Research Hub/Progress Log.md`; `Research Hub/Decisions and Blockers.md` | 2026-09-27 | 2026-09-27 | RELEASED |

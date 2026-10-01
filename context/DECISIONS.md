@@ -1,5 +1,21 @@
 # Decision log
 
+## D-0037: Use a two-stage LP mask before pricing a protected GHZ factory
+
+- Status: ACCEPTED (implemented in T-20261001-004; `RV-20261001-004` APPROVED by Claude, 2026-10-01)
+- Date: 2026-10-01
+- Decision: Use a column-punctured LP as a Z-mask target to prepare a full-size
+  mixed auxiliary, then use that auxiliary as the control for the data X
+  measurement. Keep its 300+2 residual semantics explicit.
+- Rationale: The direct reversed-CNOT puncture fails the inclusion conditions.
+  The two-stage construction has an exact full measured-space certificate,
+  sparse native Q/M checks, and finite d_X,d_Z >= 3. It does not require a
+  pre-existing mixed-mask preparation oracle or direct high-weight logical checks.
+- Consequences: Accept the larger structural resource count as a reference,
+  not an optimization result. Keep exact/target distances, extraction/decoder
+  circuits, noisy factory preparation and native cost OPEN. No HGP distance
+  theorem is transferred to the LP mask's X sector without a separate proof.
+
 ## D-0036: Separate an LP homomorphic measurement map from a protected GHZ factory
 
 - Status: ACCEPTED (T-20261001-001; `RV-20261001-001` APPROVED by Claude, 2026-10-01)

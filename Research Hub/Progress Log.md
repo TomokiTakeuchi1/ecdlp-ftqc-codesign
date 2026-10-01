@@ -13,6 +13,24 @@ updated: 2026-10-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-10-01 - Two-stage protected LP mask (reviewed and approved)
+
+T-20261001-004 addresses the previous helper's distance-one problem using
+native LP checks on a9075-qubit mask and a full9600-qubit auxiliary. Mask Z
+readout fixes900 unwanted canonical+38 residual modes; auxiliary X readout
+then measures exactly300 desired canonical+2 residual modes. Complete
+weight-one/two checks certify both error-type distances>=3; an independent
+signed-channel audit verifies the required mask-frame propagation.
+
+This is an ideal-channel/protected-code construction, not yet an FT factory.
+
+**Status:** Reviewed and approved (`T-20261001-004`, `RV-20261001-004`, 2026-10-01). Claude independently rebuilt the punctured mask from scratch, recomputed the complete measured-algebra dimension count exactly, validated the distance certificate algorithm against brute force before applying it, and reproduced the masked-channel claim with a different simulation method.
+It costs18675 preparation auxiliary carriers, or28275 including resident data,
+before QEC/verification/routing ancillas. The9075+9600 CNOTs form two ordered
+matchings; preparation/readout/decoding still need a native timing model.
+103 related tests and byte-identical regeneration pass. Claude review approved:
+[[docs/LP_PROTECTED_GHZ_CONTRACT|contract and evidence boundaries]].
+
 ## 2026-10-01 - Completed-LP GHZ measurement interface (reviewed and approved)
 
 T-20261001-001 reconstructs the finite 9,600-data-qubit LP code and its 300

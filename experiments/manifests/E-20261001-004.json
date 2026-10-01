@@ -1,0 +1,40 @@
+{
+  "schema": "lp-protected-ghz-input-v1",
+  "task_id": "T-20261001-004",
+  "lift": 75,
+  "selected_canonical_row_zero_based": 3,
+  "punctured_completed_seed_column_zero_based": 6,
+  "construction": "uniform_plus_full_LP_then_Z_mask_then_X_readout",
+  "residual_measurements_allowed": true,
+  "maximum_error_weight_checked": 2,
+  "random_seed": null,
+  "native_runtime_seconds": null,
+  "ft_admission": false,
+  "inherited_files": [
+    {
+      "path": "src/ecdlp_ftqc/code_constructions/lp_ghz.py",
+      "sha256": "22037fe103aef5ddbbe01763894cd1cca4b023d2816bf2f05c7e1b502e9c2a5d",
+      "review": "RV-20261001-001 APPROVED; unchanged constructor and canonical section"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Xu et al. 2407.18490v1",
+      "path": "literature/papers/2407.18490v1.pdf",
+      "sha256": "f50363822ee43c0dd0bcb4d0acb502aa11207fc37b5175e60eadebf892d38c05",
+      "url": "https://arxiv.org/html/2407.18490v1#S5.SS1",
+      "scope": "III.4, IV.4.2 and V.1/Algorithm 2; two-stage mask inspiration, not an LP distance theorem"
+    },
+    {
+      "name": "RASCqL 2602.14273v2",
+      "path": "literature/papers/2602.14273v2.pdf",
+      "sha256": "f5d6c511a668577a3b7479a91079fe27a92180433e78ea767d16e8ff6fd7809c",
+      "scope": "Inherited Fig.7/Appendix C.3 comparison from approved T-20261001-001; not re-audited this cycle"
+    },
+    {
+      "name": "RASCqL_with_lifted_product_codes2.pdf",
+      "sha256": "b498151c8d6d011ad559682d21e6364324be60c7886eecacbdf99118696f5cc1",
+      "scope": "Inherited private completed-seed input; no new transcription claim"
+    }
+  ]
+}

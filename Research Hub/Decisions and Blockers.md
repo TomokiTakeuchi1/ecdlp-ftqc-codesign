@@ -13,6 +13,15 @@ updated: 2026-10-01
 
 ## One decision needed from the researcher
 
+Latest LP checkpoint (T-20261001-004, `RV-20261001-004` `APPROVED`): a two-stage mask
+provides the300+2 logical X family with certified constituent distances>=3.
+The algebraic protected-code construction is now concrete; the unresolved
+bottleneck is FT uniform preparation/check extraction/readout and decoding,
+not simply existence of a homomorphic map. Preparation auxiliary carriers
+are18675 before QEC ancillas. Do not price this as a native factory or reopen
+QCLA optimization until those costs are addressed. D-0037 is ACCEPTED following
+the approved cross-review; strict300 residual preservation is still OPEN.
+
 > [!question] Select the canonical full ECDLP-256 circuit (`T-BOOT-001`)
 > **Recommended starting contract:** Schrottenloher 2026 as the primary source baseline, with Luo et al. v2 as a dynamic/low-space contrast.  
 > **Alternative:** require exact arithmetic first and promote Luo v2 only after resolving its exceptional-point and count-contract checks.  

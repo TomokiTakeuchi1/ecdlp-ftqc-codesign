@@ -1,5 +1,27 @@
 # Project status
 
+- `T-20261001-004` is `RV-20261001-004` `APPROVED` (Claude review, 2026-10-01). Reviewer evidence: independently rebuilt the punctured mask M from scratch and confirmed HX_M is bit-for-bit the same row set as HX_Q restricted to S, and every HZ_M row embeds into row(HZ_Q); independently recomputed the complete 938=900+38 measured-Z dimension count and the 302-dimensional final X space using the reviewer's own previously-verified Q canonical generators (all exact matches); independently validated the no-weight<=2-logical distance algorithm against brute-force enumeration on 20 random small codes before applying a differently-coded version to the real 9600/9075-qubit codes (both certified d>=3, matching exactly); independently reproduced the masked-channel claim with a different 11-qubit explicit state-vector simulation (max residual 1.57e-16, uniform 1/128 branch probabilities); regenerated the summary byte-for-byte.
+  NUMERICAL: a 9,075-qubit LP mask, used as CNOT target from a uniform-plus
+  full Q auxiliary, fixes exactly 900 canonical + 38 residual Z modes.
+  The masked full auxiliary then measures exactly 300 canonical + 2 residual
+  X modes on data, enabling the approved 300-GHZ4 automorphism. Complete
+  weight-one/two audits certify d_X,d_Z >= 3 for Q and M; effective auxiliary
+  distances inherit Q's bounds. Independent all-128-branch operator checks
+  verify mask-X-frame propagation and coherent spectator preservation.
+  Structural cost: 18,675 preparation auxiliary carriers, 19,200 online
+  data+auxiliary carriers, or 28,275 with data resident throughout preparation;
+  all exclude QEC/routing/verification ancillas. 18,675 interface CNOTs form
+  two ordered matching layers, NOT two QEC cycles. Circuit FT, exact distances,
+  strict300 residual preservation and native timing/failure remain OPEN.
+  Validation: 103 related tests; scoped Ruff, strict mypy and compileall;
+  byte-identical summary regeneration. Prior approved modules unchanged.
+  See docs/LP_PROTECTED_GHZ_CONTRACT.md. No commit made.
+  Post-review synchronization (codex, T-20261001-005): task DONE, review
+  APPROVED, D-0037 ACCEPTED and lock RELEASED; no required changes. Contract,
+  session, handoff, ledger and Hub current statuses are aligned. Reviewer scope
+  limitations and OPEN FT/native obligations are preserved. The review's
+  full-suite result remains unrecorded; no full-suite result is inferred.
+
 - T-20261001-001 is `RV-20261001-001` `APPROVED` (Claude review, 2026-10-01). Reviewer evidence: independently rebuilt the full GF(2) construction from scratch (different dense-numpy representation) and matched every rank/dimension/commutation claim exactly (A rank 223, tilde_A rank 746, Hx/Hz ranks 5226/3134, k=1240, zero commutator entries); independently reconstructed the canonical section via a different method (full augmented solve), matching the four family weights 102/108/126/114 exactly after finding and fixing an off-by-one in the reviewer's own first attempt; independently built all 1200 X and 1200 Z canonical generators and confirmed the full 1200x1200 symplectic pairing matrix is exactly the identity; derived by hand (then confirmed numerically with a fresh 16x16 dense simulation) that the X-logical action g^T is FORCED (not a free choice) given the stated Z-action g and g^2=I, including a genuine negative control; reproduced the homomorphic-coupling inclusion conditions and the d_Z=1 single-fault flip-count statistics (range 1-156, position 150 -> 1) exactly; regenerated the summary byte-for-byte. Non-blocking scope note: the seed exponents/matrices' fidelity to the private PDF attachment could not be checked (the PDF is not accessible to the reviewer), and the literal 9600-qubit physical permutation was not independently reconstructed (the logical-level 4-qubit orientation claim was verified instead, which is the scientifically load-bearing part).
   Completed the human-authorized LP/GHZ construction cycle. NUMERICAL: Q_one reconstructs
   9,600 data qubits, ranks 5,226/3,134, 1,240 logicals and 1,200 paired

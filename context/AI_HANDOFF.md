@@ -78,6 +78,57 @@ their exceptionally exhaustive checks are NOT mandatory templates for future
 reviews. This policy does not itself change any review verdict or scientific
 result, or authorize another implementation cycle.
 
+## Protected LP mask handoff - 2026-10-01
+
+`T-20261001-004` is `RV-20261001-004` APPROVED (Claude review, 2026-10-01). Reviewer evidence: independently rebuilt the punctured mask M from scratch and confirmed HX_M is bit-for-bit the same row set as HX_Q restricted to S, and every HZ_M row embeds into row(HZ_Q); independently recomputed the complete 938=900+38 measured-Z dimension count and the 302-dimensional final X space using the reviewer's own previously-verified Q canonical generators (all exact matches); independently validated the no-weight<=2-logical distance algorithm against brute-force enumeration on 20 random small codes before applying a differently-coded version to the real 9600/9075-qubit codes (both certified d>=3, matching exactly); independently reproduced the masked-channel claim with a different 11-qubit explicit state-vector simulation (max residual 1.57e-16, uniform 1/128 branch probabilities); regenerated the summary byte-for-byte.
+
+Original submission note: current submission was T-20261001-004 IN_REVIEW, RV-20261001-004 PENDING with
+claude. The earlier LP/GHZ and QCLA approvals remain unchanged. Start with
+docs/LP_PROTECTED_GHZ_CONTRACT.md and coordination/reviews/T-20261001-004.md;
+apply the standing review-efficiency policy above.
+
+NUMERICAL: M=LP(tilde_A with zero-based column6 deleted,A*) has9075 carriers,
+rank HX/HZ5226/2911 and938 logical modes. A full-Q uniform-plus auxiliary
+controls M (uniform-zero), then M is Z-read. Its complete image fixes900
+unwanted canonical Zs and38 residual Zs, leaving a full-size auxiliary that
+measures exactly300 canonical+2 residual Xs on data. Both Q and M have
+nonzero distinct syndrome columns in both axes, certifying distances>=3.
+This is not an exact distance or a circuit-FT certificate.
+
+PROVED: complete measured algebra follows from HX restriction, supported
+Z-stabilizer dimension3134-223=2911, and the302-dimensional final X space.
+An independent worker also expanded all3849 mask-Z-normalizer basis vectors
+once and confirmed938/900/38; repeating this expansion is not mandatory if
+the efficient rank proof is independently understood. Independent logical
+Kraus replay covers all128 branches and coherent spectator inputs. Mask X
+frames MUST propagate onto data; dropping them is a failing negative control.
+
+Implementer validation:103 related/new/previous-LP/Hub tests, scoped Ruff, strict mypy
+--python-version3.14 and compileall pass. One fresh regeneration is byte-identical,
+summary SHA256 5f7eff673a37581369d36afbc575cd6de988b5854ec51c736cb7c465077156ba.
+No shared legacy modules or external pins were changed. Full repository suite
+was not rerun; the relevant regression tests were. Review source transcription
+only if a new discrepancy requires reopening the hash-pinned prior result.
+
+Structural costs:18675 preparation auxiliary carriers;19200 online data+aux;
+28275 if data is resident throughout preparation, all excluding QEC ancillas.
+9075+9600 interface CNOTs give2 ordered matching stages, not2 code cycles.
+OPEN: uniform-state FT preparation, noisy extraction/readout, decoder,
+target-distance certification, strict300 mask and native performance.
+Current management state: task DONE, review APPROVED, D-0037 ACCEPTED and
+work lock RELEASED. No required changes. T-20261001-005 synchronizes the
+remaining current-status text without changing implementation or evidence.
+Next concrete action: propose a bounded FT extraction/readout or
+stronger-distance study before arithmetic runtime optimization. No new
+research cycle is claimed here.
+
+Reviewer scope remains as recorded: inherited private-source transcription
+was not newly verified; specific negative-control fidelities and the mask-Z
+distance-inheritance proof were not separately reproduced in full detail.
+The full-suite result line is an unfilled placeholder, so only the documented
+103 focused tests and other stated checks are cited. Do not infer a pass count
+or overwrite claude's review findings during status bookkeeping.
+
 ## LP/GHZ handoff - 2026-10-01
 
 `T-20261001-001` is `RV-20261001-001` `APPROVED` (Claude review, 2026-10-01). Reviewer evidence: independently rebuilt the full GF(2) construction from scratch (different dense-numpy representation) and matched every rank/dimension/commutation claim exactly (A rank 223, tilde_A rank 746, Hx/Hz ranks 5226/3134, k=1240, zero commutator entries); independently reconstructed the canonical section via a different method (full augmented solve), matching the four family weights 102/108/126/114 exactly after finding and fixing an off-by-one in the reviewer's own first attempt; independently built all 1200 X and 1200 Z canonical generators and confirmed the full 1200x1200 symplectic pairing matrix is exactly the identity; derived by hand (then confirmed numerically with a fresh 16x16 dense simulation) that the X-logical action g^T is FORCED (not a free choice) given the stated Z-action g and g^2=I, including a genuine negative control; reproduced the homomorphic-coupling inclusion conditions and the d_Z=1 single-fault flip-count statistics (range 1-156, position 150 -> 1) exactly; regenerated the summary byte-for-byte. Non-blocking scope note: the seed exponents/matrices' fidelity to the private PDF attachment could not be checked (the PDF is not accessible to the reviewer), and the literal 9600-qubit physical permutation was not independently reconstructed (the logical-level 4-qubit orientation claim was verified instead, which is the scientifically load-bearing part).

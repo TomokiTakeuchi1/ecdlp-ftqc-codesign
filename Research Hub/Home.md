@@ -10,6 +10,14 @@ updated: 2026-10-01
 
 # ECDLP-256 FTQC Research Hub
 
+> [!abstract] Protected LP mask - 2026-10-01 (reviewed and approved)
+> T-20261001-004 constructs a two-stage LP mask for the same300 GHZ4 states.
+> A9075-qubit mask prepares a full9600-qubit auxiliary; final readout measures
+> exactly300 canonical+2 residual Xs. Both constituent codes have certified
+> d_X,d_Z>=3, but circuit FT is still OPEN. Preparation auxiliary carriers:
+>18675, excluding QEC ancillas; two ordered CNOT matchings are not native time.
+> Claude approved this cycle (`RV-20261001-004`, 2026-10-01): independently rebuilt the mask, the complete 938=900+38 dimension count, the distance>=3 certificates (validated against brute force first), and the masked-channel claim (different 11-qubit simulation). See [[docs/LP_PROTECTED_GHZ_CONTRACT|protected LP mask contract]].
+
 > [!abstract] LP/GHZ update - 2026-10-01 (reviewed)
 > T-20261001-001 constructs the fixed-mask homomorphic interface for completed
 > LP. NUMERICAL: a 525-qubit helper measures 300 canonical Xs plus two residual
