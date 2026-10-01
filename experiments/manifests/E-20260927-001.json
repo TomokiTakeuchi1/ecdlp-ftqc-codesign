@@ -1,0 +1,31 @@
+{
+  "task_id": "T-20260927-001",
+  "experiment_id": "E-20260927-001",
+  "width": 256,
+  "variant": "ip",
+  "branch_seed": "T-20260926-001-full-frame-v1",
+  "hashed_branches": 64,
+  "forced_branches": [-2, -1],
+  "x_policies": ["bare", "frame"],
+  "parallel_limits": [1, 4, 16, 64, 256, null],
+  "weight_limits": [16, 32, 64, 128, 256, 512, null],
+  "total_support_limits_at_k64": [512, 2048, 8192],
+  "modes": ["qwc", "general"],
+  "timing": {
+    "surgery": 1.0,
+    "prepare_zero": 0.25,
+    "readout": 0.25,
+    "reaction": 0.1,
+    "prepare_lanes": 64,
+    "readout_lanes": 64,
+    "seconds_per_unit": null
+  },
+  "assumptions": ["A-0030", "A-0032", "A-0053", "A-0056", "A-0057", "A-0060"],
+  "refinement": "Not part of this first checkpoint; no 512-branch result is inferred.",
+  "native_runtime_seconds": null,
+  "physical_qubits": null,
+  "failure_probability": null,
+  "native_automorphism_calls": null,
+  "sensitivity_calls_per_cnot_layer": 1,
+  "scope": "serial conditional kernel; input preparation/final frame/factories/routing excluded"
+}

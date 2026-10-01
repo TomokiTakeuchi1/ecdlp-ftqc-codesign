@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - decisions
-updated: 2026-09-27
+updated: 2026-10-01
 ---
 
 # Decisions and Blockers
@@ -22,8 +22,16 @@ Why this blocks progress: controlled point-addition counts, success semantics, e
 
 ## Technical blockers
 
+LP/GHZ update (T-20261001-001, `RV-20261001-001` `APPROVED`): the fixed homomorphic map is algebraically
+available, but both explicit 525-qubit helpers have d_Z=1. An explicit protected
+helper or repeated-measurement/decoder construction is required before FT
+runtime or physical-factory claims. Strict300 additionally needs extraction of
+two weight-75 checks. See
+[[docs/LP_GHZ_HOMOMORPHIC_PREPARATION_CONTRACT|LP GHZ construction]].
+
 | Priority | Blocker | Why it matters | Next evidence-producing action |
 |---:|---|---|---|
+| 0 | Hybrid H-tracking/bare-CNOT has no native automorphism mapper | Approved `T-20260927-001` (`RV-20260927-001`) completes 66-branch logical/capacity profiling: unlimited-support general service matches full tracking, while finite S=512 offers only a paired median 1 unit for extra CNOT/X work. Four source layers do not imply four constant-time native gates. | Independently review the hybrid semantics and budgets before selecting any code-specific automorphism or ancilla construction; keep addressability, duration and endpoints explicit. |
 | 0 | Legacy Clifford execution cost and feasibility remain unknown | Approved `T-20260926-002` (`RV-20260926-002`) computes paired PPM savings, including 18 IP cells refined to 512 hashes; Bcrit is an additional serial Clifford-time budget, not a native implementation | Synthesize one realizable conjugated-H/bare-CNOT service and pair its branch-dependent total B with Bcrit |
 | 0 | Both OOP and IP width-256 structures and the shared branch audit are reviewed; native execution is still absent | OOP `T-20260906-004` (`RV-20260907-003` `APPROVED`) is exact model-relative 15/30. IP `T-20260907-001` (`RV-20260907-004` `APPROVED`) is 30/60. The reviewed shared branch audit (`T-20260907-002`, `RV-20260907-005` `APPROVED`) gives p95 168/188 and hashed-assignment maxima 223/248 beneath separate ceilings 1,003/1,006. | Implement one frame-materialization/native-mapping policy against both workloads (no task ID claimed yet). Do not assign physical time from logical candidate counts or sampled weights. |
 | 0 | H/CNOT logical policy is separated from native realization, but no code-side choice is admitted | `T-20260905-001` proposes frame-conjugated H plus bare CNOT; `RV-20260905-001` is `APPROVED` (Claude, 2026-09-06) after independently confirming the H/Y witness, CNOT closure, width-256 layers, RASCqL citations, and codex's H-teleport citation fix (H is self-derived `NUMERICAL` with an exact four-branch channel check, independently re-derived twice; Xu Figure 11(c) remains only on measurement CNOT). H-SWAP/H teleportation directly implements bare H and can break the Z-only invariant without frame clearing or an H-safe proof; CNOT is axis-safe but addressability, support, routing, and relabel debt remain. The 54/106--111/216 figures are logical-layer envelopes only. | Test either the 3/4 CNOT-layer matrices against a concrete automorphism/SIMD ISA or the 34/68 H masks against H-SWAP packing / whole-event co-design. |

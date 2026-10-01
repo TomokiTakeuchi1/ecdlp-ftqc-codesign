@@ -1,10 +1,177 @@
 # AI handoff
 
+## Standing review-efficiency policy - 2026-10-01
+
+Human-requested guidance for ALL FUTURE reviews by claude and codex, not a
+special waiver for the current LP/GHZ submission. Keep the independent
+cross-review requirements in AGENTS.md and coordination/PROTOCOL.md. The goal
+is to remove redundant work, not to weaken scientific acceptance criteria.
+
+1. **Review the delta and define completion first.** After mandatory startup,
+   identify the changed claims/interfaces, their main failure risks, and the
+   evidence needed for a verdict. Use the latest review outcome and queue;
+   historical "Next: review..." paragraphs are not new assignments. Reopen
+   approved, unchanged work only for a relevant dependency change or concrete
+   concern. Do not turn a bounded review into the next research project.
+
+2. **Focus independent reasoning on load-bearing claims.** Check conventions,
+   core mathematical arguments, evidence labels, boundary/negative controls,
+   and the distinction between logical and executable resources. Independence
+   does not require a new full-size implementation of every module. Audit the
+   existing verifier's logic and independence, and use a compact independent
+   derivation/checker or discriminating examples where sufficient. Test
+   size-specific claims at the required size; a small-case sample is not proof
+   of a universal or full-instance claim. Implementer tests alone are not an
+   independent review.
+
+3. **Stage validation by risk.** Start with changed/affected tests and relevant
+   boundary or mutation cases on a frozen snapshot. Run the full suite when
+   shared interfaces, broad regression risk, unexplained failures, or missing
+   applicable evidence justify it; do not make repeated full-suite runs the
+   default for every review or documentation edit. Check known failures against
+   the recorded baseline rather than silently ignoring or repeatedly
+   investigating unchanged failures. Never report unrun tests as passing.
+
+4. **Reuse evidence without confusing it with reproduction.** Record the code,
+   input/configuration and relevant environment hashes (including dirty-tree
+   content, not just HEAD). Reuse still-applicable prior review evidence;
+   distinguish inherited, inspected and freshly reproduced checks. When new
+   numerical outputs need reproduction, begin with one fresh, representative
+   regeneration and a canonical-output comparison. Repeat or expand only for
+   an uncovered claim, mismatch, nondeterminism, or a relevant input/code change.
+   Do not overwrite the submitted canonical artifacts during review.
+
+5. **Escalate for a stated reason, not by habit.** Before a costly full-size
+   recomputation, extra independent implementation, or enlarged sweep, state
+   what unresolved risk it tests and why cheaper checks are insufficient.
+   Use sparse/exact representations appropriate to the problem; avoid a dense
+   full reconstruction solely to make the implementation look different.
+   Parallelize genuinely independent checks where useful, with nonoverlapping
+   scopes, and do not have multiple workers repeat the same expensive run.
+
+6. **Checkpoint and resume.** Save completed checks, commands/results, snapshot
+   identity, elapsed time and remaining questions in the existing review record.
+   Resume from that checkpoint after interruption rather than restarting.
+   If the review runs beyond roughly 20-30 minutes, give an interim assessment
+   and reassess the remaining plan. This is a progress checkpoint, NOT an
+   approval deadline. Long-running checks should expose progress and avoid
+   duplicate launches.
+
+7. **Bound source and environment troubleshooting.** Check documented source
+   paths, pinned versions and the relevant source sections first. If a private
+   attachment is unavailable, state exactly which attribution/transcription
+   remains unverified and request it if essential; continue separable checks.
+   Do not repeatedly search the whole filesystem, re-render an entire paper,
+   or rebuild environments without a concrete need. Conditional internal
+   consistency does not certify fidelity to an inaccessible source.
+
+8. **Finish when the stated evidence is sufficient.** Give a concise verdict,
+   blocking findings, non-blocking limitations, and actual verification scope.
+   Stop adding optional checks after the acceptance criteria are met. If a
+   load-bearing issue remains unresolved, request changes or use INCONCLUSIVE
+   (with a precise remaining check), never time-based automatic approval.
+   Re-review fixes and their affected dependencies, not the whole unchanged
+   submission. Routine bookkeeping should not trigger a new research review.
+
+The dated cycle entries below retain their historical evidence and limitations;
+their exceptionally exhaustive checks are NOT mandatory templates for future
+reviews. This policy does not itself change any review verdict or scientific
+result, or authorize another implementation cycle.
+
+## LP/GHZ handoff - 2026-10-01
+
+`T-20261001-001` is `RV-20261001-001` `APPROVED` (Claude review, 2026-10-01). Reviewer evidence: independently rebuilt the full GF(2) construction from scratch (different dense-numpy representation) and matched every rank/dimension/commutation claim exactly (A rank 223, tilde_A rank 746, Hx/Hz ranks 5226/3134, k=1240, zero commutator entries); independently reconstructed the canonical section via a different method (full augmented solve), matching the four family weights 102/108/126/114 exactly after finding and fixing an off-by-one in the reviewer's own first attempt; independently built all 1200 X and 1200 Z canonical generators and confirmed the full 1200x1200 symplectic pairing matrix is exactly the identity; derived by hand (then confirmed numerically with a fresh 16x16 dense simulation) that the X-logical action g^T is FORCED (not a free choice) given the stated Z-action g and g^2=I, including a genuine negative control; reproduced the homomorphic-coupling inclusion conditions and the d_Z=1 single-fault flip-count statistics (range 1-156, position 150 -> 1) exactly; regenerated the summary byte-for-byte. Non-blocking scope note: the seed exponents/matrices' fidelity to the private PDF attachment could not be checked (the PDF is not accessible to the reviewer), and the literal 9600-qubit physical permutation was not independently reconstructed (the logical-level 4-qubit orientation claim was verified instead, which is the scientifically load-bearing part).
+
+Original submission note: from codex; T-20261001-001 was IN_REVIEW, RV-20261001-001 was PENDING with claude.
+It implements the human's completed-LP GHZ cycle,
+independent of the older QCLA submission retained below. Read
+docs/LP_GHZ_HOMOMORPHIC_PREPARATION_CONTRACT.md and
+experiments/runs/T-20261001-001/summary.json.
+
+NUMERICAL: exact full-binary reconstruction gives Q_one [[9600,1240]],
+1,200 paired canonical logicals and 40 residual logicals; all check,
+normalizer, pairing and automorphism tests pass. PROVED: the source's graph
+kernel defines Z labels, so its copy swap implements g^T on computational
+bits. The correct GHZ seed is logical row 4, |000+>; the originally proposed
+row 1 is preserved as a negative control (1,200 wrong-X-action failures).
+
+The explicit 525-qubit, 525-CNOT matching helper is algebraically
+code-preserving. Raw302 measures 300 canonical and two residual Xs; strict300
+adds two weight-75 Z checks and measures no residual X. The auxiliary
+preparation uses uniform-plus and Z projection, not the unavailable LP mask.
+Both have d_Z=1. Every single helper Z is an undetected logical; a readout
+fault corrupts 1..156 canonical signs. FALSIFIED is only the *unprotected
+one-shot FT claim*, not the feasibility of LP homomorphic measurements.
+All native time/failure/FT-concurrency fields remain null.
+
+Implementer validation: 41 focused/replay/Hub tests, scoped Ruff, strict mypy
+--python-version 3.14 (installed numpy-stub syntax) and compileall pass.
+The dense verifier imports no construction code. A separate codex worker
+also independently reconstructed physical matrices and quotient dimensions;
+neither check replaces Claude cross-review.
+
+Full run during development: 506 passed, two preexisting sibling-pin failures,
+and one stale-import failure because the runner was updated after the verifier
+module had been loaded. Fresh, code-frozen rerun of all three failing files
+plus replay/Hub: 60 passed and only the two known sibling-pin failures.
+No final full-suite all-green claim. Summary regenerated byte-identically;
+the hash and exact commands are in the session.
+
+Claude's subsequent review reports 46 focused/Hub passes and 528 full-suite
+passes with the two known sibling-pin failures, plus byte-identical summary
+regeneration. These are reviewer-reported results, not a new status-only rerun.
+
+Current management state: task DONE, review APPROVED, D-0036 ACCEPTED and
+research lock RELEASED; no required changes. Contract/session/ledger status
+was synchronized by codex in T-20261001-003. Retain the review's unverified
+private-PDF transcription and literal-physical-permutation scope limitations.
+
+Next: after human authorization, construct a protected auxiliary code and
+compatible homomorphic map, or evaluate a repeated-measurement/decoder schedule,
+and compare to a finite surgery gadget. Do not repeat the completed review.
+Do not automatically start full FT construction or a ripple-carry runtime
+estimate. The earlier QCLA records remain unchanged by this follow-up.
+
+Historical handoff follows:
+
 Last updated: 2026-09-27
 From: codex
 To: claude, codex and human
 
 ## Current implementation handoff
+
+`T-20260927-001` is `RV-20260927-001` APPROVED (Claude review, 2026-10-01). Reviewer evidence: 12 hybrid policy traces (6 branches x 2 X policies) were recomputed with Stim tableaus and match the stored PPMs and final frames exactly; axis equality between the bare and frame X policies was confirmed directly from all 64 hashed artifacts (zero axis differences, only sign differences); the every one of 66 artifacts' 441 grid cells and 504 comparison rows (29,106 and 33,264 rows total) was recomputed independently with zero discrepancies, reproducing the full headline table, the general-mode exact-zero delta at every K, the S=512 paired median 1 (not marginal 2.4), the W=256 feasible counts (24/24 vs 25/27, zero hybrid-only witnesses), the forced-witness maxima, the executed-weight statistics, and the 765/0 peak gadget ancilla counts; eight artifacts (including four not spot-checked by the implementer) regenerated byte-identically. Non-blocking: the abstract F_hybrid = G F_full identity was accepted via its reproduced consequences rather than an independent from-scratch symbolic re-derivation; final-frame signs happened to coincide between X policies on all 64 hashed witnesses.
+
+Original submission note: `T-20260927-001` was IN_REVIEW; `RV-20260927-001` was PENDING with claude,
+and its lock is REVIEW. Exact signed hybrid H-tracking/bare-CNOT traces
+and independent replay cover both bare-X and frame-X, 64 hashes plus two forced
+branches. Their axes and services coincide; their signs/final frames can differ.
+All 1,946,736 coupling PPMs across four policies pass replay. See
+`docs/H_TRACKED_BARE_CNOT_LOW_RATE_CONTRACT.md` and the generated summary.
+
+NUMERICAL: unrestricted K=64 hybrid/full QWC median steps are 305/296;
+general 263/263, exactly equal branchwise services at all six K values.
+CHECK paired extra-service budget medians are QWC -6, general 0 units.
+At S=512, general's paired median is 1 (range -8..11), versus a misleading
+difference of marginal time medians of 2.4. W=256 fits hybrid 24/64 in both
+modes versus full 25/27; forced all-one hybrid weights 572/570 fail W=512.
+No general claim that bare CNOT shrinks support or speeds up the kernel follows.
+
+Next concrete action: claude independently reviews the signed hybrid semantics,
+the `F_hybrid = G F_full` physical-source-prefix identity and bilinear invariance,
+capacity grid, exact branch-paired costs, four-layer automorphism obligations,
+and the two-budget comparison against conjugated H. The latter condition is
+`B_hybrid - B_legacy < delta`, NOT an absolute hybrid budget. Native CNOT
+addressability/duration, endpoints, factories/routing and failure remain OPEN.
+Do not start an ancilla construction or native mapper without the next human
+authorization. Three artifacts regenerate byte-identically; all 66 old baseline
+trace/lowering pairs and 1,980 common service cells match the approved data.
+Full suite: 487 passed plus two known sibling-pin failures; latest related suite
+107 passed, including the five tests added after full-suite collection. Strict
+mypy passes 79 source files; scoped Ruff and compileall pass. Resumed canonical
+summary is byte-identical. No commit made; unrelated `.claude/` is preserved.
+
+The previous cycle's approved handoff follows as historical context:
 
 `T-20260926-002` is `RV-20260926-002` `APPROVED` (Claude review, 2026-09-27). Reviewer evidence: the legacy conjugated-H/bare-Clifford semantics (entrance-frame H/H, F_out = F H_T D H_T) were verified with a from-scratch dense simulation over all 4,096 branches of shared-control and shared-target macros (the alternative closing-H policy fails); 24 policy traces (OOP/IP, 12 branches) were recomputed with Stim tableaus and match exactly; every stored grid entry of all 580 artifacts (statuses, service counts, exact B_crit) was recomputed with zero discrepancies, and the 18-cell selector, refined counts 218/179 of 512, medians 159/199.5, the 64-hash table and boundary witnesses were reproduced; four extra artifacts regenerated byte-identically; previous F4.1 (PDF pins) is resolved. Non-blocking: cross-reference the reviewed full-conjugation logical envelope so B_crit is not read as a knife-edge; keep the QWC/general cohort caveat when quoting. Submission note: both pinned
 PDFs resolve the previous F4.1 item below. The paired comparison and selected

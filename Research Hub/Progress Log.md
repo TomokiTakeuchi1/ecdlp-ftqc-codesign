@@ -4,7 +4,7 @@ cssclasses:
 tags:
   - dashboard
   - progress
-updated: 2026-09-27
+updated: 2026-10-01
 ---
 
 # Research Progress Log
@@ -12,6 +12,46 @@ updated: 2026-09-27
 [[Research Hub/Home|← Home]] · [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]]
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
+
+## 2026-10-01 - Completed-LP GHZ measurement interface (reviewed and approved)
+
+T-20261001-001 reconstructs the finite 9,600-data-qubit LP code and its 300
+four-logical-qubit resource lanes. Its source's Z-homology convention transposes
+the advertised computational gate; the GHZ input is |000+>.
+
+The explicit 525-qubit helper gives a code-preserving ideal measurement.
+Raw302 includes two residual observables; strict300 uses two extra weight-75
+checks. Both are unprotected against a single Z corrupting readout. This
+isolates the next research problem as protected preparation/readout; it is not
+a claim of a completed FT factory or fast arithmetic.
+See [[docs/LP_GHZ_HOMOMORPHIC_PREPARATION_CONTRACT|construction and evidence]].
+
+**Status:** Reviewed and approved (`T-20261001-001`, `RV-20261001-001`, 2026-10-01). Claude independently rebuilt the entire GF(2) code from scratch (different representation), matched every rank/dimension/commutation claim, reconstructed the canonical section via a different method, confirmed all 1,200 X/Z generators form an exact dual pairing, and derived by hand that the automorphism's X-orientation is mathematically forced (not a free choice) given the stated Z-orientation. The seed exponents' fidelity to the private PDF could not be checked (the PDF is not accessible to the reviewer).
+
+## 2026-09-27 — H-tracked / bare-CNOT low-rate profile
+
+**Status:** Reviewed and approved (`T-20260927-001`, `RV-20260927-001`, 2026-10-01). Claude recomputed all 66 artifacts' signed traces (Stim), grid cells, and comparisons with zero discrepancies, and reproduced every headline number.
+claude. This fills the missing hybrid
+between full tracking and conjugated-H/bare-CNOT.
+
+NUMERICAL: on 64 hashed width-256 IP branches, unlimited-support K=64 median
+surgery steps are hybrid/full 305/296 (QWC), 263/263 (general). General's four
+service counts are identical branch by branch at all six K values. Bare-X
+and virtual-X sensitivity have equal axes and service, not identical signs.
+Both forced branches are retained separately, with no probability claim.
+
+CHECK: the branch-paired additional CNOT/X budget median is -6 units for QWC
+and zero for general at unlimited support. At S=512, general instead has a
+median of 1 (range -8..11). Four native CNOT layers remain unknown service;
+one call per layer is only a sensitivity. There is no demonstrated native win.
+
+All 1,946,736 signed coupling PPMs across four policies were replayed; three
+fresh artifacts are byte-identical. The old full/legacy traces and lowerings
+match on all 66 branches, with 1,980 common service cells identical. Physical
+qubits, native time, factory/routing, failure and endpoint materialization
+remain OPEN. Full tests: 487 passed plus two known sibling-pin failures; latest
+related tests: 107 passed (including five added after full-suite collection).
+See [[docs/H_TRACKED_BARE_CNOT_LOW_RATE_CONTRACT|hybrid contract]].
 
 ## 2026-09-26 — Paired Clifford-budget comparison
 

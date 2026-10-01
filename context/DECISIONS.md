@@ -1,5 +1,36 @@
 # Decision log
 
+## D-0036: Separate an LP homomorphic measurement map from a protected GHZ factory
+
+- Status: ACCEPTED (T-20261001-001; `RV-20261001-001` APPROVED by Claude, 2026-10-01)
+- Date: 2026-10-01
+- Decision: Pursue the human-authorized ripple-carry resource-preparation
+  direction with a fixed GHZ mask. Use the explicit binary Z-homology convention,
+  corrected logical row 4, and retain raw302 versus strict300 residual semantics.
+  Do not admit either distance-one helper as a fast FT factory.
+- Rationale: The finite homomorphic map exists algebraically, but a single
+  auxiliary Z can corrupt the reported GHZ phase. Thus the next bottleneck is
+  protected preparation/readout, not existence of an arbitrary mixed PPM.
+- Consequences: Preserve the reviewed QCLA stream separately. Unknown FT rounds,
+  physical factory space, runtime and failure remain OPEN. The next cycle must
+  add an explicit redundancy/repetition/decoder argument or a certified surgery
+  construction before arithmetic-runtime claims.
+
+## D-0035: Profile tracked H with bare source CNOT before selecting a native Clifford policy
+
+- Status: ACCEPTED (human-directed next cycle, 2026-09-27; `RV-20260927-001` APPROVED (Claude review, 2026-10-01))
+- Date: 2026-09-27
+- Decision: Use the reviewed width-256 IP 30-macro workload to profile a hybrid policy that frame-tracks both target-H layers and executes the four explicit source-CNOT layers bare. Map its exact signed mixed-axis PPM trace through the same QWC/general finite-capacity low-rate backend as the approved baselines. Keep CNOT automorphism service symbolic and separately visible.
+- Rationale: Bare CNOT may be substantially easier than H to realize as a patterned addressable automorphism. The existing H-tracking study exposes logical support and mixed-axis risk, but no prior cycle measures its finite-capacity low-rate surgery cost. Full tracking and conjugated-H/bare-CNOT therefore do not answer this intermediate design question.
+- Consequences: `T-20260927-001` may report branchwise PPM batches, capacity admission, gadget ancillas and conditional service, plus a symbolic four-layer automorphism adapter. It may not infer zero CNOT cost, code-level addressability, native cycles, milliseconds, physical qubits or failure probability without a separately reviewed mapper.
+
+- Implementation checkpoint (2026-09-27; cross-review pending): the signed
+  hybrid profile and symbolic adapter are complete. NUMERICAL unrestricted
+  general service equals full tracking on all 64 hashes; CHECK QWC paired
+  median budget at K=64 is -6, while S=512 general offers only a median 1 unit
+  with mixed signs. Do not promote bare CNOT to the preferred native policy
+  from its four source layers alone; retain the conditional comparison.
+
 ## D-0034: Measure the conditional Clifford budget before choosing a physical H/CNOT policy
 
 - Status: ACCEPTED (human-authorized implementation; `RV-20260926-002` APPROVED by Claude, 2026-09-27)

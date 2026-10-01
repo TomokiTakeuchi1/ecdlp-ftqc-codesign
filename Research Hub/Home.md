@@ -5,14 +5,23 @@ cssclasses:
   - research-dashboard
 tags:
   - dashboard
-updated: 2026-09-27
+updated: 2026-10-01
 ---
 
 # ECDLP-256 FTQC Research Hub
 
-> [!abstract] Current snapshot — 2026-09-27
+> [!abstract] LP/GHZ update - 2026-10-01 (reviewed)
+> T-20261001-001 constructs the fixed-mask homomorphic interface for completed
+> LP. NUMERICAL: a 525-qubit helper measures 300 canonical Xs plus two residual
+> Xs; two weight-75 checks remove the extras. The source convention requires
+> |000+>, not |+000>, for GHZ. Both helpers have d_Z=1: unprotected FT admission
+> is FALSIFIED, and this is not native runtime. Protected readout/preparation
+> is the next bottleneck. See [[docs/LP_GHZ_HOMOMORPHIC_PREPARATION_CONTRACT|LP GHZ cycle]].
+> Claude approved this cycle (`RV-20261001-001`, 2026-10-01): every GF(2) rank/commutation/pairing claim and the forced automorphism orientation were independently re-derived from scratch. The earlier QCLA review is unrelated and unchanged.
+
+> [!abstract] Previous QCLA snapshot — 2026-09-27
 > **Phase:** Month 1 — arithmetic circuit to QEC schedule  
-> **Current focus:** `T-20260926-002` is approved (`RV-20260926-002`, Claude, 2026-09-27): full tracking versus conjugated-H/bare-CNOT on the same parallel low-rate backend. The selected 18 IP/weight-256 cells now have 512 hashes: legacy PPM fits 512, tracked QWC 218, fixed general lowering 179. Legacy Clifford time remains unknown **B**; a PPM saving is a budget for that work, not a demonstrated native speedup. Both final frames remain explicit obligations. See [[docs/LOW_RATE_CLIFFORD_BREAK_EVEN_CONTRACT|paired Clifford-budget contract]].
+> **Current focus:** `T-20260927-001` (H-tracked/bare-CNOT hybrid on 66 IP branches) is approved (`RV-20260927-001`, Claude, 2026-10-01). At K=64 and unlimited support, hybrid/full QWC median surgery steps are 305/296; general services match exactly on all 64 hashes. Finite S=512 gives general a paired extra-Clifford budget median of 1 conditional unit, not a universal win. Four CNOT layers remain symbolic service obligations; this is **not native runtime**. See [[docs/H_TRACKED_BARE_CNOT_LOW_RATE_CONTRACT|hybrid policy contract]].
 > **Long-term target:** ECDLP-256 in roughly 10,000–tens of thousands of physical qubits and days–tens of days, with every assumption made explicit.
 
 [[Research Hub/Roadmap|Roadmap]] · [[Research Hub/Progress Log|Progress Log]] · [[Research Hub/Decisions and Blockers|Decisions & Blockers]] · [[Research Hub/Architecture Map.canvas|Architecture Map]] · [[Research Hub/Glossary|Glossary]] · [[Research Hub/How to Update|How to Update]]
@@ -21,6 +30,7 @@ updated: 2026-09-27
 
 | Workstream | Status | Human-friendly summary |
 |---|---|---|
+| H-tracked / bare-CNOT hybrid | ✅ Reviewed (`RV-20260927-001`) | Signed bare/frame-X profiles, 66 branches and exact paired costs. No unrestricted general-service gain; QWC usually worsens in the sampled model. Native automorphism cost/feasibility remains OPEN. |
 | Paired Clifford-budget comparison | ✅ Reviewed (`RV-20260926-002`) | T-20260926-002 compares shared branches/macros on one low-rate backend. K=64, unlimited-support median budgets versus tracked QWC are OOP 29 / IP 170 conditional units (64 hashes). Unknown branch-dependent Clifford cost B, different retained frames and all native resources remain OPEN; 18 IP boundary cells refined to 512 hashes. |
 | Literature baseline | ✅ Reviewed | 23 primary-source PDFs are indexed locally, including the two Gidney--Fowler PDFs and four official assets reviewed in `RV-20260901-001`; T-20260926-002 adds version/SHA-256 pins for Zhang--Li and Cowtan et al. |
 | Gidney adder DAG | ✅ Reviewed | The ripple-carry adder is converted to a QEC-independent causal DAG and checked at small widths and width 256. |

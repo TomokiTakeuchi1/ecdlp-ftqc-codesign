@@ -1,0 +1,36 @@
+{
+  "schema": "lp-ghz-input-v1",
+  "task_id": "T-20261001-001",
+  "lift": 75,
+  "seed_exponents": [[0,71,73,68,33,50,47],[38,39,60,26,18,1,23],[73,6,5,42,20,22,73]],
+  "information_columns_zero_based": [2,3,5,6],
+  "g_z_rows_little_endian": [1,3,5,15],
+  "w_rows_little_endian": [4,5,12,10],
+  "selected_logical_row_one_based": 4,
+  "initial_proposal_row_one_based_negative_control": 1,
+  "canonical_section_zero_parity_columns_one_based": [2,5],
+  "auxiliary_variants": ["raw_302", "strict_300"],
+  "random_seed": null,
+  "native_timing": null,
+  "ft_admission": false,
+  "sources": [
+    {
+      "name": "RASCqL_with_lifted_product_codes2.pdf",
+      "version": "2026-09-30 private attachment, 32 pages",
+      "sha256": "b498151c8d6d011ad559682d21e6364324be60c7886eecacbdf99118696f5cc1",
+      "role": "seed/completion input; GHZ orientation claim is a negative control"
+    },
+    {
+      "name": "2602.14273v2.pdf",
+      "path": "literature/papers/2602.14273v2.pdf",
+      "sha256": "f5d6c511a668577a3b7479a91079fe27a92180433e78ea767d16e8ff6fd7809c",
+      "role": "RASCqL Fig.7 and Appendix C.3 source-domain comparison"
+    },
+    {
+      "name": "2607.28605v1.pdf",
+      "path": "literature/papers/2607.28605v1.pdf",
+      "sha256": "60489451b1fb88206f1fe6e49373040eea29cbbb4fe641f2df06bc9336bbefb0",
+      "role": "canonical LP surgery fallback; not a certificate for the completed seed"
+    }
+  ]
+}
