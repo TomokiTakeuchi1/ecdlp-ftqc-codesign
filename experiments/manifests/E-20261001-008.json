@@ -1,0 +1,23 @@
+{
+  "schema": "lp-flag-preparation-input-v1",
+  "task_id": "T-20261001-008",
+  "lift": 75,
+  "gadget": "one_flag_bracketing_all_data_CNOTs",
+  "projection_passes": 2,
+  "primary_check_flag_pairs_per_block": 64,
+  "resource_caps": [1, 64, 256, 5250],
+  "acceptance": "zero_flags_equal_full_syndromes_valid_image",
+  "interpass_correction": false,
+  "final_correction": "ideal_classical_Pauli_frame",
+  "fault_scope": "all_single_Paulis_CNOT_preparation_reset_live_idle_and_readout_flip",
+  "readout_error_sensitivities": [0.0001, 0.001],
+  "random_seed": null,
+  "full_factory_ft": false,
+  "native_seconds": null,
+  "inherited_files": [
+    {"path": "src/ecdlp_ftqc/code_constructions/lp_ghz.py", "sha256": "22037fe103aef5ddbbe01763894cd1cca4b023d2816bf2f05c7e1b502e9c2a5d"},
+    {"path": "src/ecdlp_ftqc/code_constructions/lp_protected_ghz.py", "sha256": "95cdd573214f1dc0f25ae40ee9c0911a298209cebc1b66f38917221b602a2dc6"},
+    {"path": "src/ecdlp_ftqc/analysis/lp_ghz_preparation.py", "sha256": "198aa7678b6b13e25864bb7c2ed555c5191ba44473cd1d96f7fb089d9cb17ec7"},
+    {"path": "src/ecdlp_ftqc/verification/lp_direct_ghz.py", "sha256": "e38dfe20a437d5cb929966c837189624f0837109305891ab436fd955ecc5c53e"}
+  ]
+}

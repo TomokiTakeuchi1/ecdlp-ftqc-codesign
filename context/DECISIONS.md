@@ -1,5 +1,38 @@
 # Decision log
 
+## D-0040: Keep the LP analytic research cycles to one lemma
+
+- Status: ACCEPTED (T-20261008-001; `RV-20261008-001` APPROVED by Claude, 2026-10-08).
+- Date: 2026-10-08
+- Decision: Follow the human's minimal analytic-cycle preference. The first
+  cycle covers only one information-pair augmentation and its induced LP
+  logical action, under explicit common split hypotheses. Keep information
+  shortening, residual-sector extension and protection as separate future
+  human-authorized cycles; numerical searches are not the primary evidence.
+- Evidence: PROVED conditional kernel/chain/Z/X identities in
+  docs/LP_ONE_ROW_AUGMENTATION_LEMMA.md; internal independent algebra check.
+- Consequences: this is not a general canonical-LP FT or selective-PPM
+  construction. No architecture, factory, runtime or failure-budget admission.
+
+## D-0039: Certify flagged uniform preparation separately from factory throughput
+
+- Status: ACCEPTED (T-20261001-008; `RV-20261001-008` APPROVED by Claude, 2026-10-02).
+- Date: 2026-10-01
+- Decision: Use the fixed two-pass all-bracket one-flag circuit as a bounded
+  preparation-safety reference, retaining arbitrary valid initial projection
+  outcomes. Track the exact accepted preparation frame. Do not adopt global
+  postselection as the final production architecture merely because its
+  single-fault safety criterion passes.
+- Evidence: NUMERICAL106,289,385 declared fault cases with zero bad accepted
+  cases; independent dense/forward checks; PROVED conditional target-state
+  argument and independent-readout upper bounds. All pending cross-review.
+- Consequences: whole-block readout rejection and live-data waiting are major
+  cost obligations. Future human-authorized work may study flag-informed
+  correction/local repair or a compatible decoder, rather than silently
+  extrapolating per-attempt gates into accepted GHZ throughput.
+- Scope: no general unknown-state correction theorem, full factory FT,
+  native timing, multi-fault logical-error rate or downstream admission.
+
 ## D-0038: Specialize to retained-block GHZ preparation before an FT factory
 
 - Status: ACCEPTED (T-20261001-006; `RV-20261001-006` APPROVED by Claude, 2026-10-01)

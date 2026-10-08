@@ -13,6 +13,22 @@ updated: 2026-10-01
 
 ## One decision needed from the researcher
 
+Latest reviewed delta: T-20261008-001 (`RV-20261008-001` `APPROVED`, D-0040
+ACCEPTED) proves the one-row augmentation lemma under explicit split
+hypotheses. Whether to authorize the proposed next lemma
+(information-coordinate shortening) is a human decision; no cycle starts
+automatically. See [[docs/LP_ONE_ROW_AUGMENTATION_LEMMA|augmentation lemma]].
+
+Reviewed delta: T-20261001-008 (`RV-20261001-008` `APPROVED`, D-0039 ACCEPTED) passes the declared
+single-Pauli preparation criterion using actual flags and two same-axis passes.
+The bare circuit's obstruction remains valid historically, but is detected in
+this augmented circuit. The next bottleneck is accepted production rate:
+whole-block rejection is severe under the stated readout-noise sensitivity.
+Separate retries need buffer/QEC service; downstream matching, noisy mask
+decoder, automorphism and full factory FT remain OPEN. Review this bounded
+delta before choosing a correction/local-repair study.
+See [[docs/LP_FLAG_PREPARATION_CONTRACT|flagged preparation and retry boundary]].
+
 Reviewed delta: T-20261001-006 (`RV-20261001-006` `APPROVED`) directly retains the masked Q output,
 giving300 GHZ4s with known frame. D-0038 is ACCEPTED. The main
 new blocker is concrete: the bare projection circuit leaves a single hook

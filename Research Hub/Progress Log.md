@@ -13,6 +13,32 @@ updated: 2026-10-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-10-08 - One-row LP augmentation lemma (reviewed and approved)
+
+T-20261008-001 is a single analytic lemma. Adding the information check
+u1+u2=0 to one classical factor merges two logical families: the new Z
+logical maps to Z1 Z2, and both old X1 and X2 pull back to the same new X.
+All other logicals survive, so this is not yet a selective measurement.
+It holds only under explicit invertible parity-minor hypotheses.
+
+**Status:** Reviewed and approved (`T-20261008-001`, `RV-20261008-001`, 2026-10-08). Claude checked every equation as an exact binary matrix identity on two concrete lifted instances, including non-identity parity minors. Shortening, residual sectors, distances and FT remain OPEN. See [[docs/LP_ONE_ROW_AUGMENTATION_LEMMA|lemma and scope]].
+
+## 2026-10-01 - Two-pass flagged uniform preparation (reviewed and approved)
+
+T-20261001-008 replaces the bare check circuit with one flag per active check
+and two full syndrome passes. NUMERICAL: every declared single-Pauli fault
+either rejects or leaves at most one error modulo the uniform target state;
+the full Q/M census includes106,289,385 cases with exact idle multiplicities.
+
+
+**Status:** Reviewed and approved (`T-20261001-008`, `RV-20261001-008`, 2026-10-02). Claude reproduced the entire resource table from closed-form arithmetic on already-verified data and independently confirmed the central claim with a third, Stim-based stabilizer simulation, directly replaying the fix for the prior task's counterexample.
+
+Independent dense branch and forward fault checks agree. The old invisible
+hook now triggers an actual flag. This does not certify the downstream GHZ
+factory. CHECK per-attempt costs are187,950CNOT/18,931qubits; all-block
+postselection can have very low yield, requiring a separate correction/retry
+and storage study. See [[docs/LP_FLAG_PREPARATION_CONTRACT|new circuit and scope]].
+
 ## 2026-10-01 - Two-stage protected LP mask (reviewed and approved)
 
 ## 2026-10-01 - Direct retained-block GHZ preparation (reviewed and approved)

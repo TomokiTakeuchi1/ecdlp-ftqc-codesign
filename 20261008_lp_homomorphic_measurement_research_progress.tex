@@ -1,0 +1,432 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!40!black,
+  urlcolor=blue!65!black,
+  pdftitle={Fault-Tolerant Homomorphic Measurement for Lifted Product Codes},
+  pdfauthor={Research Progress}
+}
+
+\newtheorem{definition}{Definition}[section]
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\B}{\mathsf{B}}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Supp}{\operatorname{Supp}}
+
+\title{Fault-Tolerant Homomorphic Measurement for Lifted Product Codes}
+\author{Research Progress}
+\date{October 8, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+For CSS codes, homomorphic measurement provides a general framework for
+measuring logical Pauli operators by coupling the data block to an ancillary
+code through a suitable code homomorphism. However, only a limited number of
+code families currently have both fault-tolerant ancilla constructions and
+explicit homomorphisms that support addressable logical measurements. In this
+work, we investigate fault-tolerant constructions for addressable homomorphic
+measurement in lifted product codes. Our goal is to identify ancillary lifted
+product codes, compatible homomorphisms, and fault-tolerant preparation and
+readout procedures that implement selected logical measurements while
+preserving the remaining logical information.
+\end{abstract}
+
+\section{Background}
+
+\subsection{CSS codes as three-term chain complexes}
+
+A CSS code is represented by a three-term chain complex over $\F_2$,
+\begin{equation}
+  Q:\qquad
+  Q_2 \xrightarrow{\,\partial_2^Q\,}
+  Q_1 \xrightarrow{\,\partial_1^Q\,} Q_0,
+  \qquad
+  \partial_1^Q\partial_2^Q=0.
+  \label{eq:css-complex}
+\end{equation}
+The bases of $Q_2$, $Q_1$, and $Q_0$ index the $Z$ checks, qubits, and $X$
+checks, respectively. Thus
+\begin{equation}
+  H_X=\partial_1^Q,
+  \qquad
+  H_Z^T=\partial_2^Q,
+  \qquad
+  H_XH_Z^T=0.
+  \label{eq:css-checks}
+\end{equation}
+Logical $Z$ operators are homology classes and logical $X$ operators are
+cohomology classes,
+\begin{equation}
+  H_1(Q)=\frac{\ker\partial_1^Q}{\im\partial_2^Q},
+  \qquad
+  H^1(Q)=
+  \frac{\ker(\partial_2^Q)^T}{\im(\partial_1^Q)^T}.
+  \label{eq:logical-homology}
+\end{equation}
+\subsection{Lifted-product codes}
+
+\subsubsection{The ring-valued product complex}
+
+Let
+\begin{equation}
+  R=\F_2[x]/(x^\ell+1).
+  \label{eq:ring}
+\end{equation}
+Over $\F_2$, $x^\ell+1=x^\ell-1$, so multiplication by $x$ is the cyclic
+shift of a length-$\ell$ binary fibre. For $f\in R$, write
+$\overline f=f(x^{-1})=f(x^{\ell-1})$, and for a matrix $C$ over $R$ define
+$C^*=\overline C^{\,T}$. Consider two one-term complexes of free $R$-modules,
+\begin{equation}
+  A_\bullet:\ R^{n_A}\xrightarrow{\,A\,}R^{m_A},
+  \qquad
+  B_\bullet:\ R^{n_B}\xrightarrow{\,B\,}R^{m_B},
+  \label{eq:base-complexes}
+\end{equation}
+where $A\in R^{m_A\times n_A}$ and
+$B\in R^{m_B\times n_B}$. The two-dimensional lifted product
+$\operatorname{LP}_\ell(A,B)$ is the total complex $M=A_\bullet\otimes_R
+B_\bullet$,
+\begin{equation}
+  M_2 \xrightarrow{\,\partial_2^M\,}
+  M_1 \xrightarrow{\,\partial_1^M\,} M_0,
+  \label{eq:lp-complex}
+\end{equation}
+with
+\begin{align}
+  M_2 &= R^{n_A}\otimes_R R^{n_B}, \notag\\
+  M_1 &=
+  \bigl(R^{n_A}\otimes_R R^{m_B}\bigr)
+  \oplus
+  \bigl(R^{m_A}\otimes_R R^{n_B}\bigr),
+  \label{eq:lp-modules}\\
+  M_0 &= R^{m_A}\otimes_R R^{m_B}, \notag
+\end{align}
+and boundary maps
+\begin{equation}
+  (\partial_2^M)^T=
+  \bigl(I_{n_A}\otimes_R B^*,\ A^*\otimes_R I_{n_B}\bigr),
+  \qquad
+  \partial_1^M=
+  \bigl(A\otimes_R I_{m_B},\ I_{m_A}\otimes_R B\bigr).
+  \label{eq:lp-boundaries}
+\end{equation}
+These are the conventions of Definition III.1 in
+Ref.~\cite{ZhengEtAl2026}. In particular,
+$\partial_1^M\partial_2^M=0$.
+
+\subsubsection{Binarization and the CSS code}
+
+The monomial basis $1,x,\ldots,x^{\ell-1}$ defines an $\F_2$-linear
+isomorphism
+\begin{equation}
+  \B:R^s\longrightarrow\F_2^{s\ell}.
+  \label{eq:binarization}
+\end{equation}
+It also gives the regular binary representation of an $R$-linear matrix and
+satisfies $\B(Cu)=\B(C)\B(u)$. Applying $\B$ to
+Eq.~\eqref{eq:lp-complex} gives a binary chain complex $Q=\B(M)$ and hence a
+CSS code with
+\begin{equation}
+  H_X=\B(\partial_1^M),
+  \qquad
+  H_Z^T=\B(\partial_2^M).
+  \label{eq:lp-css-checks}
+\end{equation}
+The physical-qubit count is therefore
+\begin{equation}
+  n=\ell\bigl(n_A m_B+m_A n_B\bigr).
+  \label{eq:lp-length}
+\end{equation}
+The map $\B$ is a bijective chain map, so it identifies the ring-valued
+homology of $M$ with the binary logical-$Z$ space of $Q$. When $\ell$ is odd,
+$R$ is semisimple and the K\"unneth decomposition takes the schematic form
+\begin{equation}
+  H_1(M)\simeq
+  \bigl(\ker_R A\otimes_R\coker_R B\bigr)
+  \oplus
+  \bigl(\coker_R A\otimes_R\ker_R B\bigr).
+  \label{eq:kunneth}
+\end{equation}
+This decomposition explains the two physical sectors in $M_1$ and is the
+starting point for constructing explicit logical bases.
+
+\subsubsection{Canonical logical fibres}
+
+Zheng \emph{et al.} identify a canonical sector when compatible information
+sets can be chosen for the relevant kernel and cokernel modules. Put
+$r_A=n_A-m_A$ and $r_B^*=m_B-n_B$. Its logical qubits are indexed by
+\begin{equation}
+  (i,j,m)\in [r_A]\times[r_B^*]\times\mathbb Z_\ell,
+  \qquad
+  k_{\mathrm c}=r_A r_B^*\ell.
+  \label{eq:canonical-index}
+\end{equation}
+For suitable systematic representatives
+$u_{A_1}^{(i)},e_{A_1}^{(i)},e_{B_0}^{(j)},v_{B_0}^{(j)}$, a conjugate logical
+pair has ring-valued supports
+\begin{align}
+  \Supp\overline Z_{i,j,m}
+  &=x^m u_{A_1}^{(i)}\otimes_R e_{B_0}^{(j)},
+  \label{eq:canonical-z}\\
+  \Supp\overline X_{i,j,m}
+  &=x^m e_{A_1}^{(i)}\otimes_R v_{B_0}^{(j)}.
+  \label{eq:canonical-x}
+\end{align}
+Their binary supports are obtained with $\B$. The $Z$ and $X$ representatives
+intersect on exactly one physical qubit precisely when all three indices agree.
+Multiplication by $x^t$ shifts the third index,
+$m\mapsto m+t\pmod\ell$. Thus an HGP-like row--column grid is replaced by a
+grid of length-$\ell$ logical fibres. The canonical sector need not exhaust
+the full logical space; any residual logical sector must be tracked separately
+when claiming addressability or nondestructive action on spectator qubits.
+
+\subsection{Homomorphic CNOT and homomorphic measurement}
+
+\subsubsection{Chain maps as physical CNOT patterns}
+
+Let $Q$ be a data code and $Q'$ an ancilla code, both written as in
+Eq.~\eqref{eq:css-complex}. A chain map $\gamma:Q'\to Q$ is a triple
+\begin{equation}
+  \gamma_i:Q_i'\longrightarrow Q_i,
+  \qquad i=0,1,2,
+  \label{eq:chain-map-components}
+\end{equation}
+satisfying
+\begin{equation}
+  \partial_i^Q\gamma_i
+  =\gamma_{i-1}\partial_i^{Q'},
+  \qquad i=1,2.
+  \label{eq:chain-map}
+\end{equation}
+The map $\gamma_1$ specifies the physical CNOTs: data qubit $i$ controls
+ancilla qubit $j$ whenever $\gamma_1[i,j]=1$. Equation~\eqref{eq:chain-map}
+ensures stabilizer preservation. Coordinate inclusions are transversal, while
+bounded-degree maps have bounded CNOT depth.
+
+The logical action is most transparent on (co)homology. The chain map induces
+\begin{equation}
+  \gamma_*:H_1(Q')\longrightarrow H_1(Q),
+  \qquad
+  \gamma^*:H^1(Q)\longrightarrow H^1(Q').
+  \label{eq:induced-maps}
+\end{equation}
+For a data-control, ancilla-target CNOT, an ancilla logical-$Z$ class $[z']$
+and a data logical-$X$ class $[x]$ transform schematically as
+\begin{align}
+  \overline Z_{Q'}([z'])
+  &\longmapsto
+  \overline Z_Q(\gamma_*[z'])\,\overline Z_{Q'}([z']),
+  \label{eq:z-action}\\
+  \overline X_Q([x])
+  &\longmapsto
+  \overline X_Q([x])\,\overline X_{Q'}(\gamma^*[x]).
+  \label{eq:x-action}
+\end{align}
+The two induced maps therefore have to be checked together: specifying the
+desired image of a $Z$ logical does not by itself establish the full logical
+Clifford action.
+
+\subsubsection{Generalized Steane measurement}
+
+The homomorphic CNOT becomes a nondestructive logical measurement through a
+generalized Steane circuit. For a $Z$-type measurement, prepare the relevant
+logical qubits of $Q'$ in the logical $Z$ basis, apply the data-control
+homomorphic CNOT, and measure $Q'$ in the physical $Z$ basis. Each decoded
+ancilla logical outcome measures the data logical product represented by the
+corresponding class in $\im\gamma_*$. For an $X$-type measurement, prepare
+the ancilla in the logical $X$ basis, reverse the physical CNOT direction, and
+measure the ancilla in the physical $X$ basis. Multiple ancilla logical
+qubits give multiple commuting Pauli-product measurements in parallel.
+
+A chain map proves that the ideal CNOT pattern preserves the codespace, but it
+is not by itself a fault-tolerance proof. The construction in
+Ref.~\cite{XuEtAl2024} additionally uses an ancilla whose distance is at least
+the data distance, fault-tolerant logical-state preparation, a constant-depth
+or transversal coupling, repeated syndrome extraction, transversal readout,
+and classical decoding or Pauli-frame processing. These are separate
+obligations in an LP extension.
+
+\subsection{HGP homomorphic CNOTs}
+
+\subsubsection{HGP codes inside the LP convention}
+
+Let $H_a\in\F_2^{r_a\times n_a}$ be full-row-rank classical check matrices,
+with $k_a=n_a-r_a$ for $a=1,2$. Xu \emph{et al.} use $H_1^T$ as the vertical
+chain map and $H_2$ as the horizontal chain map. In the LP notation above,
+this is the specialization
+\begin{equation}
+  \ell=1,
+  \qquad
+  A=H_1^T,
+  \qquad
+  B=H_2.
+  \label{eq:hgp-lp-translation}
+\end{equation}
+After swapping the two direct summands of $M_1$, the resulting HGP check
+matrices are
+\begin{align}
+  H_X&=\bigl(I_{n_1}\otimes H_2,\ H_1^T\otimes I_{r_2}\bigr),
+  \label{eq:hgp-hx}\\
+  H_Z&=\bigl(H_1\otimes I_{n_2},\ I_{r_1}\otimes H_2^T\bigr).
+  \label{eq:hgp-hz}
+\end{align}
+The code has parameters
+\begin{equation}
+  [[n_1n_2+r_1r_2,\ k_1k_2,\ \min(d_1,d_2)]],
+  \label{eq:hgp-parameters}
+\end{equation}
+under the full-rank assumptions used in Ref.~\cite{XuEtAl2024}.
+
+Choose systematic kernel generators $b_i^{(1)}\in\ker H_1$ and
+$b_j^{(2)}\in\ker H_2$, together with unit vectors on the corresponding
+information coordinates. A canonical logical grid is
+\begin{equation}
+  \overline Q=\{\overline Q_{i,j}\}_{i\in[k_1],j\in[k_2]},
+  \label{eq:hgp-grid}
+\end{equation}
+with representatives, in the bit--bit qubit sector,
+\begin{equation}
+  \overline X_{i,j}=
+  \begin{pmatrix}b_i^{(1)}\otimes e_j^{(n_2)}\\0\end{pmatrix},
+  \qquad
+  \overline Z_{i,j}=
+  \begin{pmatrix}e_i^{(n_1)}\otimes b_j^{(2)}\\0\end{pmatrix}.
+  \label{eq:hgp-logicals}
+\end{equation}
+The $X$ representative occupies a logical column, the $Z$ representative a
+logical row, and conjugate representatives meet at one information-coordinate
+qubit.
+
+\subsubsection{Puncturing, augmenting, and the induced CNOT}
+
+Consider a collection of disjoint horizontal hyperedges
+$E_h=\{e_\alpha\}$ with $e_\alpha\subseteq[k_2]$. Let
+\begin{equation}
+  S=[k_2]\setminus\bigcup_{e\in E_h}e
+  \label{eq:puncture-set}
+\end{equation}
+be the unused horizontal information coordinates. Starting from $H_2$, add
+repetition-code checks $H_{\mathrm{rep}}^{E_h}$ that identify the logical bits
+inside each $e_\alpha$, and then puncture the coordinates in $S$:
+\begin{equation}
+  H_2'=\bigl(H_2^{+H_{\mathrm{rep}}^{E_h}}\bigr)^S,
+  \qquad
+  Q'=\operatorname{HGP}(H_1,H_2').
+  \label{eq:hgp-ancilla}
+\end{equation}
+Augmentation expurgates unwanted codewords, while puncturing information
+coordinates removes unused logical columns. The coordinate inclusion from
+$H_2'$ to $H_2$, tensored with the identity on the vertical factor, induces a
+chain map $\gamma:Q'\to Q$. Its qubit component identifies the shared HGP
+coordinates, so the physical homomorphic CNOT is transversal on those
+coordinates.
+
+For each row $i$ and hyperedge $e_\alpha$, one logical qubit of $Q'$ couples to
+all data logical qubits $\{\overline Q_{i,j}:j\in e_\alpha\}$. Up to
+stabilizers, the data-control, ancilla-target CNOT acts as
+\begin{align}
+  \overline Z'_{i,\alpha}
+  &\longmapsto
+  \overline Z'_{i,\alpha}
+  \prod_{j\in e_\alpha}\overline Z_{i,j},
+  \label{eq:hgp-logical-z-action}\\
+  \overline X_{i,j}
+  &\longmapsto
+  \overline X_{i,j}\overline X'_{i,\alpha},
+  \qquad j\in e_\alpha,
+  \label{eq:hgp-logical-x-action}
+\end{align}
+while the remaining logical operators are unchanged. Preparing $Q'$ in the
+logical $Z$ basis and measuring it after this CNOT therefore measures
+\begin{equation}
+  \left\{
+  \prod_{j\in e}\overline Z_{i,j}
+  : i\in[k_1],\ e\in E_h
+  \right\}
+  \label{eq:horizontal-ppms}
+\end{equation}
+in parallel. This is the horizontal-PPM gadget of Algorithm 1 and Theorem 9
+in Ref.~\cite{XuEtAl2024}.
+
+The fault-tolerance argument uses two special properties of this construction.
+First, the punctured coordinates are information bits, and the added checks
+only expurgate codewords; consequently the modified horizontal classical
+distance does not decrease. Second, $Q'$ is prepared by transversal physical
+$|0\rangle$ preparation followed by $d=\min(d_1,d_2)$ rounds of stabilizer
+measurement, coupled transversally to $Q$, and read out transversally. Thus the
+ancilla distance is at least the data-code distance under the assumptions of
+the theorem.
+
+\subsubsection{From row-parallel to addressable grid measurements}
+
+The horizontal construction selects logical columns or column products, but
+it repeats the same measurement in every logical row. Xu \emph{et al.}
+obtain a selected grid pattern by adding a second HGP block $Q''$, called the
+mask code. A vertical puncturing--augmenting homomorphism prepares selected
+logical qubits of $Q'$ in $|+\rangle$, or prepares groups of them in logical
+GHZ states, before the final horizontal-$Z$ measurement. Because the vertical
+factor is represented by a transpose, the vertical homomorphism and its
+physical CNOT reverse direction. Exchanging $X$ and $Z$ gives the dual
+vertical-$X$ construction. Combining the two stages yields grid Pauli-product
+measurements on products of disjoint row and column hyperedges.
+
+\subsection{Requirements for an LP extension}
+
+Equations~\eqref{eq:canonical-z}--\eqref{eq:canonical-x} suggest an LP analogue
+of the HGP logical grid, but the extra fibre index $m$ creates additional
+addressability requirements. A fault-tolerant construction should establish
+all of the following rather than only an intended action on one family of
+logical $Z$ operators:
+\begin{enumerate}
+  \item construct explicit $R$-linear ancillary complexes and chain maps, and
+        identify their binary CNOT schedules after applying $\B$;
+  \item compute both induced maps $\gamma_*$ and $\gamma^*$ on the entire
+        logical space, including any residual sector outside the canonical
+        fibres;
+  \item select the desired $(i,j,m)$ logical qubits while proving that
+        unmeasured canonical and residual logical information is preserved;
+  \item bound the ancilla distance and the distance of the coupled or merged
+        code, rather than inferring fault tolerance from the chain-map identity;
+  \item give fault-tolerant ancilla preparation, repeated syndrome extraction,
+        readout, decoding, and Pauli-frame procedures; and
+  \item verify that $\B(\gamma_1)$ has bounded degree and admits a constant-depth
+        or otherwise quantified physical CNOT schedule.
+\end{enumerate}
+The HGP construction supplies a concrete template---modify base complexes,
+derive the chain map, calculate its complete logical action, and only then add
+the preparation and readout protocol. The next step is to determine which of
+these operations remain internal to the LP family over $R$ and which require a
+separate mask or extractor construction.
+
+\begin{thebibliography}{9}
+
+\bibitem{ZhengEtAl2026}
+H.~Zheng, G.~Zheng, L.~Jiang, and Q.~Xu,
+``Logical Computation with Canonical Lifted Product Codes,''
+\href{https://arxiv.org/abs/2607.28605v1}{arXiv:2607.28605v1} (2026).
+
+\bibitem{XuEtAl2024}
+Q.~Xu, H.~Zhou, G.~Zheng, D.~Bluvstein, J.~P.~Bonilla Ataides,
+M.~D.~Lukin, and L.~Jiang,
+``Fast and Parallelizable Logical Computation with Homological Product Codes,''
+\href{https://arxiv.org/abs/2407.18490v1}{arXiv:2407.18490v1} (2024).
+
+\end{thebibliography}
+
+\end{document}

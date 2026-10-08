@@ -1,5 +1,90 @@
 # AI handoff
 
+## LP product-code hierarchy rollback - 2026-10-08
+
+`T-20261008-009` is DONE and its lock is RELEASED. At the human's request, the
+T-20261008-008 hierarchy rewrite was reverted in full. The TeX source is
+byte-for-byte identical to the T-20261008-007 state: Background again proceeds
+directly from the CSS convention to the two-dimensional ring-valued LP product,
+binarization, and canonical logical fibres. All earlier requested prose edits
+remain. The six-page PDF compiles without warnings or bad boxes and passed full
+visual inspection. This entry supersedes the immediately following
+T-20261008-008 handoff as the current document state.
+
+## LP product-code hierarchy rewrite - 2026-10-08
+
+`T-20261008-008` is DONE and its lock is RELEASED. Background now begins the
+product-code discussion with D general finite seed complexes over the cyclic
+lift ring, their multigraded product and total complex, and the binary
+three-term window defining a high-dimensional lifted-product CSS code. The
+trivial lift `ell=1` is identified with the homological-product construction.
+The document then restricts all subsequent seeds to length one and presents
+the D=2 trivial-lift HGP and nontrivial-lift LP cases before returning to the
+existing D=2 CSS and canonical-logical discussion. Later homomorphic-CNOT,
+measurement, HGP-gadget, and LP-requirement content is unchanged. The six-page
+PDF compiles without warnings or bad boxes and passed full visual inspection.
+
+## LP homomorphic-CNOT prose cleanup - 2026-10-08
+
+`T-20261008-007` is DONE and its lock is RELEASED. The redundant opening
+attribution to Definition 3 of Ref. [2] was removed. The paragraph now states
+concisely that `gamma_1` specifies the physical CNOTs, the chain-map equation
+ensures stabilizer preservation, coordinate inclusions are transversal, and
+bounded-degree maps have bounded CNOT depth. The six-page PDF compiles without
+warnings or bad boxes and passed full visual inspection.
+
+## LP opening CSS prose cleanup - 2026-10-08
+
+`T-20261008-006` is DONE and its lock is RELEASED. The opening CSS subsection
+now states concisely that the bases of `Q2`, `Q1`, and `Q0` index the Z checks,
+qubits, and X checks. The subsequent sentence explaining chain-map control of
+homology/cohomology was removed. All equations and later content are unchanged.
+The six-page PDF compiles without warnings or bad boxes and passed full visual
+inspection.
+
+## LP Background presentation cleanup - 2026-10-08
+
+`T-20261008-005` is DONE and its lock is RELEASED. At the human's request, the
+redundant source/notation narration immediately below the Background heading
+was deleted, as were all visible `LITERATURE` and `OPEN` status labels and their
+unused TeX macros. The substantive prose, equations, citations, and references
+are unchanged. The six-page PDF compiles without warnings or bad boxes and all
+pages passed visual inspection.
+
+## LP homomorphic-measurement Background draft - 2026-10-08
+
+`T-20261008-004` is DONE and its lock is RELEASED. The research-progress TeX
+now has a six-page, literature-grounded Background section. It adopts Zheng et
+al.'s ring-valued LP chain-complex and canonical-fibre notation, translates Xu
+et al.'s HGP convention through `ell=1`, `A=H1^T`, `B=H2`, and presents the
+chain-map, induced logical action, generalized Steane measurement, HGP
+puncturing/augmentation, mask-code addressability, and fault-tolerance
+conditions in one convention. Literature statements are labeled LITERATURE;
+the uncompleted LP-specific requirements are labeled OPEN. Local TeX Live
+compilation passed with no warnings, unresolved references, or bad boxes; all
+six rendered pages passed visual inspection. This is a working prose draft for
+human scientific review, not a new proved or numerical LP construction.
+
+## LP research-progress abstract - 2026-10-08
+
+`T-20261008-003` is DONE and its lock is RELEASED. The title-only shell now has
+one concise English abstract: general CSS-code homomorphic measurement, limited
+availability of explicit fault-tolerant ancillary and addressable-homomorphism
+constructions, and the goal of developing such a construction for lifted
+product codes while preserving unmeasured logical information. The PDF remains
+one page and passed compilation and full-page visual inspection. No scientific
+result, evidence label, decision, or review state changed.
+
+## Title-only LP research-progress artifact - 2026-10-08
+
+`T-20261008-002` is DONE and its lock is RELEASED. The human narrowed the
+deliverable to a minimal title page: title `Fault-Tolerant Homomorphic
+Measurement for Lifted Product Codes`, author `Research Progress`, and date
+`October 8, 2026`. The TeX contains no abstract or body content. The one-page
+PDF compiled and passed visual inspection. This presentation-only task changes
+no scientific status, result ledger, decision, or pending review. Add body
+content only on a later explicit request.
+
 ## Standing review-efficiency policy - 2026-10-01
 
 Human-requested guidance for ALL FUTURE reviews by claude and codex, not a
@@ -77,6 +162,73 @@ The dated cycle entries below retain their historical evidence and limitations;
 their exceptionally exhaustive checks are NOT mandatory templates for future
 reviews. This policy does not itself change any review verdict or scientific
 result, or authorize another implementation cycle.
+
+## Minimal LP augmentation lemma handoff - 2026-10-08
+
+T-20261008-001 is DONE; RV-20261008-001 APPROVED by claude, 2026-10-08.
+D-0040 is ACCEPTED and the task lock is RELEASED. Required changes: none.
+Post-review status synchronization is recorded in T-20261008-010.
+The human now prefers general analytic work in minimal one-lemma cycles.
+Read docs/LP_ONE_ROW_AUGMENTATION_LEMMA.md and the completed review for scope.
+
+PROVED conditionally: explicit common unit minors give free kernels and
+no residual sector; one added information check replaces g1,g2 by g1+g2.
+The induced LP Z map gives Z1 Z2, and the reverse X pullback identifies
+X1 and X2 via a displayed stabilizer. Other generators and all j,m remain.
+
+Claude completed the bounded review with independent exact binary checks
+and a hand check of the dual X identity; no discrepancy or blocking finding.
+Those finite checks corroborate, rather than replace, the stated general
+proof. The optional suggestion to spell out the literal X representative
+identity is not a required correction; the reviewed scientific body is
+preserved. No additional scientific run was performed for status sync.
+Do not reopen the approved lemma or prior LP/GHZ/flag experiments absent
+a concrete new concern or changed dependency.
+
+Next on human request: propose one information-coordinate
+shortening lemma. Exact selective PPM, residual cases, distances, protected
+preparation/readout and runtime remain OPEN. No next cycle is auto-authorized.
+Previous scientific implementations, generated outputs and historical review
+records are unchanged. Submission hash and status-only update are in the
+session; later TeX-document work remains untouched.
+
+## Two-pass flagged uniform LP preparation handoff - 2026-10-01
+
+`T-20261001-008` is `RV-20261001-008` APPROVED (Claude review, 2026-10-02). Reviewer evidence: reproduced the entire structural resource table (CNOTs, ticks, qubit peaks at all four caps) exactly via closed-form arithmetic on quantities already independently verified in RV-20261001-006; re-derived the retry-bound formula from first principles and reproduced its numeric table exactly; independently confirmed the central branch-independent single-fault claim with a third, qualitatively different simulation method (Stim stabilizer tracking with explicit branch forking), including a direct replay of the exact counterexample this task was built to fix (now correctly flagged); cross-checked the full-instance 106,289,385-case fault census against the regenerated artifact; confirmed all four pinned inherited-file hashes unchanged; regenerated the summary byte-for-byte.
+
+Original submission note: current submission was T-20261001-008 IN_REVIEW; RV-20261001-008 PENDING with
+claude. Apply the standing review-efficiency policy. Start with
+docs/LP_FLAG_PREPARATION_CONTRACT.md and its review/session. Prior matrices,
+GHZ masking, distances and private-source transcription are unchanged; their
+four source dependencies are hash-pinned. Review the NEW preparation delta.
+
+NUMERICAL: all106,289,385 declared single-Pauli fault cases at cap64 either
+reject or leave the uniform target with <=1 physical error modulo target
+stabilizers. The exact idle groups account for every live-wire tick, including
+data during pair prep/readout and short rows waiting for a common measurement.
+No actual opposite-axis syndrome is assumed. The old hook triggers flag0.
+All ideal random projection branches are covered by the row(H)/ker(H)
+argument and freshly checked exact sign maps. The all-bracket flag placement
+is a stated variant inspired by the cited paper, not a literal transcription
+or imported general FTEC theorem. The accepted frame is interpreted ideally.
+
+Review priorities: (1) target-state quotient and arbitrary-branch correction;
+(2) correlated opener faults and actual flags; (3) backward maps/exact idle
+multiplicities; (4) preparation-only boundary and separate-retry economics.
+Independent dense replay uses6qubits and828faults peraxis; a different forward
+oracle enumerates actual live ticks and brute target cosets on6small schedules.
+Do not repeat full LP construction/distance searches absent a discrepancy.
+One fresh canonical regeneration plus comparison is sufficient if consistent.
+
+CHECK:187950 prepCNOT,18931qubits; Q/M1571/2131 abstractticks. Globalblock
+postselection is NOT adopted as a viable production factory. Independent
+readout p=1e-3 gives separate acceptance upper bounds3.36e-6/7.54e-10, not
+yield estimates. Same-start Q waiting adds5376000idle sites outside the
+certificate. Native timings, classical-delay storage faults, physical frame
+correction, leakage/crosstalk, multi-fault rates, interface/maskdecoder/auto,
+buffer/QEC service and fullfactoryFT remainOPEN. No new task should start
+before review/human direction. Test commands and snapshot hashes are in the
+session and generated reproducibility.json. No commit made.
 
 ## Direct retained-block LP GHZ handoff - 2026-10-01
 
@@ -1374,5 +1526,6 @@ all 23 gates and the displayed correction formula exactly.
 
 ## Files currently safe to modify
 
-No task currently holds an active lock in `coordination/WORK_LOCKS.md`; every
-row is `RELEASED`.
+T-20261001-008 holds a REVIEW lock over its submitted delta in
+`coordination/WORK_LOCKS.md`. Do not rewrite that implementation during review;
+record findings in its review file. Prior task locks remain RELEASED.

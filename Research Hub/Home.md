@@ -10,6 +10,22 @@ updated: 2026-10-01
 
 # ECDLP-256 FTQC Research Hub
 
+> [!abstract] LP one-row augmentation lemma - 2026-10-08 (reviewed and approved)
+> T-20261008-001 PROVED (conditional on invertible parity minors): adding
+> u1+u2=0 maps the merged Z logical to Z1 Z2 and identifies X1 with X2;
+> all other logicals survive. Claude approved (`RV-20261008-001`) after exact
+> GF(2) checks of every equation. Not a selective PPM, distance or FT result.
+> See [[docs/LP_ONE_ROW_AUGMENTATION_LEMMA|augmentation lemma]].
+
+> [!abstract] Flagged LP preparation - 2026-10-01 (reviewed and approved)
+> T-20261001-008 adds actual flags and two repeated same-axis passes.
+> NUMERICAL:106,289,385 single-Pauli cases have no bad accepted output under
+> the uniform-state <=1-error criterion. The former hook is flagged.
+> CHECK:187,950 preparation CNOTs and18,931 qubits; these are per-attempt
+> structural costs, not full factory runtime. Whole-block rejection can be
+> severe; separate retries, buffering/QEC and downstream FT remain OPEN.
+> Claude approved this cycle (`RV-20261001-008`, 2026-10-02): the resource table was reproduced exactly from already-verified data, and the central claim was independently confirmed with a third, Stim-based simulation method. See [[docs/LP_FLAG_PREPARATION_CONTRACT|flag preparation certificate and retry limits]].
+
 > [!abstract] Direct LP GHZ preparation - 2026-10-01 (reviewed and approved)
 > T-20261001-006 retains the masked LP block and directly prepares300 GHZ4s;
 > all938 outcome bits and1200 target stabilizers are verified. A single bare

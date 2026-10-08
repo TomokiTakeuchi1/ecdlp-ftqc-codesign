@@ -1,5 +1,37 @@
 # Project status
 
+- `T-20261008-001` is `RV-20261008-001` `APPROVED` (Claude review, 2026-10-08). Reviewer evidence: independently checked equations (1)-(6) as literal GF(2) identities in the regular (circulant) representation of R on two random instances (l=5,r=3,a=2,s=1,b=2 with V=T=I; and a stress instance l=7,r=4,a=3,s=2,b=3 with non-identity unit-triangular V,T): split surjectivity and the new parity minor, exact row-space equality ker(A') = span{x^m(g1+g2), x^m g3, ...}, both chain-map squares as exact matrix equalities, H1 dimensions computed from the actual complexes (15 and 10, matching rs*l and (r-1)s*l), the Z-product map and the X-pullback coboundary identity for every j,m, and full X/Z biorthogonality. No discrepancy. Non-blocking: the note could state explicitly that gamma_1^T x_1 equals the chosen x'_mu literally, which together with (6) completes the X-identification. Hub tests 5 passed. At review time, task/handoff/changelog synchronization was deferred under T-20261008-002; that lock is now RELEASED and synchronization is completed below.
+  Original submission: PROVED under explicit common unit-minor/split hypotheses: adding the
+  single information check u1+u2=0 replaces g1,g2 by g1+g2 in the kernel.
+  The LP chain map sends the new Z logical to Z1 Z2; its dual pullback
+  sends both old X1 and X2 to the same new X logical. Other generators
+  survive, for every j and cyclic position m. No residual-sector generality,
+  selective PPM, puncturing, distance or FT claim. One analytic lemma only;
+  no numerical research run. Internal independent algebra check completed,
+  Hub5 tests pass; no code/generated outputs changed and no commit made.
+  Post-review synchronization (codex, T-20261008-010): task DONE, review
+  APPROVED, D-0040 ACCEPTED and lock RELEASED. Required changes: none.
+  Current note/session/handoff statuses are aligned; scientific body and
+  review evidence are unchanged. See docs/LP_ONE_ROW_AUGMENTATION_LEMMA.md.
+  Next: propose information-coordinate shortening only on human request;
+  no next cycle is automatically authorized.
+
+- `T-20261001-008` is `RV-20261001-008` `APPROVED` (Claude review, 2026-10-02). Reviewer evidence: reproduced the entire structural resource table (CNOTs, ticks, qubit peaks at all four caps) exactly via closed-form arithmetic on quantities already independently verified in RV-20261001-006; re-derived the retry-bound formula from first principles and reproduced its numeric table exactly; independently confirmed the central branch-independent single-fault claim with a third, qualitatively different simulation method (Stim stabilizer tracking with explicit branch forking), including a direct replay of the exact counterexample this task was built to fix (now correctly flagged); cross-checked the full-instance 106,289,385-case fault census against the regenerated artifact; confirmed all four pinned inherited-file hashes unchanged; regenerated the summary byte-for-byte.
+  NUMERICAL: two-pass all-bracket one-flag Q-plus/M-zero preparation passes
+  the declared single-Pauli criterion on106,289,385 fault cases (exact idle
+  multiplicities): every accepted case is the uniform target plus at most one
+  physical error modulo target-state stabilizers. All valid ideal projection
+  branches are retained. The prior row0/third-CNOT hook is now actually flagged.
+  Independent dense branch replay and tiny forward fault/lifetime enumeration
+  agree. This is preparation-only, NOT a general decoder or full GHZ factory FT.
+  CHECK resources:187,950 preparation CNOTs,18,931 qubits at64 check/flag pairs
+  per block, abstract Q/M ticks1571/2131. Native seconds/cycles remain null.
+  Whole-block rejection is costly: at independent readout-flip p=1e-3,
+  per-block acceptance upper bounds are Q3.36e-6/M7.54e-10, not yield estimates.
+  Separate retries require storage/QEC; final classical-delay faults, matching,
+  noisy mask decoder, automorphism, multi-fault rates and full service remain OPEN.
+  See docs/LP_FLAG_PREPARATION_CONTRACT.md and the session for validation.
+
 - `T-20261001-006` is `RV-20261001-006` `APPROVED` (Claude review, 2026-10-01). Reviewer evidence: independently re-derived the direct quartet sign formula and the automorphism's CNOT decomposition by hand from first principles (not merely checked numerically); independently reproduced the 938=6164-5226 dimension count via the new dual framing and confirmed M's own CSS self-commutation; independently reimplemented the preparation scheduler (different code) and reproduced the complete four-row schedule table exactly; independently reproduced the fault-diagnostic weight-3 witness with a differently-structured O(n) algorithm; regenerated the summary byte-for-byte; confirmed all three pinned inherited-file hashes unchanged.
   NUMERICAL: retaining the masked Q block directly gives 300 GHZ4 outputs;
   938 outcome-bit duals, all 1,200 canonical stabilizers and 38Z+2X residual
@@ -135,7 +167,7 @@
 
 - `T-20260909-001` is `RV-20260909-001` `APPROVED` (Claude review, 2026-09-26). In the explicit byproduct convention `physical = F ideal`, it proves the target-component factorization `F_in = A R` and exact partial-clearing action `G = U_H A^dagger`, `F_out = R`; width 5 adds 11,520 projective Clifford checks with zero mismatch. On the coherent width-256 IP 30/60 workload and 32 fixed branch witnesses, partial clearing reduces median literal CNOT occurrences from 4,250 under full clearing to 3,843 (9.58%), while increasing the median CNOT-batch/logical-layer envelopes from 176/270 to 284/380. Presented phase-one PPM weight is median 11 and sampled maximum 16, versus 2/2 for full clearing and 134/509 for retained-frame full conjugation; sampled Z/X-only compatibility is preserved. These are unsynthesized logical generator profiles, not minimum Clifford circuits or QEC-native schedules. Native H/CNOT realization, routing, surgery capacity, decoder/reaction, factory/buffer service, cycles, runtime, physical qubits, and failure remain `OPEN`/null. Reviewed by Claude on 2026-09-26 (`APPROVED`): the reviewer read the approved compiler's frame convention (`physical = C^dagger logical`, event corrections appended, `g t g` source conjugation) and confirmed the implementation's factor order, `A^dagger` reversal and right-composed tableau match it; cross-checked the implementation's frame accumulation against the approved symbolic compiler's presented phase-one PPMs on all 192 (16 branches x 12 source layers) width-5 rows (192/192 agree, weights 2..10; a prepend-instead-of-append mutation is caught in 66 rows); and reproduced every width-256 headline (literal CNOT 4,250/3,843, batches 176/284, layers 270/380, partial PPM weight 11/16, final frames 1,273/1,862, full-conjugation CNOT 253,684 and frame 10,436) with a second from-scratch implementation (own chronological representation, complete pair oracle, own SHAKE masks). Non-blocking notes: the CNOT-batch envelope depends on ASAP time direction (forward-time scheduling of the true chronological circuit gives 148/249 instead of 176/284; layer envelope 270/379 is essentially invariant) and literal counts depend on intra-layer generator order (one width-5 branch 44 vs 42); the shipped replay does not recompute frame quantities. Two regenerations matched the recorded `studies`, `summary`, and `independent_replay` hashes byte for byte; `reproducibility.json` differs only in its embedded git-status list.
 
-Last updated: 2026-10-01 (codex LP/GHZ post-review status synchronization; reviews by claude)
+Last updated: 2026-10-01 (codex flagged LP preparation submission; prior reviews by claude)
 Owner: human
 Phase: canonical baseline selection
 
