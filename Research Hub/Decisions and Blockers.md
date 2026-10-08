@@ -13,11 +13,15 @@ updated: 2026-10-01
 
 ## One decision needed from the researcher
 
-Latest reviewed delta: T-20261008-001 (`RV-20261008-001` `APPROVED`, D-0040
-ACCEPTED) proves the one-row augmentation lemma under explicit split
-hypotheses. Whether to authorize the proposed next lemma
-(information-coordinate shortening) is a human decision; no cycle starts
-automatically. See [[docs/LP_ONE_ROW_AUGMENTATION_LEMMA|augmentation lemma]].
+Latest reviewed delta: T-20261008-011 (`RV-20261008-011` `APPROVED`) proves
+the one-coordinate shortening lemma: after the approved augmentation
+(T-20261008-001, `RV-20261008-001` `APPROVED`, D-0040 ACCEPTED), deleting
+information coordinate 3 removes the whole Z3 family from the helper's image
+while keeping Z1 Z2 and the other families. The helper still keeps every
+i>=4 family, so it is not yet a selective measurement. Whether to authorize
+another minimal lemma, and which one, is a human decision; no cycle starts
+automatically. See [[docs/LP_ONE_COORDINATE_SHORTENING_LEMMA|shortening lemma]]
+and [[docs/LP_ONE_ROW_AUGMENTATION_LEMMA|augmentation lemma]].
 
 Reviewed delta: T-20261001-008 (`RV-20261001-008` `APPROVED`, D-0039 ACCEPTED) passes the declared
 single-Pauli preparation criterion using actual flags and two same-axis passes.

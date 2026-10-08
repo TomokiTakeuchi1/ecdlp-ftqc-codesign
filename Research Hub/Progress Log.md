@@ -13,6 +13,17 @@ updated: 2026-10-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-10-08 - One-coordinate LP shortening lemma (reviewed and approved)
+
+T-20261008-011 is the second single analytic lemma. Starting from the
+augmented helper, it deletes information coordinate 3. The helper then no
+longer contains the Z3 family at all, while the merged Z1 Z2 family and every
+other family survive; X3 maps to identity. The data code is unchanged. One
+polynomial coordinate is a whole cyclic fibre, so this removes s*l binary
+logical modes from the helper, not one.
+
+**Status:** Reviewed and approved (`T-20261008-011`, `RV-20261008-011`, 2026-10-08). Claude derived every equation independently and corroborated it with exact binary matrix checks on three instances, including the r=3 boundary. Selective single-position measurement, residual sectors, distances and FT remain OPEN. See [[docs/LP_ONE_COORDINATE_SHORTENING_LEMMA|lemma and scope]].
+
 ## 2026-10-08 - One-row LP augmentation lemma (reviewed and approved)
 
 T-20261008-001 is a single analytic lemma. Adding the information check

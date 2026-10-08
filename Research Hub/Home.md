@@ -10,6 +10,14 @@ updated: 2026-10-01
 
 # ECDLP-256 FTQC Research Hub
 
+> [!abstract] LP one-coordinate shortening lemma - 2026-10-08 (reviewed and approved)
+> T-20261008-011 PROVED (same split hypotheses, r>=3): after augmentation,
+> deleting information coordinate 3 removes the whole Z3 family from the
+> helper's image, keeps Z1 Z2 and the i>=4 families, and sends X3 to identity.
+> Claude approved (`RV-20261008-011`) after an independent derivation and
+> exact GF(2) checks including r=3. Not a selective PPM, distance or FT result.
+> See [[docs/LP_ONE_COORDINATE_SHORTENING_LEMMA|shortening lemma]].
+
 > [!abstract] LP one-row augmentation lemma - 2026-10-08 (reviewed and approved)
 > T-20261008-001 PROVED (conditional on invertible parity minors): adding
 > u1+u2=0 maps the merged Z logical to Z1 Z2 and identifies X1 with X2;

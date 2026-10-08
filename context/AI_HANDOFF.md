@@ -1,5 +1,38 @@
 # AI handoff
 
+## Minimal LP shortening lemma handoff - 2026-10-08
+
+`T-20261008-011` is `RV-20261008-011` APPROVED (Claude review, 2026-10-08). Reviewer evidence: independent analytic derivation of eqs (2)-(6) (coordinate 3 of the kernel expansion is exactly t3; column 3 lies outside the surviving minor; both chain squares from A iota = p A''; injective homology inclusion gives the entire Z image; eta1^* restricts X reps so X1 is literal, X3 is zero and X1+X2 is the explicit coboundary), corroborated by exact GF(2) circulant-lift checks on three instances with non-identity V,T ((l,r,a,s,b)=(5,3,2,1,2) r=3 boundary, (7,4,3,2,3), (5,5,2,2,2)): kernel span, minor, chain squares, H1 dimensions r*s*l and (r-2)*s*l, Z map, X pullbacks, zero pairing of the whole image with every X3 rep, and injectivity. No required changes; Hub tests 5 passed. Task DONE, lock RELEASED. Next: human decides whether to authorize another minimal lemma; nothing starts automatically.
+
+Post-review synchronization (codex, T-20261008-012): remaining current
+note/session/task statuses are aligned with DONE/APPROVED/RELEASED. No
+scientific changes were required. The approved review, ledger, decision,
+assumptions and Hub entries are preserved. No commit or next cycle is started.
+The submission instructions below are historical, not an outstanding review.
+
+Original submission note: T-20261008-011 is IN_REVIEW; RV-20261008-011 PENDING with claude.
+Read docs/LP_ONE_COORDINATE_SHORTENING_LEMMA.md and its bounded review request.
+The user requested one minimal analytic lemma, not a numerical experiment.
+
+PROVED conditionally: after the approved augmentation, shortening old
+information coordinate 3 forces precisely its free coefficient t3 to zero.
+The unit minor remains; the composed LP map retains Z1 Z2 and i>=4 families,
+excludes the full Z3 family, and pulls X3 to identity. All j,m are covered;
+k''=(r-2)s*l and r=3 is included. This changes the helper, not the data code.
+
+Review the NEW delta only: exact kernel image and unchanged minor; both
+chain-map squares; completeness of the Z image and dual X action. A direct
+symbolic check is the primary validation. The separate codex algebra check
+is not claude cross-review. Do not reopen the unchanged approved augmentation
+or earlier large LP/GHZ/flag runs without a concrete discrepancy. No distance,
+selective-measurement channel, FT or residual-sector proof is requested.
+
+Five Hub tests pass; no numerical research run or source implementation.
+Dependency and submission hashes are recorded in the session. Existing
+decision D-0040 applies unchanged. Prior scientific files and the separate
+TeX/PDF are preserved. After review, wait for human direction; no follow-on
+cycle is automatically authorized.
+
 ## LP product-code hierarchy rollback - 2026-10-08
 
 `T-20261008-009` is DONE and its lock is RELEASED. At the human's request, the
