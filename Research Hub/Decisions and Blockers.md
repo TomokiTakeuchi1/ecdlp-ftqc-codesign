@@ -13,7 +13,14 @@ updated: 2026-10-01
 
 ## One decision needed from the researcher
 
-Latest reviewed delta: T-20261008-013 (`RV-20261008-013` `APPROVED`) proves
+Latest reviewed delta: T-20261009-002 (`RV-20261009-002` `APPROVED`) proves
+that the r=3 shortened helper's Z distance is at least the data code's Z
+distance. This is a one-sided, relative bound on Z only: it gives no number
+without an independent data distance and says nothing about X distance,
+readout protection or fault tolerance. See
+[[docs/LP_Z_DISTANCE_INHERITANCE_LEMMA|Z-distance inheritance lemma]].
+
+Previous reviewed delta: T-20261008-013 (`RV-20261008-013` `APPROVED`) proves
 that, at r=3 with an ideal positive-sign helper, the shortened LP helper
 implements exactly the joint measurement of all s*l merged Z1 Z2 products:
 every physical readout record acts as the joint projector, with no hidden

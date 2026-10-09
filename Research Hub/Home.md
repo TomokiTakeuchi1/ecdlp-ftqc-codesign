@@ -10,6 +10,13 @@ updated: 2026-10-01
 
 # ECDLP-256 FTQC Research Hub
 
+> [!abstract] LP helper Z-distance inheritance - 2026-10-09 (reviewed and approved)
+> T-20261009-002 PROVED (same split hypotheses, r=3): the shortened helper's
+> Z distance is at least the data code's Z distance. Claude approved
+> (`RV-20261009-002`) after an independent derivation and exact brute-force
+> distances on toy instances. Relative Z-only bound; d_X and FT remain OPEN.
+> See [[docs/LP_Z_DISTANCE_INHERITANCE_LEMMA|Z-distance lemma]].
+
 > [!abstract] LP ideal joint ZZ measurement - 2026-10-08 (reviewed and approved)
 > T-20261008-013 PROVED (r=3, ideal positive-sign helper): coupling the data
 > to the shortened helper with CNOTs and reading the helper in Z implements

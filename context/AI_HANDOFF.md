@@ -1,5 +1,37 @@
 # AI handoff
 
+## LP helper Z distance handoff - 2026-10-09
+
+`T-20261009-002` is `RV-20261009-002` APPROVED (Claude review, 2026-10-09). Reviewer evidence: independent analytic derivation (0/1 ring entries make binary F map each helper qubit to at most one data qubit, giving wt(Fz)=wt(z)-wt(v_new) in original coordinates; chain squares make F_* well defined; the r=3 merged basis maps to [z1]+[z2] with a nonzero family-1 coefficient, so F_* is injective; hence every nontrivial helper cycle, stabilizer-dressed or not, maps to a nontrivial data cycle of no larger weight). Corroborated by exact brute-force distances on four toy r=3 instances with non-identity V,T (all Z cycles enumerated, up to 2^24): d_Z(Q)/d_Z(Q_h) = 1/4, 2/4, 2/4, 3/5, plus weight identity, column weight <=1, inclusions and rank(F_*)=k_h. No required changes; Hub tests 5 passed. Task DONE, lock RELEASED. Next: human decides whether to authorize another minimal lemma (e.g. an X-side or readout-protection statement); nothing starts automatically.
+
+Post-review synchronization (codex, T-20261009-003, 2026-10-09): remaining
+current note/task/session statuses are aligned with DONE/APPROVED/RELEASED.
+No scientific changes were required. The approved review, ledger, decision,
+assumptions and Hub entries are preserved. No commit or new cycle is started.
+The submission instructions below are historical, not an outstanding review.
+
+Original submission note: T-20261009-002 is IN_REVIEW; RV-20261009-002 PENDING with claude.
+Read docs/LP_Z_DISTANCE_INHERITANCE_LEMMA.md and its bounded review request.
+The human authorized only d_Z(Q_h)>=d_Z(Q) for the existing r=3 split
+construction. D-0040 remains the governing minimal-cycle policy.
+
+PROVED conditionally: F=B(eta1) inserts zeros in the first block and drops
+the added-check part of the second, so wt(Fz)<=wt(z) in the ORIGINAL binary
+physical coordinates. Chain squares and the complete merged Z basis give
+an injective map on logical classes. For every nontrivial helper cycle z,
+d_Z(Q)<=wt(Fz)<=wt(z), including all stabilizer representatives. F itself
+need not be injective; V^{-1}/T^{-1} basis changes are not weight isometries.
+
+Review only that new distance implication: physical binary weight, logical
+injectivity, arbitrary representatives and direction of the minimum bound.
+Direct symbolic checking is sufficient; no distance enumeration, large
+experiment, earlier GHZ/flag rerun or reopening of unchanged approved lemmas
+is requested. Independent codex analytic checking is not claude review.
+No d_X, full CSS distance, Z-readout protection, FT preparation/decoding,
+general-r or residual-sector extension is asserted. The ideal measurement
+assumptions A-0071 are not used. Snapshot hashes/tests are in the session.
+After review, wait for human direction; do not start another cycle.
+
 ## Ideal LP joint ZZ measurement handoff - 2026-10-08
 
 `T-20261008-013` is `RV-20261008-013` APPROVED (Claude review, 2026-10-08). Reviewer evidence: independent analytic derivation (positive-sign helper state; U_F|x,v>=|x,v+F^T x>; both stabilizer inclusions and F^T C_D <= C_h from the chain squares; diagonal phase-free Kraus indicator; ker L = S from the no-residual property; projector identity on Q, fiber sum and reference extension), corroborated by exact GF(2) circulant-lift checks on three r=3 instances with non-identity V,T ((l,a,s,b)=(3,1,1,1),(5,2,1,2),(5,2,2,1)): inclusions, ker L == S_X^h, fiber dimension s*l, sampled fine-record indicator == joint-ZZ label, forbidden records never fire, measured data Z algebra exactly s*l containing Z1Z2 but not Z1 or Z3. Negative control: the unshortened Q' helper measures 2*s*l modes (adds Z3). No required changes; Hub tests 5 passed. Task DONE, lock RELEASED. Next: human decides whether to authorize another minimal lemma; nothing starts automatically.

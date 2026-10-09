@@ -13,6 +13,17 @@ updated: 2026-10-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-10-09 - Helper Z distance is inherited from the data code (reviewed and approved)
+
+T-20261009-002 is the fourth single analytic lemma. The map from the shortened
+helper to the data code never increases the number of physical qubits a Z
+operator touches, and it never turns a nontrivial helper Z logical into a
+trivial data one. So the lightest nontrivial helper Z logical is at least as
+heavy as the data code's: d_Z(helper) >= d_Z(data). Nothing is claimed about
+X distance.
+
+**Status:** Reviewed and approved (`T-20261009-002`, `RV-20261009-002`, 2026-10-09). Claude derived the result independently and checked it against exact brute-force distances on four small instances. X distance, readout protection, noisy preparation and FT remain OPEN. See [[docs/LP_Z_DISTANCE_INHERITANCE_LEMMA|lemma and scope]].
+
 ## 2026-10-08 - Ideal joint ZZ measurement with the shortened helper (reviewed and approved)
 
 T-20261008-013 is the third single analytic lemma. With r=3, the shortened
