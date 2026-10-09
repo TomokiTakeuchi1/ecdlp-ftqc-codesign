@@ -10,6 +10,14 @@ updated: 2026-10-01
 
 # ECDLP-256 FTQC Research Hub
 
+> [!abstract] LP ideal joint ZZ measurement - 2026-10-08 (reviewed and approved)
+> T-20261008-013 PROVED (r=3, ideal positive-sign helper): coupling the data
+> to the shortened helper with CNOTs and reading the helper in Z implements
+> exactly the joint measurement of all s*l Z1 Z2 products. Claude approved
+> (`RV-20261008-013`) after an independent derivation, exact GF(2) checks and a
+> negative control. Not FT, distance or single-position selectivity.
+> See [[docs/LP_IDEAL_ZZ_MEASUREMENT_LEMMA|ideal ZZ measurement lemma]].
+
 > [!abstract] LP one-coordinate shortening lemma - 2026-10-08 (reviewed and approved)
 > T-20261008-011 PROVED (same split hypotheses, r>=3): after augmentation,
 > deleting information coordinate 3 removes the whole Z3 family from the

@@ -1,5 +1,19 @@
 # Project status
 
+- `T-20261008-013` is `RV-20261008-013` `APPROVED` (Claude review, 2026-10-08). Reviewer evidence: independent analytic derivation (positive-sign helper state; U_F|x,v>=|x,v+F^T x>; both stabilizer inclusions and F^T C_D <= C_h from the chain squares; diagonal phase-free Kraus indicator; ker L = S from the no-residual property; projector identity on Q, fiber sum and reference extension), corroborated by exact GF(2) circulant-lift checks on three r=3 instances with non-identity V,T ((l,a,s,b)=(3,1,1,1),(5,2,1,2),(5,2,2,1)): inclusions, ker L == S_X^h, fiber dimension s*l, sampled fine-record indicator == joint-ZZ label, forbidden records never fire, measured data Z algebra exactly s*l containing Z1Z2 but not Z1 or Z3. Negative control: the unshortened Q' helper measures 2*s*l modes (adds Z3). No required changes; Hub tests 5 passed.
+  Original submission:   PROVED under the approved split hypotheses, r=3 and ideal positive-sign
+  helper preparation: every full Z-readout Kraus operator is the joint ZZ
+  projector divided by sqrt(size(S_X^h)), or zero for forbidden records.
+  Thus decoded outcomes implement Pi_b rho Pi_b for arbitrary encoded
+  data/reference, with no additional fine-record information or disturbance.
+  The target is all s*l products, not an isolated (j,m). Preparation is an
+  assumption, not an FT construction; distance, noise and runtime stay OPEN.
+  Independent codex analytic/transcription check found no required changes.
+  See docs/LP_IDEAL_ZZ_MEASUREMENT_LEMMA.md. Post-review synchronization
+  (codex, T-20261009-001): task DONE, review APPROVED and lock RELEASED;
+  current note/session/handoff aligned without scientific changes.
+  Next: wait for human direction; no follow-on research is authorized.
+
 - `T-20261008-011` is `RV-20261008-011` `APPROVED` (Claude review, 2026-10-08). Reviewer evidence: independent analytic derivation of eqs (2)-(6) (coordinate 3 of the kernel expansion is exactly t3; column 3 lies outside the surviving minor; both chain squares from A iota = p A''; injective homology inclusion gives the entire Z image; eta1^* restricts X reps so X1 is literal, X3 is zero and X1+X2 is the explicit coboundary), corroborated by exact GF(2) circulant-lift checks on three instances with non-identity V,T ((l,r,a,s,b)=(5,3,2,1,2) r=3 boundary, (7,4,3,2,3), (5,5,2,2,2)): kernel span, minor, chain squares, H1 dimensions r*s*l and (r-2)*s*l, Z map, X pullbacks, zero pairing of the whole image with every X3 rep, and injectivity. No required changes; Hub tests 5 passed.
   Original submission: PROVED under the predecessor's common unit minors and r>=3: shortening
   old information coordinate 3 removes exactly g3 from the augmented kernel.

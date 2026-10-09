@@ -13,6 +13,17 @@ updated: 2026-10-01
 
 This page explains the research in plain language. Evidence, assumptions, and exact counts live in the linked canonical records.
 
+## 2026-10-08 - Ideal joint ZZ measurement with the shortened helper (reviewed and approved)
+
+T-20261008-013 is the third single analytic lemma. With r=3, the shortened
+helper (prepared ideally with every Z equal to +1) is coupled to the data by
+CNOTs and read out in Z. Every physical readout record then acts on the data
+exactly as the joint projector onto one set of Z1 Z2 values, so nothing beyond
+those parities is learned or disturbed. Without the shortening step the same
+circuit would also measure the Z3 family.
+
+**Status:** Reviewed and approved (`T-20261008-013`, `RV-20261008-013`, 2026-10-08). Claude derived the result independently and corroborated it with exact binary matrix checks on three instances, including the unshortened-helper negative control. Noisy preparation, distances, FT, single-position selection and general r remain OPEN. See [[docs/LP_IDEAL_ZZ_MEASUREMENT_LEMMA|lemma and scope]].
+
 ## 2026-10-08 - One-coordinate LP shortening lemma (reviewed and approved)
 
 T-20261008-011 is the second single analytic lemma. Starting from the

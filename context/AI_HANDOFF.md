@@ -1,5 +1,37 @@
 # AI handoff
 
+## Ideal LP joint ZZ measurement handoff - 2026-10-08
+
+`T-20261008-013` is `RV-20261008-013` APPROVED (Claude review, 2026-10-08). Reviewer evidence: independent analytic derivation (positive-sign helper state; U_F|x,v>=|x,v+F^T x>; both stabilizer inclusions and F^T C_D <= C_h from the chain squares; diagonal phase-free Kraus indicator; ker L = S from the no-residual property; projector identity on Q, fiber sum and reference extension), corroborated by exact GF(2) circulant-lift checks on three r=3 instances with non-identity V,T ((l,a,s,b)=(3,1,1,1),(5,2,1,2),(5,2,2,1)): inclusions, ker L == S_X^h, fiber dimension s*l, sampled fine-record indicator == joint-ZZ label, forbidden records never fire, measured data Z algebra exactly s*l containing Z1Z2 but not Z1 or Z3. Negative control: the unshortened Q' helper measures 2*s*l modes (adds Z3). No required changes; Hub tests 5 passed. Task DONE, lock RELEASED. Next: human decides whether to authorize another minimal lemma; nothing starts automatically.
+
+Post-review synchronization (codex, T-20261009-001, 2026-10-09): remaining
+current note/task/session statuses are aligned with DONE/APPROVED/RELEASED.
+No scientific changes were required. The approved review, ledger, decision,
+assumptions and Hub entries are preserved. No commit or new cycle is started.
+The submission instructions below are historical, not an outstanding review.
+
+Original submission note: T-20261008-013 is IN_REVIEW; RV-20261008-013 PENDING with claude.
+Read docs/LP_IDEAL_ZZ_MEASUREMENT_LEMMA.md and its bounded review request.
+The human authorized only the r=3 ideal instrument, using the approved
+augmentation/shortening maps unchanged. Existing D-0040 still governs scope.
+
+PROVED conditionally: for S=S_X^h and allowed physical readout y in C_h,
+K_y restricted to Q is Pi_b(y)/sqrt(size(S)); other records vanish. The
+complete helper Z basis makes each decoded fiber one S coset. Summing its
+size(S) fine records gives exactly Pi_b rho Pi_b, including reference inputs.
+No byproduct in the fixed positive-sign convention and no extra fine-record
+leakage. All s*l products are measured; discarding bits does not isolate one.
+Family 3 is not measured, but correlated branch conditioning may steer it.
+
+Review only the new delta: physical CNOT direction and chain inclusions,
+coset kernel/cardinality, fine-record normalization, arbitrary-input channel
+and the information/conditioning distinction. Direct analytic checking is
+sufficient; no large finite example or earlier GHZ/flag rerun is requested.
+The independent codex derivation/transcription check is not cross-review.
+Do not expand into FT, distances, general r, a single (j,m), or a preparation
+scheme. Source/dependency hashes and validation are recorded in the session.
+After review, wait for human direction; do not start another cycle.
+
 ## Minimal LP shortening lemma handoff - 2026-10-08
 
 `T-20261008-011` is `RV-20261008-011` APPROVED (Claude review, 2026-10-08). Reviewer evidence: independent analytic derivation of eqs (2)-(6) (coordinate 3 of the kernel expansion is exactly t3; column 3 lies outside the surviving minor; both chain squares from A iota = p A''; injective homology inclusion gives the entire Z image; eta1^* restricts X reps so X1 is literal, X3 is zero and X1+X2 is the explicit coboundary), corroborated by exact GF(2) circulant-lift checks on three instances with non-identity V,T ((l,r,a,s,b)=(5,3,2,1,2) r=3 boundary, (7,4,3,2,3), (5,5,2,2,2)): kernel span, minor, chain squares, H1 dimensions r*s*l and (r-2)*s*l, Z map, X pullbacks, zero pairing of the whole image with every X3 rep, and injectivity. No required changes; Hub tests 5 passed. Task DONE, lock RELEASED. Next: human decides whether to authorize another minimal lemma; nothing starts automatically.

@@ -13,7 +13,15 @@ updated: 2026-10-01
 
 ## One decision needed from the researcher
 
-Latest reviewed delta: T-20261008-011 (`RV-20261008-011` `APPROVED`) proves
+Latest reviewed delta: T-20261008-013 (`RV-20261008-013` `APPROVED`) proves
+that, at r=3 with an ideal positive-sign helper, the shortened LP helper
+implements exactly the joint measurement of all s*l merged Z1 Z2 products:
+every physical readout record acts as the joint projector, with no hidden
+information or extra disturbance. It is an ideal instrument, not an FT
+result, and it measures all s*l products, not one chosen position. See
+[[docs/LP_IDEAL_ZZ_MEASUREMENT_LEMMA|ideal ZZ measurement lemma]].
+
+Previous reviewed delta: T-20261008-011 (`RV-20261008-011` `APPROVED`) proves
 the one-coordinate shortening lemma: after the approved augmentation
 (T-20261008-001, `RV-20261008-001` `APPROVED`, D-0040 ACCEPTED), deleting
 information coordinate 3 removes the whole Z3 family from the helper's image
